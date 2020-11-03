@@ -69,8 +69,8 @@
             }
         },
         computed: {
-            ...mapGetters("googleAuth", ["getGoogleAuthUrlStore"]),
-            ...mapState('googleAuth', ["googleAuthUrl", "verifyTokenEmail"]),
+            ...mapGetters("user", ["getGoogleAuthUrlStore"]),
+            ...mapState('user', ["googleAuthUrl","verifyTokenEmail"])
         },
         async mounted() {
             if (this.verifyTokenEmail) {

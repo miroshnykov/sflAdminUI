@@ -531,6 +531,27 @@
       "integrity": "sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=",
       "dev": true
     },
+    "am-components-front": {
+      "version": "git+https://e6aa619486e35d6af0364fd1d700efc15fd59b72@github.com/jomedia/am-components-front.git#6b074b1522189b3d944a333975c573bc21ba8615",
+      "requires": {
+        "axios": "0.20.0"
+      },
+      "dependencies": {
+        "axios": {
+          "version": "0.20.0",
+          "resolved": "https://registry.npmjs.org/axios/-/axios-0.20.0.tgz",
+          "integrity": "sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==",
+          "requires": {
+            "follow-redirects": "1.13.0"
+          }
+        },
+        "follow-redirects": {
+          "version": "1.13.0",
+          "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.0.tgz",
+          "integrity": "sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA=="
+        }
+      }
+    },
     "amdefine": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/amdefine/-/amdefine-1.0.1.tgz",

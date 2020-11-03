@@ -37,6 +37,7 @@
     import {formatData, timeSince} from '../helpers'
     import Segment from "./segment";
     import draggable from "vuedraggable";
+    import {getCookie} from '../helpers'
 
     export default {
         // mounted() {
@@ -44,21 +45,15 @@
         // },
         components: {logo, menunav, Segment, draggable},
         computed: {
-            segments: {
-                get() {
-                    debugger
-                    return this.$store.state.segments.data;
-                },
-                set(segments) {
-                    debugger
-                }
-            },
-
             ...mapState('segments', ['segments']),
             ...mapGetters('segments', ['getSegments'])
         },
         async mounted() {
-            await this.saveSegmentsStore()
+            let token = getCookie('accessToken')
+            if (token){
+                await this.saveSegmentsStore()
+            }
+
         },
         methods: {
             ...mapMutations('segments', ['reOrdering']),
@@ -115,12 +110,6 @@
         },
         data() {
             return {
-                options: {
-                    onDrop(event) {
-                        debugger
-                        console.log(event);
-                    },
-                },
                 segmentName: '',
                 isModalVisible: false,
                 countOfRecords: 0

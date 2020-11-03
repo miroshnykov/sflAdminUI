@@ -68,10 +68,8 @@ export default {
             })
             let toSend = JSON.stringify(forSendToSave).replace(/['"]+/g, '')
             console.log('toSend:', toSend)
-            debugger
             let resReOrdering = await segments.reOrderSegmentsSave(toSend)
             console.log('resReOrdering:', resReOrdering)
-            debugger
 
             return resReOrdering
             // let s = this.getSegments()
@@ -79,16 +77,6 @@ export default {
             // console.table(reFormatJSON(s))
             // debugger
         },
-    },
-    computed: {
-        segments: {
-            get() {
-                debugger
-            },
-            set(value) {
-                debugger
-            }
-        }
     },
     getters: {
         getSegments: state => state.segments,

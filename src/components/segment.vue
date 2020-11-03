@@ -69,25 +69,6 @@
                 console.log(e, group)
                 debugger
             },
-            onUnpublishedChange2(e,group){
-                console.log(e, group)
-                debugger
-            },
-            onUnpublishedChange1(e,group){
-                console.log(e, group)
-                debugger
-            },
-            checkMove1($event, group){
-                debugger
-                console.log($event)
-                console.log(group)
-                // return (evt.draggedContext.element.name!=='apple');
-            },
-            focusMenu: function() {
-                debugger
-                this.showMenu = true;
-                this.toggleMask();
-            },
             blur: function(event) {
                 debugger
                 let { relatedTarget, target } = event;
@@ -109,10 +90,6 @@
             },
             updateSegment: function(segment, landingPages) {
                 this.update(Object.assign({}, segment, { landingPages }));
-            },
-            toggleState: function(segment) {
-                debugger
-
             },
             ...mapActions("segments", ["update", "removeAndUpdateOrder"]),
             ...mapMutations("segments", ["toggleActive"]),

@@ -31,31 +31,33 @@ new Vue({
     store,
     render: h => h(App),
     async created() {
-        await store.dispatch('googleAuth/SaveGoogleAuthUrl')
-        let token = getCookie('accessToken')
-        if (token) {
-            await store.dispatch('googleAuth/VerifyTokenEmailSave')
+        try {
+            await store.dispatch('user/SaveGoogleAuthUrl')
+            let token = getCookie('accessToken')
+            if (token) {
+                await store.dispatch('user/VerifyTokenEmailSave', token)
 
-
-            if (this.verifyTokenEmail) {
+                if (!this.verifyTokenEmail) {
+                    throw new Error('invalid token')
+                }
                 await store.dispatch('user/saveUserStore', this.verifyTokenEmail)
-                await store.dispatch('segments/saveSegmentsStore')
+
             } else {
-                console.log(' *** verifyToken is not valid *** ')
-                router.push('/')
+                let checkPatch = this.$root._route.path.includes('successLogin')
+                    || this.$root._route.path.includes('errorLogin')
+
+                if (!checkPatch) {
+                    router.push('/')
+                }
+
             }
-
-        } else {
-            let checkPatch = this.$root._route.path.includes('successLogin')
-                || this.$root._route.path.includes('errorLogin')
-
-            if (!checkPatch) {
-                router.push('/')
-            }
-
+        } catch (err) {
+            console.log(err);
+            router.push('/login')
         }
+
     },
     computed: {
-        ...mapState('googleAuth', ['verifyTokenEmail']),
+        ...mapState('user', ['user', 'verifyTokenEmail'])
     },
 })
