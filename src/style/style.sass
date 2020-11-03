@@ -1,0 +1,1734 @@
+@import url("https://use.typekit.net/ypu4uvi.css") /*Proxima Nova*/
+@import url("https://use.fontawesome.com/releases/v5.12.1/css/all.css") /*Font Awesome Pseudo Elements*/
+
+*
+  padding: 0
+  margin: 0
+  box-sizing: border-box
+  font-family: “proxima-nova”, proxima-nova, Proxima Nova, Helvetica, Arial, sans-serif !important
+  font-size: 14px
+
+::selection
+  color: #fff !important
+  background-color: #36b8e1 !important
+
+::-moz-selection
+  color: #fff !important
+  background-color: #36b8e1 !important
+
+body
+  background: #F7F8FC
+// background-image: -webkit-gradient(linear, right top, left top, from(#3a3852), to(#5c6489))
+// background-image: linear-gradient(to left, #3a3852, #5c6489)
+
+a
+  color: #36b8e1
+  font-weight: 600
+  text-decoration: none !important
+
+  &:hover
+    color: #2294d0
+
+a, button, span
+  transition: all 0.5s ease
+
+hr
+  border: 1.5px solid #E3EEF4
+  margin-top: 40px
+  margin-bottom: 40px
+
+hr.small
+  border: 1px solid #E3EEF4
+  margin-top: 20px
+  margin-bottom: 20px
+
+.theme-adcenter
+  --fa-primary-color: #fff
+  --fa-primary-opacity: 1
+  --fa-secondary-color: #5c6489
+  --fa-secondary-opacity: 1
+
+.flex
+  display: flex
+.column
+  flex-direction: column
+.row
+  flex-direction: row
+.revers
+  flex-direction: row-reverse
+.v_center
+  align-items: center
+.center
+  justify-content: center
+.left
+  justify-content: flex-start
+.right
+  justify-content: flex-end
+.jcsb
+  justify-content: space-between
+.jcsa
+  justify-content: space-around
+.hide
+  display: none !important
+.show
+  display: block !important
+
+/* Headers */
+h1, .h1
+  font-size: 24px
+  font-weight: 700
+  letter-spacing: 0.3px
+  color: #3A3852
+  text-align: left
+  // background: linear-gradient(to right, #28cde1 0%, #5883e2 100%)
+  // -webkit-background-clip: text
+  // -webkit-text-fill-color: transparent
+  margin-bottom: 20px
+
+h2, .h2
+  font-size: 18px
+  font-weight: 700
+  letter-spacing: 0.3px
+  color: #3A3852
+  text-align: left
+  margin-bottom: 20px
+
+// h2, .h2
+//   font-size: 2.5rem
+//   font-weight: 800
+//   color: #fff
+//   text-align: center
+//   background: linear-gradient(to right, #e1d4e1 0%, #63e2d9 100%)
+//   -webkit-background-clip: text
+//   -webkit-text-fill-color: transparent
+//   margin-bottom: 30px
+
+/* Containers */
+.container, .container-lg, .container-md, .container-sm, .container-xl
+  max-width: 1400px
+
+.container
+  height: 100%
+  min-height: 100vh
+// margin-left: 300px
+
+#campaigns
+  margin-top: 40px
+  margin-bottom: 40px
+
+#edit-segment
+  margin-top: 80px
+  margin-bottom: 40px
+
+/* Campaigns */
+// #segments
+//   -webkit-font-smoothing: antialiased
+//   -moz-osx-font-smoothing: grayscale
+//   text-align: center
+//   color: #fff
+
+.status
+  color: #fff
+  background: #7F98A5
+  padding: 5px 10px
+  border-radius: 4px
+  text-transform: uppercase
+  font-size: 10px
+  letter-spacing: 0.5px
+  text-align: center
+
+  &.inactive
+    background: #7F98A5
+
+  &.active
+    background: #2ED47A
+
+  &.paused
+    background: #FFB946
+
+/* Field Input */
+input[type="text"]:disabled, input[type="number"]:disabled, input[type="number"]:read-only
+  color: #acc3cf
+  background: #e3eef4
+
+  &:hover
+    border-color: transparent !important
+    box-shadow: 0 0 0px transparent !important
+
+span.landing-page-box
+  color: #7F98A5
+  background: #e3eef4
+  padding: 3px 10px
+  border-radius: 4px
+  min-width: 100px
+  height: 30px
+  cursor: pointer
+
+input.quickedit
+  padding: 5px 10px
+  height: 30px
+  border-radius: 4px
+  border-color: transparent
+  background: #e3eef4
+  max-width: 120px
+  margin-left: 5px
+
+button.quickedit-update
+  height: 30px
+  color: #7F98A5
+  background: transparent
+  border-color: transparent
+  font-size: 10px
+  font-weight: 600
+  padding: 8px
+
+  &:hover
+    color: #2ED47A
+    background: transparent
+
+button.quickedit-cancel
+  height: 30px
+  color: #7F98A5
+  font-size: 10px
+  font-weight: 600
+  padding: 8px
+
+  &:hover
+    color: #FE5D65
+    background: transparent
+
+.landingPage, .validateLandingPage
+  float: left
+
+.custom-select,
+.custom-input,
+.ui.search.selection.dropdown > input.search
+  transition: all 0.5s ease
+
+.custom-select:hover, .custom-select:focus,
+.custom-input:hover, .custom-input:focus,
+.ui.search.selection.dropdown > input.search:hover, .ui.search.selection.dropdown > input.search:focus
+  border-color: #acc3cf !important
+  box-shadow: 0 0 0px #acc3cf !important
+  cursor: pointer !important
+
+.custom-input::placeholder
+  color: #ACC3CF
+
+.custom-input
+  position: relative
+  // width: auto
+  width: 100%
+  color: #7F98A5
+  font-size: 16px
+  font-weight: 600
+  // max-width: 280px
+  border-radius: 7px
+  padding: 10px 20px
+  height: 45px
+  text-align: left
+  border: 2px solid #e3eef4
+
+.custom-input::placeholder
+  color: #ACC3CF
+
+.text-muted
+  color: #ACC3CF !important
+  font-weight: 500
+  font-size: 14px
+  letter-spacing: 0.3px
+
+td .text-muted
+  font-size: 12px
+  line-height: 0.5rem
+
+#totalClicks
+  line-height: 2rem
+
+/* TARGETING */
+button.btn.btn-add-line.btn-secondary
+  background: #36B8E1
+  width: 85px
+  font-size: 10px
+  letter-spacing: 1px
+  height: 25px
+  padding: 0px
+  border-radius: 4px
+// float: right
+
+/* SEARCH BAR */
+.form-control
+  display: block
+  width: 100%
+  height: calc(1.5em + 1rem + 5px)
+  padding: 0rem
+  font-size: 1rem
+  font-weight: 500
+  line-height: 2
+  border: 0px
+  border-radius: 0px
+  min-width: 200px
+  max-height: 38px
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+
+.VueTables__search-field input
+  background: transparent
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5)
+
+  &::placeholder
+    color: rgba(0, 0, 0, 0.5)
+
+.VueTables__search-field label
+  display: none
+
+.VueTables__search-field input[type="text"]:focus
+  background: rgba(0, 0, 0, 0)
+  border-color: rgba(0, 0, 0, 1)
+  box-shadow: none
+
+.VueTables__search-field input[type="text"]
+  position: relative
+  color: #333
+  border-color: rgba(0, 0, 0, 0.2)
+
+.VueTables__search-field::before
+  content: "\F002"
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  position: relative
+  right: 15px
+  top: 10px
+  float: right
+  color: rgba(0, 0, 0, 0.3)
+
+span.VueTables__highlight b, span.segment-name.VueTables__highlight b
+  color: #31cae0 !important
+  font-weight: 700 !important
+
+.form-group.form-inline.pull-left.VueTables__search
+  margin-left: -15px
+
+/* BUTTONS */
+.btn-outline-primary
+  color: #fff
+  background: transparent
+  border-color: #fff
+
+  &:hover
+    color: #fff
+    background: #36b8e1
+    border-color: #fff
+
+button.btn
+  text-transform: uppercase
+  font-weight: 600
+  letter-spacing: 1px
+  cursor: pointer
+  border: 0
+  transition: all 0.5s ease
+  z-index: 99
+
+  &.btn-primary
+    width: 100%
+    max-width: 180px
+    padding: 10px
+    margin: 0 auto
+    color: #fff
+    font-size: 12px
+    border-radius: 7px
+    display: block
+    text-align: center
+    float: right
+    background: linear-gradient(90deg, #28cde1 0%, #2294d0 100%)
+    background-size: 100%
+    transition: all 0.5s ease
+
+    &:hover
+      background-size: 150%
+      box-shadow: 0 0 8px #28cde1
+
+  &.btn-secondary
+    width: 100%
+    max-width: 180px
+    padding: 10px
+    margin: 0 auto
+    color: #fff
+    font-size: 12px
+    border-radius: 7px
+    background: #5c6489
+    display: block
+    text-align: center
+    float: right
+    background-size: 100%
+
+    &:hover
+      background: #28cde1
+
+  &.btn-transparent
+    background: transparent
+    max-width: 140px
+
+    &:hover
+      background: #5c6489
+
+  &.margin-left-10
+    margin-left: 10px
+
+  &.margin-right-10
+    margin-right: 10px
+
+  &.add-rule
+    margin-top: -62px !important
+
+  &.btn-light
+    display: block
+    text-align: center
+    float: left
+    background: #fff
+    background-size: 100%
+    text-transform: uppercase
+    font-weight: 600
+    letter-spacing: 1px
+    width: 100%
+    max-width: 180px
+    padding: 10px
+    margin: 0 auto
+    color: #5c6489
+    font-size: 12px
+    cursor: pointer
+    border-radius: 7px
+    border: 0
+    transition: all 0.5s ease
+
+    &:hover
+      color: #28cde1
+
+  &.btn-back
+    position: fixed
+    top 20px
+    right: 20%
+
+  &.btn-save
+    position: fixed
+    top: 20px
+    left: 1220px
+    display: block
+    text-align: center
+    float: right
+    background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%))
+    background-size: 100%
+    text-transform: uppercase
+    font-weight: 600
+    letter-spacing: 1px
+    width: 100%
+    max-width: 180px
+    padding: 10px
+    margin: 0 auto
+    color: #fff
+    font-size: 12px
+    cursor: pointer
+    border-radius: 7px
+    border: 0
+    transition: all 0.5s ease
+
+    &:hover
+      background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%)) !important
+      background-size: 300%
+      transform: scale(1.2)
+
+  &.delete-btn.btn-danger.disabled
+    color: #9eaeb6
+    background: transparent
+    border: 0
+    cursor: not-allowed
+    opacity: 1
+
+    &:before
+      background: rgba(0, 0, 0, 0.5)
+      transition: all 0.5s ease
+
+    &:hover:before
+      content: 'Remove all conditions to delete'
+      position: absolute
+      color: #fff
+      font-size: 14px
+      font-weight: 500
+      background: rgba(0, 0, 0, 0.5)
+      bottom: 0
+      right: 0
+      margin: 20px
+      padding: 10px 15px
+      border-radius: 7px
+      text-transform: none
+      z-index: 99
+      -webkit-animation-name: fadeIn
+      animation-name: fadeIn
+      animation-duration: 0.5s
+
+    &:after
+      font-family: "Font Awesome 5 Free"
+      font-weight: 900
+      font-size: 10px
+      color: orange
+      content: "\f071"
+      position: absolute
+      margin-left: -5px
+
+.btn-link
+  font-weight: 400
+  color: #ACC3CF
+  text-decoration: none
+  transition: all 0.5s ease
+  padding: 0 0.6rem !important
+
+  &:hover
+    color: #36b8e1
+
+.delete-btn.btn-danger
+  color: #777
+  background: transparent
+  border: 0px
+  transition: all 0.5s ease
+
+  &:hover
+    color: #fe5d65
+    background: transparent
+
+/* Dropdown Button */
+.dropdown-toggle
+  white-space: nowrap
+  float: none !important
+  min-width: 200px
+
+/* Tables */
+
+table
+  background: transparent
+
+.table
+  th, td
+    // color: #3a3852
+    color: #555
+    font-size: 14px
+    font-weight: 600
+    letter-spacing: 0.2px
+    padding: 1.5rem 1rem
+    vertical-align: middle
+    border-top: 0px
+
+.table-bordered
+  th, td
+    border: 0px
+
+// .table-hover tbody tr:hover
+//   opacity: 0.5
+
+th:focus, td:focus
+  outline: -webkit-focus-ring-color auto 0px
+
+.table-responsive
+  border-radius: 4px
+  border: 0
+
+tr:nth-child(even), .table-striped tbody tr:nth-of-type(even)
+  background: rgba(255, 255, 255, 0.85)
+
+tr:nth-child(odd), .table-striped tbody tr:nth-of-type(odd)
+  background: rgba(255, 255, 255, 0.95)
+
+span.VueTables__heading
+  font-size: 14px
+  font-weight: 600
+  letter-spacing: 0.3px
+  transition: all 0.3s ease
+
+th#VueTables_th--id, th#VueTables_th--name, th#VueTables_th--userName, #VueTables_th--budgetDaily, #VueTables_th--budgetTotal, #VueTables_th--cpc, #VueTables_th--landingPage, #VueTables_th--clicks, #VueTables_th--status
+  &:hover
+    color: #36B8E1
+    cursor: pointer
+
+th#VueTables_th--id
+  text-align: center
+
+.VueTables__sort-icon.pull-right
+  margin-left: 5px
+  margin-top: 4px
+  color: rgba(0, 0, 0, 0.5)
+  font-size: 0.9em
+
+.table-bordered thead
+  th, td
+    border-bottom-width: 3px
+    line-height: 1.5
+    font-weight: 700
+    color: #7F98A5
+    background: #fff
+    border-bottom: 2px solid #E3EEF4
+
+tr
+  margin: 0
+  padding: 0
+  border: 0
+  font-size: 100%
+  font: inherit
+  vertical-align: baseline
+  -webkit-box-sizing: border-box
+  box-sizing: border-box
+
+.custom-control-input:checked ~ .custom-control-label::before
+  color: #fff
+  border-color: #36B8E1
+  background-color: #36B8E1
+
+.custom-control-input[disabled] ~ .custom-control-label::before, .custom-control-input:disabled ~ .custom-control-label::before
+  background-color: transparent
+  border: 0px solid transparent
+
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before
+  background-color: rgba(255, 255, 255, 0)
+
+.custom-checkbox.b-custom-control-lg .custom-control-label::after, .input-group-lg .custom-checkbox .custom-control-label::after
+  top: 0rem
+  left: -2rem
+  width: 1.25rem
+  height: 1.25rem
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after
+  font-family: "Font Awesome 5 Free"
+  font-size: 16px
+  font-weight: 900
+  color: #2ED47A
+  content: "\f00c"
+  position: relative
+  background: none !important
+
+.custom-control-label::before
+  position: absolute
+  top: 0.25rem
+  left: -1.5rem
+  display: block
+  width: 1rem
+  height: 1rem
+  pointer-events: none
+  content: ""
+  background-color: #fff
+  border: #adb5bd solid 1px
+
+/* Segment Child Table */
+.VueTables__child-row-toggler
+  width: 16px
+  height: 16px
+  line-height: 16px
+  display: block
+  margin: auto
+  text-align: center
+  cursor: pointer
+  color: #ACC3CF
+
+  &:hover
+    opacity: 0.8
+    color: #3a3852
+
+.VueTables__child-row-toggler--closed::before
+  //  content: "+"
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  content: "\f107"
+  position: relative
+  font-size: 12px
+
+.VueTables__child-row-toggler--open
+  color: #36b8e1
+
+.VueTables__child-row-toggler--open::before
+  //  content: "-"
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  content: "\f106"
+  position: relative
+
+.segment-child
+  text-align: left
+  line-height: 2rem
+  padding: 10px 20px
+
+  span
+    color: #5c6489
+    font-size: 16px
+    font-weight: 800
+    text-align: left
+
+    strong
+      font-size: 16px
+      color: #36b8e1
+      font-weight: 800
+
+.gradient-table
+  // border-width: 3px
+  // border-style: solid
+  // border-image: linear-gradient(to left, #3a3852 0%, #5c6489 100%)
+  // border-image-slice: 1
+  margin-bottom: 20px
+
+.child-table
+  min-height: 110px !important
+  max-height: 455px !important
+  overflow: scroll
+  margin-bottom: 20px
+  border-bottom: 2px dashed rgba(92, 100, 137, 0.3)
+
+  table
+    text-align: center
+    // border-radius: 4px
+    overflow: hidden
+    margin-bottom: 0
+
+  td
+    color: #5c6489
+    font-size: 0.9rem
+    font-weight: 600
+    letter-spacing: 0.3px
+
+.child-row thead th
+  font-size: 0.9em
+  letter-spacing: 0.5px
+  padding: 10px
+  height: 15px
+  font-weight: 700
+  text-transform: none
+  color: #fff
+  background: #5c6489
+  border-bottom: 0px solid #5c6489
+
+/* Edit Segment */
+.edit-segment
+  margin: auto 20px
+
+.edit-segments
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  text-align: center
+  color: #fff
+  margin-top: 60px
+  padding: 50px
+  background: rgba(255, 255, 255, 0.05)
+  border-radius: 4px
+
+.segment-name
+  color: #3a3852
+  font-size: 14px
+  font-weight: 700
+  cursor: pointer
+
+  &:hover
+    color: #36b8e1
+
+section.filter
+  // background: rgba(255, 255, 255, 0.1)
+  // margin: 20px 0px
+  box-shadow: none
+
+ul.segment-info
+  list-style: none
+
+  li
+    display: inline-block
+    margin-right: 40px
+    font-size: 12px
+    letter-spacing: 0.5px
+
+    b
+      font-size: inherit
+      font-weight: 700
+      color: #a5f5ff
+
+/* Popup Modal */
+h2.swal2-title
+  font-size: 2rem
+  font-weight: 800
+  text-align: left
+  background: linear-gradient(to left, #3a3852 0%, #5c6489 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  margin-bottom: 20px
+
+.swal2-popup.swal2-modal.swal2-show
+  padding: 3em !important
+  border-radius: 20px !important
+  max-width: 400px
+
+.swal2-file, .swal2-input, .swal3-input, .swal2-textarea, input#swal-input3
+  font-family: “proxima-nova”, proxima-nova, Proxima Nova, Helvetica, Arial, sans-serif !important
+  color: #7F98A5 !important
+  border: 2px solid #e3eef4 !important
+  box-shadow: inset 0 0px 0px rgba(0,0,0,.06)
+  font-size: 1.125em
+
+  &::placeholder
+    color: #ACC3CF !important
+
+  &:focus
+    color: #5c6489 !important
+    border: 2px solid #5c6489 !important
+    box-shadow: 0 0 3px #5c6489 !important
+    outline: none !important
+
+.swal2-input
+  height: 3em !important
+  padding: 0 1.5em !important
+  max-width: 220px
+  display: block
+
+.swal2-input[type=number], .swal3-input[type=number]
+  max-width: 6em !important
+
+.swal2-file, .swal2-input, .swal3-input, .swal2-textarea
+  border: 0px
+  border-radius: 8px !important
+  //background: #E3EEF4
+  box-shadow: none
+  color: #3A3852
+  font-size: 1.125em
+  font-weight: 600
+  text-align: center
+
+.swal3-input
+  height: 3em !important
+  padding: 0 1.5em !important
+  max-width: 200px
+  display: block
+
+.swal2-input, .swal3-input
+  margin: 0em auto 1em auto !important
+
+.swal2-content label strong
+  font-size: inherit
+  font-weight: 700
+  color: #36b8e1
+
+.segment-popup
+  max-width: 250px
+  margin: auto
+
+#swal2-content label
+  color: #5a6185
+  font-size: 12px
+  font-weight: 600
+  letter-spacing: 0.5px
+
+.swal2-actions button
+  text-align: center
+  text-transform: uppercase
+  color: #fff
+  font-size: 11px
+  font-weight: 600
+  letter-spacing: 2px
+  border-radius: 50px !important
+  cursor: pointer
+
+button.swal2-confirm.swal2-styled
+  background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%))
+  background-size: 100%
+  border: 0
+  transition: all 0.5s ease
+
+  &:hover
+    background-size: 300%
+
+/* Condition Filter */
+.condition-button-delete
+  position: relative
+  top: 10px
+  left: 5px
+  display: inline-block
+
+button.remove_condition
+  margin-left: 10px
+  font-size: 16px
+  background: transparent
+  color: #ACC3CF
+  border: 0
+  transition: all 0.3s ease
+
+  &:hover
+    color: #FE5D65
+    //transform: scale(1.5)
+    cursor: pointer
+
+// button.add-condition
+//   background: transparent
+//   color: #fff
+//   font-weight: 700
+//   border: 0
+//   transition: all 0.3s ease
+//   padding: 0px
+
+//   &:hover
+//     color: #36B8E1
+//     transform: scale(1.2)
+//     cursor: pointer
+
+button.add-condition
+  background: #3A3852
+  color: #fff
+  font-size: 12px
+  font-weight: 600
+  letter-spacing: 0.5px
+  padding: 5px 10px
+  border-radius: 4px
+  border: 0
+  transition: all 0.3s ease
+
+  &:hover
+    background: #36b8e1
+    cursor: pointer
+
+button.add-condition.condition-active
+  background: #36b8e1 !important
+
+.btn-secondary-
+  color: #E3EEF4
+  background-color: #fff
+  border: 2px solid #E3EEF4
+
+.btn-secondary-:hover
+  color: #ACC3CF
+  background-color: #fff
+  border: 2px solid #E3EEF4
+
+.btn-secondary-:not(:disabled):not(.disabled):active, .btn-secondary-:not(:disabled):not(.disabled).active, .show > .btn-secondary-.dropdown-toggle
+  color: #36B8E1
+  background-color: #fff
+  border: 2px solid #36B8E1
+  z-index: 99
+
+.btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child)
+  margin-left: -2px
+
+.btn-group, .btn-group-vertical
+  position: relative
+  /*display: inline-block*/
+  vertical-align: middle
+
+.space
+  margin: 10px
+
+.campaign-block
+// float: left
+// margin-right: 10px
+// max-width: 200px
+
+.filter__controls
+  // display: grid
+  // margin-bottom: 2rem
+  // justify-content: space-between
+
+  .row.align-items-center
+    width: 100%
+    margin-bottom: 20px
+
+  .col-1
+    -ms-flex: 0 0 3%
+    flex: 0 0 3%
+    max-width: 3%
+
+  .col-3
+    -ms-flex: 0 0 18%
+    flex: 0 0 18%
+    max-width: 18%
+
+  .col-4
+    -ms-flex: 0 0 28%
+    flex: 0 0 28%
+    max-width: 28%
+
+  .cpc-equal
+    margin-top: 40px
+    color: #ACC3CF
+    font-size: 12px
+
+.trafficSource
+  .col-5
+    max-width: 475px
+
+.condition-group
+  .and
+    color: #999
+    display: flex
+    text-align: left
+    padding: 1rem 0
+    align-items: center
+
+    &:after
+      content: ""
+      height: 1px
+      width: 100%
+      margin-left: 0.5rem
+      background: currentcolor
+      display: inline-block
+
+.filter
+  border: none
+  margin-top: 1rem
+  padding: 1rem
+// min-width: 920px
+// border-radius: 10px
+// overflow: hidden
+
+.filter__title
+  left: 50%
+  margin: 5px 0px
+  position: absolute
+  color: #7F98A5
+  font-size: 14px
+  letter-spacing: 1px
+  font-weight: 500
+  transform: translate(-50%, 0)
+
+
+.condition__controls
+  flex-grow: 1
+  text-align: left
+  // margin-left: 1rem
+  margin-top: 0
+  margin-bottom: 0
+  padding-top: 1.5rem
+  padding-bottom: 1.5rem
+
+.condition__controls:last-child
+  border: 0
+  margin-top: 0rem
+  margin-bottom: 1rem
+  padding-bottom: 0rem
+
+.segment-form__conditions
+  .add-filter
+    width: 200px
+    margin: 2rem
+
+  .save
+    width: 200px
+    margin: 2rem
+
+  .button--fill:disabled
+    opacity: 0
+    cursor: initial
+
+.condition__matches
+  // text-align: right
+  margin-right: 1px
+
+/* The container must be positioned relative: */
+.custom-select
+  text-align: left
+  position: relative
+  // width: auto
+  // min-width: 50px
+  // max-width: 280px
+  width: 100%
+  height: 45px
+  border-radius: 7px
+  color: #7F98A5
+  font-size: 16px
+  font-weight: 600
+  border: 2px solid #e3eef4
+  -webkit-transition: all 0.3s ease
+  -o-transition: all 0.3s ease
+  -moz-transition: all 0.3s ease
+  -ms-transition: all 0.3s ease
+  transition: all 0.3s ease
+  -webkit-appearance: none
+  -moz-appearance: none
+  background: url("data:image/svg+xml;utf8,<svg fill='lightsteelblue' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") #fff
+  background-repeat: no-repeat
+  background-position-x: 99%
+  background-position-y: 10px
+
+.custom-select:disabled:hover
+  border-color: transparent !important
+  box-shadow: 0 0 5px transparent !important
+
+.ui.search.dropdown > .text
+  top: 0px
+  padding-right: 10px
+  cursor: text
+  position: relative
+  left: 0px
+  top: 3px
+  z-index: 3
+  font-size: 16px
+  // color: #333
+  color: #7F98A5
+
+.ui.search.dropdown
+// min-width: 160px
+// max-width: 280px
+
+.ui.selection.dropdown
+  min-height: 45px
+  max-height: 45px
+  border: 2px solid #e3eef4 !important
+  -webkit-transition: all 0.3s ease !important
+  -o-transition: all 0.3s ease !important
+  -moz-transition: all 0.3s ease !important
+  -ms-transition: all 0.3s ease !important
+  transition: all 0.3s ease !important
+
+  &:hover
+    border-color: #acc3cf !important
+
+.ui.search.selection.dropdown > input.search, .ui.search.selection.dropdown > span.sizer
+  line-height: 2.2em !important
+  padding: .5em 2.1em .5em 1em !important
+
+.ui.dropdown > .dropdown.icon:before
+  content: '' !important
+
+.ui.selection.active.dropdown, .ui.selection.active.dropdown .menu
+  border-color: #e3eef4 !important
+  -webkit-box-shadow: 0 0px 0px 0 rgba(34,36,38,.15) !important
+  box-shadow: 0 0px 0px 0 rgba(34,36,38,.15) !important
+
+.custom-select:before
+  content: '\f11c'
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  font-size: 16px
+  color: lightgrey
+  float: right
+  margin-top: 2px
+  margin-right: -20px
+
+select.add-condition.custom-select
+  color: #7F98A5
+  font-weight: 600
+  border: 2px solid #7F98A5
+  //background-color: rgba(255, 255, 255, 0.1)
+  background-color: #E3EEF4
+
+.custom-select select
+  display: none
+
+.select-selected
+  background-color: DodgerBlue
+
+.custom-select:disabled
+  color: #acc3cf
+  background-color: #e3eef4
+
+/* Style the arrow inside the select element: */
+.select-selected:after
+  position: absolute
+  content: ""
+  top: 14px
+  right: 10px
+  width: 0
+  height: 0
+  border: 6px solid transparent
+  border-color: #fff transparent transparent transparent
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after
+  border-color: transparent transparent #fff transparent
+  top: 7px
+
+/* style the items (options), including the selected item: */
+.select-items div, .select-selected
+  color: #ffffff
+  padding: 8px 16px
+  border-radius: 50px
+  border: 1px solid transparent
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent
+  cursor: pointer
+
+/* Style items (options): */
+.select-items
+  position: absolute
+  background-color: DodgerBlue
+  top: 100%
+  left: 0
+  right: 0
+  z-index: 99
+
+/* Hide the items when the select box is closed: */
+.select-hide
+  display: none
+
+.select-items div:hover, .same-as-selected
+  background-color: rgba(0, 0, 0, 0.1)
+
+/* Advertising Budget */
+a.question
+  font-size: 16px
+  cursor: pointer
+
+  &:hover
+    color: #2294d0
+
+/* Pagination */
+.VuePagination__count
+  color: #9FA2B4
+  font-size: 10px
+  font-weight: 600
+  letter-spacing: 1px
+  text-transform: uppercase
+  padding: 0
+
+.page-link
+  position: relative
+  display: block
+  padding: 0.5rem 0.75rem
+  margin-left: -1px
+  margin-right: 10px
+  line-height: 1.25
+  color: #9FA2B4
+  font-weight: 600
+  background-color: transparent
+  border: 1px solid transparent
+
+  &:hover
+    color: #67E6F5
+    text-decoration: none
+    background-color: transparent
+    border-color: transparent
+
+.page-item.active .page-link
+  color: #36B8E1
+  background-color: transparent
+  border-color: transparent
+  border-radius: 50px
+  width: 32px
+  height: 32px
+
+.page-item.disabled .page-link
+  color: #6c757d
+  pointer-events: none
+  cursor: auto
+  background-color: #fff
+  border-color: #dee2e6
+  display: none
+
+.form-inline label
+  color: transparent
+  font-size: 10px
+  font-weight: 500
+  letter-spacing: 1px
+  text-transform: uppercase
+
+/* Table Filter */
+.VueTables__limit-field
+  position: relative
+  bottom: 0
+  left: 0
+  margin-top: -15px
+
+  select
+    min-width: 70px !important
+    border: 0 !important
+
+button.btn.btn-secondary.dropdown-toggle
+  position: relative
+  background: #5c6489
+  border-radius: 4px
+  bottom: 0
+  margin-top: -40px
+  top: -24px
+  left: 70px
+
+.dropdown-menu
+  min-width: 14rem
+  padding: 1rem
+  margin: 0.125rem 0 0
+  font-size: 1rem
+  color: #212529
+  background-color: #fff
+  border: 0px solid rgba(0, 0, 0, 0.15)
+  border-radius: 4px
+
+  a
+    color: #3a3852
+
+  input[type="checkbox"]
+    margin-right: 10px
+
+.checkbox-filter
+  float: right
+  margin-right: 20px
+  margin-top: 7px
+
+  label
+    color: #fff
+    font-size: 12px
+    font-weight: 600
+    letter-spacing: 1px
+    line-height: 1.5rem
+    text-transform: uppercase
+
+    strong
+      font-size: 12px
+      font-weight: 600
+      letter-spacing: 1px
+
+/* Conditions */
+.condition-line
+  float: left
+  margin-right: 10px
+
+.campaign-line
+  float: none
+  margin-right: 10px
+
+.condition-editing
+  background: rgba(255, 255, 255, 0.05)
+  outline: 2px dashed rgb(145, 148, 170) !important
+  padding-left: 20px !important
+  outline-offset: -1px
+
+  &::after
+    content: "Unsaved"
+    font-weight: 500
+    position: relative
+    right: 0px
+    top: 0px
+    float: right
+    margin-right: 20px
+    color: rgba(255, 255, 255, 0.5)
+    letter-spacing: 1px
+    font-size: 10px
+
+.condition-button-or
+  margin-top: 50px
+  position: relative
+  top: -45px
+  display: inline-block
+  margin-left: 20px
+
+.condition-button-and
+  margin-top: 50px
+  position: relative
+  top: -45px
+  display: inline-block
+  margin-left: 10px
+
+  .disabled
+    background: grey !important
+    cursor: not-allowed !important
+
+.condition__controls label
+  font-size: 16px
+  display: block
+  text-align: left
+  margin-top: 5px
+  color: #7F98A5
+  font-weight: 500
+  letter-spacing: 0.3px
+
+  strong
+    color: #fff
+    font-weight: 500
+    font-size: inherit
+
+.create-rule
+  text-align: center
+
+  h2
+    color: rgba(255, 255, 255, 0.5)
+    font-size: 18px
+    font-weight: 700
+    letter-spacing: 2px
+    margin-bottom: 10px
+
+  p
+    color: rgba(255, 255, 255, 0.5)
+    font-size: 14px
+    font-weight: 500
+    letter-spacing: 1px
+
+  svg
+    margin-top: 10px
+    margin-bottom: 20px
+    color: rgba(255, 255, 255, 0.3)
+
+  section.filter
+    // background: rgba(255, 255, 255, 0.05)
+    // margin: 20px 0px
+    box-shadow: none
+    padding: 30px
+    min-height: 186px
+
+/* Errors */
+.error
+  color: rgba(255, 255, 255, 1)
+  background: #FE5D65
+  padding: 20px
+  border-radius: 4px
+  transition: all 0.3s ease
+  outline-color: #FE5D65 !important
+
+
+/* Errors */
+.errorCondition
+  color: rgba(255, 255, 255, 1)
+  background: #FE5D65
+  padding: 10px
+  border-radius: 4px
+  transition: all 0.3s ease
+  outline-color: #FE5D65 !important
+
+/* Logout */
+a.back-to-login
+  text-align: center
+  color: #fff
+  font-size: 10px
+  font-weight: 700
+  letter-spacing: 1px
+  text-decoration: none
+  text-transform: uppercase
+  padding: 0
+  margin: auto
+
+  &:hover
+    color: #67E6F5
+    cursor: pointer
+
+/* Loading overlay */
+.overlay-loader
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0
+  background-color: rgba(58, 56, 82, 0.8)
+
+.overlay-loader
+  left: 0
+  z-index: 999 !important
+
+.segment-loading
+  text-align: center
+  color: #67E6F5
+  position: absolute
+  width: 100%
+  top: 40%
+  z-index: 999
+
+  label
+    color: #fff
+    font-size: 10px
+    font-weight: 600
+    letter-spacing: 3px
+    text-transform: uppercase
+    -webkit-animation-name: fadeIn
+    animation-name: fadeIn
+    animation-duration: 1s
+    animation-iteration-count: infinite
+    animation-direction: alternate
+
+  span.sr-only
+    color: #67E6F5
+    font-size: 10px
+    letter-spacing: 2px
+    text-transform: uppercase
+
+  .spinner-border
+    display: inline-block
+    width: 3rem
+    height: 3rem
+    vertical-align: text-bottom
+    border: 0.4em solid #36B8E1
+    border-right-color: #2294d0
+    border-left-color: #67E6F5
+    border-top-color: #85eefc
+    border-radius: 50%
+    -webkit-animation: spinner-border 1s linear infinite
+    animation: spinner-border 1s linear infinite
+
+/* Daterange */
+#optiSalesArchive
+  .VueTables.VueTables--client
+    margin-top: -47px
+
+  .form-group.form-inline.pull-left.VueTables__search
+    // margin-left: 0px !important
+    margin-top: 10px
+    margin-bottom: 0px
+
+  .VueTables__limit-field
+    position: relative
+    bottom: 0
+    // left: 225px
+    left: 420px
+    margin-top: -55px
+    z-index: 99
+
+  .vue-daterange-picker[data-v-fffebcea]
+    left: 220px
+    z-index: 99
+
+.reportrange-text[data-v-fffebcea]
+  border: 1px solid transparent
+  border-radius: 4px
+
+.daterangepicker td.active, .daterangepicker td.active:hover
+  background-color: #36b8e1
+  border-color: transparent
+  color: #fff
+  font-weight: 600
+
+.daterangepicker select.ampmselect, .daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.secondselect
+  width: 50px
+  background: #eee
+  border: 1px solid #eee
+  font-size: 12px
+  min-width: auto
+
+button.applyBtn.btn.btn-sm.btn-success
+  background: #36b8e1
+  padding: 5px 15px
+
+/* Tags */
+.badge-primary
+  color: #7F98A5
+  background-color: #E3EEF4
+
+.b-form-tags
+  width: 100%
+  color: #7F98A5
+  font-weight: 600
+  border-radius: 7px
+  padding: 10px 20px
+  height: 45px !important
+  text-align: left
+  border: 2px solid #e3eef4
+// overflow: hidden
+
+.mt-n1, .my-n1
+  margin-top: -0.6rem !important
+  margin-left: -1rem !important
+
+.b-form-tag
+  font-size: 10px
+  font-weight: 500
+  line-height: 1.5
+
+.badge
+  display: inline-block
+  padding: 0.25em 0.8em
+  font-size: 14px !important
+  font-weight: 600
+  line-height: 1
+  text-align: center
+  white-space: nowrap
+  vertical-align: baseline
+  border-radius: 0.25rem
+
+.b-form-tags-button.py-0
+  display: none
+
+/* Animations */
+@-webkit-keyframes fadeIn
+  0%
+    opacity: 0
+
+  to
+    opacity: 1
+
+@keyframes fadeIn
+  0%
+    opacity: 0
+
+  to
+    opacity: 1
+
+.fadeIn
+  -webkit-animation-name: fadeIn
+  animation-name: fadeIn
+
+@-webkit-keyframes fadeInDown
+  0%
+    -webkit-transform: translate3d(0, -100%, 0)
+    opacity: 0
+    transform: translate3d(0, -100%, 0)
+
+  to
+    -webkit-transform: translateZ(0)
+    opacity: 1
+    transform: translateZ(0)
+
+@keyframes fadeInDown
+  0%
+    -webkit-transform: translate3d(0, -100%, 0)
+    opacity: 0
+    transform: translate3d(0, -100%, 0)
+
+  to
+    -webkit-transform: translateZ(0)
+    opacity: 1
+    transform: translateZ(0)
+
+.fadeInDown
+  -webkit-animation-name: fadeInDown
+  animation-name: fadeInDown
+
+@-webkit-keyframes fadeInDownBig
+  0%
+    -webkit-transform: translate3d(0, -2000px, 0)
+    opacity: 0
+    transform: translate3d(0, -2000px, 0)
+
+  to
+    -webkit-transform: translateZ(0)
+    opacity: 1
+    transform: translateZ(0)
+
+@keyframes fadeInDownBig
+  0%
+    -webkit-transform: translate3d(0, -2000px, 0)
+    opacity: 0
+    transform: translate3d(0, -2000px, 0)
+
+  to
+    -webkit-transform: translateZ(0)
+    opacity: 1
+    transform: translateZ(0)
+
+.fadeInDownBig
+  -webkit-animation-name: fadeInDownBig
+  animation-name: fadeInDownBig
+
+@media only screen and (max-width: 1920px)
+  #campaigns
+    width: 110%
+
+  .nav-link
+    margin-left: 20px
+
+@media only screen and (max-width: 1860px)
+  #campaigns
+    width: 108%
+
+@media only screen and (max-width: 1810px)
+  #campaigns
+    width: 105%
+
+@media only screen and (max-width: 1770px)
+  #campaigns
+    width: 102%
+
+@media only screen and (max-width: 1730px)
+  #campaigns
+    width: 100%
+
+@media only screen and (max-width: 1700px)
+  #campaigns
+    width: 98%
+
+@media only screen and (max-width: 1680px)
+  #campaigns
+    width: 96%
+// margin-right: 80px
+
+@media only screen and (max-width: 1640px)
+  #campaigns
+    width: 95%
+
+  .nav-link
+    margin-left: 10px !important
+
+@media only screen and (max-width: 1620px)
+  #campaigns
+    width: 93%
+
+  .nav-link
+    margin-left: 10px !important
+
+@media only screen and (max-width: 1600px)
+  #campaigns
+    width: 91%
+
+  span.VueTables__heading
+    font-size: 12px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 10px !important
+
+@media only screen and (max-width: 1570px)
+  #campaigns
+    width: 89%
+
+  span.VueTables__heading
+    font-size: 12px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+@media only screen and (max-width: 1540px)
+  #campaigns
+    width: 87%
+
+  span.VueTables__heading
+    font-size: 11px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+  .table th, .table td
+    padding: 1.2rem 0.5rem
+
+@media only screen and (max-width: 1510px)
+  #campaigns
+    width: 85%
+
+  span.VueTables__heading
+    font-size: 11px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+  .table th, .table td
+    padding: 1.2rem 0.5rem
+
+@media only screen and (max-width: 1490px)
+  #campaigns
+    width: 83%
+
+  span.VueTables__heading
+    font-size: 11px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+  .table th, .table td
+    padding: 1.2rem 0.5rem
+
+@media only screen and (max-width: 1460px)
+  #campaigns
+    width: 80%
+
+  span.VueTables__heading
+    font-size: 11px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+  .table th, .table td
+    padding: 1.2rem 0.5rem
+
+@media only screen and (max-width: 1400px)
+  #campaigns
+    width: 77%
+
+  span.VueTables__heading
+    font-size: 11px
+    letter-spacing: 0.3px
+
+  .nav-link
+    margin-left: 0px !important
+
+  .table th, .table td
+    padding: 1.2rem 0.5rem
