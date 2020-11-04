@@ -60,7 +60,36 @@ const reOrderSegmentsSave = async (data) => {
 }
 
 
+
+const createSegment = async (name) => {
+
+    console.log('createSegment:', name)
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                mutation{
+                      createSegment(
+                            name:"${name}"
+                      ){
+                            id
+                      }
+                }`,
+            }
+        )
+
+        let response = res.data.data.createSegment
+        console.log('\nsegments reordering from DB response count:', response.length)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+
 export default {
     segments,
+    createSegment,
     reOrderSegmentsSave
 }

@@ -1,20 +1,20 @@
 <template>
-    <transition name="fade" >
+    <transition name="fade">
 
         <section class="segment" :class="{segment__draggable: true}" @change="updateGroup($event, group)">
 
             <h1 class="segment__name" :title="segment.name">
                 <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)">➕</span>
-                {{segment.name}}
+                {{segment.name}} ( {{segment.id}} )
                 <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
                 <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
             </h1>
             <!--@focus="focusMenu" @blur="blur"-->
-            <button class="segment__toggle-menu" />
+            <button class="segment__toggle-menu"/>
 
             <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
 
-            <b-button variant="outline-success">
+            <b-button variant="outline-success" @click="edit(segment.id)">
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Edit
             </b-button>
 
@@ -22,7 +22,7 @@
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Delete
             </b-button>
             <label style="font-size: 21px;">{{segment.position}} </label>
-            <label style="font-size: 12px;">( {{segment.id}} )</label>
+<!--            <label style="font-size: 12px;">( {{segment.id}} )</label>-->
             <!--            <b-button variant="light">Light</b-button>-->
 
             <!--                    <b-button variant="primary" class="margin-left-10" @click="this.addCampaign">-->
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import { mapActions, mapMutations, mapGetters } from "vuex";
+    import {mapActions, mapMutations, mapGetters} from "vuex";
 
 
     export default {
@@ -66,14 +66,16 @@
             };
         },
         methods: {
-            updateGroup(e,group){
+            updateGroup(e, group) {
                 console.log(e, group)
-                debugger
             },
-            blur: function(event) {
+            edit(id) {
+                this.$router.push(`/segment/${id}`)
+            },
+            blur: function (event) {
                 return
                 debugger
-                let { relatedTarget, target } = event;
+                let {relatedTarget, target} = event;
                 if (
                     !relatedTarget ||
                     !relatedTarget.classList.contains("segment__menu-item")
@@ -90,8 +92,8 @@
             getClass(segment) {
                 return 'segment__empty'
             },
-            updateSegment: function(segment, landingPages) {
-                this.update(Object.assign({}, segment, { landingPages }));
+            updateSegment: function (segment, landingPages) {
+                this.update(Object.assign({}, segment, {landingPages}));
             },
             ...mapActions("segments", ["update", "removeAndUpdateOrder"]),
             ...mapMutations("segments", ["toggleActive"]),
@@ -154,17 +156,21 @@
         border: solid #e1d4e1;
         border-radius: 3px;
         border-width: 0 3px 3px 0;
+
         &:focus,
         &:hover {
             outline: none;
             border-color: #888;
         }
+
         & + .segment__menu.open {
             opacity: 1;
             width: 12rem;
             height: auto;
+
             .segment__menu-item {
                 display: block;
+
                 &:active {
                     background: #6dcbfa;
                 }
@@ -191,12 +197,14 @@
         opacity $menu-time ease-in-out;
         border: solid #e1d4e1 2px;
         box-shadow: 2px 3px 5px #333;
+
         button {
             width: 100%;
             border: none;
             display: none;
             background: white;
             white-space: nowrap;
+
             &:hover,
             &:focus {
                 outline: none;

@@ -21,10 +21,12 @@ export default {
             segmetsTmp.map(item => {
                 // console.log(` name:${item.name}, position:${item.position}`)
                 if (item.position === obj.oldPosition) {
+                    debugger
                     // console.log(`oldItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.newPosition})
                 }
                 if (item.position === obj.newPosition) {
+                    debugger
                     // console.log(`newItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.oldPosition})
                 }
@@ -46,11 +48,11 @@ export default {
             console.log(`reOrderSegments`)
             console.table(reFormatJSON(reOrderSegments))
 
-            let sortedByPosition = reOrderSegments.sort((a, b) => (Number(a.position) - Number(b.position)))
-            console.log(`sortedByPosition`)
-            console.table(reFormatJSON(sortedByPosition))
+            // let sortedByPosition = reOrderSegments.sort((a, b) => (Number(a.position) - Number(b.position)))
+            // console.log(`sortedByPosition`)
+            // console.table(reFormatJSON(sortedByPosition))
             // state.segments = reOrderSegments
-            state.segments = sortedByPosition
+            state.segments = reOrderSegments
 
             // state.segments = segments
         },
@@ -64,6 +66,10 @@ export default {
         },
         reOrderingAction({commit}, obj) {
             commit('reOrdering', obj)
+        },
+        async createSegmentAction({commit}, obj) {
+            let {name} = obj
+            return await segments.createSegment(name)
         },
         async saveOrderingAction({commit}, data) {
 

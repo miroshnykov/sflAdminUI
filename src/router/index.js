@@ -4,6 +4,7 @@ import login from '../components/login'
 import successLogin from '../components/successLogin'
 import errorLogin from '../components/errorLogin'
 import segments from '../components/segments'
+import editSegment from '../components/editSegment.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
         {
             path: '/segments',
             component: segments
-        }
+        },
+        {
+            path: '/segment/:id',
+            name: 'segment',
+            component: editSegment
+        },
     ]
 })
