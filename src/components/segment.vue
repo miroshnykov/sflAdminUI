@@ -9,7 +9,8 @@
                 <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
                 <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
             </h1>
-            <button class="segment__toggle-menu" @focus="focusMenu" @blur="blur" />
+            <!--@focus="focusMenu" @blur="blur"-->
+            <button class="segment__toggle-menu" />
 
             <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
 
@@ -70,6 +71,7 @@
                 debugger
             },
             blur: function(event) {
+                return
                 debugger
                 let { relatedTarget, target } = event;
                 if (

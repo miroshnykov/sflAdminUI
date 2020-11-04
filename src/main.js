@@ -53,7 +53,7 @@ new Vue({
             }
         } catch (err) {
             console.log(err);
-            router.push('/login')
+            router.push('/')
         }
 
     },

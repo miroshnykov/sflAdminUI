@@ -5,6 +5,8 @@
         <h1>Manage Blocked Segments</h1>
 
         <div class="segment-panel">
+            <input type="text"  @input="searchUpdate"  placeholder="Search by name..."/>
+
             <b-button variant="primary" @click="this.createSegment">
                 Create Segment
             </b-button>
@@ -56,10 +58,11 @@
 
         },
         methods: {
-            ...mapMutations('segments', ['reOrdering']),
+            ...mapMutations('segments', ['reOrdering', 'searchFilter']),
             ...mapActions("segments", ["saveSegmentsStore"]),
-            formatData_(data) {
-                return formatData(data * 1000)
+            searchUpdate(event) {
+                let searchText = event.target.value
+                this.searchFilter(searchText)
             },
             start(e) {
                 console.log('start:', e)
@@ -110,6 +113,7 @@
         },
         data() {
             return {
+                search: '',
                 segmentName: '',
                 isModalVisible: false,
                 countOfRecords: 0
