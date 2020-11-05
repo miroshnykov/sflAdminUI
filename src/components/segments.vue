@@ -5,7 +5,7 @@
         <h1>Manage Blocked Segments</h1>
 
         <div class="segment-panel">
-            <input type="text"  @input="searchUpdate"  placeholder="Search by name..."/>
+            <input type="text" @input="searchUpdate" placeholder="Search by name..."/>
 
             <b-button variant="primary" @click="this.addSegment">
                 Create Segment
@@ -52,7 +52,7 @@
         },
         async mounted() {
             let token = getCookie('accessToken')
-            if (token){
+            if (token) {
                 await this.saveSegmentsStore()
             }
 
@@ -130,8 +130,8 @@
                         segmentData.name = result.value[0]
                         let self = this
                         self.name = segmentData.name
-                        this.$store.dispatch('segments/createSegmentAction', segmentData).then(res =>{
-                            if (res.id){
+                        this.$store.dispatch('segments/createSegmentAction', segmentData).then(res => {
+                            if (res.id) {
 
                                 self.$swal.fire({
                                     type: 'success',
@@ -158,11 +158,11 @@
             },
             async onEnd(event) {
                 console.log(`onEnd:  oldDraggableIndex:${event.oldDraggableIndex},  event.newDraggableIndex:${event.newDraggableIndex}`)
-
-                let obj = {}
-                obj.oldPosition = event.oldDraggableIndex
-                obj.newPosition = event.newDraggableIndex
-                await this.$store.dispatch('segments/reOrderingAction', obj)
+                console.log(`itemId :${event.item.id}`)
+                // let obj = {}
+                // obj.oldPosition = event.oldDraggableIndex
+                // obj.newPosition = event.newDraggableIndex
+                // await this.$store.dispatch('segments/reOrderingAction', obj)
                 // this.reOrdering(obj)
                 // return (evt.draggedContext.element.name!=='apple');
             },
@@ -170,7 +170,18 @@
                 alert('create new seqment')
             },
             async saveOrder() {
-                let res = await this.$store.dispatch('segments/saveOrderingAction', this)
+                let el = document.querySelectorAll(".segment__draggable")
+
+                let toSend = []
+                let i
+                for (i = 0; i < el.length; ++i) {
+                    // console.log(`count:${i}, ID:${el[i].id}`)
+                    toSend.push({id: el[i].id, position: i})
+                }
+
+                console.log('to send:', toSend)
+                let toSendFormat = JSON.stringify(toSend).replace(/['"]+/g, '')
+                let res = await this.$store.dispatch('segments/saveOrderingAction', toSendFormat)
                 if (res && res.length !== 0) {
                     this.$swal.fire({
                         type: 'success',
@@ -208,6 +219,7 @@
 
         .segment__draggable
             background-color: #c5e7c4
+
         .segments > div
             display: grid
             grid-row-gap: 1rem

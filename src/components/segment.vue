@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
 
-        <section class="segment" :class="{segment__draggable: true}" @change="updateGroup($event, group)">
+        <section class="segment" :id="segment.id" :class="{segment__draggable: true}" @change="updateGroup($event, group)">
 
             <h1 class="segment__name" :title="segment.name">
                 <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)">➕</span>

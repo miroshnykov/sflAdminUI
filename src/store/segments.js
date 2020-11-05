@@ -71,16 +71,14 @@ export default {
             let {name} = obj
             return await segments.createSegment(name)
         },
-        async saveOrderingAction({commit}, data) {
+        async saveOrderingAction({commit}, forSendToSave) {
 
-            let segmentsData = data.$store.state.segments.segments
-            let forSendToSave = segmentsData.map(item => {
-                return {id: item.id, position: item.position}
-            })
+            // let segmentsData = data.$store.state.segments.segments
+            // let forSendToSave = segmentsData.map(item => {
+            //     return {id: item.id, position: item.position}
+            // })
 
-            let toSend = JSON.stringify(forSendToSave).replace(/['"]+/g, '')
-
-            return await segments.reOrderSegmentsSave(toSend)
+            return await segments.reOrderSegmentsSave(forSendToSave)
         },
     },
     getters: {
