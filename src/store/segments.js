@@ -4,11 +4,16 @@ import {reFormatJSON} from '../helpers'
 export default {
     state: {
         segments: [],
+        segmentsOrigin: [],
     },
     namespaced: true,
     mutations: {
         async saveSegments(state, segments) {
             state.segments = segments
+            state.segmentsOrigin = segments
+        },
+        searchFilter(state, searchText) {
+            state.segments = searchText ? state.segments.filter(item => (item.name.toLowerCase().includes(searchText.toLowerCase()))) : state.segmentsOrigin
         },
         reOrdering(state, obj) {
             let reOrderTmp = []
@@ -16,10 +21,12 @@ export default {
             segmetsTmp.map(item => {
                 // console.log(` name:${item.name}, position:${item.position}`)
                 if (item.position === obj.oldPosition) {
+                    debugger
                     // console.log(`oldItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.newPosition})
                 }
                 if (item.position === obj.newPosition) {
+                    debugger
                     // console.log(`newItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.oldPosition})
                 }
@@ -41,11 +48,11 @@ export default {
             console.log(`reOrderSegments`)
             console.table(reFormatJSON(reOrderSegments))
 
-            let sortedByPosition = reOrderSegments.sort((a, b) => (Number(a.position) - Number(b.position)))
-            console.log(`sortedByPosition`)
-            console.table(reFormatJSON(sortedByPosition))
+            // let sortedByPosition = reOrderSegments.sort((a, b) => (Number(a.position) - Number(b.position)))
+            // console.log(`sortedByPosition`)
+            // console.table(reFormatJSON(sortedByPosition))
             // state.segments = reOrderSegments
-            state.segments = sortedByPosition
+            state.segments = reOrderSegments
 
             // state.segments = segments
         },
@@ -60,35 +67,19 @@ export default {
         reOrderingAction({commit}, obj) {
             commit('reOrdering', obj)
         },
-        async saveOrderingAction({commit}, data) {
-
-            let forSendToSave = []
-            data.$store.state.segments.segments.map(item => {
-                forSendToSave.push({id: item.id, position: item.position})
-            })
-            let toSend = JSON.stringify(forSendToSave).replace(/['"]+/g, '')
-            console.log('toSend:', toSend)
-            debugger
-            let resReOrdering = await segments.reOrderSegmentsSave(toSend)
-            console.log('resReOrdering:', resReOrdering)
-            debugger
-
-            return resReOrdering
-            // let s = this.getSegments()
-            // console.log(`Segnmentds`)
-            // console.table(reFormatJSON(s))
-            // debugger
+        async createSegmentAction({commit}, obj) {
+            let {name} = obj
+            return await segments.createSegment(name)
         },
-    },
-    computed: {
-        segments: {
-            get() {
-                debugger
-            },
-            set(value) {
-                debugger
-            }
-        }
+        async saveOrderingAction({commit}, forSendToSave) {
+
+            // let segmentsData = data.$store.state.segments.segments
+            // let forSendToSave = segmentsData.map(item => {
+            //     return {id: item.id, position: item.position}
+            // })
+
+            return await segments.reOrderSegmentsSave(forSendToSave)
+        },
     },
     getters: {
         getSegments: state => state.segments,

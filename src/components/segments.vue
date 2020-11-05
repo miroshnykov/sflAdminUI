@@ -5,7 +5,9 @@
         <h1>Manage Blocked Segments</h1>
 
         <div class="segment-panel">
-            <b-button variant="primary" @click="this.createSegment">
+            <input type="text" @input="searchUpdate" placeholder="Search by name..."/>
+
+            <b-button variant="primary" @click="this.addSegment">
                 Create Segment
             </b-button>
             <b-button variant="primary" @click="this.saveOrder">
@@ -37,6 +39,7 @@
     import {formatData, timeSince} from '../helpers'
     import Segment from "./segment";
     import draggable from "vuedraggable";
+    import {getCookie} from '../helpers'
 
     export default {
         // mounted() {
@@ -44,45 +47,122 @@
         // },
         components: {logo, menunav, Segment, draggable},
         computed: {
-            segments: {
-                get() {
-                    debugger
-                    return this.$store.state.segments.data;
-                },
-                set(segments) {
-                    debugger
-                }
-            },
-
             ...mapState('segments', ['segments']),
             ...mapGetters('segments', ['getSegments'])
         },
         async mounted() {
-            await this.saveSegmentsStore()
+            let token = getCookie('accessToken')
+            if (token) {
+                await this.saveSegmentsStore()
+            }
+
         },
         methods: {
-            ...mapMutations('segments', ['reOrdering']),
+            ...mapMutations('segments', ['reOrdering', 'searchFilter']),
             ...mapActions("segments", ["saveSegmentsStore"]),
-            formatData_(data) {
-                return formatData(data * 1000)
+            searchUpdate(event) {
+                let searchText = event.target.value
+                this.searchFilter(searchText)
             },
             start(e) {
                 console.log('start:', e)
             },
             onUnpublishedChange(e, group) {
                 console.log(e, group)
-                debugger
             },
-            edit(data) {
-                this.$router.push(`/segment/${data.id}`)
+            // edit(id) {
+            //     debugger
+            //     this.$router.push(`/segment/${.id}`)
+            // },
+            async addSegment() {
+                this.$swal.fire({
+                    title: 'Add Segment',
+                    html:
+                        `<label for="swal-input1"></label>
+                        <input id="swal-input1" class="swal2-input" placeholder="Campaign Name" maxlength="25"
+                             onblur="
+                                 if(this.value === ''){
+                                    alert('Enter campaign name ')
+                                    document.querySelector('#swal-input1').style.background = '#f38282'
+                                    document.querySelector('.swal2-confirm').style.display = 'none'
+                                    return false
+                                } else {
+                                    document.querySelector('.swal2-confirm').style.display = 'inline-block'
+                                    document.querySelector('#swal-input1').style.background = 'white'
+                                }
+                            "
+                        >
+                        <div class="row segment-popup">
+                        <div class="col-md-6">
+                    `,
+                    confirmButtonColor: '#2ED47A',
+                    cancelButtonColor: '#E3EEF4',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check"></i>',
+                    cancelButtonText: '<i class="fas fa-times"></i>',
+                    backdrop: `
+                        rgba(0,0,123,0.2)
+                    `,
+                    preConfirm: () => {
+                        if (document.getElementById('swal-input1').value
+                        ) {
+                            return [
+                                document.getElementById('swal-input1').value
+                            ]
+                        } else {
+                            this.$swal.fire({
+                                title: 'Validation Error',
+                                text: 'Please name your segment.',
+                            })
+                            return
+                        }
+
+                    }
+
+                }).then((result) => {
+                    if (result.dismiss === "cancel") {
+                        return
+                    }
+
+                    if (result.value[0]
+                    ) {
+                        let segmentData = {}
+                        segmentData.name = result.value[0]
+                        let self = this
+                        self.name = segmentData.name
+                        this.$store.dispatch('segments/createSegmentAction', segmentData).then(res => {
+                            if (res.id) {
+
+                                self.$swal.fire({
+                                    type: 'success',
+                                    position: 'top-end',
+                                    title: `Segment ${self.name} has been created`,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                                this.$router.push(`/segment/${res.id}`)
+                                // location.reload()
+
+                            }
+                        })
+                    } else {
+                        this.$swal.fire({
+                            title: 'Missing information',
+                            type: 'error',
+                            text: 'Please name your segment and try again.',
+                            confirmButtonColor: '#2ED47A',
+                        })
+                    }
+
+                })
             },
             async onEnd(event) {
                 console.log(`onEnd:  oldDraggableIndex:${event.oldDraggableIndex},  event.newDraggableIndex:${event.newDraggableIndex}`)
-
-                let obj = {}
-                obj.oldPosition = event.oldDraggableIndex
-                obj.newPosition = event.newDraggableIndex
-                await this.$store.dispatch('segments/reOrderingAction', obj)
+                console.log(`itemId :${event.item.id}`)
+                // let obj = {}
+                // obj.oldPosition = event.oldDraggableIndex
+                // obj.newPosition = event.newDraggableIndex
+                // await this.$store.dispatch('segments/reOrderingAction', obj)
                 // this.reOrdering(obj)
                 // return (evt.draggedContext.element.name!=='apple');
             },
@@ -90,7 +170,18 @@
                 alert('create new seqment')
             },
             async saveOrder() {
-                let res = await this.$store.dispatch('segments/saveOrderingAction', this)
+                let el = document.querySelectorAll(".segment__draggable")
+
+                let toSend = []
+                let i
+                for (i = 0; i < el.length; ++i) {
+                    // console.log(`count:${i}, ID:${el[i].id}`)
+                    toSend.push({id: el[i].id, position: i})
+                }
+
+                console.log('to send:', toSend)
+                let toSendFormat = JSON.stringify(toSend).replace(/['"]+/g, '')
+                let res = await this.$store.dispatch('segments/saveOrderingAction', toSendFormat)
                 if (res && res.length !== 0) {
                     this.$swal.fire({
                         type: 'success',
@@ -115,15 +206,8 @@
         },
         data() {
             return {
-                options: {
-                    onDrop(event) {
-                        debugger
-                        console.log(event);
-                    },
-                },
                 segmentName: '',
                 isModalVisible: false,
-                countOfRecords: 0
             }
         }
     }
@@ -135,6 +219,7 @@
 
         .segment__draggable
             background-color: #c5e7c4
+
         .segments > div
             display: grid
             grid-row-gap: 1rem
