@@ -80,6 +80,15 @@ export default {
 
             return await segments.reOrderSegmentsSave(forSendToSave)
         },
+        async deleteSegmentAction({commit}, id) {
+
+            // let segmentsData = data.$store.state.segments.segments
+            // let forSendToSave = segmentsData.map(item => {
+            //     return {id: item.id, position: item.position}
+            // })
+
+            return await segments.deleteSegment(id)
+        },
     },
     getters: {
         getSegments: state => state.segments,
