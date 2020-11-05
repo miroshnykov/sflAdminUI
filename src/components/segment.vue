@@ -1,7 +1,8 @@
 <template>
     <transition name="fade">
 
-        <section class="segment" :id="segment.id" :class="{segment__draggable: true}" @change="updateGroup($event, group)">
+        <section class="segment" :id="segment.id" :class="{segment__draggable: true}"
+                 @change="updateGroup($event, group)">
 
             <h1 class="segment__name" :title="segment.name">
                 <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)">➕</span>
@@ -18,11 +19,11 @@
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Edit
             </b-button>
 
-            <b-button variant="outline-danger">
+            <b-button variant="outline-danger" @click="delSegment(segment.id)">
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Delete
             </b-button>
             <label style="font-size: 21px;">{{segment.position}} </label>
-<!--            <label style="font-size: 12px;">( {{segment.id}} )</label>-->
+            <!--            <label style="font-size: 12px;">( {{segment.id}} )</label>-->
             <!--            <b-button variant="light">Light</b-button>-->
 
             <!--                    <b-button variant="primary" class="margin-left-10" @click="this.addCampaign">-->
@@ -71,6 +72,40 @@
             },
             edit(id) {
                 this.$router.push(`/segment/${id}`)
+            },
+            async delSegment(id) {
+                this.$swal.fire({
+                    type: 'warning',
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#FE5D65',
+                    cancelButtonColor: '#ACC3CF',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+
+                        this.$store.dispatch('segments/deleteSegmentAction', id).then(res =>{
+                            if (res.id) {
+                                this.$swal.fire({
+                                    type: 'success',
+                                    position: 'top-end',
+                                    title: `Segment ID ${id} deleted`,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                                location.reload()
+                            } else {
+                                this.$swal.fire({
+                                    title: `Segment ID ${id}  not deleted`,
+                                    type: 'error',
+                                    text: 'Please check backend errors ',
+                                    confirmButtonColor: '#2ED47A',
+                                })
+                            }
+                        })
+                    }
+                })
             },
             blur: function (event) {
                 return

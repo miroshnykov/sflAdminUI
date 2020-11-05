@@ -191,6 +191,13 @@
                         timer: 1000
                     })
                     location.reload()
+                } else {
+                    this.$swal.fire({
+                        title: 'Segment save errors',
+                        type: 'error',
+                        text: 'Please check backend errors ',
+                        confirmButtonColor: '#2ED47A',
+                    })
                 }
             },
             // async getCampaigns() {

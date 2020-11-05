@@ -60,6 +60,31 @@ const reOrderSegmentsSave = async (data) => {
 }
 
 
+const deleteSegment = async (id) => {
+
+    console.log('deleteSegment:', id)
+    try {
+
+        const res = await api.post(
+            '', {
+                query: `
+                mutation{
+                      deleteSegment(
+                            id:${id}
+                      ){
+                            id
+                      }
+                }`,
+            }
+        )
+
+        let response = res.data.data.deleteSegment
+        console.log('\nsegments reordering from DB response count:', response.length)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 const createSegment = async (name) => {
 
@@ -91,5 +116,6 @@ const createSegment = async (name) => {
 export default {
     segments,
     createSegment,
+    deleteSegment,
     reOrderSegmentsSave
 }
