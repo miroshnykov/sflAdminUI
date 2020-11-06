@@ -7,23 +7,25 @@
             <li>Segment Name: <b>{{JSON.stringify(this.$store.segments)}}</b></li>
 <!--            <li>Segment Rules Count: <b>{{this.segmentRuleCount}}</b></li>-->
         </ul>
-<!--        <conditions :segmentFilter="this.segmentFilter"/>-->
+        <conditions :segmentFilter="this.getSegmentFilter"/>
     </div>
 </template>
 
 <script>
     import {mapState, mapGetters} from 'vuex'
-    import logo from './logo.vue'
+    import logo from '../logo.vue'
+    import conditions from './conditions.vue'
 
     export default {
         name: 'edit-segment',
-        components: {logo},
+        components: {logo, conditions},
         computed: {
             ...mapGetters('segments', ['getSegments']),
+            ...mapGetters('segment', ['getSegmentFilter']),
         },
         segmentFilter: [],
         async mounted() {
-            // await this.$store.dispatch('segment/getSegmentConditions', this.id)
+            await this.$store.dispatch('segment/getSegmentConditions', this.id)
         },
         methods: {},
         data() {
