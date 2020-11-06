@@ -1,4 +1,5 @@
 import {api} from './request'
+import {reFormatJSON, catchHandler} from '../helpers'
 
 const segments = async () => {
 
@@ -18,6 +19,7 @@ const segments = async () => {
             `,
             }
         )
+        debugger
 
         let response = res.data.data.segments
         console.log('\nsegments from DB response count:', response.length)

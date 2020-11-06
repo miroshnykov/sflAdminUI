@@ -34,12 +34,12 @@
 <script>
     import 'bootstrap/dist/css/bootstrap.css'
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import logo from './logo.vue'
-    import menunav from './menunav.vue'
-    import {formatData, timeSince} from '../helpers'
+    import logo from '../logo.vue'
+    import menunav from '../menunav.vue'
+    import {formatData, timeSince} from '../../helpers'
     import Segment from "./segment";
     import draggable from "vuedraggable";
-    import {getCookie} from '../helpers'
+    import {getCookie} from '../../helpers'
 
     export default {
         // mounted() {
