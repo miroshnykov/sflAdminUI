@@ -201,7 +201,7 @@ export default {
         },
         async saveConditionsCommit(state, data) {
 
-            debugger
+            // debugger
             try {
                 await segment.deleteSegmentConditions(state.segmentId)
             } catch (e) {
@@ -296,6 +296,10 @@ export default {
         },
         async updateSegment({commit}, segmentInfo) {
             return await segments.updateSegment(segmentInfo.id, segmentInfo.name, segmentInfo.weight,segmentInfo.multiplier)
+        },
+        async updateLandingPage({commit}, segmentInfo) {
+            debugger
+            return await segments.updateLandingPage(segmentInfo)
         },
         async deleteSegment({commit}, segmentId) {
             return await segments.deleteSegment(segmentId)

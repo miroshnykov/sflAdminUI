@@ -14,12 +14,16 @@ const segments = async () => {
                         dateAdded
                         dateAddedUnixTime
                         position
+                        lp{
+                            id
+                            name                        
+                        }
+
                     } 
                 }
             `,
             }
         )
-        debugger
 
         let response = res.data.data.segments
         console.log('\nsegments from DB response count:', response.length)
@@ -114,9 +118,38 @@ const createSegment = async (name) => {
 
 }
 
+const updateLandingPage = async (segment) => {
+
+    console.log('updateLandingPage:', segment)
+    let {id, landingPageId} = segment
+    try {
+
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          updateLandingPage(
+                                segmentId:${id}
+                                landingPageId:${landingPageId}
+                          ){
+                                id
+                          }
+                    }`,
+            }
+        )
+
+        let response = res.data.data.updateLandingPage
+        console.log('\nupdateLandingPage', response)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
 
 export default {
     segments,
+    updateLandingPage,
     createSegment,
     deleteSegment,
     reOrderSegmentsSave

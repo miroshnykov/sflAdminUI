@@ -45,6 +45,7 @@ new Vue({
                 await store.dispatch('affiliates/saveAffiliatesStore')
                 await store.dispatch('countries/saveCountriesStore')
                 await store.dispatch('dimensions/saveDimensionsStore')
+                await store.dispatch('lp/saveLPStore')
 
             } else {
                 let checkPatch = this.$root._route.path.includes('successLogin')
