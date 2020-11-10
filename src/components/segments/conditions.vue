@@ -89,7 +89,7 @@
                 // console.table(reFormatJSON(this.segmentFilter))
 
                 let checkEmptyValue = this.segmentFilter.filter(item => {
-                    if (item.value.substr(item.value.indexOf('/') + 1, item.value.length - 1) === ''
+                    if (item.value.substr(item.value.indexOf('/') + 1, item.value.length) === ''
                         || item.value === ''
                     ) {
                         return item

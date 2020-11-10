@@ -15,6 +15,7 @@
 
             <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
 
+
             <b-button variant="outline-success" @click="edit(segment.id)">
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Edit
             </b-button>
@@ -22,7 +23,45 @@
             <b-button variant="outline-danger" @click="delSegment(segment.id)">
                 <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Delete
             </b-button>
+
             <label style="font-size: 21px;">{{segment.position}} </label>
+
+            <b-button variant="outline-danger" @click="saveLp(segment)">
+                <i class="fas fa-plus" data-fa-transform="shrink-1"></i> save LP
+            </b-button>
+
+            <model-select
+                    :options="getLpModify()"
+                    @input="handleChangeLp($event, segment)"
+                    :id="defineLpId(segment.id)"
+                    :ref="defineLpId(segment.id)"
+                    class="condition__country condition__matches custom-select "
+            >
+            </model-select>
+
+<!--            :value="segment.landingPageId"-->
+            <label v-if="segment.landingPageId" style="font-size: 21px;"> LP ID {{segment.landingPageId}}  </label>
+<!--            <label for="label-lp">LP</label>-->
+
+            <div v-if="segment.lp.length !== 0" class="child-table">
+                <span>Landing page</span>
+                <table style="line-height: 1px;" class="table table-striped child-row tableFixHead">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tr scope="row" v-for="lp in segment.lp">
+                        <td>{{ lp.id}}</td>
+                        <td>{{ lp.name }}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
             <!--            <label style="font-size: 12px;">( {{segment.id}} )</label>-->
             <!--            <b-button variant="light">Light</b-button>-->
 
@@ -46,13 +85,15 @@
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
             </div>
+
         </section>
+
     </transition>
 </template>
 
 <script>
     import {mapActions, mapMutations, mapGetters} from "vuex";
-
+    import {ModelSelect} from 'vue-search-select'
 
     export default {
         name: "segment",
@@ -67,11 +108,39 @@
             };
         },
         methods: {
+            handleChangeLp(lpId, item) {
+                item.landingPageId = lpId
+                debugger
+            },
+            getLpModify() {
+                return this.getLandingPages.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
+            defineLpId(id) {
+                return `lp-${id}`
+            },
             updateGroup(e, group) {
                 console.log(e, group)
             },
             edit(id) {
                 this.$router.push(`/segment/${id}`)
+            },
+            async saveLp(segment) {
+                debugger
+                let res = await this.$store.dispatch('segment/updateLandingPage', segment)
+                if (res){
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Segment ID ${segment.id} ${segment.name} updated`,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                }
+                debugger
             },
             async delSegment(id) {
                 this.$swal.fire({
@@ -136,8 +205,11 @@
             ...mapMutations("landingPages", ["processLandingPagesEdit"])
         },
         computed: {
-            ...mapGetters('segments', ['getSegments'])
-        }
+            ...mapGetters('segments', ['getSegments']),
+            ...mapGetters('countries', ['getCountries']),
+            ...mapGetters('lp', ['getLandingPages'])
+        },
+        components: {ModelSelect},
     };
 </script>
 
@@ -156,7 +228,7 @@
 
     .segment.segment__draggable {
         cursor: grab;
-        height: 80px;
+        height: 180px;
     }
 
     .segment__active, .segment__disabled {

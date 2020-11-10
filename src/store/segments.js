@@ -21,12 +21,12 @@ export default {
             segmetsTmp.map(item => {
                 // console.log(` name:${item.name}, position:${item.position}`)
                 if (item.position === obj.oldPosition) {
-                    debugger
+                    // debugger
                     // console.log(`oldItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.newPosition})
                 }
                 if (item.position === obj.newPosition) {
-                    debugger
+                    // debugger
                     // console.log(`newItem: name:${item.name}, position:${item.position}`)
                     reOrderTmp.push({'id': item.id, 'newPosition': obj.oldPosition})
                 }
