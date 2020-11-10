@@ -8,6 +8,7 @@ import dimensions from './dimensions'
 import affiliates from './affiliates'
 import countries from './countries'
 import lp from './lp'
+import prods from './prods'
 
 import { getUserStore } from 'am-components-front'
 const user = getUserStore(
@@ -30,5 +31,6 @@ export default new Vuex.Store({
         user,
         history,
         lp,
+        prods
     }
 })

@@ -85,6 +85,22 @@
 
                             <div class="condition-line">
 
+                                <model-select
+                                        :options="getProdsModify()"
+                                        @input="handleChangeProd($event, item)"
+                                        :id="defineId(`prod`,item.position)"
+                                        class="condition__affiliate condition__matches custom-select"
+                                        :value=getAffiliateName(item)
+                                        v-show="checkProd(item)"
+                                >
+                                </model-select>
+                                <label v-show="checkProd(item)" for="label-prod">Prods ID &amp; Name
+                                </label>
+
+                            </div>
+
+                            <div class="condition-line">
+
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
                                         :id="defineMatchType(item.position)"
@@ -217,6 +233,13 @@
                     return item
                 })
             },
+            getProdsModify() {
+                return this.getProds.map(item => {
+                    item.value = item.id.toString()
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
             getClassDisabled(item) {
                 if (this.checkCountryDisabled(item)) {
                     return 'disabled'
@@ -264,6 +287,9 @@
             defineAffId(id) {
                 return `aff-${id}`
             },
+            defineId(name,id) {
+                return `${name}-${id}`
+            },
             defineDimensionId(id) {
                 return `dimension-${id}`
             },
@@ -294,6 +320,9 @@
                     || item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_country`)
                     || item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_campaign`)
                     || item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_sub_campaign`)
+            },
+            checkProd(item) {
+                return item.dimensionId === this.getDimensionId(this.getDimensions, `prod`)
             },
             checkCountry(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `country`)
@@ -326,6 +355,7 @@
                 let refCountry = `country-${item.position}`
                 let refCampaign = `campaign-${item.position}`
                 let refAffiliate = `aff-${item.position}`
+                let refProd = `prod-${item.position}`
                 let refSubCampaign = `subcampaign-${item.position}`
                 let refCondition = `condition-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
@@ -335,6 +365,7 @@
                 let subCampaignEl = this.$refs[refSubCampaign][0] || null
                 let matchTypeEl = this.$refs[matchTypeRef][0] || null
                 let affiliateEl = document.querySelector(`#${refAffiliate}`).parentNode || null
+                let prodEl = document.querySelector(`#${refProd}`).parentNode || null
 
                 countryEl.classList.add("disabled")
                 let conditionEl = document.querySelector(`#${refCondition}`)
@@ -342,13 +373,14 @@
                     case `affiliate`:
                         affiliateEl ? affiliateEl.style.display = 'block' : ''
                         countryEl.style.display = 'none'
+                        prodEl ? prodEl.style.display = 'none':''
                         campaignEl ? campaignEl.style.display = 'none' : ''
                         subCampaignEl ? subCampaignEl.style.display = 'none' : ''
                         matchTypeEl ? matchTypeEl.style.display = 'none' : ''
                         item.value = ''
                         item.dimensionId = 1
                         this.hideLabels(
-                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign], label[for=label-sub-campaign]`)
+                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign], label[for=label-prod]`)
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-affiliate]`)
@@ -357,6 +389,7 @@
                     case `country`:
                         affiliateEl ? affiliateEl.style.display = 'none' : ''
                         campaignEl ? campaignEl.style.display = 'none' : ''
+                        prodEl ? prodEl.style.display = 'none':''
                         countryEl.style.display = 'block'
                         countryEl.disabled = true
                         countryEl.classList.remove("disabled")
@@ -365,59 +398,80 @@
                         subCampaignEl ? subCampaignEl.style.display = 'none' : ''
                         matchTypeEl ? matchTypeEl.style.display = 'none' : ''
                         this.hideLabels(
-                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-sub-campaign]`)
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-prod]`)
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-country]`)
                         )
                         break
-                    case `affiliate_campaign`:
-                        affiliateEl ? affiliateEl.style.display = 'block' : ''
-                        countryEl.style.display = 'none'
-                        campaignEl ? campaignEl.style.display = 'initial' : ''
-                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
-                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
-                        item.value = ''
-                        item.dimensionId = 3
-                        this.hideLabels(
-                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-sub-campaign]`)
-                        )
-                        this.showLabels(
-                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign]`)
-                        )
-                        break
+                    // case `affiliate_campaign`:
+                    //     affiliateEl ? affiliateEl.style.display = 'block' : ''
+                    //     countryEl.style.display = 'none'
+                    //     campaignEl ? campaignEl.style.display = 'initial' : ''
+                    //     subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                    //     matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                    //     item.value = ''
+                    //     item.dimensionId = 3
+                    //     this.hideLabels(
+                    //         conditionEl.querySelectorAll(`label[for=label-country], label[for=label-sub-campaign]`)
+                    //     )
+                    //     this.showLabels(
+                    //         conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign]`)
+                    //     )
+                    //     break
                     case `affiliate_country`:
                         affiliateEl ? affiliateEl.style.display = 'block' : ''
                         countryEl.style.display = 'block'
+                        prodEl ? prodEl.style.display = 'none':''
                         item.value = ''
-                        item.dimensionId = 4
+                        item.dimensionId = 3
                         campaignEl ? campaignEl.style.display = 'none' : ''
                         subCampaignEl ? subCampaignEl.style.display = 'none' : ''
                         matchTypeEl ? matchTypeEl.style.display = 'none' : ''
                         this.hideLabels(
-                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign], label[for=label-sub-campaign]`)
+                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign], label[for=label-prod]`)
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-country]`)
                         )
                         break
-                    case `affiliate_sub_campaign`:
-                        affiliateEl ? affiliateEl.style.display = 'block' : ''
-                        countryEl.style.display = 'none'
+                    case `prod`:
+                        prodEl ? prodEl.style.display = 'block' : ''
+                        affiliateEl ? affiliateEl.style.display = 'none' : ''
                         campaignEl ? campaignEl.style.display = 'none' : ''
-                        subCampaignEl ? subCampaignEl.style.display = 'initial' : ''
-                        matchTypeEl ? matchTypeEl.style.display = 'initial' : ''
+                        countryEl ? countryEl.style.display = 'none' : ''
+                        // countryEl.style.display = 'block'
+                        // countryEl.disabled = true
+                        // countryEl.classList.remove("disabled")
                         item.value = ''
-                        item.dimensionId = 5
+                        item.dimensionId = 4
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
                         this.hideLabels(
-                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign]`)
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-country]`)
                         )
                         this.showLabels(
-                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-sub-campaign]`)
+                            conditionEl.querySelectorAll(`label[for=label-prod]`)
                         )
                         break
+                    // case `affiliate_sub_campaign`:
+                    //     affiliateEl ? affiliateEl.style.display = 'block' : ''
+                    //     countryEl.style.display = 'none'
+                    //     campaignEl ? campaignEl.style.display = 'none' : ''
+                    //     subCampaignEl ? subCampaignEl.style.display = 'initial' : ''
+                    //     matchTypeEl ? matchTypeEl.style.display = 'initial' : ''
+                    //     item.value = ''
+                    //     item.dimensionId = 5
+                    //     this.hideLabels(
+                    //         conditionEl.querySelectorAll(`label[for=label-country], label[for=label-campaign]`)
+                    //     )
+                    //     this.showLabels(
+                    //         conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-sub-campaign]`)
+                    //     )
+                    //     break
                     default:
                         affiliateEl ? affiliateEl.style.display = 'none' : ''
+                        prodEl ? prodEl.style.display = 'none' : ''
                         countryEl.style.display = 'none'
                         campaignEl ? campaignEl.style.display = 'none' : ''
                         subCampaignEl ? subCampaignEl.style.display = 'none' : ''
@@ -643,6 +697,43 @@
 
 
             },
+            handleChangeProd(event, item) {
+
+                let dimensionRef = `dimension-${item.position}`
+                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let refCondition = `condition-${item.position}`
+                let refCountry = `country-${item.position}`
+                let filterTypeRef = `filtertype-${item.position}`
+                let matchTypeRef = `matchtype-${item.position}`
+
+                let recCheck = this.validateValue(this.segmentFilter, event)
+                if (recCheck.length > 0) {
+                    this.$swal.fire({
+                        type: `warning`,
+                        title: `record exists: ${recCheck[0].value}  `,
+                        text: ` dimension: ${recCheck[0].dimensionName}`,
+                        footer: ``
+                    })
+
+                    this.$refs[refCountry][0].value = ``
+                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+
+                    item.value = ``
+                    item.dimensionName = ``
+                    item.dimensionId = null
+                    return
+                }
+
+                this.$refs[refCondition][0].style.background = null
+                item.user = this.verifyTokenEmail
+                item.dateAdded = this.getCurrentDate()
+                item.value = event
+                item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
+                item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
+                item.dimensionName = `prod`
+                item.dimensionId = this.getDimensionId(this.getDimensions, `prod`)
+                debugger
+            },
             handleChangeCountry(event, item) {
 
                 let dimensionRef = `dimension-${item.position}`
@@ -812,11 +903,12 @@
         computed: {
             ...mapState('dimensions', ['dimensionTypes']),
             ...mapState('affiliates', ['affiliates']),
-            ...mapState('googleAuth', ["verifyTokenEmail"]),
+            ...mapState('user', ["googleAuthUrl","verifyTokenEmail"]),
             ...mapState('segment', ['segmentFilter']),
             ...mapState('campaigns', ['campaignsExample']),
             ...mapGetters('countries', ['getCountries']),
             ...mapGetters('affiliates', ['getAffiliates']),
+            ...mapGetters('prods', ['getProds']),
             ...mapGetters('dimensions', ['getDimensions']),
             ...mapGetters('campaigns', ['getCampaignsAffiliateStoreById']),
 
