@@ -10,7 +10,7 @@ config = {
     env: process.env.NODE_ENV || env || `production`,
     port: 8080,
     sflCoreCondition: {
-        host: '"https://sfl-api-advertiser.surge.systems/"'
+        host: '"https://sfl-condition.surge.systems/"'
     },
 }
 
