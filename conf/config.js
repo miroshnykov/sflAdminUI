@@ -12,6 +12,9 @@ config = {
     sflCoreCondition: {
         host: '"https://sfl-condition.surge.systems/"'
     },
+    sso:{
+        host:'"https://am-ssoauth.surge.systems/"'
+    }
 }
 
 module.exports = config
