@@ -101,6 +101,7 @@ if (process.env.NODE_ENV === 'production') {
             'process.env': {
                 NODE_ENV: '"production"',
                 SFL_CORE_CONDITION: config.sflCoreCondition.host,
+                SSO_API: config.sso.host,
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
