@@ -296,6 +296,7 @@
     .segment.segment__draggable {
         cursor: grab;
         height: auto;
+        margin: 15px 10px 0px 0px;
     }
 
     .segment.segment__draggable:hover {
