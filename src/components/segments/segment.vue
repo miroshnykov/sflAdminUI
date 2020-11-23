@@ -202,9 +202,9 @@
                                 location.reload()
                             } else {
                                 this.$swal.fire({
-                                    title: `Segment ID ${id}  not deleted`,
+                                    title: `Segment ID ${id} was not deleted`,
                                     type: 'error',
-                                    text: 'Please check backend errors ',
+                                    text: 'Please check backend errors',
                                     confirmButtonColor: '#2ED47A',
                                 })
                             }
@@ -226,7 +226,7 @@
                 }
             },
             getTitle(segment) {
-                return 'Click to disable'
+                return 'Expand or Collapse'
 
             },
             getClass(segment) {
@@ -298,9 +298,18 @@
         height: auto;
     }
 
+    .segment.segment__draggable:hover {
+        opacity: 0.9;
+    }
+
     .segment__active, .segment__disabled {
         cursor: pointer;
         user-select: none;
+    }
+
+    span.segment__active:hover {
+        opacity: 0.5;
+        color: #36B8E1 !important;
     }
 
     .segment__empty {
