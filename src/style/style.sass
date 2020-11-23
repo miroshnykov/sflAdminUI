@@ -339,13 +339,36 @@ button.btn
     display: block
     text-align: center
     float: right
-    background: linear-gradient(90deg, #28cde1 0%, #2294d0 100%)
-    background-size: 100%
+    background: #36B8E1
     transition: all 0.5s ease
 
     &:hover
       background-size: 150%
       box-shadow: 0 0 8px #28cde1
+
+    &.btn-sm
+      max-width: 100px
+      height: 30px
+      padding: 0px
+      font-size: 11px
+
+  &.btn-success
+  width: 100%
+  max-width: 180px
+  padding: 10px
+  margin: 0 auto
+  color: #fff
+  font-size: 12px
+  border-radius: 7px
+  display: block
+  text-align: center
+  float: right
+  background: #2ED47A
+  transition: all 0.5s ease
+
+  &:hover
+    background-size: 150%
+    box-shadow: 0 0 8px #28cde1
 
   &.btn-secondary
     width: 100%
@@ -381,27 +404,24 @@ button.btn
     margin-top: -62px !important
 
   &.btn-light
-    display: block
+    // display: block
     text-align: center
     float: left
-    background: #fff
-    background-size: 100%
+    background: transparent
     text-transform: uppercase
     font-weight: 600
-    letter-spacing: 1px
-    width: 100%
-    max-width: 180px
-    padding: 10px
+    padding: 0px
+    width: 25px !important
     margin: 0 auto
-    color: #5c6489
-    font-size: 12px
+    color: #7F98A5
+    font-size: 14px
     cursor: pointer
-    border-radius: 7px
     border: 0
     transition: all 0.5s ease
 
     &:hover
       color: #28cde1
+      box-shadow: 0 0 0px transparent
 
   &.btn-back
     position: fixed
@@ -663,19 +683,15 @@ tr
       color: #36b8e1
       font-weight: 800
 
-.gradient-table
-  // border-width: 3px
-  // border-style: solid
-  // border-image: linear-gradient(to left, #3a3852 0%, #5c6489 100%)
-  // border-image-slice: 1
-  margin-bottom: 20px
+.lp-table
+  line-height: 14px !important
+  padding: 1rem 0.5rem !important
 
 .child-table
+  width: 100%
   min-height: 110px !important
   max-height: 455px !important
   overflow: scroll
-  margin-bottom: 20px
-  border-bottom: 2px dashed rgba(92, 100, 137, 0.3)
 
   table
     text-align: center
@@ -1512,8 +1528,8 @@ button.applyBtn.btn.btn-sm.btn-success
 
 .badge
   display: inline-block
-  padding: 0.25em 0.8em
-  font-size: 14px !important
+  padding: 0.5em 0.8em
+  font-size: 12px !important
   font-weight: 600
   line-height: 1
   text-align: center
@@ -1675,7 +1691,7 @@ button.applyBtn.btn.btn-sm.btn-success
     margin-left: 0px !important
 
   .table th, .table td
-    padding: 1.2rem 0.5rem
+    padding: 1.5rem 0.5rem
 
 @media only screen and (max-width: 1510px)
   #campaigns

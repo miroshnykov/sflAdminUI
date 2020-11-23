@@ -4,59 +4,94 @@
         <section class="segment" :id="segment.id" :class="{segment__draggable: true}"
                  @change="updateGroup($event, group)">
 
-            <h1 class="segment__name" :title="segment.name">
-                <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)">➕</span>
-                {{segment.name}} ( {{segment.id}} )
-                <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
-                <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
-            </h1>
-            <!--@focus="focusMenu" @blur="blur"-->
-            <button class="segment__toggle-menu"/>
+            <b-row class="text-center" align-v="center">
+                <b-col col lg="8">
 
-            <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
+                <h1 class="segment__name" :title="segment.name">
+                    <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)">➕</span>
+                    {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
+                    <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
+                    <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
+                </h1>
+                <!--@focus="focusMenu" @blur="blur"-->
+                <button class="segment__toggle-menu"/>
 
+                <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
 
-            <b-button variant="outline-success" @click="edit(segment.id)">
-                <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Edit
-            </b-button>
+                </b-col>
+                <b-col col lg="4">
+                    <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit'" style="z-index:2">
+                        <i class="far fa-edit" data-fa-transform="shrink-1"></i>
+                    </b-button>
 
-            <b-button variant="outline-danger" @click="delSegment(segment.id)">
-                <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Delete
-            </b-button>
+                    <b-button variant="light" @click="delSegment(segment.id)" v-b-tooltip.hover.top="'Delete'" style="z-index:2">
+                        <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
+                    </b-button>
 
-            <label style="font-size: 21px;">{{segment.position}} </label>
+                    <b-form-checkbox v-model="checked" name="check-button" switch></b-form-checkbox>
+                </b-col>
+            </b-row>
 
-            <b-button variant="outline-danger" @click="saveLp(segment)">
-                <i class="fas fa-plus" data-fa-transform="shrink-1"></i> save LP
-            </b-button>
-
-            <model-select
+            <!-- <model-select
                     :options="getLpModify()"
                     @input="handleChangeLp($event, segment)"
                     :id="defineLpId(segment.id)"
                     :ref="defineLpId(segment.id)"
                     class="condition__country condition__matches custom-select "
             >
-            </model-select>
+            </model-select> -->
 
 <!--            :value="segment.landingPageId"-->
-            <label v-if="segment.landingPageId" style="font-size: 21px;"> LP ID {{segment.landingPageId}}  </label>
+            <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label>
 <!--            <label for="label-lp">LP</label>-->
 
+
             <div v-if="segment.lp.length !== 0" class="child-table">
-                <span>Landing page</span>
-                <table style="line-height: 1px;" class="table table-striped child-row tableFixHead">
-                    <thead>
+
+
+            <b-row class="text-center" align-v="center">
+                <b-col col lg="6">
+                    <span class="lp-label" style="text-align: left; float: left">Landing Pages</span>
+                    <!-- <label class="segment-position">{{segment.position}}</label> -->
+                </b-col>
+                <b-col col lg="6">
+                    <b-button variant="primary btn-sm" @click="saveLp(segment)">
+                        <i class="far fa-file-plus" data-fa-transform="shrink-1"></i> New LP
+                    </b-button>
+                </b-col>
+            </b-row>
+
+                <table class="table table-striped child-row tableFixHead lp-table">
+                    <!-- <thead>
                     <tr>
-                        <th scope="col">Id</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Name</th>
                     </tr>
-                    </thead>
+                    </thead> -->
                     <tr scope="row" v-for="lp in segment.lp">
-                        <td>{{ lp.id}}</td>
+                        <td>{{ lp.id }}</td>
                         <td>{{ lp.name }}</td>
                     </tr>
                 </table>
+
+                <b-badge variant="light"
+                 v-b-popover.hover.bottom.html="popoverMethod"
+                 title="ID: 1<br>
+                 Weight: 20"
+                 >
+                    Landing-Page (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
+                </b-badge>
+
+                <b-badge variant="light"
+                 v-b-popover.hover.bottom.html="popoverMethod"
+                 title="ID: 1<br>
+                 Weight: 20"
+                 >
+                    Example (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
+                </b-badge>
+
+                <br><br>
+                <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: 80 / 100</span>
             </div>
 
 
@@ -104,7 +139,8 @@
             return {
                 errors: [],
                 showMenu: false,
-                showLandingPages: false
+                showLandingPages: false,
+                checked: false
             };
         },
         methods: {
@@ -214,21 +250,52 @@
 </script>
 
 <style lang="scss">
+    input.search-box {
+        padding: 10px;
+        border-radius: 4px;
+        border: 0px solid transparent;
+        height: 45px;
+        width: 250px;
+        // box-shadow: 0px 0px 3px 0px rgb(58 56 82 / 0.2);
+    }
+
+    span.segment-name-id {
+        color: #7F98A5;
+    }
+
+    span.text-small {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        float: right;
+    }
+
+    .badge-light {
+        color: #7F98A5;
+        background-color: #E3EEF4;
+    }
+
+    .custom-switch {
+        margin-left: 4.4rem;
+        z-index: 1;
+    }
+
     .segment {
         opacity: 1;
         margin: 1rem;
-        height: 80px;
-        width: 250px;
+        // height: 80px;
+        width: 350px;
         padding: 1rem;
         position: relative;
-        border-radius: 4px;
-        border: solid #e1d4e1 2px;
+        border-radius: 7px;
+        border: solid #2ED47A 2px;
+        background: #fff;
         user-select: none;
     }
 
     .segment.segment__draggable {
         cursor: grab;
-        height: 180px;
+        height: auto;
     }
 
     .segment__active, .segment__disabled {
@@ -241,9 +308,11 @@
     }
 
     .segment__name {
-        font-size: 1rem;
-        font-weight: normal;
-        margin: 0.7rem 0 0 0;
+        color: #3A3852;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        margin: 0 0 0.5rem 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
