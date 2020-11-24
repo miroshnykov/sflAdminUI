@@ -6,7 +6,7 @@
                     <b-col col lg="9">
                         <b-row align-v="center">
                             <b-col col xl="7" lg="4" class="text-left">
-                                <h1>Edit Campaign</h1>
+                                <h1>Edit Segment</h1>
                             </b-col>
                             <b-col col xl="5" lg="8" class="text-right">
                                 <!-- TODO: Move Save buttons and their functions from [targeting.vue] to here -->

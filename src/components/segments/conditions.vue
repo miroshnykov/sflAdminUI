@@ -1,4 +1,5 @@
 <template>
+
     <section class="segment-form__conditions">
         <div class="segment-buttons">
             <b-button v-show="this.segmentRuleCount === 0" variant="primary" class="add-rule" @click="this.addFilter">
