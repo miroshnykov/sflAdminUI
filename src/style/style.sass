@@ -136,6 +136,8 @@ h2, .h2
   font-size: 10px
   letter-spacing: 0.5px
   text-align: center
+  width: 100px
+  margin: auto
 
   &.inactive
     background: #7F98A5
@@ -198,7 +200,7 @@ button.quickedit-cancel
     background: transparent
 
 .landingPage, .validateLandingPage
-  float: left
+  // float: left
 
 .custom-select,
 .custom-input,
@@ -328,9 +330,12 @@ button.btn
   transition: all 0.5s ease
   z-index: 99
 
+  &:hover
+    box-shadow: 0 0 0px transparent !important
+
   &.btn-primary
-    width: 100%
-    max-width: 180px
+    // width: 100%
+    // max-width: 180px
     padding: 10px
     margin: 0 auto
     color: #fff
@@ -353,18 +358,18 @@ button.btn
       font-size: 11px
 
   &.btn-success
-  width: 100%
-  max-width: 180px
-  padding: 10px
-  margin: 0 auto
-  color: #fff
-  font-size: 12px
-  border-radius: 7px
-  display: block
-  text-align: center
-  float: right
-  background: #2ED47A
-  transition: all 0.5s ease
+    width: 100%
+    max-width: 180px
+    padding: 10px
+    margin: 0 auto
+    color: #fff
+    font-size: 12px
+    border-radius: 7px
+    display: block
+    text-align: center
+    float: right
+    background: #2ED47A
+    transition: all 0.5s ease
 
   &:hover
     background-size: 150%
@@ -503,6 +508,10 @@ button.btn
 
   &:hover
     color: #36b8e1
+
+.btn-delete
+  &:hover
+    color: #fe5d65
 
 .delete-btn.btn-danger
   color: #777
@@ -706,15 +715,25 @@ tr
     letter-spacing: 0.3px
 
 .child-row thead th
-  font-size: 0.9em
-  letter-spacing: 0.5px
+  // font-size: 0.9em
+  // letter-spacing: 0.5px
+  // padding: 10px
+  // height: 15px
+  // font-weight: 700
+  // text-transform: none
+  // color: #fff
+  // background: #5c6489
+  // border-bottom: 0px solid #5c6489
+
+  font-size: 16px
   padding: 10px
   height: 15px
-  font-weight: 700
+  font-weight: 600
   text-transform: none
-  color: #fff
-  background: #5c6489
-  border-bottom: 0px solid #5c6489
+  color: #7f98a5
+  background: #fff
+  border-bottom: 0 solid #5c6489
+  vertical-align: middle
 
 /* Edit Segment */
 .edit-segment
@@ -771,7 +790,7 @@ h2.swal2-title
 .swal2-popup.swal2-modal.swal2-show
   padding: 3em !important
   border-radius: 20px !important
-  max-width: 400px
+  max-width: 800px
 
 .swal2-file, .swal2-input, .swal3-input, .swal2-textarea, input#swal-input3
   font-family: “proxima-nova”, proxima-nova, Proxima Nova, Helvetica, Arial, sans-serif !important
@@ -792,7 +811,7 @@ h2.swal2-title
 .swal2-input
   height: 3em !important
   padding: 0 1.5em !important
-  max-width: 220px
+  max-width: 300px
   display: block
 
 .swal2-input[type=number], .swal3-input[type=number]

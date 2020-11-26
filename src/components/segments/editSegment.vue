@@ -150,7 +150,7 @@
                 <h2>Landing Pages</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
+                <b-button variant="secondary" class="btn-add-line" @click="addLandingPage">
                     <i class="fas fa-plus"></i> Add Landing Page
                 </b-button>
             </b-col>
@@ -184,6 +184,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">Weight</th>
+                            <th scope="col">Landing Page URL</th>
                             <th scope="col">Status</th>
                             <th scope="col">Actions</th>
                         </tr>
@@ -192,6 +193,29 @@
                             <td>{{ id }}</td>
                             <td>Movies and TV</td>
                             <td>20 / 100</td>
+                            <td>
+                                
+                            <!-- <div slot="landingPage" slot-scope="props"> -->
+                            <div class="landingPage">
+                            <span class="landing-page-box">
+                                wwww.website.com
+                                <!-- <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
+                                    {{ props.row.landingPage }}
+                                </span>
+                                <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
+                                    {{ props.row.landingPage.substring(0,15)+"..." }}
+                                </span> -->
+                            </span>
+                                <button class="btn btn-link" @click="copyText(props.row.landingPage)"
+                                        v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                                <!-- <b-form-text id="date">
+                                    Clicks - Today: 96
+                                </b-form-text> -->
+                            </div>
+
+                            </td>
                             <td>
                                 
                             <!-- <div slot="status" slot-scope="props"> -->
@@ -208,7 +232,8 @@
 
                                 <button
                                         class="btn btn-link"
-                                        v-b-tooltip.hover.top="'Edit affiliate'"
+                                        v-b-tooltip.hover.bottom="'Edit LP'"
+                                        @click="showModal(id)"
                                 >
                                     <i class="far fa-pencil"></i>
                                 </button>
@@ -217,8 +242,8 @@
                                 </BucketAffiliates> -->
 
                                 <button
-                                        class="btn btn-link-blacklist"
-                                        v-b-tooltip.hover.top="'Remove affiliate'"
+                                        class="btn btn-link btn-delete"
+                                        v-b-tooltip.hover.bottom="'Remove LP'"
                                 >
                                     <i class="far fa-trash"></i>
                                 </button>
@@ -253,7 +278,99 @@
         async mounted() {
             await this.$store.dispatch('segment/getSegmentConditions', this.id)
         },
-        methods: {},
+        methods: {
+            async addLandingPage() {
+                this.$swal.fire({
+                    title: 'Add Landing Page',
+                    html:
+                        `<label for="swal-input1"></label>
+                        <input id="swal-input1" class="swal2-input" placeholder="Type and search..." maxlength="30">
+                        <div class="row segment-popup">
+                        <div class="col-md-6">
+                    `,
+                    confirmButtonColor: '#2ED47A',
+                    cancelButtonColor: '#E3EEF4',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check"></i>',
+                    cancelButtonText: '<i class="fas fa-times"></i>',
+                    backdrop: `
+                        rgba(0,0,123,0.2)
+                    `,
+                    preConfirm: () => {
+                        if (document.getElementById('swal-input1').value
+                        ) {
+                            return [
+                                document.getElementById('swal-input1').value
+                            ]
+                        } else {
+                            this.$swal.fire({
+                                title: 'Validation Error',
+                                text: 'Please check landing page name.',
+                            })
+                            return
+                        }
+
+                    }
+
+                }).then((result) => {
+                    if (result.dismiss === "cancel") {
+                        return
+                    }
+
+                    if (result.value[0]
+                    ) {
+                        let segmentData = {}
+                        segmentData.name = result.value[0]
+                        let self = this
+                        self.name = segmentData.name
+                        this.$store.dispatch('segments/createSegmentAction', segmentData).then(res => {
+                            if (res.id) {
+
+                                self.$swal.fire({
+                                    type: 'success',
+                                    position: 'top-end',
+                                    title: `Segment ${self.name} has been created`,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                                this.$router.push(`/segment/${res.id}`)
+                                // location.reload()
+
+                            }
+                        })
+                    } else {
+                        this.$swal.fire({
+                            title: 'Missing information',
+                            type: 'error',
+                            text: 'Please name your segment and try again.',
+                            confirmButtonColor: '#2ED47A',
+                        })
+                    }
+
+                })
+            },
+            async copyText(landingPage) {
+                try {
+                    await navigator.clipboard.writeText(landingPage);
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Copied URL: \n ${landingPage} \n   to clipboard `,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            },
+            async addAffiliates () {
+                let order = this.getBucketAffiliates.sort((a, b) => (Number(a.id) - Number(b.id)))
+                let lastRecord = order[order.length - 1]
+                let lastId = lastRecord && lastRecord.id || 0
+                await this.addAffiliate()
+                this.showBucketModal(lastId + 1)
+            },
+        },
         data() {
             return {
                 id: Number(this.$route.params.id)
