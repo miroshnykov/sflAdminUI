@@ -145,16 +145,92 @@
 
         <hr>
 
-            <b-row class="text-center">
-                <b-col cols="7">
-                    <h2>Landing Pages</h2>
-                </b-col>
-                <b-col cols="2">
-                    <b-button variant="secondary" class="btn-add-line" @click="">
-                        <i class="fas fa-plus"></i> Add Landing Page
-                    </b-button>
-                </b-col>
-            </b-row>
+        <b-row class="text-center">
+            <b-col cols="7">
+                <h2>Landing Pages</h2>
+            </b-col>
+            <b-col cols="2">
+                <b-button variant="secondary" class="btn-add-line" @click="">
+                    <i class="fas fa-plus"></i> Add Landing Page
+                </b-button>
+            </b-col>
+        </b-row>
+
+        <!-- <div slot="actions" slot-scope="props">
+            <button
+                    class="btn btn-link"
+                    v-b-tooltip.hover.top="'Edit Campaign'"
+                    @click="edit(props.row)"
+            >
+                <i class="fas fa-pencil"></i>
+            </button>
+
+            <button
+                    class="btn btn-link"
+                    v-b-tooltip.hover.top="'Delete Campaign'"
+                    @click="del(props.row.id)"
+            >
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div> -->
+
+        <b-row class="text-center">
+            <b-col cols="9">
+                <div class="child-table">
+
+                    <table class="table table-striped child-row tableFixHead">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tr scope="row">
+                            <td>{{ id }}</td>
+                            <td>Movies and TV</td>
+                            <td>20 / 100</td>
+                            <td>
+                                
+                            <!-- <div slot="status" slot-scope="props"> -->
+                                <!-- <div v-if="props.row.status == 'inactive'">
+                                <div class="status inactive">{{props.row.status}}</div>
+                                </div> -->
+                                <!-- <div v-else-if="props.row.status == 'active'"> -->
+                                <div class="status active">Active</div>
+                                <!-- </div> -->
+                            <!-- </div> -->
+
+                            </td>
+                            <td>
+
+                                <button
+                                        class="btn btn-link"
+                                        v-b-tooltip.hover.top="'Edit affiliate'"
+                                >
+                                    <i class="far fa-pencil"></i>
+                                </button>
+                                <!-- <BucketAffiliates :id="'modal_' + affiliate.id" :ref="'modal_' + affiliate.id"
+                                                :affiliate="affiliate">
+                                </BucketAffiliates> -->
+
+                                <button
+                                        class="btn btn-link-blacklist"
+                                        v-b-tooltip.hover.top="'Remove affiliate'"
+                                >
+                                    <i class="far fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </b-col>
+            <b-col cols="2">
+            </b-col>
+        </b-row>
 
     </div>
 </template>
