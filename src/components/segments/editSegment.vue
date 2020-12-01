@@ -14,7 +14,7 @@
                     >
                 </div>
             </b-col>
-            <b-col cols="3">
+            <b-col cols="6">
                 <div class="condition__controls">
                     <label>Segment Name</label>
                     <input type="text"
@@ -43,7 +43,7 @@
                     </select>
                 </div>
             </b-col>
-            <b-col cols="3">
+            <!-- <b-col cols="3">
                 <div class="condition__controls">
                     <label>Last Modified</label>
                     <input type="text"
@@ -51,12 +51,12 @@
                            disabled
                     >
                 </div>
-            </b-col>
+            </b-col> -->
         </b-row>
 
         <hr>
 
-            <b-row class="text-center">
+            <!-- <b-row class="text-center">
                 <b-col cols="7">
                     <h2>Rules &amp; Conditions</h2>
                 </b-col>
@@ -65,7 +65,7 @@
                         <i class="fas fa-plus"></i> Add Rule
                     </b-button>
                 </b-col>
-            </b-row>
+            </b-row> -->
 
             <!-- TODO: Turn exclude/include into switch buttons -->
             <!-- <b-form-checkbox
@@ -76,7 +76,7 @@
                     switch>
             </b-form-checkbox> -->
 
-                    <b-row align-v="center">
+                    <!-- <b-row align-v="center">
                         <b-col cols="1">
                             <div class="condition__controls">
                                 <label>Include</label>
@@ -133,15 +133,16 @@
                                   </button>
                             </div>
                         </b-col>
-                    </b-row>
+                    </b-row> -->
 
         <!-- Replace old ui with new
         <ul class="segment-info">
             <li>Segment ID: <b>{{id}}</b></li>
             <li>Segment Name: <b>{{JSON.stringify(this.$store.segments)}}</b></li>
            <li>Segment Rules Count: <b>{{this.segmentRuleCount}}</b></li>
-        </ul>
-        <conditions :segmentFilter="this.getSegmentFilter"/> -->
+        </ul> -->
+
+        <conditions :segmentFilter="this.getSegmentFilter"/>
 
         <hr>
 

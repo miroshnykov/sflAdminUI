@@ -157,6 +157,15 @@ input[type="text"]:disabled, input[type="number"]:disabled, input[type="number"]
     border-color: transparent !important
     box-shadow: 0 0 0px transparent !important
 
+/* Landing page */
+span.lp-label
+    text-align: left
+    float: left
+    color: grey
+    font-size: 14px
+    font-weight: 500
+    letter-spacing: 0.3px
+
 span.landing-page-box
   color: #7F98A5
   background: #e3eef4
@@ -335,8 +344,8 @@ button.btn
 
   &.btn-primary
     // width: 100%
-    // max-width: 180px
-    padding: 10px
+    min-width: 120px
+    padding: 10px 20px
     margin: 0 auto
     color: #fff
     font-size: 12px
@@ -352,15 +361,16 @@ button.btn
       box-shadow: 0 0 8px #28cde1
 
     &.btn-sm
-      max-width: 100px
-      height: 30px
+      max-width: 90px
+      min-width: 90px
+      height: 25px
       padding: 0px
       font-size: 11px
 
   &.btn-success
-    width: 100%
-    max-width: 180px
-    padding: 10px
+    // width: 100%
+    // max-width: 140px
+    padding: 10px 20px
     margin: 0 auto
     color: #fff
     font-size: 12px
@@ -377,13 +387,13 @@ button.btn
 
   &.btn-secondary
     width: 100%
-    max-width: 180px
+    max-width: 120px
     padding: 10px
     margin: 0 auto
     color: #fff
     font-size: 12px
-    border-radius: 7px
-    background: #5c6489
+    border-radius: 4px
+    background: #ACC3CF
     display: block
     text-align: center
     float: right
@@ -698,9 +708,10 @@ tr
 
 .child-table
   width: 100%
-  min-height: 110px !important
-  max-height: 455px !important
+  // min-height: 110px !important
+  // max-height: 455px !important
   overflow: scroll
+  margin-top: 10px
 
   table
     text-align: center
@@ -778,6 +789,28 @@ ul.segment-info
       color: #a5f5ff
 
 /* Popup Modal */
+.modal-header
+  display: -ms-flexbox
+  display: flex
+  -ms-flex-align: start
+  align-items: flex-start
+  -ms-flex-pack: justify
+  justify-content: space-between
+  padding: 1rem 1.5rem 0rem 1rem
+  border-bottom: 0px solid transparent
+
+.modal-dialog-scrollable .modal-body
+  overflow-y: auto
+  padding: 0rem 4rem 2rem 4rem
+
+.modal-content
+  border: 1px solid rgba(0, 0, 0, 0)
+  border-radius: 20px
+
+.modal-footer
+    padding: 0rem 0rem 2rem 0rem
+    border-top: 0px solid transparent
+
 h2.swal2-title
   font-size: 2rem
   font-weight: 800
@@ -786,6 +819,7 @@ h2.swal2-title
   -webkit-background-clip: text
   -webkit-text-fill-color: transparent
   margin-bottom: 20px
+  margin-top: 0px
 
 .swal2-popup.swal2-modal.swal2-show
   padding: 3em !important
@@ -811,7 +845,7 @@ h2.swal2-title
 .swal2-input
   height: 3em !important
   padding: 0 1.5em !important
-  max-width: 300px
+  // max-width: 300px
   display: block
 
 .swal2-input[type=number], .swal3-input[type=number]
@@ -1004,8 +1038,8 @@ button.add-condition.condition-active
 
 .filter
   border: none
-  margin-top: 1rem
-  padding: 1rem
+  margin-top: 0rem
+  padding: 0rem
 // min-width: 920px
 // border-radius: 10px
 // overflow: hidden

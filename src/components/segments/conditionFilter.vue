@@ -1,7 +1,7 @@
 <template>
     <transition name="expand-down">
         <section :id="defineFilterId(indexFilters)" :ref="defineFilterId(indexFilters)" class="filter">
-            <h3 class="filter__title">Rule: <b>{{indexFilters+1}}</b></h3>
+            <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
             <div class="filter__controls">
                 <div class="error" style="display:none">Error validation message</div>
                 <div v-show="Number(indexFilters) !== 0" class="_and"><span>and</span></div>
@@ -988,8 +988,8 @@
 
     .filter {
         border: none;
-        margin-top: 1rem;
-        padding: 1rem;
+        margin-top: 0rem;
+        padding: 0rem;
         min-width: 920px;
         border-radius: 10px;
         // overflow: hidden;
@@ -997,13 +997,14 @@
 
     .filter__title {
         left: 50%;
-        margin: 5px 0px;
-        position: absolute;
-        color: rgba(255, 255, 255, 0.5);
+        margin: 0px 5px;
+        position: relative;
+        // color: rgba(255, 255, 255, 0.5);
         font-size: 14px;
         letter-spacing: 1px;
         font-weight: 500;
         transform: translate(-50%, 0);
+        text-align: left;
     }
 
     .filter__remove {

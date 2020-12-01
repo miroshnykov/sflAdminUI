@@ -32,62 +32,112 @@
                 </b-col>
             </b-row>
 
-            <!-- <model-select
-                    :options="getLpModify()"
-                    @input="handleChangeLp($event, segment)"
-                    :id="defineLpId(segment.id)"
-                    :ref="defineLpId(segment.id)"
-                    class="condition__country condition__matches custom-select "
-            >
-            </model-select> -->
 
-<!--            :value="segment.landingPageId"-->
-            <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label>
-<!--            <label for="label-lp">LP</label>-->
-
+            <!-- <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label> -->
 
             <div v-if="segment.lp.length !== 0" class="child-table">
 
 
             <b-row class="text-center" align-v="center">
                 <b-col col lg="6">
-                    <span class="lp-label" style="text-align: left; float: left">Landing Pages</span>
+                    <span class="lp-label">Landing Pages</span>
                     <!-- <label class="segment-position">{{segment.position}}</label> -->
                 </b-col>
                 <b-col col lg="6">
-                    <b-button variant="primary btn-sm" @click="saveLp(segment)">
-                        <i class="far fa-file-plus" data-fa-transform="shrink-1"></i> New LP
+                    <b-button variant="primary btn-sm" v-b-modal.modal-scrollable>
+                        <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> New LP
                     </b-button>
+
+                <div class="newLP">
+                <b-modal id="modal-scrollable" scrollable title=""
+                    >
+                    <p class="my-4" v-for="i in 20" :key="i">
+                        <h2 class="swal2-title" id="swal2-title" style="display: flex;">New Landing Page</h2>
+                        <label for="swal-input1"></label>
+
+                    <div class="condition-line1">
+                        <model-select
+                                :options="getLpModify()"
+                                @input="handleChangeLp($event, segment)"
+                                :id="defineLpId(segment.id)"
+                                :ref="defineLpId(segment.id)"
+                                :value="segment.landingPageId"
+                                placeholder="Search landing page..."
+                                class="condition__country condition__matches custom-select "
+                        >
+                        </model-select>
+
+                        <b-row class="text-center">
+                            <b-col cols="4">
+                                <div class="condition__controls condition-line">
+                                    <label class="text-center">Weight</label>
+                                    <input  type="text"
+                                            min="0" max="100"
+                                            value="20"
+                                            class="condition__matches custom-input text-center"
+                                            onpaste="return false"
+                                            onfocus="this.value=''"
+                                            onkeypress="
+                                                return (
+                                                    event.charCode == 8
+                                                    || event.charCode == 0
+                                                    || event.charCode == 13
+                                                ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            "
+                                    >
+                                    <!-- <b-form-text class="limitWeight">
+                                        20 / <span class="max-limit">100</span>
+                                    </b-form-text> -->
+                                </div>
+                            </b-col>
+                            <b-col cols="4">
+                                <div class="condition__controls condition-line">
+                                    <label class="text-center">Total Weight</label>
+                                    <input  type="text"
+                                            value="100"
+                                            class="condition__matches custom-input text-center"
+                                            disabled
+                                    >
+                                </div>
+                            </b-col>
+                        </b-row>
+                    </div>
+
+
+                </b-modal>
+                </div>
+
                 </b-col>
             </b-row>
 
-                <table class="table table-striped child-row tableFixHead lp-table">
-                    <!-- <thead>
+                <!-- <table class="table table-striped child-row tableFixHead lp-table">
+                    <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
                     </tr>
-                    </thead> -->
+                    </thead>
                     <tr scope="row" v-for="lp in segment.lp">
                         <td>{{ lp.id }}</td>
                         <td>{{ lp.name }}</td>
                     </tr>
-                </table>
+                </table> -->
 
                 <b-badge variant="light"
-                 v-b-popover.hover.bottom.html="popoverMethod"
-                 title="ID: 1<br>
-                 Weight: 20"
-                 >
-                    Landing-Page (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
-                </b-badge>
+                v-for="lp in segment.lp"
+                v-b-popover.hover.bottom.html="lp.name"
+                title="ID: 1 - Weight: 20">
 
-                <b-badge variant="light"
-                 v-b-popover.hover.bottom.html="popoverMethod"
-                 title="ID: 1<br>
-                 Weight: 20"
-                 >
-                    Example (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
+                <span class="landing-page">
+                    <span class="landing-page-name" v-if="lp.name.length<=11" @click="">
+                        {{ lp.name }} 
+                    </span>
+                    <span class="landing-page-name" v-if="lp.name.length>=12" @click="">
+                        {{ lp.name.substring(0,12)+"..." }}
+                    </span>
+                </span>
+
+                    (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
                 </b-badge>
 
                 <br><br>
@@ -132,6 +182,7 @@
 
     export default {
         name: "segment",
+        components: {ModelSelect},
         props: {
             segment: Object
         },
@@ -140,10 +191,34 @@
                 errors: [],
                 showMenu: false,
                 showLandingPages: false,
-                checked: false
+                checked: false,
+                id: Number(this.$route.params.id),
             };
         },
         methods: {
+            // async addAffiliates () {
+            //     let order = this.getBucketAffiliates.sort((a, b) => (Number(a.id) - Number(b.id)))
+            //     let lastRecord = order[order.length - 1]
+            //     let lastId = lastRecord && lastRecord.id || 0
+            //     await this.addAffiliate()
+            //     this.showBucketModal(lastId + 1)
+
+            //     if (res){
+            //         this.$swal.fire({
+            //             type: 'success',
+            //             position: 'top-end',
+            //             title: `Segment ID ${segment.id} ${segment.name} updated`,
+            //             showConfirmButton: false,
+            //             timer: 1000
+            //         })
+            //     }
+            // },
+            // showBucketModal (index) {
+            //     let modal_id = 'modal_' + index
+            //     console.log('showModal:', modal_id)
+            //     this.$refs[modal_id][0].show(index)
+            //     console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            // },
             handleChangeLp(lpId, item) {
                 item.landingPageId = lpId
                 debugger
@@ -155,8 +230,23 @@
                     return item
                 })
             },
+            getStatusList () {
+                return [
+                    {id: 0, name: 'Active'},
+                    {id: 1, name: 'Inactive'},
+                ]
+            },
+            getId (value) {
+                return `${this.id}`
+            },
+            setElId (value) {
+                return `${value}-${this.id}`
+            },
             defineLpId(id) {
                 return `lp-${id}`
+            },
+            getFieldName (field) {
+                return this.getBucket.length > 0 && this.getBucket[0][field]
             },
             updateGroup(e, group) {
                 console.log(e, group)
@@ -245,7 +335,6 @@
             ...mapGetters('countries', ['getCountries']),
             ...mapGetters('lp', ['getLandingPages'])
         },
-        components: {ModelSelect},
     };
 </script>
 
@@ -273,6 +362,7 @@
     .badge-light {
         color: #7F98A5;
         background-color: #E3EEF4;
+        margin: 5px 9px 5px 0px;
     }
 
     .custom-switch {
@@ -282,9 +372,9 @@
 
     .segment {
         opacity: 1;
-        margin: 1rem;
+        margin: 15px 10px 0px 0px;
         // height: 80px;
-        width: 350px;
+        width: 340px;
         padding: 1rem;
         position: relative;
         border-radius: 7px;
@@ -296,7 +386,6 @@
     .segment.segment__draggable {
         cursor: grab;
         height: auto;
-        margin: 15px 10px 0px 0px;
     }
 
     .segment.segment__draggable:hover {
