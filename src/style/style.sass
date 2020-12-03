@@ -400,7 +400,7 @@ button.btn
     background-size: 100%
 
     &:hover
-      background: #28cde1
+      background: #7F98A5
 
   &.btn-transparent
     background: transparent
@@ -446,30 +446,32 @@ button.btn
   &.btn-save
     position: fixed
     top: 20px
-    left: 1220px
+    right: 200px
     display: block
     text-align: center
     float: right
-    background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%))
-    background-size: 100%
+    // background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%))
+    // background-size: 100%
+    background: #2ED47A
     text-transform: uppercase
     font-weight: 600
     letter-spacing: 1px
     width: 100%
-    max-width: 180px
+    max-width: 150px
     padding: 10px
     margin: 0 auto
     color: #fff
-    font-size: 12px
+    font-size: 11px
     cursor: pointer
-    border-radius: 7px
+    border-radius: 4px
     border: 0
     transition: all 0.5s ease
 
     &:hover
-      background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%)) !important
-      background-size: 300%
-      transform: scale(1.2)
+      // background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%)) !important
+      // background-size: 300%
+      transform: scale(1.05)
+      background: #53d5aa
 
   &.delete-btn.btn-danger.disabled
     color: #9eaeb6
@@ -907,9 +909,11 @@ button.swal2-confirm.swal2-styled
 /* Condition Filter */
 .condition-button-delete
   position: relative
-  top: 10px
-  left: 5px
+  // top: 10px
+  // left: 5px
   display: inline-block
+  top: -40px
+  left: -5px
 
 button.remove_condition
   margin-left: 10px
@@ -1130,8 +1134,8 @@ button.add-condition.condition-active
   color: #7F98A5
 
 .ui.search.dropdown
-// min-width: 160px
-// max-width: 280px
+  min-width: 160px
+  max-width: 280px
 
 .ui.selection.dropdown
   min-height: 45px
@@ -1370,7 +1374,7 @@ button.btn.btn-secondary.dropdown-toggle
   position: relative
   top: -45px
   display: inline-block
-  margin-left: 20px
+  // margin-left: 20px
 
 .condition-button-and
   margin-top: 50px

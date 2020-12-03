@@ -1,3 +1,4 @@
+conditionFilter.vue
 <template>
     <transition name="expand-down">
         <section :id="defineFilterId(indexFilters)" :ref="defineFilterId(indexFilters)" class="filter">
@@ -12,7 +13,7 @@
                         v-b-tooltip.hover.top="'Delete Condition'"
                         @click="deleteFilter(indexFilters)"
                 >
-                    <i class="fad fa-trash"></i>
+                    <i class="far fa-trash"></i>
                 </button>
 
                 <template v-for="item in this.segmentFilter">
@@ -185,7 +186,7 @@
                                         v-b-tooltip.hover.top="'Add OR condition'"
                                         v-show="item.orAndDisabled"
                                 >
-                                    <i class="fas fa-plus" data-fa-transform="shrink-2"></i> OR
+                                    OR
                                 </button>
                             </div>
 
@@ -196,7 +197,7 @@
                                         v-b-tooltip.hover.top="'Add AND condition'"
                                         v-show="item.orAndDisabled"
                                 >
-                                <i class="fas fa-plus" data-fa-transform="shrink-2"></i> AND
+                                    AND
                               </button>
                             </div>
 
@@ -1012,12 +1013,12 @@
         height: 45px;
         border-radius: 50%;
         border: none;
-        color: #e3eef4;
+        color: #ACC3CF;
         background: none;
         font-size: 1.2rem;
         position: relative;
-        top: 10px;
-        left: 1080px;
+        top: 68px;
+        left: -50px;
         transition: all 0.2s;
 
         &:before,
@@ -1060,25 +1061,6 @@
         font-weight: bold
     }
 
-    .condition__controls {
-        flex-grow: 1;
-        text-align: left;
-        margin-left: 1rem;
-        margin-top: 0;
-        margin-bottom: 0;
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        min-width: 990px;
-    }
-
-    .condition__controls:last-child {
-        border: 0;
-        margin-top: 0rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0rem;
-    }
-
     .filter__controls {
         display: grid;
         // margin-bottom: 2rem;
@@ -1090,50 +1072,9 @@
         margin-right: 1px;
     }
 
-    /* The container must be positioned relative: */
-    .custom-select {
-        text-align: left;
-        position: relative;
-        width: auto;
-        min-width: 50px;
-        max-width: 280px;
-        border-radius: 4px;
-        color: #555;
-        border: 1px solid transparent;
-        -webkit-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-        -moz-transition: all 0.3s ease;
-        -ms-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background: url("data:image/svg+xml;utf8,<svg fill='grey' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") #fff;
-        background-repeat: no-repeat;
-        background-position-x: 99%;
-        background-position-y: 7px;
-    }
-
-    .custom-select:hover, .custom-select:focus,
-    .custom-input:hover, .custom-input:focus,
-    .ui.search.selection.dropdown > input.search:hover, .ui.search.selection.dropdown > input.search:focus {
-        border-color: #36B8E1 !important;
-        box-shadow: 0 0 5px #36B8E1 !important;
-        cursor: pointer !important;
-    }
-
-    .custom-select:disabled:hover {
-        border-color: transparent;
-        box-shadow: 0 0 5px transparent;
-    }
-
-    .ui.search.dropdown > .text {
-        top: -1px;
-        padding-right: 10px;
-    }
-
     .ui.search.dropdown {
-        min-width: 160px;
-        max-width: 280px;
+        min-width: 250px;
+        max-width: 250px;
     }
 
     .ui.search.selection.dropdown > input.search, .ui.search.selection.dropdown > span.sizer {
@@ -1143,17 +1084,6 @@
 
     .ui.dropdown > .dropdown.icon:before {
         content: '' !important;
-    }
-
-    .custom-select:before {
-        content: '\f11c';
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        font-size: 16px;
-        color: lightgrey;
-        float: right;
-        margin-top: -2px;
-        margin-right: -20px;
     }
 
     .custom-input {
@@ -1180,18 +1110,8 @@
         background-color: #E3EEF4;
     }
 
-    .custom-select select {
-        display: none; /*hide original SELECT element: */
-    }
-
     .select-selected {
         background-color: DodgerBlue;
-    }
-
-    .custom-select:disabled {
-        color: #6c757d;
-        background-color: #e9ecef;
-        opacity: 0.5;
     }
 
     /* Style the arrow inside the select element: */

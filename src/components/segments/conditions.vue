@@ -9,15 +9,12 @@
                 </b-col>
                 <b-col cols="2">
                     <b-button v-show="this.segmentRuleCount === 0" variant="secondary" class="btn-add-line" @click="this.addFilter">
-                        <i class="fas fa-plus"></i> Add Rule
-                    </b-button>
-
-                    <!-- <b-button v-show="this.segmentRuleCount === 0" variant="primary" class="add-rule" @click="this.addFilter">
                         <i class="fas fa-plus" data-fa-transform="shrink-2"></i> Add Rule
-                    </b-button> -->   
+                    </b-button>
                 </b-col>
             </b-row>
 
+                    <!-- UI only
                     <b-row align-v="center">
                         <b-col cols="1">
                             <div class="condition__controls">
@@ -75,7 +72,7 @@
                                   </button>
                             </div>
                         </b-col>
-                    </b-row>
+                    </b-row> -->
 
             <div v-if="loading" class="overlay-loader animated fadeIn">
                 <div class="segment-loading">

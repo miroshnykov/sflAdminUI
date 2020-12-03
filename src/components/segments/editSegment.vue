@@ -56,26 +56,6 @@
 
         <hr>
 
-            <!-- <b-row class="text-center">
-                <b-col cols="7">
-                    <h2>Rules &amp; Conditions</h2>
-                </b-col>
-                <b-col cols="2">
-                    <b-button variant="secondary" class="btn-add-line" @click="">
-                        <i class="fas fa-plus"></i> Add Rule
-                    </b-button>
-                </b-col>
-            </b-row> -->
-
-            <!-- TODO: Turn exclude/include into switch buttons -->
-            <!-- <b-form-checkbox
-                    class="active"
-                    name="check-button"
-                    :checked="props.row.status==='active'"
-                    @change="activeInactiveSwitch($event, props.row)"
-                    switch>
-            </b-form-checkbox> -->
-
                     <!-- <b-row align-v="center">
                         <b-col cols="1">
                             <div class="condition__controls">
@@ -152,28 +132,10 @@
             </b-col>
             <b-col cols="2">
                 <b-button variant="secondary" class="btn-add-line" @click="addLandingPage">
-                    <i class="fas fa-plus"></i> Add Landing Page
+                    <i class="fas fa-plus"></i> Add LP
                 </b-button>
             </b-col>
         </b-row>
-
-        <!-- <div slot="actions" slot-scope="props">
-            <button
-                    class="btn btn-link"
-                    v-b-tooltip.hover.top="'Edit Campaign'"
-                    @click="edit(props.row)"
-            >
-                <i class="fas fa-pencil"></i>
-            </button>
-
-            <button
-                    class="btn btn-link"
-                    v-b-tooltip.hover.top="'Delete Campaign'"
-                    @click="del(props.row.id)"
-            >
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </div> -->
 
         <b-row class="text-center">
             <b-col cols="9">
