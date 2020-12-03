@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "start": "node server.js --conf=/run/secrets/sfl-platform-administrator.js"
+    "start": "node server.js --conf=/run/secrets/sfl-admin-prod.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
