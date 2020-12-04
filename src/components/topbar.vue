@@ -258,7 +258,7 @@
             margin: 0 auto
             color: #fff
             font-size: 12px
-            border-radius: 7px
+            border-radius: 10px
             background: #5c6489
             background-size: 100%
             z-index: 999
@@ -279,7 +279,7 @@
             color: #fff
             font-size: 12px
             cursor: pointer
-            border-radius: 7px
+            border-radius: 10px
             border: 0
             transition: all 0.5s ease
             z-index: 999

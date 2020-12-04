@@ -14,6 +14,8 @@
                     <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                 </h1>
                 <!--@focus="focusMenu" @blur="blur"-->
+
+                <!-- TODO: Toggle doesnt work, also cant find where to change icon from plus symbol to chevron down, like the mock -->
                 <button class="segment__toggle-menu"/>
 
                 <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
@@ -28,6 +30,7 @@
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
 
+                    <!-- TODO: Switch from active to inactive, with different class states (green border = active, grey border = inactive) -->
                     <b-form-checkbox v-model="checked" name="check-button" switch></b-form-checkbox>
                 </b-col>
             </b-row>
@@ -35,78 +38,81 @@
 
             <!-- <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label> -->
 
-            <div v-if="segment.lp.length !== 0" class="child-table">
+            <!-- <div v-if="segment.lp.length !== 0" class="child-table"> -->
+            <div v-if="segment.lp.length !== 1" class="child-table">
+            <!-- TODO: Known issue - If number is 0, other segments other than the first one don't show data.
+            If number is 1, any modal popup repeats the amount of segments we have -->
 
 
-            <b-row class="text-center" align-v="center">
+            <b-row class="text-center lp-container" align-v="center">
                 <b-col col lg="6">
                     <span class="lp-label">Landing Pages</span>
                     <!-- <label class="segment-position">{{segment.position}}</label> -->
                 </b-col>
                 <b-col col lg="6">
+                    <!-- TODO: Saving LP doesnt work, please fix. Optional: Move popup modal to new page/component -->
                     <b-button variant="primary btn-sm" v-b-modal.modal-scrollable>
                         <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> New LP
                     </b-button>
 
                 <div class="newLP">
-                <b-modal id="modal-scrollable" scrollable title=""
-                    >
-                    <p class="my-4" v-for="i in 20" :key="i">
-                        <h2 class="swal2-title" id="swal2-title" style="display: flex;">New Landing Page</h2>
-                        <label for="swal-input1"></label>
+                    <b-modal id="modal-scrollable" scrollable title="">
+                        <p class="my-4" v-for="i in 20" :key="i">
+                            <h2 class="swal2-title" id="swal2-title" style="display: flex;">New Landing Page</h2>
+                            <label for="swal-input1"></label>
 
-                    <div class="condition-line1">
-                        <model-select
-                                :options="getLpModify()"
-                                @input="handleChangeLp($event, segment)"
-                                :id="defineLpId(segment.id)"
-                                :ref="defineLpId(segment.id)"
-                                :value="segment.landingPageId"
-                                placeholder="Search landing page..."
-                                class="condition__country condition__matches custom-select "
-                        >
-                        </model-select>
+                        <div class="condition-line1">
+                            <model-select
+                                    :options="getLpModify()"
+                                    @input="handleChangeLp($event, segment)"
+                                    :id="defineLpId(segment.id)"
+                                    :ref="defineLpId(segment.id)"
+                                    :value="segment.landingPageId"
+                                    placeholder="Search landing page..."
+                                    class="condition__country condition__matches custom-select "
+                            >
+                            </model-select>
 
-                        <b-row class="text-center">
-                            <b-col cols="4">
-                                <div class="condition__controls condition-line">
-                                    <label class="text-center">Weight</label>
-                                    <input  type="text"
-                                            min="0" max="100"
-                                            value="20"
-                                            class="condition__matches custom-input text-center"
-                                            onpaste="return false"
-                                            onfocus="this.value=''"
-                                            onkeypress="
-                                                return (
-                                                    event.charCode == 8
-                                                    || event.charCode == 0
-                                                    || event.charCode == 13
-                                                ) ? null : event.charCode >= 48 && event.charCode <= 57
-                                            "
-                                    >
-                                    <!-- <b-form-text class="limitWeight">
-                                        20 / <span class="max-limit">100</span>
-                                    </b-form-text> -->
-                                </div>
-                            </b-col>
-                            <b-col cols="4">
-                                <div class="condition__controls condition-line">
-                                    <label class="text-center">Total Weight</label>
-                                    <input  type="text"
-                                            value="100"
-                                            class="condition__matches custom-input text-center"
-                                            disabled
-                                    >
-                                </div>
-                            </b-col>
-                        </b-row>
-                    </div>
+                            <!-- TODO: Show actual Weight values -->
+                            <b-row class="text-center">
+                                <b-col cols="6">
+                                    <div class="condition__controls condition-line">
+                                        <label class="text-center">Weight</label>
+                                        <input  type="text"
+                                                min="0" max="100"
+                                                value="20"
+                                                class="condition__matches custom-input text-center"
+                                                onpaste="return false"
+                                                onfocus="this.value=''"
+                                                onkeypress="
+                                                    return (
+                                                        event.charCode == 8
+                                                        || event.charCode == 0
+                                                        || event.charCode == 13
+                                                    ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                                "
+                                        >
+                                        <!-- <b-form-text class="limitWeight">
+                                            20 / <span class="max-limit">100</span>
+                                        </b-form-text> -->
+                                    </div>
+                                </b-col>
+                                <b-col cols="6">
+                                    <div class="condition__controls condition-line">
+                                        <label class="text-center">Total Weight</label>
+                                        <input  type="text"
+                                                value="100"
+                                                class="condition__matches custom-input text-center"
+                                                disabled
+                                        >
+                                    </div>
+                                </b-col>
+                            </b-row>
+                        </div>
 
 
-                </b-modal>
+                    </b-modal>
                 </div>
-
                 </b-col>
             </b-row>
 
@@ -123,24 +129,92 @@
                     </tr>
                 </table> -->
 
+                <!-- <b-badge variant="light"
+                v-for="lp in segment.lp"
+                v-b-tooltip.hover.bottom.html="lp.name"
+                title="ID: 1 - Weight: 20"> -->
+
                 <b-badge variant="light"
                 v-for="lp in segment.lp"
-                v-b-popover.hover.bottom.html="lp.name"
-                title="ID: 1 - Weight: 20">
+                v-b-modal.modal-edit-lp
+                >
 
                 <span class="landing-page">
-                    <span class="landing-page-name" v-if="lp.name.length<=11" @click="">
-                        {{ lp.name }} 
+                    <!-- TODO: Could only get LP Name to show via HTML, but need ID and Weight also -->
+                    <span class="landing-page-name" v-if="lp.name.length<=37" v-b-popover.hover.focus.bottom.html="lp.name" title="ID: 1 - Weight: 20">
+                        {{ lp.name }}
                     </span>
-                    <span class="landing-page-name" v-if="lp.name.length>=12" @click="">
-                        {{ lp.name.substring(0,12)+"..." }}
+                    <!-- TODO: Same thing - Could only get LP Name to show via HTML, but need ID and Weight also -->
+                    <span class="landing-page-name" v-if="lp.name.length>=38" v-b-popover.hover.focus.bottom.html="lp.name" title="ID: 1 - Weight: 20">
+                        {{ lp.name.substring(0,38)+"..." }}
                     </span>
                 </span>
 
                     (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
                 </b-badge>
 
-                <br><br>
+                <!-- TODO: Edit LP to work/save -->
+                <div class="editLP">
+                    <b-modal id="modal-edit-lp" scrollable title="">
+                        <p>
+                            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Edit Landing Page</h2>
+                            <label for="swal-input1"></label>
+
+                        <div class="condition-line1">
+                            <model-select
+                                    :options="getLpModify()"
+                                    @input="handleChangeLp($event, segment)"
+                                    :id="defineLpId(segment.id)"
+                                    :ref="defineLpId(segment.id)"
+                                    :value="segment.landingPageId"
+                                    placeholder="Search landing page..."
+                                    class="condition__country condition__matches custom-select "
+                            >
+                            </model-select>
+
+                            <!-- TODO: Show actual Weight values -->
+                            <b-row class="text-center">
+                                <b-col cols="6">
+                                    <div class="condition__controls condition-line">
+                                        <label class="text-center">Weight</label>
+                                        <input  type="text"
+                                                min="0" max="100"
+                                                value="20"
+                                                class="condition__matches custom-input text-center"
+                                                onpaste="return false"
+                                                onfocus="this.value=''"
+                                                onkeypress="
+                                                    return (
+                                                        event.charCode == 8
+                                                        || event.charCode == 0
+                                                        || event.charCode == 13
+                                                    ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                                "
+                                        >
+                                        <!-- <b-form-text class="limitWeight">
+                                            20 / <span class="max-limit">100</span>
+                                        </b-form-text> -->
+                                    </div>
+                                </b-col>
+                                <b-col cols="6">
+                                    <div class="condition__controls condition-line">
+                                        <label class="text-center">Total Weight</label>
+                                        <input  type="text"
+                                                value="100"
+                                                class="condition__matches custom-input text-center"
+                                                disabled
+                                        >
+                                    </div>
+                                </b-col>
+                            </b-row>
+                        </div>
+
+
+                    </b-modal>
+                </div>
+
+                <br>
+                <!-- TODO: Show actual current + total Weight values -->
                 <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: 80 / 100</span>
             </div>
 
@@ -340,12 +414,23 @@
 
 <style lang="scss">
     input.search-box {
-        padding: 10px;
-        border-radius: 4px;
+        padding: 10px 20px;
+        border-radius: 10px;
         border: 0px solid transparent;
         height: 45px;
-        width: 250px;
-        // box-shadow: 0px 0px 3px 0px rgb(58 56 82 / 0.2);
+        width: 352px;
+        box-shadow: 0px 0px 3px 0px #eee;
+    }
+
+    input.search-box:before {
+        content: '\F11C';
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 16px;
+        color: lightgrey;
+        float: right;
+        margin-top: 2px;
+        margin-right: -20px;
     }
 
     span.segment-name-id {
@@ -362,7 +447,8 @@
     .badge-light {
         color: #7F98A5;
         background-color: #E3EEF4;
-        margin: 5px 9px 5px 0px;
+        margin: 5px 0px 5px 0px;
+        width: 100%
     }
 
     .custom-switch {
@@ -372,12 +458,12 @@
 
     .segment {
         opacity: 1;
-        margin: 15px 10px 0px 0px;
+        margin: 15px 20px 0px 0px;
         // height: 80px;
-        width: 340px;
+        width: 352px;
         padding: 1rem;
         position: relative;
-        border-radius: 7px;
+        border-radius: 10px;
         border: solid #2ED47A 2px;
         background: #fff;
         user-select: none;

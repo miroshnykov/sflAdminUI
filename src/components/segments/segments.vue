@@ -223,15 +223,4 @@
 <style lang="sass">
     .container
         margin-left: 300px
-
-        .segment__draggable
-            background-color: #fff
-
-        .segments > div
-            display: grid
-            grid-row-gap: 1rem
-            justify-items: center
-            grid-template-columns: repeat(4, 1fr)
-
-
 </style>

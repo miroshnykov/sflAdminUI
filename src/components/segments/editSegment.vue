@@ -193,6 +193,7 @@
                             </td>
                             <td>
 
+                                <!-- TODO: Modal should edit the LP according to ID -->
                                 <button
                                         class="btn btn-link"
                                         v-b-tooltip.hover.bottom="'Edit LP'"
@@ -204,9 +205,10 @@
                                                 :affiliate="affiliate">
                                 </BucketAffiliates> -->
 
+                                <!-- TODO: Delete LP according to ID -->
                                 <button
                                         class="btn btn-link btn-delete"
-                                        v-b-tooltip.hover.bottom="'Remove LP'"
+                                        v-b-tooltip.hover.bottom="'Remove LP'" 
                                 >
                                     <i class="far fa-trash"></i>
                                 </button>
