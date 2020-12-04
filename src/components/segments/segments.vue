@@ -5,12 +5,12 @@
         <h1>Manage Blocked Segments</h1>
 
         <div class="segment-panel">
-            <input type="text" @input="searchUpdate" placeholder="Search by name..."/>
+            <input type="text" class="search-box" @input="searchUpdate" placeholder="Search segments..."/>
 
             <b-button variant="primary" @click="this.addSegment">
                 Create Segment
             </b-button>
-            <b-button variant="primary" @click="this.saveOrder">
+            <b-button variant="success margin-right-10" @click="this.saveOrder">
                 Save order
             </b-button>
             <!--            <button class="button&#45;&#45;fill enable-all" @click="showModal(true)">Enable all</button>-->
@@ -223,15 +223,4 @@
 <style lang="sass">
     .container
         margin-left: 300px
-
-        .segment__draggable
-            background-color: #c5e7c4
-
-        .segments > div
-            display: grid
-            grid-row-gap: 1rem
-            justify-items: center
-            grid-template-columns: repeat(4, 1fr)
-
-
 </style>

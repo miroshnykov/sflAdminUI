@@ -138,7 +138,10 @@
         .nav-item
             li
                 .nav-item a svg
-                    margin-right: 10px
+                    margin-right: 5px
+
+                span.nav-space
+                    margin-left: 27px
 
             .dropdown-toggle
                 white-space: nowrap
