@@ -9,7 +9,6 @@
                                 <h1>Edit Segment</h1>
                             </b-col>
                             <b-col col xl="5" lg="8" class="text-right">
-                                <!-- TODO: Move Save buttons and their functions from [targeting.vue] to here -->
                                 <!-- <b-button class="btn-save-changes" variant="none" @click="this.saveConditions">
                                     Save Changes
                                 </b-button>
