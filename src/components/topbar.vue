@@ -6,10 +6,9 @@
                     <b-col col lg="9">
                         <b-row align-v="center">
                             <b-col col xl="7" lg="4" class="text-left">
-                                <h1>Edit Campaign</h1>
+                                <h1>Edit Segment</h1>
                             </b-col>
                             <b-col col xl="5" lg="8" class="text-right">
-                                <!-- TODO: Move Save buttons and their functions from [targeting.vue] to here -->
                                 <!-- <b-button class="btn-save-changes" variant="none" @click="this.saveConditions">
                                     Save Changes
                                 </b-button>
@@ -154,7 +153,10 @@
         .nav-item
             li
                 .nav-item a svg
-                    margin-right: 10px
+                    margin-right: 5px
+
+                span.nav-space
+                    margin-left: 27px
 
             .dropdown-toggle
                 white-space: nowrap
@@ -255,7 +257,7 @@
             margin: 0 auto
             color: #fff
             font-size: 12px
-            border-radius: 7px
+            border-radius: 10px
             background: #5c6489
             background-size: 100%
             z-index: 999
@@ -276,7 +278,7 @@
             color: #fff
             font-size: 12px
             cursor: pointer
-            border-radius: 7px
+            border-radius: 10px
             border: 0
             transition: all 0.5s ease
             z-index: 999
