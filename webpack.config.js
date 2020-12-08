@@ -92,8 +92,10 @@ module.exports = {
     devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production'
-    || process.env.NODE_ENV === 'staging'
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
+console.log('configEnv:', config.env)
+if (config.env === 'production'
+    || config.env === 'staging'
 ) {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
@@ -101,7 +103,7 @@ if (process.env.NODE_ENV === 'production'
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: config.env || '"production"',
+                NODE_ENV: `${config.env}`,
                 SFL_CORE_CONDITION: config.sflCoreCondition.host,
                 SSO_API: config.sso.host,
             }
