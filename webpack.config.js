@@ -92,7 +92,9 @@ module.exports = {
     devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production'
+    || process.env.NODE_ENV === 'staging'
+) {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     console.log('\n before create build:', config)
