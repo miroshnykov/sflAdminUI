@@ -96,7 +96,7 @@ module.exports = {
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
-    console.log('\n before create build:', config)
+    console.log('\n **** Production before create build:', config)
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
@@ -115,11 +115,11 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV === 'staging') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
-    console.log('\n before create build:', config)
+    console.log('\n **** Staging ***** URL: https://sfl-condition-stage1.surge.systems/ https://am-ssoauth-stage1.surge.systems')
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: `staging`,
+                NODE_ENV: '"staging"',
                 SFL_CORE_CONDITION: '"https://sfl-condition-stage1.surge.systems/"',
                 SSO_API: '"https://am-ssoauth-stage1.surge.systems/"',
             }
