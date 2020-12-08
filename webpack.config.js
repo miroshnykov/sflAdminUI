@@ -93,11 +93,7 @@ module.exports = {
     devtool: '#eval-source-map'
 }
 
-console.log('\nprocess.env.NODE_ENV:', process.env.NODE_ENV)
-console.log('\nconfigEnv:', config.env)
-if (config.env === 'production'
-    || config.env === 'staging'
-) {
+if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     console.log('\n before create build:', config)
@@ -107,6 +103,25 @@ if (config.env === 'production'
                 NODE_ENV: `${config.env}`,
                 SFL_CORE_CONDITION: config.sflCoreCondition.host,
                 SSO_API: config.sso.host,
+            }
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        })
+    ])
+}
+
+if (process.env.NODE_ENV === 'staging') {
+    module.exports.devtool = '#source-map'
+    // http://vue-loader.vuejs.org/en/workflow/production.html
+    console.log('\n before create build:', config)
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: `staging`,
+                SFL_CORE_CONDITION: '"https://sfl-condition-stage1.surge.systems/"',
+                SSO_API: '"https://am-ssoauth-stage1.surge.systems/"',
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
