@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const Dotenv = require('dotenv-webpack')
 const config = require('plain-config')()
 
+console.log("Config:",config)
 module.exports = {
     // entry: './src/main.js',
     entry: ["@babel/polyfill", "./src/main.js"],
@@ -92,8 +93,8 @@ module.exports = {
     devtool: '#eval-source-map'
 }
 
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-console.log('configEnv:', config.env)
+console.log('\nprocess.env.NODE_ENV:', process.env.NODE_ENV)
+console.log('\nconfigEnv:', config.env)
 if (config.env === 'production'
     || config.env === 'staging'
 ) {

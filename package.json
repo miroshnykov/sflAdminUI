@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env webpack --progress --hide-modules",
+    "build": "cross-env NODE_ENV=staging webpack --progress --hide-modules",
+    "buildProd": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "prod": "node server.js --conf=/run/secrets/sfl-admin-prod.js",
     "stage1": "node server.js --conf=/run/secrets/sfl-admin-stage1.js"
   },
