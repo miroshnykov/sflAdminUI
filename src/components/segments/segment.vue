@@ -8,9 +8,9 @@
                 <b-col col lg="8">
 
                 <h1 class="segment__name" :title="segment.name">
-                    <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)"><i class="far fa-chevron-up"></i></span>
+                    <span v-bind:title="getTitle(segment)" class="segment__active" @click="toggleState(segment)"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
                     {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
-                    <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down"></i></span>-->
+                    <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span>-->
                     <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                 </h1>
                 <!--@focus="focusMenu" @blur="blur"-->
@@ -18,7 +18,7 @@
                 <!-- TODO: Toggle doesnt work, also cant find where to change icon from plus symbol to chevron down, like the mock -->
                 <button class="segment__toggle-menu"/>
 
-                <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down"></i></span>-->
+                <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span>-->
 
                 </b-col>
                 <b-col col lg="4">
