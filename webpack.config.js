@@ -100,7 +100,7 @@ if (process.env.NODE_ENV === 'production') {
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: `${config.env}`,
+                NODE_ENV: `"${config.env}"`,
                 SFL_CORE_CONDITION: config.sflCoreCondition.host,
                 SSO_API: config.sso.host,
             }

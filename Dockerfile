@@ -15,7 +15,16 @@ WORKDIR /home/app
 
 COPY . .
 RUN npm install
-RUN npm run build
+#RUN npm run build
+if [ "$BRANCH" = "stage1" ] ; then \
+               RUN npm run buildStage ; \
+           elif [ "$BRANCH" = "stage2" ] ; then \
+               RUN npm run buildStage ; \
+           else \
+               RUN npm run buildProd ; \
+           fi
+
+
 EXPOSE 8080
 
 # Required to push into different stages.
