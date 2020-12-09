@@ -21,7 +21,7 @@ RUN npm install
 ARG branch
 ENV BRANCH=${branch}
 
-RUN if [ "$BRANCH" = "stage1" ] ; then \
+ENTRYPOINT if [ "$BRANCH" = "stage1" ] ; then \
                npm run buildStage ; \
            elif [ "$BRANCH" = "stage2" ] ; then \
                npm run buildStage ; \
