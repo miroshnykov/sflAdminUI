@@ -16,7 +16,7 @@
                 <!--@focus="focusMenu" @blur="blur"-->
 
                 <!-- TODO: Toggle doesnt work, also cant find where to change icon from plus symbol to chevron down, like the mock -->
-                <button class="segment__toggle-menu"/>
+<!--                <button class="segment__toggle-menu"/>-->
 
                 <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
 
@@ -39,7 +39,7 @@
             <!-- <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label> -->
 
             <!-- <div v-if="segment.lp.length !== 0" class="child-table"> -->
-            <div v-if="segment.lp.length !== 1" class="child-table">
+<!--            <div v-if="segment.lp.length !== 1" class="child-table">-->
             <!-- TODO: Known issue - If number is 0, other segments other than the first one don't show data.
             If number is 1, any modal popup repeats the amount of segments we have -->
 
@@ -51,68 +51,18 @@
                 </b-col>
                 <b-col col lg="6">
                     <!-- TODO: Saving LP doesnt work, please fix. Optional: Move popup modal to new page/component -->
-                    <b-button variant="primary btn-sm" v-b-modal.modal-scrollable>
+                    <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                              @click="showLPModal(segment.id)"
+                    >
                         <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> New LP
                     </b-button>
 
-                <div class="newLP">
-                    <b-modal id="modal-scrollable" scrollable title="">
-                        <p class="my-4" v-for="i in 20" :key="i">
-                            <h2 class="swal2-title" id="swal2-title" style="display: flex;">New Landing Page</h2>
-                            <label for="swal-input1"></label>
-
-                        <div class="condition-line1">
-                            <model-select
-                                    :options="getLpModify()"
-                                    @input="handleChangeLp($event, segment)"
-                                    :id="defineLpId(segment.id)"
-                                    :ref="defineLpId(segment.id)"
-                                    :value="segment.landingPageId"
-                                    placeholder="Search landing page..."
-                                    class="condition__country condition__matches custom-select "
-                            >
-                            </model-select>
-
-                            <!-- TODO: Show actual Weight values -->
-                            <b-row class="text-center">
-                                <b-col cols="6">
-                                    <div class="condition__controls condition-line">
-                                        <label class="text-center">Weight</label>
-                                        <input  type="text"
-                                                min="0" max="100"
-                                                value="20"
-                                                class="condition__matches custom-input text-center"
-                                                onpaste="return false"
-                                                onfocus="this.value=''"
-                                                onkeypress="
-                                                    return (
-                                                        event.charCode == 8
-                                                        || event.charCode == 0
-                                                        || event.charCode == 13
-                                                    ) ? null : event.charCode >= 48 && event.charCode <= 57
-                                                "
-                                        >
-                                        <!-- <b-form-text class="limitWeight">
-                                            20 / <span class="max-limit">100</span>
-                                        </b-form-text> -->
-                                    </div>
-                                </b-col>
-                                <b-col cols="6">
-                                    <div class="condition__controls condition-line">
-                                        <label class="text-center">Total Weight</label>
-                                        <input  type="text"
-                                                value="100"
-                                                class="condition__matches custom-input text-center"
-                                                disabled
-                                        >
-                                    </div>
-                                </b-col>
-                            </b-row>
-                        </div>
+                    <LandingPagesComp :id="'modal_' + segment.id" :ref="'modal_' + segment.id"
+                                      :segment="segment">
+                    </LandingPagesComp>
 
 
-                    </b-modal>
-                </div>
+
                 </b-col>
             </b-row>
 
@@ -153,94 +103,11 @@
                     (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> 20)
                 </b-badge>
 
-                <!-- TODO: Edit LP to work/save -->
-                <div class="editLP">
-                    <b-modal id="modal-edit-lp" scrollable title="">
-                        <p>
-                            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Edit Landing Page</h2>
-                            <label for="swal-input1"></label>
-
-                        <div class="condition-line1">
-                            <model-select
-                                    :options="getLpModify()"
-                                    @input="handleChangeLp($event, segment)"
-                                    :id="defineLpId(segment.id)"
-                                    :ref="defineLpId(segment.id)"
-                                    :value="segment.landingPageId"
-                                    placeholder="Search landing page..."
-                                    class="condition__country condition__matches custom-select "
-                            >
-                            </model-select>
-
-                            <!-- TODO: Show actual Weight values -->
-                            <b-row class="text-center">
-                                <b-col cols="6">
-                                    <div class="condition__controls condition-line">
-                                        <label class="text-center">Weight</label>
-                                        <input  type="text"
-                                                min="0" max="100"
-                                                value="20"
-                                                class="condition__matches custom-input text-center"
-                                                onpaste="return false"
-                                                onfocus="this.value=''"
-                                                onkeypress="
-                                                    return (
-                                                        event.charCode == 8
-                                                        || event.charCode == 0
-                                                        || event.charCode == 13
-                                                    ) ? null : event.charCode >= 48 && event.charCode <= 57
-                                                "
-                                        >
-                                        <!-- <b-form-text class="limitWeight">
-                                            20 / <span class="max-limit">100</span>
-                                        </b-form-text> -->
-                                    </div>
-                                </b-col>
-                                <b-col cols="6">
-                                    <div class="condition__controls condition-line">
-                                        <label class="text-center">Total Weight</label>
-                                        <input  type="text"
-                                                value="100"
-                                                class="condition__matches custom-input text-center"
-                                                disabled
-                                        >
-                                    </div>
-                                </b-col>
-                            </b-row>
-                        </div>
-
-
-                    </b-modal>
-                </div>
-
                 <br>
                 <!-- TODO: Show actual current + total Weight values -->
                 <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: 80 / 100</span>
-            </div>
+<!--            </div>-->
 
-
-
-
-            <!--            <label style="font-size: 12px;">( {{segment.id}} )</label>-->
-            <!--            <b-button variant="light">Light</b-button>-->
-
-            <!--                    <b-button variant="primary" class="margin-left-10" @click="this.addCampaign">-->
-            <!--                        <i class="fas fa-plus" data-fa-transform="shrink-1"></i> Edit-->
-            <!--                    </b-button>-->
-
-            <!--            <button tag="button" @click="clickMenuItem('edit')" class="segment__edit segment__menu-item" @blur="blur">-->
-
-            <!--                Edit-->
-            <!--            </button>-->
-            <!--            <ul :class="`segment__menu-open`">-->
-            <!--                <li>-->
-
-            <!--                </li>-->
-
-            <!--            </ul>-->
-            <!--            <template v-if="showLandingPages">-->
-            <!--                <landing-pages :landingPages="segment.landingPages" :handleSave="updateSegment.bind(this,segment)" />-->
-            <!--            </template>-->
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
             </div>
@@ -254,9 +121,11 @@
     import {mapActions, mapMutations, mapGetters} from "vuex";
     import {ModelSelect} from 'vue-search-select'
 
+    import LandingPagesComp from './landingPages'
+
     export default {
         name: "segment",
-        components: {ModelSelect},
+        components: {ModelSelect, LandingPagesComp},
         props: {
             segment: Object
         },
@@ -287,22 +156,15 @@
             //         })
             //     }
             // },
-            // showBucketModal (index) {
-            //     let modal_id = 'modal_' + index
-            //     console.log('showModal:', modal_id)
-            //     this.$refs[modal_id][0].show(index)
-            //     console.log('this.$refs[modal_id]-', this.$refs[modal_id])
-            // },
+            showLPModal (index) {
+                let modal_id = 'modal_' + index
+                console.log('showModal:', modal_id)
+                this.$refs[modal_id].show(index)
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
             handleChangeLp(lpId, item) {
                 item.landingPageId = lpId
                 debugger
-            },
-            getLpModify() {
-                return this.getLandingPages.map(item => {
-                    item.value = item.id
-                    item.text = item.name + ' (' + item.id + ') '
-                    return item
-                })
             },
             getStatusList () {
                 return [
@@ -375,19 +237,6 @@
                         })
                     }
                 })
-            },
-            blur: function (event) {
-                return
-                debugger
-                let {relatedTarget, target} = event;
-                if (
-                    !relatedTarget ||
-                    !relatedTarget.classList.contains("segment__menu-item")
-                ) {
-                    this.showMenu = false;
-                    if (this.showMask && !target.classList.contains("segment__delete"))
-                        this.toggleMask();
-                }
             },
             getTitle(segment) {
                 return 'Expand or Collapse'
@@ -474,20 +323,6 @@
         height: auto;
     }
 
-    .segment.segment__draggable:hover {
-        opacity: 0.9;
-    }
-
-    .segment__active, .segment__disabled {
-        cursor: pointer;
-        user-select: none;
-    }
-
-    span.segment__active:hover {
-        opacity: 0.5;
-        color: #36B8E1 !important;
-    }
-
     .segment__empty {
         color: red;
     }
@@ -508,70 +343,5 @@
         height: 80px;
     }
 
-    .segment__toggle-menu {
-        top: 0;
-        right: 0.5rem;
-        position: absolute;
-        background: none;
-        transform: rotate(45deg);
-        border: solid #e1d4e1;
-        border-radius: 3px;
-        border-width: 0 3px 3px 0;
-
-        &:focus,
-        &:hover {
-            outline: none;
-            border-color: #888;
-        }
-
-        & + .segment__menu.open {
-            opacity: 1;
-            width: 12rem;
-            height: auto;
-
-            .segment__menu-item {
-                display: block;
-
-                &:active {
-                    background: #6dcbfa;
-                }
-            }
-        }
-    }
-
-    $menu-time: 0.3s;
-
-    .segment__menu {
-        margin: 0;
-        padding: 0;
-        top: 2rem;
-        right: 1rem;
-        width: 0;
-        height: 0;
-        opacity: 0;
-        z-index: 2;
-        overflow: hidden;
-        list-style: none;
-        position: absolute;
-        background: white;
-        transition: height $menu-time ease-in, width $menu-time ease-in,
-        opacity $menu-time ease-in-out;
-        border: solid #e1d4e1 2px;
-        box-shadow: 2px 3px 5px #333;
-
-        button {
-            width: 100%;
-            border: none;
-            display: none;
-            background: white;
-            white-space: nowrap;
-
-            &:hover,
-            &:focus {
-                outline: none;
-                background: #6dcbfa;
-            }
-        }
-    }
 
 </style>
