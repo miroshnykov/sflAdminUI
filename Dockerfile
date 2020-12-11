@@ -15,19 +15,19 @@ WORKDIR /home/app
 
 COPY . .
 RUN npm install
-#RUN npm run build
+RUN npm run buildStage
 
 # Required to push into different stages.
 ARG branch
 ENV BRANCH=${branch}
 
-ENTRYPOINT if [ "$BRANCH" = "stage1" ] ; then \
-               npm run buildStage ; \
-           elif [ "$BRANCH" = "stage2" ] ; then \
-               npm run buildStage ; \
-           else \
-               npm run buildProd ; \
-           fi
+#ENTRYPOINT if [ "$BRANCH" = "stage1" ] ; then \
+#               npm run buildStage ; \
+#           elif [ "$BRANCH" = "stage2" ] ; then \
+#               npm run buildStage ; \
+#           else \
+#               npm run buildProd ; \
+#           fi
 
 
 EXPOSE 8080
