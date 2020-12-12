@@ -244,7 +244,6 @@
                 location.reload()
             },
             async saveConditions() {
-                debugger
                 if (!this.validate()) return
                 await this.$store.dispatch('segment/saveConditions', this)
             },

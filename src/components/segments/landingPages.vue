@@ -25,10 +25,10 @@
                     </model-select>
 
 
-<!--                    :value="segment.landingPageId"-->
+                    <!--                    :value="segment.landingPageId"-->
                 </div>
                 <p class="text-left">
-                    <label :id="defineLpLabelId(segment.id)" >Choose:{{ segment.landingPageId }} </label>
+                    <label :id="defineLpLabelId(segment.id)">Choose:{{ segment.landingPageId }} </label>
                 </p>
                 <br>
 
@@ -36,13 +36,13 @@
                     <b-col cols="6">
                         <div class="condition__controls condition-line">
                             <label class="text-center">Weight</label>
-                            <input  type="text"
-                                    min="0" max="100"
-                                    value="20"
-                                    class="condition__matches custom-input text-center"
-                                    onpaste="return false"
-                                    onfocus="this.value=''"
-                                    onkeypress="
+                            <input type="text"
+                                   min="0" max="100"
+                                   class="condition__matches custom-input text-center"
+                                   onpaste="return false"
+                                   :id="defineWeightId(segment.id)"
+                                   onfocus="this.value=''"
+                                   onkeypress="
                                                     return (
                                                         event.charCode == 8
                                                         || event.charCode == 0
@@ -58,10 +58,10 @@
                     <b-col cols="6">
                         <div class="condition__controls condition-line">
                             <label class="text-center">Total Weight</label>
-                            <input  type="text"
-                                    value="100"
-                                    class="condition__matches custom-input text-center"
-                                    disabled
+                            <input type="text"
+                                   value="100"
+                                   class="condition__matches custom-input text-center"
+                                   disabled
                             >
                         </div>
                     </b-col>
@@ -72,7 +72,9 @@
             <b-row class="text-center">
                 <b-col cols="12">
                     <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="save">Save</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp(segment)">
+                        Save
+                    </button>
                 </b-col>
             </b-row>
 
@@ -89,7 +91,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        data () {
+        data() {
             return {
                 visible: false
             }
@@ -100,11 +102,14 @@
             ...mapGetters('lp', ['getLandingPages'])
         },
         methods: {
-            setElIdByAff (value, id) {
+            setElIdByAff(value, id) {
                 return `${value}-${id}`
             },
             defineLpId(id) {
                 return `lp-${id}`
+            },
+            defineWeightId(id) {
+                return `weight-${id}`
             },
             defineLpLabelId(id) {
                 return `lp-label-${id}`
@@ -117,31 +122,55 @@
                 })
             },
             handleChangeLp(lpId, item) {
-                // item.landingPageId = lpId
-                debugger
-                let nameLp = this.getLandingPages.filter(i=>{
+                item.landingPageId = lpId
+                let nameLp = this.getLandingPages.filter(i => {
                     return i.value === lpId
                 })
-                document.querySelector(`#lp-label-${item.id}`).textContent = `Chosee LP:`+ lpId + nameLp[0].text
-                // el.value = lpId
-                // el[0].value = lpId
-
-                debugger
+                document.querySelector(`#lp-label-${item.id}`).textContent = `Chosee LP:` + lpId + nameLp[0].text
             },
-            getAffiliatesModify () {
+            getAffiliatesModify() {
                 return this.getAffiliates.map(item => {
                     item.value = item.id
                     item.text = item.name + ' (' + item.id + ') '
                     return item
                 })
             },
-            show (index) {
+            show(index) {
                 this.visible = true
             },
-            save () {
+            saveLp(data) {
                 this.visible = false
+                let segmentLpData = {}
+
+                segmentLpData.segmentId = data.id || 0
+                segmentLpData.lpId = data.landingPageId || 0
+                let weight = document.querySelector(`#weight-${data.id}`).value
+
+                segmentLpData.weight = +weight || 0
+                this.$store.dispatch('lp/createSegmentLp', segmentLpData).then(res => {
+                    if (res.segmentId) {
+                        this.$swal.fire({
+                            type: 'success',
+                            position: 'top-end',
+                            title: `Segment LP has been created`,
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        // this.$router.push(`/segment/${res.id}`)
+                        location.reload()
+
+                    } else {
+                        this.$swal.fire({
+                            title: 'Missing information',
+                            type: 'error',
+                            text: 'Please name your segment and try again.',
+                            confirmButtonColor: '#2ED47A',
+                        })
+                    }
+                })
+
             },
-            close () {
+            close() {
                 this.visible = false
             },
             // async close () {

@@ -733,7 +733,6 @@ conditionFilter.vue
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.dimensionName = `prod`
                 item.dimensionId = this.getDimensionId(this.getDimensions, `prod`)
-                debugger
             },
             handleChangeCountry(event, item) {
 

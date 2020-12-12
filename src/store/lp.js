@@ -1,9 +1,8 @@
-
 import lp from '../api/lp'
 
 export default {
     state: {
-        lp:[],
+        lp: [],
     },
     namespaced: true,
     mutations: {
@@ -12,8 +11,18 @@ export default {
         }
     },
     actions: {
-        async saveLPStore ({ commit }) {
+        async saveLPStore({commit}) {
             commit('saveLPStore', await lp.lp())
+        },
+        async createSegmentLp({commit}, obj) {
+            const {segmentId, lpId, weight} = obj
+            return await lp.createSegmentLp(segmentId, lpId, weight)
+
+        },
+        async deleteSegmentLp({commit}, obj) {
+            const {segmentId, lpId} = obj
+            return await lp.deleteSegmentLp(segmentId, lpId)
+
         },
     },
     getters: {

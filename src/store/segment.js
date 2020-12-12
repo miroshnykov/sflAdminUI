@@ -298,7 +298,6 @@ export default {
             return await segments.updateSegment(segmentInfo.id, segmentInfo.name, segmentInfo.weight,segmentInfo.multiplier)
         },
         async updateLandingPage({commit}, segmentInfo) {
-            debugger
             return await segments.updateLandingPage(segmentInfo)
         },
         async deleteSegment({commit}, segmentId) {
