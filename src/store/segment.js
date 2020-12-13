@@ -1,6 +1,7 @@
 import {reFormatJSON} from '../helpers'
 
 import segment from '../api/segmentConditions'
+import segmentStatus from '../api/segment'
 import segments from '../api/segments'
 import {mapState} from 'vuex'
 
@@ -53,6 +54,7 @@ const deleteFilter_ = (state, indexFilters) => {
 export default {
     state: {
         segmentFilter: [],
+        segmentStatus: [],
         segmentId: 0,
         segmentName: '',
         segmentRuleCount: 0
@@ -64,6 +66,9 @@ export default {
             state.segmentFilter = data.segments
             state.segmentId = data.segmentId
             state.segmentRuleCount = data.segmentRuleCount
+        },
+        async saveSegmentStatus(state, segmentStatus) {
+            state.segmentStatus = segmentStatus
         },
         addFilter(state, item) {
             const {segmentFilter} = state
@@ -239,6 +244,12 @@ export default {
         },
     },
     actions: {
+        async saveSegmentStatusStore({commit}, id) {
+            let segmentsData = await segmentStatus.segmentStatus(id)
+            console.log(`segmentStatus`)
+            console.table(reFormatJSON(segmentsData))
+            commit('saveSegmentStatus', segmentsData)
+        },
         async getSegmentConditions({commit}, id) {
             let res = await segment.getSegmentConditions(id)
             let segmentCountFilters = await segment.getSegmentCountFilters(id)
@@ -308,7 +319,8 @@ export default {
         },
     },
     getters: {
-        getSegmentFilter: state => state.segmentFilter
+        getSegmentFilter: state => state.segmentFilter,
+        getSegmentStatus: state => state.segmentStatus
     },
 
 
