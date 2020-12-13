@@ -20,7 +20,7 @@
 
                             :ref="defineLpId(segment.id)"
                             placeholder="Search landing page..."
-                            class="condition__country condition__matches custom-select "
+                            :class="getClassLp(segment.id)"
                     >
                     </model-select>
 
@@ -41,7 +41,6 @@
                                    class="condition__matches custom-input text-center"
                                    onpaste="return false"
                                    :id="defineWeightId(segment.id)"
-                                   onfocus="this.value=''"
                                    onkeypress="
                                                     return (
                                                         event.charCode == 8
@@ -49,6 +48,14 @@
                                                         || event.charCode == 13
                                                     ) ? null : event.charCode >= 48 && event.charCode <= 57
                                                 "
+                                   onkeyup="
+                                        this.style.background = 'white'
+                                               if(this.value === '' || parseInt(this.value)>100){
+                                                    this.value = 100
+                                                    return false
+                                                }
+                                            "
+
                             >
                             <!-- <b-form-text class="limitWeight">
                                 20 / <span class="max-limit">100</span>
@@ -102,6 +109,9 @@
             ...mapGetters('lp', ['getLandingPages'])
         },
         methods: {
+            getClassLp(id){
+                return `condition__country condition__matches custom-select lpInput-${id}`
+            },
             setElIdByAff(value, id) {
                 return `${value}-${id}`
             },
@@ -126,7 +136,8 @@
                 let nameLp = this.getLandingPages.filter(i => {
                     return i.value === lpId
                 })
-                document.querySelector(`#lp-label-${item.id}`).textContent = `Chosee LP:` + lpId + nameLp[0].text
+                document.querySelector(`#lp-label-${item.id}`).textContent = `Choose LP:` + lpId + nameLp[0].text
+                document.querySelector(`.lpInput-${item.id}`).style.background = 'white'
             },
             getAffiliatesModify() {
                 return this.getAffiliates.map(item => {
@@ -139,8 +150,23 @@
                 this.visible = true
             },
             saveLp(data) {
+                let weightValue = document.querySelector(`#weight-${data.id}`).value
+
+                if (+weightValue === 0) {
+                    alert(' weight missing')
+                    document.querySelector(`#weight-${data.id}`).style.background = '#f38282'
+                    return
+                }
+
+                if (!data.landingPageId) {
+                    alert('landing page  missing')
+                    document.querySelector(`.lpInput-${data.id}`).style.background = '#f38282'
+                    return
+                }
+
                 this.visible = false
                 let segmentLpData = {}
+
 
                 segmentLpData.segmentId = data.id || 0
                 segmentLpData.lpId = data.landingPageId || 0
@@ -148,7 +174,7 @@
 
                 segmentLpData.weight = +weight || 0
                 this.$store.dispatch('lp/createSegmentLp', segmentLpData).then(res => {
-                    if (res.segmentId) {
+                    if (res && res.segmentId) {
                         this.$swal.fire({
                             type: 'success',
                             position: 'top-end',
@@ -156,7 +182,6 @@
                             showConfirmButton: false,
                             timer: 1000
                         })
-                        // this.$router.push(`/segment/${res.id}`)
                         location.reload()
 
                     } else {
