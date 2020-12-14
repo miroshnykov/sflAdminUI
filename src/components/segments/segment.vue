@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
 
-        <section class="segment" :id="segment.id" :class="{segment__draggable: true}"
+        <section :class="getClassSegment(segment.status)" :id="segment.id"
                  @change="updateGroup($event, group)">
 
             <b-row class="text-center" align-v="center">
@@ -170,9 +170,13 @@
             //         })
             //     }
             // },
+            getClassSegment(status) {
+                let classStatus =  status === 'active' ? 'segment' : 'segmentInActive'
+                return `${classStatus} segment__draggable`
+            },
             activeInactiveSwitch(status, segment) {
                 let self = this
-                self.status = status && 'active'||'inactive'
+                self.status = status && 'active' || 'inactive'
                 self.segmentId = segment.id
                 self.segmentName = segment.name
                 this.$nextTick(async () => {
@@ -183,7 +187,7 @@
 
                     let res = await this.$store.dispatch('segment/updateSegmentStatus', obj)
 
-                    if (res && res.segmentId){
+                    if (res && res.segmentId) {
                         self.$swal.fire({
                             type: 'success',
                             position: 'top-end',
@@ -191,6 +195,7 @@
                             showConfirmButton: false,
                             timer: 1000
                         })
+                        location.reload()
                     } else {
                         self.$swal.fire({
                             title: `Segment status was not updated`,
@@ -410,6 +415,19 @@
         position: relative;
         border-radius: 10px;
         border: solid #2ED47A 2px;
+        background: #fff;
+        user-select: none;
+    }
+
+    .segmentInActive {
+        opacity: 1;
+        margin: 15px 20px 0px 0px;
+        // height: 80px;
+        width: 352px;
+        padding: 1rem;
+        position: relative;
+        border-radius: 10px;
+        border: solid rgba(75, 133, 225, 0.15) 2px;
         background: #fff;
         user-select: none;
     }
