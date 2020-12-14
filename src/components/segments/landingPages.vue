@@ -6,10 +6,10 @@
         <div class="modal-container">
 
             <div class="modal-body">
-                <h1 class="title">Add an LP</h1>
+                <h1 class="title">{{ this.editMode && 'Update Landing page' || 'Add Landing page' }}</h1>
+
                 <p class="text-left">
                     <label>SegmentId:{{ segment.id }} </label>
-                    <label>SegmentId:{{ JSON.stringify(segment) }} </label>
                 </p>
 
                 <div class="condition-line1">
@@ -17,7 +17,7 @@
                             :options="getLpModify()"
                             @input="handleChangeLp($event, segment)"
                             :id="defineLpId(segment.id)"
-
+                            :value="this.lpId"
                             :ref="defineLpId(segment.id)"
                             placeholder="Search landing page..."
                             :class="getClassLp(segment.id)"
@@ -41,6 +41,7 @@
                                    class="condition__matches custom-input text-center"
                                    onpaste="return false"
                                    :id="defineWeightId(segment.id)"
+                                   :value="this.weight"
                                    onkeypress="
                                                     return (
                                                         event.charCode == 8
@@ -100,7 +101,12 @@
     export default {
         data() {
             return {
-                visible: false
+                visible: false,
+                editMode: false,
+                segmentId: 0,
+                weight: 0,
+                lpId: 0,
+                id: 0,
             }
         },
         props: ['segment'],
@@ -109,7 +115,7 @@
             ...mapGetters('lp', ['getLandingPages'])
         },
         methods: {
-            getClassLp(id){
+            getClassLp(id) {
                 return `condition__country condition__matches custom-select lpInput-${id}`
             },
             setElIdByAff(value, id) {
@@ -133,11 +139,12 @@
             },
             handleChangeLp(lpId, item) {
                 item.landingPageId = lpId
-                let nameLp = this.getLandingPages.filter(i => {
-                    return i.value === lpId
-                })
-                document.querySelector(`#lp-label-${item.id}`).textContent = `Choose LP:` + lpId + nameLp[0].text
-                document.querySelector(`.lpInput-${item.id}`).style.background = 'white'
+                this.lpId = lpId
+                // let nameLp = this.getLandingPages.filter(i => {
+                //     return i.value === lpId
+                // })
+                // document.querySelector(`#lp-label-${item.id}`).textContent = `Choose LP:` + lpId + nameLp[0].text
+                // document.querySelector(`.lpInput-${item.id}`).style.background = 'white'
             },
             getAffiliatesModify() {
                 return this.getAffiliates.map(item => {
@@ -146,8 +153,15 @@
                     return item
                 })
             },
-            show(index) {
+            show(segmentId, id, lpId, weight) {
                 this.visible = true
+                this.segmentId = segmentId
+                if (lpId) {
+                    this.editMode = true
+                    this.lpId = lpId
+                    this.id = id
+                    this.weight = weight
+                }
             },
             saveLp(data) {
                 let weightValue = document.querySelector(`#weight-${data.id}`).value
@@ -166,37 +180,70 @@
 
                 this.visible = false
                 let segmentLpData = {}
-
-
+                segmentLpData.id = this.id || 0
                 segmentLpData.segmentId = data.id || 0
                 segmentLpData.lpId = data.landingPageId || 0
                 let weight = document.querySelector(`#weight-${data.id}`).value
-
                 segmentLpData.weight = +weight || 0
-                this.$store.dispatch('lp/createSegmentLp', segmentLpData).then(res => {
-                    if (res && res.segmentId) {
-                        this.$swal.fire({
-                            type: 'success',
-                            position: 'top-end',
-                            title: `Segment LP has been created`,
-                            showConfirmButton: false,
-                            timer: 1000
-                        })
-                        location.reload()
 
-                    } else {
-                        this.$swal.fire({
-                            title: 'Missing information',
-                            type: 'error',
-                            text: 'Please name your segment and try again.',
-                            confirmButtonColor: '#2ED47A',
-                        })
-                    }
-                })
+                if (this.editMode) {
+
+                    this.$store.dispatch('lp/updateSegmentLp', segmentLpData).then(res => {
+                        if (res && res.segmentId) {
+                            this.$swal.fire({
+                                type: 'success',
+                                position: 'top-end',
+                                title: `Segment LP has been updated`,
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
+                            this.editMode = false
+                            location.reload()
+
+                        } else {
+                            this.$swal.fire({
+                                title: 'Missing information',
+                                type: 'error',
+                                text: 'Please name your segment and try again.',
+                                confirmButtonColor: '#2ED47A',
+                            })
+                            this.editMode = false
+                        }
+                    })
+
+                } else {
+                    this.$store.dispatch('lp/createSegmentLp', segmentLpData).then(res => {
+                        if (res && res.segmentId) {
+                            this.$swal.fire({
+                                type: 'success',
+                                position: 'top-end',
+                                title: `Segment LP has been created`,
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
+                            location.reload()
+
+                        } else {
+                            this.$swal.fire({
+                                title: 'Missing information',
+                                type: 'error',
+                                text: 'Please name your segment and try again.',
+                                confirmButtonColor: '#2ED47A',
+                            })
+                        }
+                    })
+
+                }
+
 
             },
             close() {
                 this.visible = false
+                this.editMode = false
+                this.segmentId = 0
+                this.lpId = 0
+                this.id = 0
+                this.weight = 0
             },
             // async close () {
             //     this.visible = false

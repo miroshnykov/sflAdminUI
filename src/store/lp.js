@@ -19,9 +19,14 @@ export default {
             return await lp.createSegmentLp(segmentId, lpId, weight)
 
         },
+        async updateSegmentLp({commit}, obj) {
+            const {id, segmentId, lpId, weight} = obj
+            return await lp.updateSegmentLp(id, segmentId, lpId, weight)
+
+        },
         async deleteSegmentLp({commit}, obj) {
-            const {segmentId, lpId} = obj
-            return await lp.deleteSegmentLp(segmentId, lpId)
+            const {id} = obj
+            return await lp.deleteSegmentLp(id)
 
         },
     },

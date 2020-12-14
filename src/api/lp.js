@@ -53,17 +53,42 @@ const createSegmentLp = async (segmentId, lpId, weight) => {
     }
 }
 
-const deleteSegmentLp = async (segmentId, lpId) => {
+const updateSegmentLp = async (id, segmentId, lpId, weight) => {
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          updateLp(
+                                id:${id}
+                                segmentId:${segmentId}
+                                lpId:${lpId}
+                                weight:${weight || 0}
+                          ){
+                                segmentId
+                          }
+                    }`,
+            }
+        )
+
+        let response = res.data.data.updateLp
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+}
+
+const deleteSegmentLp = async (id) => {
     try {
         const res = await api.post(
             '', {
                 query: `
                     mutation{
                           deleteSegmentLp(
-                                segmentId:${segmentId}
-                                lpId:${lpId}
+                                id:${id}
                           ){
-                                segmentId
+                                id
                           }
                     }`,
             }
@@ -80,5 +105,6 @@ const deleteSegmentLp = async (segmentId, lpId) => {
 export default {
     lp,
     createSegmentLp,
+    updateSegmentLp,
     deleteSegmentLp
 }

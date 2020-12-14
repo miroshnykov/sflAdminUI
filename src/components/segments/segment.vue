@@ -101,17 +101,24 @@
                     <!-- TODO: Could only get LP Name to show via HTML, but need ID and Weight also -->
                     <span class="landing-page-name" v-if="lp.name.length<=37"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+lp.id + ' Weight:'+lp.weight">
-                        {{ lp.name }}
+                         {{ lp.lpId }} {{ lp.name }}
                     </span>
                     <!-- TODO: Same thing - Could only get LP Name to show via HTML, but need ID and Weight also -->
                     <span class="landing-page-name" v-if="lp.name.length>=38"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+ lp.id + ' Weight:'+lp.weight">
                         {{ lp.name.substring(0,38)+"..." }}
                     </span>
-                    <b-button variant="light" @click="delSegmentLp(segment.id, lp.id)" v-b-tooltip.hover.top="'Delete'"
+                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete'"
                               style="z-index:2">
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
+
+                    <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
+                              v-b-tooltip.hover.top="'Edit'"
+                              style="z-index:2">
+                        <i class="far fa-edit" data-fa-transform="shrink-1"></i>
+                    </b-button>
+
                 </span>
 
                 (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> {{lp.weight}})
@@ -119,7 +126,7 @@
 
             <br>
             <!-- TODO: Show actual current + total Weight values -->
-            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: 80 / 100</span>
+            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getAumWeight(segment.lp)}} / 100</span>
             <!--            </div>-->
 
             <div v-if="errors" class="validate_error">
@@ -170,8 +177,15 @@
             //         })
             //     }
             // },
+            getAumWeight(lp) {
+                let sum = 0
+                lp.map(item => {
+                    sum = sum + item.weight
+                })
+                return sum
+            },
             getClassSegment(status) {
-                let classStatus =  status === 'active' ? 'segment' : 'segmentInActive'
+                let classStatus = status === 'active' ? 'segment' : 'segmentInActive'
                 return `${classStatus} segment__draggable`
             },
             activeInactiveSwitch(status, segment) {
@@ -208,10 +222,15 @@
                     // location.reload()
                 })
             },
-            showLPModal(index) {
-                let modal_id = 'modal_' + index
-                console.log('showModal:', modal_id)
-                this.$refs[modal_id].show(index)
+            showLPModal(segmentId, id, lpId, weight) {
+                let modal_id = 'modal_' + segmentId
+                if (id) {
+                    // edit
+                    this.$refs[modal_id].show(segmentId, id, lpId, weight)
+                } else {
+                    this.$refs[modal_id].show(segmentId)
+                }
+
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])
             },
             getTitleLp(info) {
@@ -256,7 +275,11 @@
                     })
                 }
             },
-            async delSegmentLp(segmentId, lpId) {
+            async editSegmentLp(segmentId, id, lpId, weight) {
+                console.log(lpId)
+                this.showLPModal(segmentId, id, lpId, weight)
+            },
+            async delSegmentLp(lpId) {
                 this.$swal.fire({
                     type: 'warning',
                     title: 'Are you sure?',
@@ -269,10 +292,9 @@
                     if (result.value) {
 
                         let obj = {}
-                        obj.segmentId = segmentId
-                        obj.lpId = lpId
+                        obj.id = lpId
                         this.$store.dispatch('lp/deleteSegmentLp', obj).then(res => {
-                            if (res.segmentId) {
+                            if (res.id) {
                                 this.$swal.fire({
                                     type: 'success',
                                     position: 'top-end',

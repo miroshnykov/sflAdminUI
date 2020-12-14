@@ -22,7 +22,7 @@
                         v-bind="{draggable: '.segment__draggable'}"
                         @end="onEnd"
                 >
-                    <segment v-for="segment in segments" :segment="segment" :key="segment.id"/>
+                    <segment v-for="segment in getSegments" :segment="segment" :key="segment.id"/>
                 </draggable>
             </div>
         </div>

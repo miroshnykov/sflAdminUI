@@ -17,6 +17,8 @@ const segments = async () => {
                         position
                         lp{
                             id
+                            segmentId
+                            lpId,
                             name  
                             weight                      
                         }
