@@ -30,32 +30,31 @@ const segmentStatus = async (id) => {
 
 const updateSegmentStatus = async (data) => {
 
-    const {id, status, name} = data
+    const {segmentId, status, name} = data
     try {
 
         const res = await api.post(
             '', {
                 query: `
-                mutation{
-                      updateSegmentStatus(
-                            id:${id}
-                            status:${status}
-                            name:${name}
-                      ){
-                            id
-                      }
-                }`,
+                    mutation{
+                          updateSegmentStatus(
+                                segmentId:${segmentId}
+                                status:"${status}"
+                                name:"${name}"
+                          ){
+                                segmentId
+                          }
+                    }`,
             }
         )
 
         let response = res.data.data.updateSegmentStatus
-        console.log('\nsegments reordering from DB response count:', response.length)
+        console.log('\nupdateSegmentStatus response', response)
         return response
     } catch (e) {
         console.log(e)
     }
 }
-
 
 
 export default {

@@ -21,6 +21,7 @@
                            placeholder="ex: My First Segment"
                            class="condition__matches campaign custom-input"
                            :value="getSegmentStatus[0].name"
+                           :id="defineSegmentNameId(id)"
                     >
                     <b-form-text id="lastModified">
                         Last Modified:  {{ formatDate_(new Date(getSegmentStatus[0].dateUpdated * 1000)) }}
@@ -96,6 +97,9 @@
             },
             defineStatusId(id) {
                 return `status-${id}`
+            },
+            defineSegmentNameId(id) {
+                return `segmentName-${id}`
             },
             capitalizeFirstLetter(str) {
                 return str.charAt(0).toUpperCase() + str.slice(1)

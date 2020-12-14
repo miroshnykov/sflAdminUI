@@ -11,6 +11,7 @@ const segments = async () => {
                     segments{
                         id
                         name
+                        status
                         dateAdded
                         dateAddedUnixTime
                         position

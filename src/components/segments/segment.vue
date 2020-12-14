@@ -33,8 +33,14 @@
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
 
-                    <!-- TODO: Switch from active to inactive, with different class states (green border = active, grey border = inactive) -->
-                    <b-form-checkbox v-model="checked" name="check-button" switch></b-form-checkbox>
+                    <b-form-checkbox
+                            class="active"
+                            name="check-button"
+                            :checked="segment.status==='active'"
+                            @change="activeInactiveSwitch($event, segment)"
+                            switch>
+                    </b-form-checkbox>
+
                 </b-col>
             </b-row>
 
@@ -164,6 +170,39 @@
             //         })
             //     }
             // },
+            activeInactiveSwitch(status, segment) {
+                let self = this
+                self.status = status && 'active'||'inactive'
+                self.segmentId = segment.id
+                self.segmentName = segment.name
+                this.$nextTick(async () => {
+                    let obj = {}
+                    obj.status = self.status
+                    obj.segmentId = self.segmentId
+                    obj.name = self.segmentName
+
+                    let res = await this.$store.dispatch('segment/updateSegmentStatus', obj)
+
+                    if (res && res.segmentId){
+                        self.$swal.fire({
+                            type: 'success',
+                            position: 'top-end',
+                            title: `Segment status  updated`,
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                    } else {
+                        self.$swal.fire({
+                            title: `Segment status was not updated`,
+                            type: 'error',
+                            text: 'Please check backend errors',
+                            confirmButtonColor: '#2ED47A',
+                        })
+                    }
+
+                    // location.reload()
+                })
+            },
             showLPModal(index) {
                 let modal_id = 'modal_' + index
                 console.log('showModal:', modal_id)
