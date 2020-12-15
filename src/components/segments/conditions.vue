@@ -8,71 +8,72 @@
                     <h2>Rules &amp; Conditions</h2>
                 </b-col>
                 <b-col cols="2">
-                    <b-button v-show="this.segmentRuleCount === 0" variant="secondary" class="btn-add-line" @click="this.addFilter">
+                    <b-button v-show="this.segmentRuleCount === 0" variant="secondary" class="btn-add-line"
+                              @click="this.addFilter">
                         <i class="fas fa-plus" data-fa-transform="shrink-2"></i> Add Rule
                     </b-button>
                 </b-col>
             </b-row>
 
-                    <!-- UI only
-                    <b-row align-v="center">
-                        <b-col cols="1">
-                            <div class="condition__controls">
-                                <label>Include</label>
-                                <b-form-checkbox switch size="lg"> </b-form-checkbox>
-                            </div>
-                        </b-col>
-                        <b-col cols="3">
-                            <div class="condition__controls">
-                                <label>Dimension Filter</label>
-                                <input type="text"
-                                    placeholder="ex: My First Segment"
-                                    class="condition__matches campaign custom-input"
-                                >
-                            </div>
-                        </b-col>
-                        <b-col cols="3">
-                            <div class="condition__controls">
-                                <label>Product ID &amp; Name</label>
-                                <input type="text"
-                                    placeholder=""
-                                    class="condition__matches campaign custom-input"
-                                >
-                            </div>
-                        </b-col>
-                        <b-col cols="1">
-                            <div class="condition__controls">
-                                <label for="label-platform">Condition</label>
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                  <label class="btn btn-secondary-">
-                                    <input
-                                            type="checkbox"
-                                            autocomplete="off"
-                                    > OR
-                                  </label>
+            <!-- UI only
+            <b-row align-v="center">
+                <b-col cols="1">
+                    <div class="condition__controls">
+                        <label>Include</label>
+                        <b-form-checkbox switch size="lg"> </b-form-checkbox>
+                    </div>
+                </b-col>
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>Dimension Filter</label>
+                        <input type="text"
+                            placeholder="ex: My First Segment"
+                            class="condition__matches campaign custom-input"
+                        >
+                    </div>
+                </b-col>
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>Product ID &amp; Name</label>
+                        <input type="text"
+                            placeholder=""
+                            class="condition__matches campaign custom-input"
+                        >
+                    </div>
+                </b-col>
+                <b-col cols="1">
+                    <div class="condition__controls">
+                        <label for="label-platform">Condition</label>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-secondary-">
+                            <input
+                                    type="checkbox"
+                                    autocomplete="off"
+                            > OR
+                          </label>
 
-                                  <label class="btn btn-secondary-">
-                                    <input
-                                            type="checkbox"
-                                            autocomplete="off"
-                                    > AND
-                                  </label>
-                                </div>
-                            </div>
-                        </b-col>
-                        <b-col cols="1">
-                            <div class="condition-button-delete">
-                                  <button
-                                          type="button"
-                                          class="remove_condition"
-                                          variant="danger"
-                                          v-b-tooltip.hover.top="'Delete Rule'"
-                                  >
-                                    <i class="far fa-trash-alt"></i>
-                                  </button>
-                            </div>
-                        </b-col>
-                    </b-row> -->
+                          <label class="btn btn-secondary-">
+                            <input
+                                    type="checkbox"
+                                    autocomplete="off"
+                            > AND
+                          </label>
+                        </div>
+                    </div>
+                </b-col>
+                <b-col cols="1">
+                    <div class="condition-button-delete">
+                          <button
+                                  type="button"
+                                  class="remove_condition"
+                                  variant="danger"
+                                  v-b-tooltip.hover.top="'Delete Rule'"
+                          >
+                            <i class="far fa-trash-alt"></i>
+                          </button>
+                    </div>
+                </b-col>
+            </b-row> -->
 
             <div v-if="loading" class="overlay-loader animated fadeIn">
                 <div class="segment-loading">
@@ -244,8 +245,9 @@
                 location.reload()
             },
             async saveConditions() {
-                debugger
                 if (!this.validate()) return
+                this.segmentName = document.querySelector(`#segmentName-${this.segmentId}`).value
+                this.segmentStatus = +document.querySelector(`#status-${this.segmentId}`).value && 'inactive' || 'active'
                 await this.$store.dispatch('segment/saveConditions', this)
             },
             ...mapMutations('segment', ['addFilter'])

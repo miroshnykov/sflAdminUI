@@ -11,12 +11,16 @@ const segments = async () => {
                     segments{
                         id
                         name
+                        status
                         dateAdded
                         dateAddedUnixTime
                         position
                         lp{
                             id
-                            name                        
+                            segmentId
+                            lpId,
+                            name  
+                            weight                      
                         }
 
                     } 

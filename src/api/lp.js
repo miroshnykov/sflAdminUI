@@ -1,4 +1,5 @@
 import {api} from './request'
+import {catchHandler, reFormatJSON} from "../helpers";
 
 const lp = async () => {
 
@@ -27,6 +28,83 @@ const lp = async () => {
 
 }
 
+const createSegmentLp = async (segmentId, lpId, weight) => {
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          createLp(
+                                segmentId:${segmentId}
+                                lpId:${lpId}
+                                weight:${weight || 0}
+                          ){
+                                segmentId
+                          }
+                    }`,
+            }
+        )
+
+        let response = res.data.data.createLp
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+}
+
+const updateSegmentLp = async (id, segmentId, lpId, weight) => {
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          updateLp(
+                                id:${id}
+                                segmentId:${segmentId}
+                                lpId:${lpId}
+                                weight:${weight || 0}
+                          ){
+                                segmentId
+                          }
+                    }`,
+            }
+        )
+
+        let response = res.data.data.updateLp
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+}
+
+const deleteSegmentLp = async (id) => {
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          deleteSegmentLp(
+                                id:${id}
+                          ){
+                                id
+                          }
+                    }`,
+            }
+        )
+        let response = res.data.data.deleteSegmentLp
+        console.log('  >>> deleteSegmentLp')
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+}
+
 export default {
-    lp
+    lp,
+    createSegmentLp,
+    updateSegmentLp,
+    deleteSegmentLp
 }

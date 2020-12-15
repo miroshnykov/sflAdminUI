@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const Dotenv = require('dotenv-webpack')
 const config = require('plain-config')()
 
+console.log("Config:",config)
 module.exports = {
     // entry: './src/main.js',
     entry: ["@babel/polyfill", "./src/main.js"],
@@ -95,13 +96,32 @@ module.exports = {
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
-    console.log('\n before create build:', config)
+    console.log('\n **** Production before create build:', config)
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: '"production"',
+                NODE_ENV: `"${config.env}"`,
                 SFL_CORE_CONDITION: config.sflCoreCondition.host,
                 SSO_API: config.sso.host,
+            }
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        })
+    ])
+}
+
+if (process.env.NODE_ENV === 'staging') {
+    module.exports.devtool = '#source-map'
+    // http://vue-loader.vuejs.org/en/workflow/production.html
+    console.log('\n **** Staging ***** URL: https://sfl-condition-stage1.surge.systems/ https://am-ssoauth-stage1.surge.systems')
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"staging"',
+                SFL_CORE_CONDITION: '"https://sfl-condition-stage1.surge.systems/"',
+                SSO_API: '"https://am-ssoauth-stage1.surge.systems/"',
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
