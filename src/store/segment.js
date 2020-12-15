@@ -1,6 +1,7 @@
 import {reFormatJSON} from '../helpers'
 
 import segment from '../api/segmentConditions'
+import segmentStatusApi from '../api/segment'
 import segments from '../api/segments'
 import {mapState} from 'vuex'
 
@@ -53,6 +54,7 @@ const deleteFilter_ = (state, indexFilters) => {
 export default {
     state: {
         segmentFilter: [],
+        segmentStatus: [],
         segmentId: 0,
         segmentName: '',
         segmentRuleCount: 0
@@ -64,6 +66,9 @@ export default {
             state.segmentFilter = data.segments
             state.segmentId = data.segmentId
             state.segmentRuleCount = data.segmentRuleCount
+        },
+        async saveSegmentStatus(state, segmentStatus) {
+            state.segmentStatus = segmentStatus
         },
         addFilter(state, item) {
             const {segmentFilter} = state
@@ -201,7 +206,7 @@ export default {
         },
         async saveConditionsCommit(state, data) {
 
-            // debugger
+            const {segmentName, segmentStatus} = data
             try {
                 await segment.deleteSegmentConditions(state.segmentId)
             } catch (e) {
@@ -212,6 +217,21 @@ export default {
                     text: 'Something went wrong!',
                     footer: 'Errors '
                 })
+            }
+            let obj = {}
+            obj.name = segmentName
+            obj.status = segmentStatus
+            obj.segmentId = state.segmentId
+
+            let updStatusRes = await segmentStatusApi.updateSegmentStatus(obj)
+            if (!updStatusRes && !updStatusRes.segmentId) {
+                data.$swal.fire({
+                    type: 'error',
+                    title: 'error in updateSegmentStatus() ',
+                    text: 'Something went wrong!',
+                    footer: 'Errors '
+                })
+                return
             }
             for (const item of state.segmentFilter) {
                 item.segmentId = state.segmentId
@@ -239,6 +259,12 @@ export default {
         },
     },
     actions: {
+        async saveSegmentStatusStore({commit}, id) {
+            let segmentsData = await segmentStatusApi.segmentStatus(id)
+            console.log(`segmentStatus`)
+            console.table(reFormatJSON(segmentsData))
+            commit('saveSegmentStatus', segmentsData)
+        },
         async getSegmentConditions({commit}, id) {
             let res = await segment.getSegmentConditions(id)
             let segmentCountFilters = await segment.getSegmentCountFilters(id)
@@ -292,14 +318,16 @@ export default {
             })
         },
         async createSegment({commit}, segmentData) {
-            return await segments.createSegment(segmentData.name, segmentData.weight,segmentData.multiplier)
+            return await segments.createSegment(segmentData.name, segmentData.weight, segmentData.multiplier)
         },
         async updateSegment({commit}, segmentInfo) {
-            return await segments.updateSegment(segmentInfo.id, segmentInfo.name, segmentInfo.weight,segmentInfo.multiplier)
+            return await segments.updateSegment(segmentInfo.id, segmentInfo.name, segmentInfo.weight, segmentInfo.multiplier)
         },
         async updateLandingPage({commit}, segmentInfo) {
-            debugger
             return await segments.updateLandingPage(segmentInfo)
+        },
+        async updateSegmentStatus({commit}, segmentInfo) {
+            return await segmentStatusApi.updateSegmentStatus(segmentInfo)
         },
         async deleteSegment({commit}, segmentId) {
             return await segments.deleteSegment(segmentId)
@@ -309,7 +337,8 @@ export default {
         },
     },
     getters: {
-        getSegmentFilter: state => state.segmentFilter
+        getSegmentFilter: state => state.segmentFilter,
+        getSegmentStatus: state => state.segmentStatus
     },
 
 
