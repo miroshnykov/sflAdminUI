@@ -40,8 +40,8 @@
     .menu-nav
         background: #3A3852
         height: 100%
-        width: 255px
-        padding: 30px
+        width: 250px
+        padding: 25px
         position: fixed
         left: 0
         top: 0

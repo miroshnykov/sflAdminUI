@@ -763,7 +763,7 @@ tr
   display: grid
   grid-row-gap: 1rem
   justify-items: center
-  grid-template-columns: repeat(3, 1fr)
+  // grid-template-columns: repeat(3, 1fr)
 
 .edit-segment
   margin: auto 20px
@@ -1695,6 +1695,10 @@ button.applyBtn.btn.btn-sm.btn-success
   .nav-link
     margin-left: 20px
 
+  .segments > div
+    grid-row-gap: 1rem
+    grid-template-columns: repeat(4, 1fr)
+
 @media only screen and (max-width: 1860px)
   #campaigns
     width: 108%
@@ -1811,6 +1815,12 @@ button.applyBtn.btn.btn-sm.btn-success
 
   .table th, .table td
     padding: 1.2rem 0.5rem
+
+/* Mac laptop */
+@media only screen and (max-width: 1440px)
+  .segments > div
+    grid-row-gap: 0.5rem
+    grid-template-columns: repeat(3, 1fr)
 
 @media only screen and (max-width: 1400px)
   #campaigns
