@@ -208,5 +208,5 @@
 
 <style lang="sass">
     .container
-        margin-left: 300px
+        margin-left: 290px
 </style>
