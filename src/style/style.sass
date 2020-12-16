@@ -376,7 +376,7 @@ button.btn
     // width: 100%
     // max-width: 140px
     height: 45px
-    padding: 10px 20px
+    padding: 10px 30px
     margin: 0 auto
     color: #fff
     font-size: 12px
@@ -763,7 +763,7 @@ tr
   display: grid
   grid-row-gap: 1rem
   justify-items: center
-  grid-template-columns: repeat(3, 1fr)
+  // grid-template-columns: repeat(3, 1fr)
 
 .edit-segment
   margin: auto 20px
@@ -1690,10 +1690,14 @@ button.applyBtn.btn.btn-sm.btn-success
 
 @media only screen and (max-width: 1920px)
   #campaigns
-    width: 110%
+    width: 107%
 
   .nav-link
     margin-left: 20px
+
+  .segments > div
+    grid-row-gap: 1rem
+    grid-template-columns: repeat(4, 1fr)
 
 @media only screen and (max-width: 1860px)
   #campaigns
@@ -1811,6 +1815,12 @@ button.applyBtn.btn.btn-sm.btn-success
 
   .table th, .table td
     padding: 1.2rem 0.5rem
+
+/* Mac laptop */
+@media only screen and (max-width: 1440px)
+  .segments > div
+    grid-row-gap: 0.5rem
+    grid-template-columns: repeat(3, 1fr)
 
 @media only screen and (max-width: 1400px)
   #campaigns
