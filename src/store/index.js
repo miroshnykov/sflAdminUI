@@ -17,6 +17,8 @@ const user = getUserStore(
     'sflAdmin'
 )
 
+console.log('process.env.SSO_API:', process.env.SSO_API)
+console.log('process.env.SFL_CORE_CONDITION:', process.env.SFL_CORE_CONDITION)
 export default new Vuex.Store({
     state: {
         firstName: '',

@@ -1,12 +1,12 @@
 <template>
     <div class="menu-nav">
         <b-nav vertical class="w-25">
-            <a href="#" class="logo"></a>
-            <!-- Hide for now -->
-            <!-- <b-nav-item disabled><i class="fas fa-chart-pie"></i> Overview</b-nav-item> -->
-            <b-nav-item active><a @click="this.segmentsPage"><i class="fas fa-ticket"></i> Block segments</a></b-nav-item>
-            <!-- <hr class="nav">
-            <b-nav-item disabled><i class="fas fa-cog"></i> Settings</b-nav-item> -->
+            <a @click="this.mainPage" class="logo"></a>
+            <b-nav-item active><a @click="this.segmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+            <b-nav-item disabled><i class="far fa-project-diagram"></i> Traditional Segments</b-nav-item>
+            <b-nav-item disabled><i class="far fa-bullhorn"></i> Custom Offers Segments</b-nav-item>
+            <hr class="nav">
+            <b-nav-item active><a @click="this.sflAdvertisers" target="_blank"><i class="far fa-sign-in-alt"></i> Go to SFL Advertisers</a></b-nav-item>
         </b-nav>
     </div>
 </template>
@@ -20,8 +20,12 @@
             return {}
         },
         methods: {
+            sflAdvertisers() {
+                this.$router.push('https://sfl-advertiser.surge.systems/')
+            },
             segmentsPage() {
                 this.$router.push('/segments')
+                location.reload()
             },
             mainPage() {
                 this.$router.push('/segments')
@@ -35,7 +39,7 @@
     .menu-nav
         background: #3A3852
         height: 100%
-        width: 255px
+        width: 250px
         padding: 30px
         position: fixed
         left: 0
@@ -60,20 +64,25 @@
 
         .nav-link
             display: block
-            padding: 1rem 0.5rem
-            margin-left: 20px
+            padding: 0rem
+            margin-left: 5px
+            margin-right: -15px
 
         a.nav-link.active
             font-size: 14px
-            letter-spacing: 0.5px
+            letter-spacing: 0.3px
             color: rgba(255, 255, 255, 0.9)
-        // background: rgba(255, 255, 255, 0.1)
+        //  background: rgba(255, 255, 255, 0.1)
 
         a.nav-link.disabled
             font-size: 14px
-            letter-spacing: 0.5px
+            font-weight: 400
+            letter-spacing: 0.3px
             color: rgba(255, 255, 255, 0.2)
 
         li.nav-item a svg
-            margin-right: 10px
+            margin-right: 5px
+
+        span.nav-space
+            margin-left: 27px
 </style>
