@@ -13,7 +13,7 @@ conditionFilter.vue
                         v-b-tooltip.hover.top="'Delete Condition'"
                         @click="deleteFilter(indexFilters)"
                 >
-                    <i class="far fa-trash"></i>
+                    <i class="far fa-trash-alt"></i>
                 </button>
 
                 <template v-for="item in this.segmentFilter">
@@ -175,7 +175,7 @@ conditionFilter.vue
                                           variant="danger"
                                           v-b-tooltip.hover.top="'Delete Rule'"
                                   >
-                                    <i class="fas fa-times"></i>
+                                    <i class="far fa-trash" data-fa-transform="shrink-1"></i>
                                   </button>
                             </div>
 
@@ -995,18 +995,6 @@ conditionFilter.vue
         // overflow: hidden;
     }
 
-    .filter__title {
-        left: 50%;
-        margin: 0px 5px;
-        position: relative;
-        // color: rgba(255, 255, 255, 0.5);
-        font-size: 14px;
-        letter-spacing: 1px;
-        font-weight: 500;
-        transform: translate(-50%, 0);
-        text-align: left;
-    }
-
     .filter__remove {
         width: 45px;
         height: 45px;
@@ -1066,11 +1054,6 @@ conditionFilter.vue
         justify-content: space-between;
     }
 
-    .condition__matches {
-        text-align: right;
-        margin-right: 1px;
-    }
-
     .ui.search.dropdown {
         min-width: 250px;
         max-width: 250px;
@@ -1083,22 +1066,6 @@ conditionFilter.vue
 
     .ui.dropdown > .dropdown.icon:before {
         content: '' !important;
-    }
-
-    .custom-input {
-        position: relative;
-        width: auto;
-        color: #555;
-        max-width: 280px;
-        border-radius: 4px;
-        padding: 5px 10px;
-        height: calc(1.5em + 0.75rem + 2px);
-        text-align: left;
-        border: 0;
-    }
-
-    .custom-input::placeholder {
-        color: #ACC3CF;
     }
 
     select.add-condition.custom-select {
@@ -1166,32 +1133,31 @@ conditionFilter.vue
     }
 
     ._or span {
-        color: rgba(255, 255, 255, 0.5);
+        color: #7F98A5;
         font-size: 12px;
         font-weight: 600;
-        letter-spacing: 1px;
-        padding-right: 8px;
+        letter-spacing: 0.5px;
+        padding-right: 10px;
         text-transform: uppercase;
     }
 
     ._and {
-        /*border-bottom: 2px solid #9194aa;*/
-        /*line-height: 0;*/
-        /*margin: 10px 0;*/
+        border-bottom: 2px solid #DFE0EB;
+        line-height: 0;
+        margin: 15px 0;
         display: block;
         position: relative;
         top: 40px;
-        left: 14px;
+        left: 0px;
     }
 
     ._and span {
-        /*background-color: #656a89;*/
-        // color: #9194aa;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 16px;
+        background-color: #F7F8FC;
+        color: #ACC3CF;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 1px;
-        padding-right: 8px;
+        letter-spacing: 0.5px;
+        padding-right: 10px;
         text-transform: uppercase;
     }
 </style>
