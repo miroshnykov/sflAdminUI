@@ -23,11 +23,11 @@ export default new Router({
             component: errorLogin
         },
         {
-            path: '/segments',
+            path: '/segments/:type',
             component: segments
         },
         {
-            path: '/segment/:id',
+            path: '/segment/:type/:id',
             name: 'segment',
             component: editSegment
         },

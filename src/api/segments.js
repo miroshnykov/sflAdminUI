@@ -1,14 +1,14 @@
 import {api} from './request'
 import {reFormatJSON, catchHandler} from '../helpers'
 
-const segments = async () => {
+const segments = async (type) => {
 
     try {
         const res = await api.post(
             '', {
                 query: `
                 {
-                    segments{
+                    segments(type:"${type}"){
                         id
                         name
                         status
@@ -48,8 +48,9 @@ const reOrderSegmentsSave = async (data) => {
                 query: `
                     mutation{
                         ordering(
+                            segmentType:"${data.segmentType}"
                             reordering: 
-                                ${data}
+                                ${data.reOrdering}
                             
                         ) {
                             id
@@ -70,9 +71,10 @@ const reOrderSegmentsSave = async (data) => {
 }
 
 
-const deleteSegment = async (id) => {
+const deleteSegment = async (data) => {
 
-    console.log('deleteSegment:', id)
+    const {id, segmentType} = data
+    console.log('deleteSegment:', data)
     try {
 
         const res = await api.post(
@@ -81,6 +83,7 @@ const deleteSegment = async (id) => {
                 mutation{
                       deleteSegment(
                             id:${id}
+                            segmentType:"${segmentType}"
                       ){
                             id
                       }
@@ -96,20 +99,22 @@ const deleteSegment = async (id) => {
     }
 }
 
-const createSegment = async (name) => {
+const createSegment = async (data) => {
 
-    console.log('createSegment:', name)
+    let {name, segmentType} = data
+    console.log(`createSegment:${name}, segmentType:${segmentType}`)
     try {
         const res = await api.post(
             '', {
                 query: `
-                mutation{
-                      createSegment(
-                            name:"${name}"
-                      ){
-                            id
-                      }
-                }`,
+                    mutation{
+                          createSegment(
+                                name:"${name}"
+                                type:"${segmentType}"
+                          ){
+                                id
+                          }
+                    }`,
             }
         )
 

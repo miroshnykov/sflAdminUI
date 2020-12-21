@@ -3,6 +3,8 @@
         <topbar></topbar>
         <menunav></menunav>
 
+        <h1>Edit Segment {{this.$route.params.type}}</h1>
+
         <b-row class="text-center">
             <b-col cols="1">
                 <div class="condition__controls">
@@ -24,7 +26,7 @@
                            :id="defineSegmentNameId(id)"
                     >
                     <b-form-text id="lastModified">
-                        Last Modified:  {{ formatDate_(new Date(getSegmentStatus[0].dateUpdated * 1000)) }}
+                        Last Modified: {{ formatDate_(new Date(getSegmentStatus[0].dateUpdated * 1000)) }}
                     </b-form-text>
                 </div>
             </b-col>
@@ -109,79 +111,6 @@
                     {id: 0, name: 'Active'},
                     {id: 1, name: 'Inactive'}
                 ]
-            },
-            handleChangeStatus(event, item) {
-
-            },
-            async addLandingPage() {
-                this.$swal.fire({
-                    title: 'Add Landing Page',
-                    html:
-                        `<label for="swal-input1"></label>
-                        <input id="swal-input1" class="swal2-input" placeholder="Type and search..." maxlength="30">
-                        <div class="row segment-popup">
-                        <div class="col-md-6">
-                    `,
-                    confirmButtonColor: '#2ED47A',
-                    cancelButtonColor: '#E3EEF4',
-                    showCancelButton: true,
-                    confirmButtonText: '<i class="fas fa-check"></i>',
-                    cancelButtonText: '<i class="fas fa-times"></i>',
-                    backdrop: `
-                        rgba(0,0,123,0.2)
-                    `,
-                    preConfirm: () => {
-                        if (document.getElementById('swal-input1').value
-                        ) {
-                            return [
-                                document.getElementById('swal-input1').value
-                            ]
-                        } else {
-                            this.$swal.fire({
-                                title: 'Validation Error',
-                                text: 'Please check landing page name.',
-                            })
-                            return
-                        }
-
-                    }
-
-                }).then((result) => {
-                    if (result.dismiss === "cancel") {
-                        return
-                    }
-
-                    if (result.value[0]
-                    ) {
-                        let segmentData = {}
-                        segmentData.name = result.value[0]
-                        let self = this
-                        self.name = segmentData.name
-                        this.$store.dispatch('segments/createSegmentAction', segmentData).then(res => {
-                            if (res.id) {
-
-                                self.$swal.fire({
-                                    type: 'success',
-                                    position: 'top-end',
-                                    title: `Segment ${self.name} has been created`,
-                                    showConfirmButton: false,
-                                    timer: 1000
-                                })
-                                this.$router.push(`/segment/${res.id}`)
-                                // location.reload()
-
-                            }
-                        })
-                    } else {
-                        this.$swal.fire({
-                            title: 'Missing information',
-                            type: 'error',
-                            text: 'Please name your segment and try again.',
-                            confirmButtonColor: '#2ED47A',
-                        })
-                    }
-
-                })
             },
             async copyText(landingPage) {
                 try {

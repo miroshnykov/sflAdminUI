@@ -2,8 +2,8 @@
     <div class="menu-nav">
         <b-nav vertical class="w-25">
             <a @click="this.mainPage" class="logo"></a>
-            <b-nav-item active><a @click="this.segmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
-            <b-nav-item disabled><i class="far fa-project-diagram"></i> Traditional Segments</b-nav-item>
+            <b-nav-item active><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+            <b-nav-item active><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Traditional Segments</a></b-nav-item>
             <b-nav-item disabled><i class="far fa-bullhorn"></i> Custom Offers Segments</b-nav-item>
             <hr class="nav">
             <b-nav-item active><a @click="this.sflAdvertisers" target="_blank"><i class="far fa-sign-in-alt"></i> Go to SFL Advertisers</a></b-nav-item>
@@ -23,12 +23,16 @@
             sflAdvertisers() {
                 this.$router.push('https://sfl-advertiser.surge.systems/')
             },
-            segmentsPage() {
-                this.$router.push('/segments')
+            blockSegmentsPage() {
+                this.$router.push('/segments/block')
+                location.reload()
+            },
+            standardSegmentsPage() {
+                this.$router.push('/segments/standard')
                 location.reload()
             },
             mainPage() {
-                this.$router.push('/segments')
+                this.$router.push('/segments/standard')
                 location.reload()
             },
         },

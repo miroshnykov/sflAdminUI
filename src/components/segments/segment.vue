@@ -9,17 +9,12 @@
 
                     <h1 class="segment__name" :title="segment.name">
                         <span v-bind:title="getTitle(segment)" class="segment__active"
-                              @click="toggleState(segment)"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
+                              @click="toggleState(segment)"><i class="far fa-chevron-up"
+                                                               data-fa-transform="shrink-4"></i></span>
                         {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
                         <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
                         <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                     </h1>
-                    <!--@focus="focusMenu" @blur="blur"-->
-
-                    <!-- TODO: Toggle doesnt work, also cant find where to change icon from plus symbol to chevron down, like the mock -->
-                    <!--                <button class="segment__toggle-menu"/>-->
-
-                    <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span>-->
 
                 </b-col>
                 <b-col col lg="4">
@@ -45,21 +40,12 @@
             </b-row>
 
 
-            <!-- <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label> -->
-
-            <!-- <div v-if="segment.lp.length !== 0" class="child-table"> -->
-            <!--            <div v-if="segment.lp.length !== 1" class="child-table">-->
-            <!-- TODO: Known issue - If number is 0, other segments other than the first one don't show data.
-            If number is 1, any modal popup repeats the amount of segments we have -->
-
-
             <b-row class="text-center lp-container" align-v="center">
                 <b-col col lg="6">
                     <span class="lp-label">Landing Pages</span>
                     <!-- <label class="segment-position">{{segment.position}}</label> -->
                 </b-col>
                 <b-col col lg="6">
-                    <!-- TODO: Saving LP doesnt work, please fix. Optional: Move popup modal to new page/component -->
                     <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
                               @click="showLPModal(segment.id)"
                     >
@@ -122,9 +108,7 @@
             </b-badge>
 
             <br>
-            <!-- TODO: Show actual current + total Weight values -->
             <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getAumWeight(segment.lp)}} / 100</span>
-            <!--            </div>-->
 
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
@@ -258,7 +242,8 @@
                 console.log(e, group)
             },
             edit(id) {
-                this.$router.push(`/segment/${id}`)
+                let segmentType = this.$route.params.type
+                this.$router.push(`/segment/${segmentType}/${id}`)
             },
             async saveLp(segment) {
                 let res = await this.$store.dispatch('segment/updateLandingPage', segment)
@@ -336,7 +321,10 @@
                 }).then((result) => {
                     if (result.value) {
 
-                        this.$store.dispatch('segments/deleteSegmentAction', id).then(res => {
+                        let obj = {}
+                        obj.id = id
+                        obj.segmentType = this.$route.params.type
+                        this.$store.dispatch('segments/deleteSegmentAction', obj).then(res => {
                             if (res.id) {
                                 this.$swal.fire({
                                     type: 'success',

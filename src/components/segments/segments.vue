@@ -2,7 +2,7 @@
     <div id="campaigns">
         <menunav></menunav>
         <logo></logo>
-        <h1>Manage Blocked Segments</h1>
+        <h1>Manage {{this.$route.params.type}} segments</h1>
 
         <div class="segment-panel">
             <input type="text" class="search-box" @input="searchUpdate" placeholder="Search segments..."/>
@@ -51,9 +51,11 @@
             ...mapGetters('segments', ['getSegments'])
         },
         async mounted() {
+
+            let segmentType = this.$route.params.type
             let token = getCookie('accessToken')
             if (token) {
-                await this.saveSegmentsStore()
+                await this.saveSegmentsStore(segmentType)
             }
 
         },
@@ -128,19 +130,22 @@
                     ) {
                         let segmentData = {}
                         segmentData.name = result.value[0]
+                        let segmentType = this.$route.params.type
+                        segmentData.segmentType = segmentType
                         let self = this
                         self.name = segmentData.name
+                        self.segmentType = segmentType
                         this.$store.dispatch('segments/createSegmentAction', segmentData).then(res => {
                             if (res.id) {
 
                                 self.$swal.fire({
                                     type: 'success',
                                     position: 'top-end',
-                                    title: `Segment ${self.name} has been created`,
+                                    title: `Segment ${self.name}, type ${self.segmentType} has been created`,
                                     showConfirmButton: false,
                                     timer: 1000
                                 })
-                                this.$router.push(`/segment/${res.id}`)
+                                this.$router.push(`/segment/${self.segmentType}/${res.id}`)
                                 // location.reload()
 
                             }
@@ -170,6 +175,7 @@
                 alert('create new seqment')
             },
             async saveOrder() {
+                let segmentType  = this.$route.params.type
                 let el = document.querySelectorAll(".segment__draggable")
 
                 let toSend = []
@@ -181,7 +187,11 @@
 
                 console.log('to send:', toSend)
                 let toSendFormat = JSON.stringify(toSend).replace(/['"]+/g, '')
-                let res = await this.$store.dispatch('segments/saveOrderingAction', toSendFormat)
+                let toSendObj = {}
+                toSendObj.segmentType = segmentType
+                toSendObj.reOrdering = toSendFormat
+
+                let res = await this.$store.dispatch('segments/saveOrderingAction', toSendObj)
                 if (res && res.length !== 0) {
                     this.$swal.fire({
                         type: 'success',

@@ -58,8 +58,8 @@ export default {
         },
     },
     actions: {
-        async saveSegmentsStore({commit}) {
-            let segmentsData = await segments.segments()
+        async saveSegmentsStore({commit}, segmentType) {
+            let segmentsData = await segments.segments(segmentType)
             console.log(`Segnmentds`)
             console.table(reFormatJSON(segmentsData))
             commit('saveSegments', segmentsData)
@@ -68,8 +68,7 @@ export default {
             commit('reOrdering', obj)
         },
         async createSegmentAction({commit}, obj) {
-            let {name} = obj
-            return await segments.createSegment(name)
+            return await segments.createSegment(obj)
         },
         async saveOrderingAction({commit}, forSendToSave) {
 
@@ -80,14 +79,14 @@ export default {
 
             return await segments.reOrderSegmentsSave(forSendToSave)
         },
-        async deleteSegmentAction({commit}, id) {
+        async deleteSegmentAction({commit}, data) {
 
             // let segmentsData = data.$store.state.segments.segments
             // let forSendToSave = segmentsData.map(item => {
             //     return {id: item.id, position: item.position}
             // })
 
-            return await segments.deleteSegment(id)
+            return await segments.deleteSegment(data)
         },
     },
     getters: {
