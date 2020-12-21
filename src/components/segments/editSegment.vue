@@ -22,11 +22,12 @@
                     <input type="text"
                            placeholder="ex: My First Segment"
                            class="condition__matches campaign custom-input"
-                           :value="getSegmentStatus[0].name"
+                           :value="getSegmentStatus.length !==0 && getSegmentStatus[0].name"
                            :id="defineSegmentNameId(id)"
                     >
                     <b-form-text id="lastModified">
-                        Last Modified: {{ formatDate_(new Date(getSegmentStatus[0].dateUpdated * 1000)) }}
+                        Last Modified: {{ getSegmentStatus.length !==0 && formatDate_(new
+                        Date(getSegmentStatus[0].dateUpdated * 1000)) }}
                     </b-form-text>
                 </div>
             </b-col>
@@ -43,7 +44,7 @@
                                 id="filterType"
                                 v-for="{id, name} in getStatusList()"
                                 :value="id"
-                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getSegmentStatus[0].status)"
+                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getSegmentStatus.length !==0 && getSegmentStatus[0].status)"
                                 :key="id"
                         >{{name}}
                         </option>
@@ -104,7 +105,7 @@
                 return `segmentName-${id}`
             },
             capitalizeFirstLetter(str) {
-                return str.charAt(0).toUpperCase() + str.slice(1)
+                return str && str.charAt(0).toUpperCase() + str.slice(1)
             },
             getStatusList() {
                 return [
