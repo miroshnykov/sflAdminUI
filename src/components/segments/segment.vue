@@ -23,12 +23,12 @@
 
                 </b-col>
                 <b-col col lg="4">
-                    <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit'"
+                    <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit Segment'"
                               style="z-index:2">
                         <i class="far fa-edit" data-fa-transform="shrink-1"></i>
                     </b-button>
 
-                    <b-button variant="light" @click="delSegment(segment.id)" v-b-tooltip.hover.top="'Delete'"
+                    <b-button variant="light" @click="delSegment(segment.id)" v-b-tooltip.hover.top="'Delete Segment'"
                               style="z-index:2">
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
@@ -98,25 +98,22 @@
             >
 
                 <span class="landing-page">
-                    <!-- TODO: Could only get LP Name to show via HTML, but need ID and Weight also -->
-                    <span class="landing-page-name" v-if="lp.name.length<=37"
+                    <span class="landing-page-name" v-if="lp.name.length<=29"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+lp.id + ' Weight:'+lp.weight">
                          {{ lp.lpId }} {{ lp.name }}
                     </span>
-                    <!-- TODO: Same thing - Could only get LP Name to show via HTML, but need ID and Weight also -->
-                    <span class="landing-page-name" v-if="lp.name.length>=38"
+                    <span class="landing-page-name" v-if="lp.name.length>=30"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+ lp.id + ' Weight:'+lp.weight">
-                        {{ lp.name.substring(0,38)+"..." }}
+                        {{ lp.name.substring(0,30)+"..." }}
                     </span>
-                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete'"
-                              style="z-index:2">
-                        <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
-                    </b-button>
-
                     <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
-                              v-b-tooltip.hover.top="'Edit'"
+                              v-b-tooltip.hover.top="'Edit LP'"
                               style="z-index:2">
-                        <i class="far fa-edit" data-fa-transform="shrink-1"></i>
+                        <i class="far fa-pencil" data-fa-transform="shrink-2"></i>
+                    </b-button>
+                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete LP'"
+                              style="z-index:2">
+                        <i class="far fa-trash" data-fa-transform="shrink-2"></i>
                     </b-button>
 
                 </span>
@@ -414,6 +411,7 @@
         font-weight: 600;
         text-transform: uppercase;
         float: right;
+        margin-top: 5px;
     }
 
     .badge-light {
@@ -444,8 +442,8 @@
     .segmentInActive {
         opacity: 1;
         margin: 15px 20px 0px 0px;
-        // height: 80px;
-        width: 352px;
+        min-height: 130px;
+        min-width: 352px;
         padding: 1rem;
         position: relative;
         border-radius: 10px;
