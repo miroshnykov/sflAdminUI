@@ -27,10 +27,10 @@
 
                     <!--                    :value="segment.landingPageId"-->
                 </div>
-                <p class="text-left">
-                    <label :id="defineLpLabelId(segment.id)">Choose:{{ segment.landingPageId }} </label>
-                </p>
-                <br>
+<!--                <p class="text-left">-->
+<!--                    <label :id="defineLpLabelId(segment.id)">Choose:{{ segment.landingPageId }} </label>-->
+<!--                </p>-->
+<!--                <br>-->
 
                 <b-row class="text-center">
                     <b-col cols="6">
