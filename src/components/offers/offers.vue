@@ -13,33 +13,33 @@
     <div class="offers">
         <v-client-table :data="getOffers" :columns="columns" :options="options">
 
-            <div slot="offerId" slot-scope="props" class="text-center">
-                <span class="offerId">{{ offer.id }}</span>
-            </div>
+<!--            <div slot="offerId" slot-scope="props" class="text-center">-->
+<!--                <span class="offerId">{{ offer.id }}</span>-->
+<!--            </div>-->
 
-            <div slot="offerName" slot-scope="props">
+<!--            <div slot="offerName" slot-scope="props">-->
 
-              <span @click="edit(row)">
-                  <span class="segment-name">{{ offer.name }}</span>
-              </span>
+<!--              <span @click="edit(row)">-->
+<!--                  <span class="segment-name">{{ offer.name }}</span>-->
+<!--              </span>-->
 
-                <button @click="setEditing(true)" v-if="!isEditing()" class="btn btn-link"
-                        v-b-tooltip.hover.right="'Quick edit'">
-                    <i class="far fa-pencil"></i>
-                </button>
-                <span v-else>
-                        <input type="text" v-model="row.name" maxlength="25" class="quickedit">
-                        <button type="button" class="btn btn-info btn-xs quickedit-update"
-                                @click="update(row.name);setEditing(false); uOfferName(row)"><i
-                                class="fas fa-check"></i></button>
-                        <button type="button" class="btn btn-default btn-xs quickedit-cancel"
-                                @click="revertValue(); setEditing(false)"><i class="fas fa-ban"></i></button>
-                </span>
-                
-                <!-- <b-form-text id="spent-values">
-                    Updated {{timeSince_(row.dateUpdated)}} ago
-                </b-form-text> -->
-            </div>
+<!--                <button @click="setEditing(true)" v-if="!isEditing()" class="btn btn-link"-->
+<!--                        v-b-tooltip.hover.right="'Quick edit'">-->
+<!--                    <i class="far fa-pencil"></i>-->
+<!--                </button>-->
+<!--                <span v-else>-->
+<!--                        <input type="text" v-model="row.name" maxlength="25" class="quickedit">-->
+<!--                        <button type="button" class="btn btn-info btn-xs quickedit-update"-->
+<!--                                @click="update(row.name);setEditing(false); uOfferName(row)"><i-->
+<!--                                class="fas fa-check"></i></button>-->
+<!--                        <button type="button" class="btn btn-default btn-xs quickedit-cancel"-->
+<!--                                @click="revertValue(); setEditing(false)"><i class="fas fa-ban"></i></button>-->
+<!--                </span>-->
+<!--                -->
+<!--                &lt;!&ndash; <b-form-text id="spent-values">-->
+<!--                    Updated {{timeSince_(row.dateUpdated)}} ago-->
+<!--                </b-form-text> &ndash;&gt;-->
+<!--            </div>-->
 
             <!-- <div slot="payin" slot-scope="props">
                 <span class="budget-daily">${{props.row.payin}}</span>
@@ -120,13 +120,10 @@
     import {getCookie} from '../../helpers'
 
     let tableColumnsLog = [
-        'offerId',
-        'offerName',
-        'advertiser',
-        'vertical',
-        'payin',
+        'id',
+        'name',
+        'payIn',
         'payout',
-        'landingPage',
         'status',
         'actions',
     ]
@@ -274,7 +271,7 @@
                         advertiser: 'Advertiser',
                         vertical: 'Vertical',
                         payin: 'Pay-in',
-                        payin: 'Pay-out',
+                        payout: 'Pay-out',
                         landingPage: 'Default LP',
                         status: 'Status',
                     },
