@@ -4,7 +4,7 @@
             <a @click="this.mainPage" class="logo"></a>
             <b-nav-item active><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
             <b-nav-item active><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Traditional Segments</a></b-nav-item>
-            <b-nav-item disabled><i class="far fa-bullhorn"></i> Custom Offers Segments</b-nav-item>
+            <b-nav-item active><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
             <hr class="nav">
             <b-nav-item active><a @click="this.sflAdvertisers" target="_blank"><i class="far fa-sign-in-alt"></i> Go to SFL Advertisers</a></b-nav-item>
         </b-nav>
@@ -29,6 +29,10 @@
             },
             standardSegmentsPage() {
                 this.$router.push('/segments/standard')
+                location.reload()
+            },
+            offersPage() {
+                this.$router.push('/offers')
                 location.reload()
             },
             mainPage() {

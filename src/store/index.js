@@ -10,6 +10,7 @@ import countries from './countries'
 import campaigns from './campaigns'
 import lp from './lp'
 import prods from './prods'
+import offers from './offers'
 
 import { getUserStore } from 'am-components-front'
 const user = getUserStore(
@@ -35,6 +36,7 @@ export default new Vuex.Store({
         user,
         history,
         lp,
-        prods
+        prods,
+        offers
     }
 })

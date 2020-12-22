@@ -4,6 +4,7 @@ import login from '../components/login'
 import successLogin from '../components/successLogin'
 import errorLogin from '../components/errorLogin'
 import segments from '../components/segments/segments'
+import offers from '../components/offers/offers'
 import editSegment from '../components/segments/editSegment.vue'
 
 Vue.use(Router)
@@ -25,6 +26,10 @@ export default new Router({
         {
             path: '/segments/:type',
             component: segments
+        },
+        {
+            path: '/offers/',
+            component: offers
         },
         {
             path: '/segment/:type/:id',
