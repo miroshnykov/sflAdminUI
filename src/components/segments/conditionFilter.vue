@@ -258,7 +258,7 @@ conditionFilter.vue
             getEditingClass(item) {
                 // console.log(' >>>  getEditingClass item:')
                 // console.table(reFormatJSON(item))
-                if (item.value.substr(item.value.indexOf('/') + 1, item.value.length - 1) === ''
+                if (item.value.substr(item.value.indexOf('/') + 1, item.value.length) === ''
                     || item.value === ''
                     || item.dimensionId === 0
                 ) {
@@ -294,7 +294,7 @@ conditionFilter.vue
             defineAffId(id) {
                 return `aff-${id}`
             },
-            defineId(name,id) {
+            defineId(name, id) {
                 return `${name}-${id}`
             },
             defineDimensionId(id) {
@@ -380,7 +380,7 @@ conditionFilter.vue
                     case `affiliate`:
                         affiliateEl ? affiliateEl.style.display = 'block' : ''
                         countryEl.style.display = 'none'
-                        prodEl ? prodEl.style.display = 'none':''
+                        prodEl ? prodEl.style.display = 'none' : ''
                         campaignEl ? campaignEl.style.display = 'none' : ''
                         subCampaignEl ? subCampaignEl.style.display = 'none' : ''
                         matchTypeEl ? matchTypeEl.style.display = 'none' : ''
@@ -396,7 +396,7 @@ conditionFilter.vue
                     case `country`:
                         affiliateEl ? affiliateEl.style.display = 'none' : ''
                         campaignEl ? campaignEl.style.display = 'none' : ''
-                        prodEl ? prodEl.style.display = 'none':''
+                        prodEl ? prodEl.style.display = 'none' : ''
                         countryEl.style.display = 'block'
                         countryEl.disabled = true
                         countryEl.classList.remove("disabled")
@@ -429,7 +429,7 @@ conditionFilter.vue
                     case `affiliate_country`:
                         affiliateEl ? affiliateEl.style.display = 'block' : ''
                         countryEl.style.display = 'block'
-                        prodEl ? prodEl.style.display = 'none':''
+                        prodEl ? prodEl.style.display = 'none' : ''
                         item.value = ''
                         item.dimensionId = 3
                         campaignEl ? campaignEl.style.display = 'none' : ''
@@ -909,7 +909,7 @@ conditionFilter.vue
         computed: {
             ...mapState('dimensions', ['dimensionTypes']),
             ...mapState('affiliates', ['affiliates']),
-            ...mapState('user', ["googleAuthUrl","verifyTokenEmail"]),
+            ...mapState('user', ["googleAuthUrl", "verifyTokenEmail"]),
             ...mapState('segment', ['segmentFilter']),
             ...mapState('campaigns', ['campaignsExample']),
             ...mapGetters('countries', ['getCountries']),
