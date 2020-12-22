@@ -148,6 +148,12 @@ conditionFilter.vue
                                         v-show="checkCampaign(item)"
                                 >
                                     <option :value="null">-- Select Campaign --</option>
+                                    <option
+                                            v-for="{id, name} in getAffiliateCampaigns(item)"
+                                            :value="id"
+                                            :selected="id === item.value || id === Number(item.value.substr(item.value.indexOf('/')+1))"
+                                            :key="id"
+                                    >{{name}}</option>
                                 </select>
                                 <label v-show="checkCampaign(item)" for="label-campaign">Campaign
                                 </label>
@@ -405,21 +411,21 @@ conditionFilter.vue
                             conditionEl.querySelectorAll(`label[for=label-country]`)
                         )
                         break
-                    // case `affiliate_campaign`:
-                    //     affiliateEl ? affiliateEl.style.display = 'block' : ''
-                    //     countryEl.style.display = 'none'
-                    //     campaignEl ? campaignEl.style.display = 'initial' : ''
-                    //     subCampaignEl ? subCampaignEl.style.display = 'none' : ''
-                    //     matchTypeEl ? matchTypeEl.style.display = 'none' : ''
-                    //     item.value = ''
-                    //     item.dimensionId = 3
-                    //     this.hideLabels(
-                    //         conditionEl.querySelectorAll(`label[for=label-country], label[for=label-sub-campaign]`)
-                    //     )
-                    //     this.showLabels(
-                    //         conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign]`)
-                    //     )
-                    //     break
+                    case `affiliate_campaign`:
+                        affiliateEl ? affiliateEl.style.display = 'block' : ''
+                        countryEl.style.display = 'none'
+                        campaignEl ? campaignEl.style.display = 'initial' : ''
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                        item.value = ''
+                        item.dimensionId = 5
+                        this.hideLabels(
+                            conditionEl.querySelectorAll(`label[for=label-country], label[for=label-sub-campaign]`)
+                        )
+                        this.showLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign]`)
+                        )
+                        break
                     case `affiliate_country`:
                         affiliateEl ? affiliateEl.style.display = 'block' : ''
                         countryEl.style.display = 'block'
@@ -910,7 +916,7 @@ conditionFilter.vue
             ...mapGetters('affiliates', ['getAffiliates']),
             ...mapGetters('prods', ['getProds']),
             ...mapGetters('dimensions', ['getDimensions']),
-            ...mapGetters('campaigns', ['getCampaignsAffiliateStoreById']),
+            ...mapGetters('campaigns', ['getAffiliateCampaigns']),
 
         }
     }

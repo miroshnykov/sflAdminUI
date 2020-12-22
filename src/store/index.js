@@ -7,6 +7,7 @@ import segment from './segment'
 import dimensions from './dimensions'
 import affiliates from './affiliates'
 import countries from './countries'
+import campaigns from './campaigns'
 import lp from './lp'
 import prods from './prods'
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         segments,
         segment,
         dimensions,
+        campaigns,
         affiliates,
         countries,
         user,

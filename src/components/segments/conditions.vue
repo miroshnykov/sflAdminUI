@@ -121,7 +121,7 @@
         name: 'conditions',
         computed: {
             ...mapState('segment', ['segmentFilter', 'segmentRuleCount', 'segmentId']),
-            ...mapGetters('segments', ['getSegmentsStore'])
+            // ...mapGetters('segments', ['getSegmentsStore'])
         },
         data() {
             return {
