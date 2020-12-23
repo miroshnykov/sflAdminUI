@@ -13,7 +13,7 @@ export default {
     },
     actions: {
         async saveOffersStore({commit}) {
-            debugger
+            // debugger
             commit('saveOffers', await offers.getOffers())
         },
     },
