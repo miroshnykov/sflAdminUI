@@ -71,11 +71,11 @@ conditionFilter.vue
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getAffiliatesModify()"
+                                        :options="getAffiliatesModify(item)"
                                         @input="handleChangeAff($event, item)"
                                         :id="defineId(`aff`,item.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getAffiliateName(item)
+                                        :value=getValue(item)
                                         v-show="checkAff(item)"
                                 >
                                 </model-select>
@@ -87,11 +87,11 @@ conditionFilter.vue
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getProdsModify()"
+                                        :options="getProdsModify(item)"
                                         @input="handleChangeProd($event, item)"
                                         :id="defineId(`prod`,item.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getAffiliateName(item)
+                                        :value=getValue(item)
                                         v-show="checkProd(item)"
                                 >
                                 </model-select>
@@ -125,7 +125,7 @@ conditionFilter.vue
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getCountriesModify()"
+                                        :options="getCountriesModify(item)"
                                         @input="handleChangeCountry($event, item)"
                                         :id="defineId(`country`,item.position)"
                                         :ref="defineId(`country`,item.position)"
@@ -175,17 +175,27 @@ conditionFilter.vue
 
                             <div class="condition-line">
 
-                                <model-select
-                                        :options="getWebsitesModify()"
-                                        @input="handleChangeWebsite($event, item)"
-                                        :id="defineId(`website`,item.position)"
-                                        :ref="defineId(`website`,item.position)"
-                                        class="condition__country condition__matches custom-select "
-                                        v-show="checkWebsite(item)"
-                                        :value="item.value"
-
+                                <input type="text"
+                                       :id="defineId(`website`,item.position)"
+                                       :ref="defineId(`website`,item.position)"
+                                       placeholder="Website"
+                                       class="condition__matches custom-input"
+                                       :value="(item.dimensionName === 'website') && item.value||''"
+                                       v-show="checkWebsite(item)"
+                                       @change="handleChangeWebsite($event, item)"
                                 >
-                                </model-select>
+
+                                <!--                                <model-select-->
+                                <!--                                        :options="getWebsitesModify()"-->
+                                <!--                                        @input="handleChangeWebsite($event, item)"-->
+                                <!--                                        :id="defineId(`website`,item.position)"-->
+                                <!--                                        :ref="defineId(`website`,item.position)"-->
+                                <!--                                        class="condition__country condition__matches custom-select "-->
+                                <!--                                        v-show="checkWebsite(item)"-->
+                                <!--                                        :value="item.value"-->
+
+                                <!--                                >-->
+                                <!--                                </model-select>-->
                                 <label v-show="checkWebsite(item)" for="label-website">Website</label>
 
 
@@ -244,12 +254,32 @@ conditionFilter.vue
         name: "condition-filter",
         props: ["filter", "indexFilters"],
         methods: {
-            getCountriesModify() {
+            getCountriesModify(item) {
+
                 return this.getCountries.map(item => {
                     item.value = item.code
                     item.text = item.name + ' (' + item.code + ') '
                     return item
                 })
+                //
+                // const {value} = item
+                //
+                // if (value === '' || Number(value) === 0) {
+                //     return this.getCountries.map(item => {
+                //         item.value = item.code
+                //         item.text = item.name + ' (' + item.code + ') '
+                //         return item
+                //     })
+                // } else {
+                //     let obj = this.getCountries.filter(item => item.code === value)
+                //     obj.push({code: 0, name: '*** Add more items ***'})
+                //     return obj.map(item => {
+                //         item.value = item.code
+                //         item.text = item.name + ' (' + item.code + ') '
+                //         return item
+                //     })
+                // }
+
             },
             getWebsitesModify() {
                 return this.getAffiliateWebsites.map(item => {
@@ -258,26 +288,55 @@ conditionFilter.vue
                     return item
                 })
             },
-            getAffiliatesModify() {
-                return this.getAffiliates.map(item => {
-                    item.value = item.id.toString()
-                    item.text = item.name + ' (' + item.id + ') '
-                    return item
-                })
+            getAffiliatesClick(value) {
+                debugger
             },
-            getProdsModify() {
-                return this.getProds.map(item => {
-                    item.value = item.id.toString()
-                    item.text = item.name + ' (' + item.id + ') '
-                    return item
-                })
+            getAffiliatesModify(item) {
+
+                const {value} = item
+
+                if (value === '' || Number(value) === 0) {
+                    return this.getAffiliates.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                } else {
+                    let obj = this.getAffiliates.filter(item => item.id === Number(value))
+                    obj.push({id: 0, name: '*** Add more items ***'})
+                    return obj.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                }
+
+            },
+            getProdsModify(item) {
+                const {value} = item
+
+                if (value === '' || Number(value) === 0) {
+                    return this.getProds.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                } else {
+                    let obj = this.getProds.filter(item => item.id === Number(value))
+                    obj.push({id: 0, name: '*** Add more items ***'})
+                    return obj.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                }
             },
             getClassDisabled(item) {
                 if (this.checkCountryDisabled(item)) {
                     return 'disabled'
                 }
             },
-            getAffiliateName(item) {
+            getValue(item) {
                 return item.value.substr(0, item.value.indexOf('/')) || item.value
             },
             getEditingClass(item) {
@@ -856,7 +915,7 @@ conditionFilter.vue
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event)
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -878,8 +937,7 @@ conditionFilter.vue
                 item.dateAdded = this.getCurrentDate()
                 item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
-                item.value = event
-                debugger
+                item.value = event.target.value
                 item.dimensionName = `website`
                 item.dimensionId = this.getDimensionId(this.getDimensions, `website`)
 
