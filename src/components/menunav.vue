@@ -23,20 +23,20 @@
             sflAdvertisers() {
                 this.$router.push('https://sfl-advertiser.surge.systems/')
             },
-            blockSegmentsPage() {
-                this.$router.push('/segments/block')
+            offersPage() {
+                this.$router.push('/offers')
                 location.reload()
             },
             standardSegmentsPage() {
                 this.$router.push('/segments/standard')
                 location.reload()
             },
-            offersPage() {
-                this.$router.push('/offers')
+            blockSegmentsPage() {
+                this.$router.push('/segments/block')
                 location.reload()
             },
             mainPage() {
-                this.$router.push('/segments/standard')
+                this.$router.push('/')
                 location.reload()
             },
         },

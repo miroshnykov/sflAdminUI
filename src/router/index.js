@@ -28,7 +28,7 @@ export default new Router({
             component: segments
         },
         {
-            path: '/offers/',
+            path: '/offers',
             component: offers
         },
         {
