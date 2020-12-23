@@ -10,93 +10,114 @@
                 Create New Offer
             </b-button>
 
-    <div class="offers">
-        <v-client-table :data="getOffers" :columns="columns" :options="options">
+        <div class="offers">
+            <v-client-table :data="getOffers" :columns="columns" :options="options">
 
-<!--            <div slot="offerId" slot-scope="props" class="text-center">-->
-<!--                <span class="offerId">{{ offer.id }}</span>-->
-<!--            </div>-->
+            <div slot="id" slot-scope="props" class="text-center">
+                <span class="id">{{props.row.id}}</span>
+            </div>
 
-<!--            <div slot="offerName" slot-scope="props">-->
+           <!-- <div slot="offerId" slot-scope="props" class="text-center">
+               <span class="offerId">{{ offer.id }}</span>
+            </div> -->
 
-<!--              <span @click="edit(row)">-->
-<!--                  <span class="segment-name">{{ offer.name }}</span>-->
-<!--              </span>-->
+            <div slot="name" slot-scope="{row, update, setEditing, isEditing, revertValue}">
+                <span @click="edit(row)">
+                    <span class="segment-name" @click="edit(row)">{{row.name}}</span>
+                </span>
+                <b-form-text id="spent-values">
+                    Updated {{timeSince_(row.dateUpdated)}} ago
+                </b-form-text>
+            </div>
+            
+            <div slot="offerName" slot-scope="props">
+                <span @click="edit(row)">
+                  <span class="segment-name">{{ offer.name }}</span>
+                </span>
 
-<!--                <button @click="setEditing(true)" v-if="!isEditing()" class="btn btn-link"-->
-<!--                        v-b-tooltip.hover.right="'Quick edit'">-->
-<!--                    <i class="far fa-pencil"></i>-->
-<!--                </button>-->
-<!--                <span v-else>-->
-<!--                        <input type="text" v-model="row.name" maxlength="25" class="quickedit">-->
-<!--                        <button type="button" class="btn btn-info btn-xs quickedit-update"-->
-<!--                                @click="update(row.name);setEditing(false); uOfferName(row)"><i-->
-<!--                                class="fas fa-check"></i></button>-->
-<!--                        <button type="button" class="btn btn-default btn-xs quickedit-cancel"-->
-<!--                                @click="revertValue(); setEditing(false)"><i class="fas fa-ban"></i></button>-->
-<!--                </span>-->
-<!--                -->
-<!--                &lt;!&ndash; <b-form-text id="spent-values">-->
-<!--                    Updated {{timeSince_(row.dateUpdated)}} ago-->
-<!--                </b-form-text> &ndash;&gt;-->
-<!--            </div>-->
+                <span @click="edit(row)">
+                    <span class="segment-name">{{ offer.name }}</span>
+                </span>
+                <b-form-text id="spent-values">
+                    Updated {{timeSince_(row.dateUpdated)}} ago
+                </b-form-text>
+            </div>
 
-            <!-- <div slot="payin" slot-scope="props">
-                <span class="budget-daily">${{props.row.payin}}</span>
+            <div slot="payIn" slot-scope="props">
+                <span class="budget-daily">${{props.row.payIn}}</span>
                 <b-form-text id="currency">
                     CAD
                 </b-form-text>
             </div>
 
-            <div slot="payout" slot-scope="props">
-                <span class="budget-daily">${{props.row.payout}}</span>
+            <div slot="payOut" slot-scope="props">
+                <span class="budget-daily">${{props.row.payOut}}</span>
                 <b-form-text id="currency">
                     CAD
                 </b-form-text>
-            </div> -->
+            </div>
 
-            <!-- <div slot="landingPage" slot-scope="props">
-              <span class="landing-page-box">
-                <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
-                    {{ props.row.landingPage }}
+                <div slot="payout" slot-scope="props">
+                    <span class="budget-daily">${{props.row.payout}}</span>
+                    <b-form-text id="currency">
+                        CAD
+                    </b-form-text>
+                </div> -->
+
+                <!-- <div slot="landingPage" slot-scope="props">
+                <span class="landing-page-box">
+                    <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
+                        {{ props.row.landingPage }}
+                    </span>
+                    <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
+                        {{ props.row.landingPage.substring(0,15)+"..." }}
+                    </span>
                 </span>
-                <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
-                    {{ props.row.landingPage.substring(0,15)+"..." }}
+                    <button class="btn btn-link" @click="copyText(props.row.landingPage)"
+                            v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div> -->
+
+            <div slot="landingPage" slot-scope="props">
+              <span class="landing-page-box">
+                <span class="landing-page-name">
+                    http://domain.com/offers/offer-name?prod=moviesandtv
                 </span>
               </span>
-                <button class="btn btn-link" @click="copyText(props.row.landingPage)"
+                <button class="btn btn-link"
                         v-b-tooltip.hover.right="'Copy URL to Clipboard'">
                     <i class="far fa-copy"></i>
                 </button>
-            </div> -->
+            </div>
 
-            <!-- <div slot="child_row" slot-scope="props">
+            <div slot="child_row" slot-scope="props">
                 <div class="segment-child animated fadeIn">
 
                 </div>
-            </div> -->
+            </div>
 
-            <!-- <div slot="status" slot-scope="props">
+            <div slot="status" slot-scope="props">
                 <div v-if="props.row.status == 'inactive'">
                 <div class="status inactive">{{props.row.status}}</div>
                 </div>
                 <div v-else-if="props.row.status == 'active'">
                 <div class="status active">{{props.row.status}}</div>
                 </div>
-            </div> -->
-
-            <div slot="actions" slot-scope="props">
-                <button
-                        class="btn btn-link"
-                        v-b-tooltip.hover.top="'Edit Offer'"
-                        @click="edit(props.row)"
-                >
-                    <i class="fas fa-pencil"></i>
-                </button>
             </div>
 
-        </v-client-table>
-    </div>
+                <div slot="actions" slot-scope="props">
+                    <button
+                            class="btn btn-link"
+                            v-b-tooltip.hover.top="'Edit Offer'"
+                            @click="edit(props.row)"
+                    >
+                        <i class="fas fa-pencil"></i>
+                    </button>
+                </div>
+
+            </v-client-table>
+        </div>
 
             <!-- <div class="offers">
                 <tr scope="row" v-for="offer in getOffers">
@@ -116,14 +137,14 @@
     import logo from '../logo.vue'
     import menunav from '../menunav.vue'
     import {formatData, timeSince} from '../../helpers'
-    // import {formatData, timeSince} from '../helpers'
     import {getCookie} from '../../helpers'
 
     let tableColumnsLog = [
         'id',
         'name',
         'payIn',
-        'payout',
+        'payOut',
+        'landingPage',
         'status',
         'actions',
     ]
@@ -183,7 +204,7 @@
             },
             addOffer() {
                 this.$swal.fire({
-                    title: 'Add Offer',
+                    title: 'Create New Offer',
                     html:
                         `<label for="swal-input1"></label>
                         <input id="swal-input1" class="swal2-input" placeholder="Offer Name" maxlength="25"
@@ -266,19 +287,19 @@
                 options: {
                     // columnsDropdown: true,
                     headings: {
-                        offerId: 'ID',
-                        offerName: 'Offer Name',
+                        id: 'ID',
+                        name: 'Offer Name',
                         advertiser: 'Advertiser',
                         vertical: 'Vertical',
-                        payin: 'Pay-in',
-                        payout: 'Pay-out',
+                        payIn: 'Pay-in',
+                        payOut: 'Pay-out',
                         landingPage: 'Default LP',
                         status: 'Status',
                     },
-                    // editableColumns: ['offerName'],
+                    editableColumns: ['offerName'],
                     // sortable: tableColumnsLog,
                     // sortable: [''],
-                    sortable: ['offerId','offerName','advertiser','vertical','status'],
+                    sortable: ['id','name','advertiser','vertical','status'],
                     sortIcon: {
                         base: 'fa fad',
                         up: 'fa-sort-up',
