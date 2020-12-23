@@ -12,7 +12,8 @@ export default {
     },
     actions: {
         async saveAffiliateWebsitesStore ({ commit }) {
-            commit('saveAffiliateWebsites', await affiliateWebsites.getAffiliateWebsites())
+            // commit('saveAffiliateWebsites', await affiliateWebsites.getAffiliateWebsites())
+            commit('saveAffiliateWebsites', [])
         },
     },
     getters: {

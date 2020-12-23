@@ -1,7 +1,8 @@
 conditionFilter.vue
 <template>
     <transition name="expand-down">
-        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter">
+        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter"
+                 @click="filterClickArea($event)">
             <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
             <div class="filter__controls">
                 <div class="error" style="display:none">Error validation message</div>
@@ -281,29 +282,48 @@ conditionFilter.vue
                 // }
 
             },
-            getWebsitesModify() {
-                return this.getAffiliateWebsites.map(item => {
-                    item.value = item.link
-                    item.text = item.link + ' (' + item.id + ')  '
-                    return item
-                })
-            },
-            getAffiliatesClick(value) {
-                debugger
+            // getWebsitesModify() {
+            //     return this.getAffiliateWebsites.map(item => {
+            //         item.value = item.link
+            //         item.text = item.link + ' (' + item.id + ')  '
+            //         return item
+            //     })
+            // },
+            filterClickArea(event) {
+                // console.log('event, ', event)
+                // console.log('filterClickArea event, ', event.target)
+                // event.path.forEach(item => {
+                    // console.log('item:', item)
+                // })
+                // debugger
             },
             getAffiliatesModify(item) {
 
-                const {value} = item
+                const value = this.getValue(item)
 
                 if (value === '' || Number(value) === 0) {
+
+                    let refAffiliate = `aff-${item.position}`
+                    let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
+                    if (affiliateEl) {
+                        let listMenu = affiliateEl.querySelector('.menu')
+                        // console.log(' ************** listMenu Affiliates:', listMenu)
+                        if (listMenu) {
+                            listMenu.style.display = 'block'
+                            // console.log(' ************** listMenu.style.display block ', listMenu)
+                        }
+                    }
+
                     return this.getAffiliates.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '
                         return item
                     })
                 } else {
+                    // console.log('**** value:', value)
                     let obj = this.getAffiliates.filter(item => item.id === Number(value))
                     obj.push({id: 0, name: '*** Add more items ***'})
+                    // console.log(' ************** *** Add more items ***:', obj)
                     return obj.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '
@@ -316,6 +336,16 @@ conditionFilter.vue
                 const {value} = item
 
                 if (value === '' || Number(value) === 0) {
+
+                    let refProd = `prod-${item.position}`
+                    let prodEl = document.querySelector(`#${refProd}`) && document.querySelector(`#${refProd}`).parentNode || null
+                    if (prodEl) {
+                        let listMenu = prodEl.querySelector('.menu')
+                        if (listMenu) {
+                            listMenu.style.display = 'block'
+                        }
+                    }
+
                     return this.getProds.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '
@@ -1029,7 +1059,7 @@ conditionFilter.vue
             ...mapState('segment', ['segmentFilter']),
             ...mapState('campaigns', ['campaignsExample']),
             ...mapGetters('countries', ['getCountries']),
-            ...mapGetters('affiliateWebsites', ['getAffiliateWebsites']),
+            // ...mapGetters('affiliateWebsites', ['getAffiliateWebsites']),
             ...mapGetters('affiliates', ['getAffiliates']),
             ...mapGetters('prods', ['getProds']),
             ...mapGetters('dimensions', ['getDimensions']),
