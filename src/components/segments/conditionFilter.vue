@@ -1,7 +1,7 @@
 conditionFilter.vue
 <template>
     <transition name="expand-down">
-        <section :id="defineFilterId(indexFilters)" :ref="defineFilterId(indexFilters)" class="filter">
+        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter">
             <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
             <div class="filter__controls">
                 <div class="error" style="display:none">Error validation message</div>
@@ -19,15 +19,15 @@ conditionFilter.vue
                 <template v-for="item in this.segmentFilter">
                     <template v-if="item.segmentRuleIndex === indexFilters">
                         <span
-                                :id="defineConditionId(item.position)"
-                                :ref="defineConditionId(item.position)"
+                                :id="defineId(`condition`,item.position)"
+                                :ref="defineId(`condition`,item.position)"
                                 class="condition__controls" :class="getEditingClass(item)"
                         >
                             <div class="condition-line">
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineFilterType(item.position)"
-                                        :ref="defineFilterType(item.position)"
+                                        :id="defineId(`filtertype`,item.position)"
+                                        :ref="defineId(`filtertype`,item.position)"
                                         @change="handleFilterType($event, item)"
                                 >
 
@@ -46,8 +46,8 @@ conditionFilter.vue
 
                             <div class="condition-line">
                                   <select
-                                          :id="defineDimensionId(item.position)"
-                                          :ref="defineDimensionId(item.position)"
+                                          :id="defineId(`dimension`,item.position)"
+                                          :ref="defineId(`dimension`,item.position)"
                                           class="condition__dimension-name condition__matches custom-select"
                                           @change="handleChangeDimension($event, item)"
                                           :disabled="item.disabled"
@@ -64,7 +64,7 @@ conditionFilter.vue
 
                                       </option>
                                   </select>
-                                  <label v-show="defineDimensionId(item)" for="label-dimension">Dimension Filter
+                                  <label for="label-dimension">Dimension Filter
                                   </label>
                             </div>
 
@@ -73,7 +73,7 @@ conditionFilter.vue
                                 <model-select
                                         :options="getAffiliatesModify()"
                                         @input="handleChangeAff($event, item)"
-                                        :id="defineAffId(item.position)"
+                                        :id="defineId(`aff`,item.position)"
                                         class="condition__affiliate condition__matches custom-select"
                                         :value=getAffiliateName(item)
                                         v-show="checkAff(item)"
@@ -104,8 +104,8 @@ conditionFilter.vue
 
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineMatchType(item.position)"
-                                        :ref="defineMatchType(item.position)"
+                                        :id="defineId(`matchtype`,item.position)"
+                                        :ref="defineId(`matchtype`,item.position)"
                                         @change="handleMatchType($event, item)"
                                         v-show="item.dimensionName === 'affiliate_sub_campaign'"
                                 >
@@ -127,8 +127,8 @@ conditionFilter.vue
                                 <model-select
                                         :options="getCountriesModify()"
                                         @input="handleChangeCountry($event, item)"
-                                        :id="defineCountryId(item.position)"
-                                        :ref="defineCountryId(item.position)"
+                                        :id="defineId(`country`,item.position)"
+                                        :ref="defineId(`country`,item.position)"
                                         class="condition__country condition__matches custom-select "
                                         :class="getClassDisabled(item)"
                                         :value="item.value.substr(item.value.indexOf('/')+1)"
@@ -142,7 +142,7 @@ conditionFilter.vue
 
                             <div class="condition-line">
                                 <select
-                                        :ref="defineCampaignId(item.position)"
+                                        :ref="defineId(`campaign`,item.position)"
                                         class="condition__campaign condition__matches custom-select"
                                         @change="handleChangeCampaign($event, item)"
                                         v-show="checkCampaign(item)"
@@ -161,8 +161,8 @@ conditionFilter.vue
 
                             <div class="condition-line">
                                 <input type="text"
-                                       :id="defineSubCampaignId(item.position)"
-                                       :ref="defineSubCampaignId(item.position)"
+                                       :id="defineId(`subcampaign`,item.position)"
+                                       :ref="defineId(`subcampaign`,item.position)"
                                        placeholder="Sub Campaign Name"
                                        class="condition__matches custom-input"
                                        :value="(item.dimensionName === 'affiliate_sub_campaign') && item.value.substr(item.value.indexOf('/')+1, 40) || ''"
@@ -171,6 +171,24 @@ conditionFilter.vue
                                 >
                                 <label v-show="checkSubCampaign(item)"
                                        for="label-sub-campaign">Sub Campaign</label>
+                            </div>
+
+                            <div class="condition-line">
+
+                                <model-select
+                                        :options="getWebsitesModify()"
+                                        @input="handleChangeWebsite($event, item)"
+                                        :id="defineId(`website`,item.position)"
+                                        :ref="defineId(`website`,item.position)"
+                                        class="condition__country condition__matches custom-select "
+                                        v-show="checkWebsite(item)"
+                                        :value="item.value"
+
+                                >
+                                </model-select>
+                                <label v-show="checkWebsite(item)" for="label-website">Website</label>
+
+
                             </div>
 
                             <div class="condition-button-delete">
@@ -233,6 +251,13 @@ conditionFilter.vue
                     return item
                 })
             },
+            getWebsitesModify() {
+                return this.getAffiliateWebsites.map(item => {
+                    item.value = item.link
+                    item.text = item.link + ' (' + item.id + ')  '
+                    return item
+                })
+            },
             getAffiliatesModify() {
                 return this.getAffiliates.map(item => {
                     item.value = item.id.toString()
@@ -279,35 +304,8 @@ conditionFilter.vue
                     {id: 3, name: 'does not contain'}
                 ]
             },
-            defineFilterId(id) {
-                return `filter-${id}`
-            },
-            defineConditionId(id) {
-                return `condition-${id}`
-            },
-            defineCountryId(id) {
-                return `country-${id}`
-            },
-            defineCampaignId(id) {
-                return `campaign-${id}`
-            },
-            defineAffId(id) {
-                return `aff-${id}`
-            },
             defineId(name, id) {
                 return `${name}-${id}`
-            },
-            defineDimensionId(id) {
-                return `dimension-${id}`
-            },
-            defineSubCampaignId(id) {
-                return `subcampaign-${id}`
-            },
-            defineFilterType(id) {
-                return `filtertype-${id}`
-            },
-            defineMatchType(id) {
-                return `matchtype-${id}`
             },
             validateValue: (data, value) => {
                 return data.filter(item => {
@@ -341,6 +339,9 @@ conditionFilter.vue
             checkCampaign(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_campaign`)
             },
+            checkWebsite(item) {
+                return item.dimensionId === this.getDimensionId(this.getDimensions, `website`)
+            },
             checkSubCampaign(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_sub_campaign`)
             },
@@ -366,6 +367,7 @@ conditionFilter.vue
                 let refSubCampaign = `subcampaign-${item.position}`
                 let refCondition = `condition-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
+                let websiteRef = `website-${item.position}`
 
                 let countryEl = document.querySelector(`#${refCountry}`).parentNode || null
                 let campaignEl = this.$refs[refCampaign][0] || null
@@ -373,6 +375,8 @@ conditionFilter.vue
                 let matchTypeEl = this.$refs[matchTypeRef][0] || null
                 let affiliateEl = document.querySelector(`#${refAffiliate}`).parentNode || null
                 let prodEl = document.querySelector(`#${refProd}`).parentNode || null
+
+                let websiteEl = document.querySelector(`#${websiteRef}`).parentNode || null
 
                 countryEl.classList.add("disabled")
                 let conditionEl = document.querySelector(`#${refCondition}`)
@@ -459,6 +463,26 @@ conditionFilter.vue
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-prod]`)
+                        )
+                        break
+                    case `website`:
+                        websiteEl ? websiteEl.style.display = 'block' : ''
+                        prodEl ? prodEl.style.display = 'none' : ''
+                        affiliateEl ? affiliateEl.style.display = 'none' : ''
+                        campaignEl ? campaignEl.style.display = 'none' : ''
+                        countryEl ? countryEl.style.display = 'none' : ''
+                        // countryEl.style.display = 'block'
+                        // countryEl.disabled = true
+                        // countryEl.classList.remove("disabled")
+                        item.value = ''
+                        item.dimensionId = 6
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                        this.hideLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-country]`)
+                        )
+                        this.showLabels(
+                            conditionEl.querySelectorAll(`label[for=label-website]`)
                         )
                         break
                     // case `affiliate_sub_campaign`:
@@ -826,6 +850,40 @@ conditionFilter.vue
                 item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_campaign`)
 
             },
+            handleChangeWebsite(event, item) {
+                let dimensionRef = `dimension-${item.position}`
+                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let filterTypeRef = `filtertype-${item.position}`
+                let matchTypeRef = `matchtype-${item.position}`
+
+                let recCheck = this.validateValue(this.segmentFilter, event)
+
+                if (recCheck.length > 0) {
+                    this.$swal.fire({
+                        type: `warning`,
+                        title: `record exists: ${recCheck[0].value}  `,
+                        text: ` dimension: ${recCheck[0].dimensionName}`,
+                        footer: ``
+                    })
+
+                    let refCampaign = `campaign-${item.position}`
+                    let dimensionRef = `dimension-${item.position}`
+                    this.$refs[refCampaign][0].value = ``
+                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    return
+                }
+                let refCondition = `condition-${item.position}`
+                this.$refs[refCondition][0].style.background = null
+                item.user = this.verifyTokenEmail
+                item.dateAdded = this.getCurrentDate()
+                item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
+                item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
+                item.value = event
+                debugger
+                item.dimensionName = `website`
+                item.dimensionId = this.getDimensionId(this.getDimensions, `website`)
+
+            },
             handleChangeSubCampaign(event, item) {
                 let dimensionRef = `dimension-${item.position}`
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
@@ -913,6 +971,7 @@ conditionFilter.vue
             ...mapState('segment', ['segmentFilter']),
             ...mapState('campaigns', ['campaignsExample']),
             ...mapGetters('countries', ['getCountries']),
+            ...mapGetters('affiliateWebsites', ['getAffiliateWebsites']),
             ...mapGetters('affiliates', ['getAffiliates']),
             ...mapGetters('prods', ['getProds']),
             ...mapGetters('dimensions', ['getDimensions']),
