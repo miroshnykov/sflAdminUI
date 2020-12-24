@@ -6,7 +6,7 @@
 
         <div class="segment-panel">
             <!-- <input type="text" class="search-box"  placeholder="Search offers..."/> -->
-            <b-button variant="primary" @click="this.addOffer">
+            <b-button variant="primary" @click="createOffer">
                 Create New Offer
             </b-button>
 
@@ -27,16 +27,13 @@
                 </span>
                 <b-form-text id="spent-values">
                     Updated {{timeSince_(row.dateUpdated)}} ago
+                    <!-- TODO: Currently doesn't work, says NAN instead of the number value -->
                 </b-form-text>
             </div>
             
             <div slot="offerName" slot-scope="props">
                 <span @click="edit(row)">
                   <span class="segment-name">{{ offer.name }}</span>
-                </span>
-
-                <span @click="edit(row)">
-                    <span class="segment-name">{{ offer.name }}</span>
                 </span>
                 <b-form-text id="spent-values">
                     Updated {{timeSince_(row.dateUpdated)}} ago
@@ -56,13 +53,6 @@
                     CAD
                 </b-form-text>
             </div>
-
-                <div slot="payout" slot-scope="props">
-                    <span class="budget-daily">${{props.row.payout}}</span>
-                    <b-form-text id="currency">
-                        CAD
-                    </b-form-text>
-                </div> -->
 
                 <!-- <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box">
@@ -91,12 +81,6 @@
                 </button>
             </div>
 
-            <div slot="child_row" slot-scope="props">
-                <div class="segment-child animated fadeIn">
-
-                </div>
-            </div>
-
             <div slot="status" slot-scope="props">
                 <div v-if="props.row.status == 'inactive'">
                 <div class="status inactive">{{props.row.status}}</div>
@@ -104,17 +88,29 @@
                 <div v-else-if="props.row.status == 'active'">
                 <div class="status active">{{props.row.status}}</div>
                 </div>
+                <div v-else-if="props.row.status == 'private'">
+                <div class="status private">{{props.row.status}}</div>
+                </div>
+                <div v-else-if="props.row.status == 'applyToRun'">
+                <div class="status applyToRun">{{props.row.status}}</div>
+                </div>
             </div>
 
-                <div slot="actions" slot-scope="props">
-                    <button
-                            class="btn btn-link"
-                            v-b-tooltip.hover.top="'Edit Offer'"
-                            @click="edit(props.row)"
-                    >
-                        <i class="fas fa-pencil"></i>
-                    </button>
+            <div slot="actions" slot-scope="props">
+                <button
+                        class="btn btn-link"
+                        v-b-tooltip.hover.top="'Edit Offer'"
+                        @click="edit(props.row)"
+                >
+                    <i class="fas fa-pencil"></i>
+                </button>
+            </div>
+
+            <!-- <div slot="child_row" slot-scope="props">
+                <div class="segment-child animated fadeIn">
+
                 </div>
+            </div> -->
 
             </v-client-table>
         </div>
@@ -178,9 +174,6 @@
                     })
                 }
             },
-            edit(data) {
-                this.$router.push(`/offer/${data.id}`)
-            },
             async copyText(landingPage) {
 
                 try {
@@ -202,78 +195,88 @@
             formatData_(data) {
                 return formatData(data * 1000)
             },
-            addOffer() {
-                this.$swal.fire({
-                    title: 'Create New Offer',
-                    html:
-                        `<label for="swal-input1"></label>
-                        <input id="swal-input1" class="swal2-input" placeholder="Offer Name" maxlength="25"
-                             onblur="
-                                 if(this.value === ''){
-                                    alert('Enter offer name ')
-                                    document.querySelector('#swal-input1').style.background = '#f38282'
-                                    document.querySelector('.swal2-confirm').style.display = 'none'
-                                    return false
-                                } else {
-                                    document.querySelector('.swal2-confirm').style.display = 'inline-block'
-                                    document.querySelector('#swal-input1').style.background = 'white'
-                                }
-                            "
-                        >
-                        <div class="row segment-popup">
-                        <div class="col-md-6">
-                    `,
-                    confirmButtonColor: '#2ED47A',
-                    cancelButtonColor: '#E3EEF4',
-                    showCancelButton: true,
-                    confirmButtonText: '<i class="fas fa-check"></i>',
-                    cancelButtonText: '<i class="fas fa-times"></i>',
-                    backdrop: `
-                        rgba(0,0,123,0.2)
-                    `,
-                    preConfirm: () => {
-                        if (document.getElementById('swal-input1').value
-                        ) {
-                            return [
-                                document.getElementById('swal-input1').value
-                            ]
-                        } else {
-                            this.$swal.fire({
-                                title: 'Validation Error',
-                                text: 'Please name your offer.',
-                            })
-                            return
-                        }
-
-                    }
-
-                }).then((result) => {
-                    if (result.dismiss === "cancel") {
-                        return
-                    }
-
-                    if (result.value[0]
-                    ) {
-                        let offerData = {}
-                        offerData.name = result.value[0]
-                        let self = this
-                        self.offerName = offerData.name
-                        this.$store.dispatch('offer/addOffer', offerData).then((res) => {
-                            let newOfferId = res.id
-                            self.$router.push(`/offer/${newOfferId}`)
-                        })
-
-                    } else {
-                        this.$swal.fire({
-                            title: 'Missing information',
-                            type: 'error',
-                            text: 'Please name your segment and try again.',
-                            confirmButtonColor: '#2ED47A',
-                        })
-                    }
-
-                })
+            edit(data) {
+                this.$router.push(`/offer/${data.id}`)
             },
+            async createOffer() {
+                this.$router.push(`/offer/new`)
+                // let offerId = await this.$store.dispatch('offer/createOfferStore',this)
+                // if (offerId) {
+                //     this.$router.push(`/offer/${offerId}`)
+                // }
+            },
+            // addOffer() {
+            //     this.$swal.fire({
+            //         title: 'Create New Offer',
+            //         html:
+            //             `<label for="swal-input1"></label>
+            //             <input id="swal-input1" class="swal2-input" placeholder="Offer Name" maxlength="25"
+            //                  onblur="
+            //                      if(this.value === ''){
+            //                         alert('Enter offer name ')
+            //                         document.querySelector('#swal-input1').style.background = '#f38282'
+            //                         document.querySelector('.swal2-confirm').style.display = 'none'
+            //                         return false
+            //                     } else {
+            //                         document.querySelector('.swal2-confirm').style.display = 'inline-block'
+            //                         document.querySelector('#swal-input1').style.background = 'white'
+            //                     }
+            //                 "
+            //             >
+            //             <div class="row segment-popup">
+            //             <div class="col-md-6">
+            //         `,
+            //         confirmButtonColor: '#2ED47A',
+            //         cancelButtonColor: '#E3EEF4',
+            //         showCancelButton: true,
+            //         confirmButtonText: '<i class="fas fa-check"></i>',
+            //         cancelButtonText: '<i class="fas fa-times"></i>',
+            //         backdrop: `
+            //             rgba(0,0,123,0.2)
+            //         `,
+            //         preConfirm: () => {
+            //             if (document.getElementById('swal-input1').value
+            //             ) {
+            //                 return [
+            //                     document.getElementById('swal-input1').value
+            //                 ]
+            //             } else {
+            //                 this.$swal.fire({
+            //                     title: 'Validation Error',
+            //                     text: 'Please name your offer.',
+            //                 })
+            //                 return
+            //             }
+
+            //         }
+
+            //     }).then((result) => {
+            //         if (result.dismiss === "cancel") {
+            //             return
+            //         }
+
+            //         if (result.value[0]
+            //         ) {
+            //             let offerData = {}
+            //             offerData.name = result.value[0]
+            //             let self = this
+            //             self.offerName = offerData.name
+            //             this.$store.dispatch('offer/addOffer', offerData).then((res) => {
+            //                 let newOfferId = res.id
+            //                 self.$router.push(`/offer/${newOfferId}`)
+            //             })
+
+            //         } else {
+            //             this.$swal.fire({
+            //                 title: 'Missing information',
+            //                 type: 'error',
+            //                 text: 'Please name your segment and try again.',
+            //                 confirmButtonColor: '#2ED47A',
+            //             })
+            //         }
+
+            //     })
+            // },
         },
         data() {
             return {

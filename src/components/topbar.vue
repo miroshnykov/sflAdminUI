@@ -241,7 +241,7 @@
         left: 255px
         height: 80px
         z-index: 80
-        background: #fff
+        // background: #fff
 
         h1
             margin-top: 10px

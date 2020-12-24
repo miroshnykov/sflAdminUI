@@ -112,13 +112,25 @@ h2, .h2
   min-height: 100vh
 // margin-left: 300px
 
-#campaigns
+#campaigns, #segments, #offers
   margin-top: 40px
   margin-bottom: 40px
 
-#edit-segment
+#edit-segment, #edit-offer
   margin-top: 80px
   margin-bottom: 40px
+
+#create-offer
+  margin-top: 30px
+  margin-bottom: 30px
+
+#settings
+  max-width: 600px
+  min-height: 400px
+  margin: auto
+  background: #fff
+  padding: 50px
+  border-radius: 20px
 
 /* Campaigns */
 // #segments
@@ -144,6 +156,12 @@ h2, .h2
 
   &.active
     background: #2ED47A
+
+  &.private
+    background: #36B8E1
+
+  &.applyToRun
+    background: #BB6BD9
 
   &.paused
     background: #FFB946
@@ -995,9 +1013,9 @@ button.add-condition.condition-active
   margin: 10px
 
 .campaign-block
-// float: left
-// margin-right: 10px
-// max-width: 200px
+  float: left
+  margin-right: 10px
+  max-width: 200px
 
 .filter__controls
   // display: grid

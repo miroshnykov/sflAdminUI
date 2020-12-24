@@ -36,7 +36,7 @@
                 location.reload()
             },
             mainPage() {
-                this.$router.push('/')
+                tthis.$router.push('/segments/block')
                 location.reload()
             },
         },
