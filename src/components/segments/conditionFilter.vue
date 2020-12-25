@@ -289,30 +289,38 @@ conditionFilter.vue
             //         return item
             //     })
             // },
-            filterClickArea(event) {
-                // console.log('event, ', event)
-                // console.log('filterClickArea event, ', event.target)
-                // event.path.forEach(item => {
-                    // console.log('item:', item)
-                // })
-                // debugger
-            },
             getAffiliatesModify(item) {
 
+                if (item.dimensionId === 0) {
+                    return this.getAffiliates.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                }
                 const value = this.getValue(item)
-
+                let refAffiliate = `aff-${item.position}`
+                let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
                 if (value === '' || Number(value) === 0) {
 
-                    let refAffiliate = `aff-${item.position}`
-                    let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
                     if (affiliateEl) {
                         let listMenu = affiliateEl.querySelector('.menu')
-                        // console.log(' ************** listMenu Affiliates:', listMenu)
                         if (listMenu) {
                             listMenu.style.display = 'block'
-                            // console.log(' ************** listMenu.style.display block ', listMenu)
                         }
+
                     }
+
+                    let self = this
+                    self.affiliateEl = affiliateEl
+                    setTimeout(() => {
+                        if (self.affiliateEl) {
+                            let listMenu = self.affiliateEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'block'
+                            }
+                        }
+                    }, 200)
 
                     return this.getAffiliates.map(item => {
                         item.value = item.id.toString()
@@ -320,10 +328,22 @@ conditionFilter.vue
                         return item
                     })
                 } else {
-                    // console.log('**** value:', value)
                     let obj = this.getAffiliates.filter(item => item.id === Number(value))
                     obj.push({id: 0, name: '*** Add more items ***'})
-                    // console.log(' ************** *** Add more items ***:', obj)
+
+                    let self = this
+                    self.affiliateEl = affiliateEl
+                    setTimeout(() => {
+                        if (self.affiliateEl) {
+                            let listMenu = self.affiliateEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'none'
+                            }
+
+                        }
+
+                    }, 200)
+
                     return obj.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '
@@ -675,25 +695,27 @@ conditionFilter.vue
 
                 let affCountry = self.affiliates.filter(item => (item.id === Number(event)))
 
-                let itemValue = event + '/' + affCountry[0].countryCode || ''
 
-                let recCheck = self.validateValue(self.segmentFilter, itemValue)
-                if (recCheck.length > 0) {
-                    self.$swal.fire({
-                        type: `warning`,
-                        title: `record exists: ${recCheck[0].value}  `,
-                        text: ` dimension: ${recCheck[0].dimensionName}`,
-                        footer: ``
-                    })
+                let itemValue = affCountry.length !== 0 && `${event}/${affCountry[0].countryCode}` || `/`
 
-                    self.$refs[affRef][0].value = ``
-                    self.$refs[dimensionRef][0].value = recCheck[0].dimensionId
 
-                    item.value = ``
-                    item.dimensionName = ``
-                    item.dimensionId = null
-                    return
-                }
+                // let recCheck = self.validateValue(self.segmentFilter, itemValue)
+                // if (recCheck.length > 0) {
+                //     self.$swal.fire({
+                //         type: `warning`,
+                //         title: `record exists: ${recCheck[0].value}  `,
+                //         text: ` dimension: ${recCheck[0].dimensionName}`,
+                //         footer: ``
+                //     })
+                //
+                //     self.$refs[affRef][0].value = ``
+                //     self.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                //
+                //     item.value = ``
+                //     item.dimensionName = ``
+                //     item.dimensionId = null
+                //     return
+                // }
                 item.user = this.verifyTokenEmail
                 item.dateAdded = this.getCurrentDate()
                 item.value = itemValue
