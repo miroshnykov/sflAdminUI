@@ -13,6 +13,7 @@ export default {
             state.segmentsOrigin = segments
         },
         searchFilter(state, searchText) {
+            state.segments = state.segmentsOrigin
             state.segments = searchText ? state.segments.filter(item => (item.name.toLowerCase().includes(searchText.toLowerCase()))) : state.segmentsOrigin
         },
         reOrdering(state, obj) {
