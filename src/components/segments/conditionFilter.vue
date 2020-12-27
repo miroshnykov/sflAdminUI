@@ -1,8 +1,6 @@
-conditionFilter.vue
 <template>
     <transition name="expand-down">
-        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter"
-                 @click="filterClickArea($event)">
+        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter">
             <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
             <div class="filter__controls">
                 <div class="error" style="display:none">Error validation message</div>

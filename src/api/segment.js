@@ -12,7 +12,7 @@ const segmentStatus = async (id) => {
                         name
                         status
                         dateUpdated
-                        
+                        dateAdded                        
                       } 
                     }
             `,

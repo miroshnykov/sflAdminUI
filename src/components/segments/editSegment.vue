@@ -22,12 +22,14 @@
                     <input type="text"
                            placeholder="ex: My First Segment"
                            class="condition__matches campaign custom-input"
-                           :value="getSegmentStatus.length !==0 && getSegmentStatus[0].name"
+                           :value="getSegmentName"
                            :id="defineSegmentNameId(id)"
+                           @change="changeField($event, `segmentName`)"
                     >
+                    <!--                    -->
                     <b-form-text id="lastModified">
-                        Last Modified: {{ getSegmentStatus.length !==0 && formatDate_(new
-                        Date(getSegmentStatus[0].dateUpdated * 1000)) }}
+                        Date added: {{getSegmentDateAdded && formatDate_(new Date(getSegmentDateAdded * 1000))}}
+                        Last updated: {{ formatDate_(new Date(Number(getSegmentDateUpdated))) }}
                     </b-form-text>
                 </div>
             </b-col>
@@ -38,13 +40,13 @@
                     <select
                             :id="defineStatusId(id)"
                             class="condition__dimension-name condition__matches custom-select"
-                            @change="handleChangeStatus($event, item)"
+                            @change="changeField($event, `status`)"
                     >
                         <option
                                 id="filterType"
                                 v-for="{id, name} in getStatusList()"
                                 :value="id"
-                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getSegmentStatus.length !==0 && getSegmentStatus[0].status)"
+                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getSegmentStatus && getSegmentStatus || '')"
                                 :key="id"
                         >{{name}}
                         </option>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex'
+    import {mapState, mapGetters, mapMutations} from 'vuex'
     import logo from '../logo.vue'
     import conditions from './conditions.vue'
     import topbar from '../topbar.vue'
@@ -87,14 +89,41 @@
         components: {logo, menunav, topbar, conditions},
         computed: {
             ...mapGetters('segments', ['getSegments']),
-            ...mapGetters('segment', ['getSegmentFilter', 'getSegmentStatus']),
+            ...mapGetters('segment', ['getSegmentFilter', 'getSegmentName', 'getSegmentStatus', 'getSegmentDateUpdated', 'getSegmentDateAdded']),
         },
         segmentFilter: [],
         async mounted() {
-            await this.$store.dispatch('segment/getSegmentConditions', this.id)
-            await this.$store.dispatch('segment/saveSegmentStatusStore', this.id)
+            await this.$store.dispatch('segment/saveSegmentConditionsStore', this.id)
         },
         methods: {
+            ...mapMutations("segment", ["updateField"]),
+            getFieldName(field) {
+                return this.getCampaign.length > 0 && this.getCampaign[0][field]
+            },
+            async changeField(event, field) {
+
+                if (event.target) {
+                    if (field === 'segmentName') {
+                        let el = document.querySelector(`#${field}-${this.id}`)
+                        if (Number(event.target.value) === 0) {
+                            el && el.classList.add('error')
+                            this.$swal.fire({
+                                title: 'Validation Error',
+                                text: 'Please name your segment.',
+                            })
+                            return
+                        } else {
+                            el && el.classList.remove('error')
+                        }
+                    }
+
+                    let updateFieldData = {}
+                    updateFieldData.value = event.target.value
+                    updateFieldData.field = field
+                    this.updateField(updateFieldData)
+                }
+
+            },
             formatDate_(date) {
                 return formatData(date)
             },

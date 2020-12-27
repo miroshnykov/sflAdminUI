@@ -54,9 +54,11 @@ const deleteFilter_ = (state, indexFilters) => {
 export default {
     state: {
         segmentFilter: [],
-        segmentStatus: [],
         segmentId: 0,
         segmentName: '',
+        segmentDateUpdated: '',
+        segmentDateAdded: '',
+        segmentStatus: '',
         segmentRuleCount: 0
     },
     ...mapState('googleAuth', ['verifyTokenEmail']),
@@ -65,10 +67,22 @@ export default {
         setSegmentStore(state, data) {
             state.segmentFilter = data.segments
             state.segmentId = data.segmentId
+            state.segmentDateUpdated = data.segmentDateUpdated
+            state.segmentDateAdded = data.segmentDateAdded
+            state.segmentName = data.segmentName
+            state.segmentStatus = data.segmentStatus
             state.segmentRuleCount = data.segmentRuleCount
         },
-        async saveSegmentStatus(state, segmentStatus) {
-            state.segmentStatus = segmentStatus
+        updateField(state, data) {
+            if (data.field === 'status') {
+                state.segmentStatus = Number(data.value) && 'inactive' || 'active'
+                return
+            }
+            if (data.field === 'segmentName') {
+                state.segmentName = data.value
+                return
+            }
+            state.segmentFilter[0][data.field] = data.value
         },
         addFilter(state, item) {
             const {segmentFilter} = state
@@ -206,7 +220,7 @@ export default {
         },
         async saveConditionsCommit(state, data) {
 
-            const {segmentName, segmentStatus} = data
+            const {segmentName, segmentStatus} = state
             try {
                 await segment.deleteSegmentConditions(state.segmentId)
             } catch (e) {
@@ -259,13 +273,7 @@ export default {
         },
     },
     actions: {
-        async saveSegmentStatusStore({commit}, id) {
-            let segmentsData = await segmentStatusApi.segmentStatus(id)
-            console.log(`segmentStatus`)
-            console.table(reFormatJSON(segmentsData))
-            commit('saveSegmentStatus', segmentsData)
-        },
-        async getSegmentConditions({commit}, id) {
+        async saveSegmentConditionsStore({commit}, id) {
             let res = await segment.getSegmentConditions(id)
             let segmentCountFilters = await segment.getSegmentCountFilters(id)
 
@@ -309,10 +317,19 @@ export default {
                 item.orAndDisabled = (item.count <= 1 || item.position === item.maxPosition)
             })
 
-            console.log('>>> getSegmentConditions:')
+            console.log('>>> saveSegmentConditionsStore:')
             console.table(reFormatJSON(sortedByPostition))
+
+            let segmentsData = await segmentStatusApi.segmentStatus(id)
+            console.log(`segmentStatus`)
+            console.table(reFormatJSON(segmentsData))
+
             commit('setSegmentStore', {
                 segments: sortedByPostition,
+                segmentName: segmentsData && segmentsData[0].name || '',
+                segmentStatus: segmentsData && segmentsData[0].status || '',
+                segmentDateUpdated: segmentsData && segmentsData[0].dateUpdated || '',
+                segmentDateAdded: segmentsData && segmentsData[0].dateAdded || '',
                 segmentId: id,
                 segmentRuleCount: segmentCountFilters[0].segmentRuleCount
             })
@@ -338,7 +355,10 @@ export default {
     },
     getters: {
         getSegmentFilter: state => state.segmentFilter,
-        getSegmentStatus: state => state.segmentStatus
+        getSegmentName: state => state.segmentName,
+        getSegmentDateUpdated: state => state.segmentDateUpdated,
+        getSegmentDateAdded: state => state.segmentDateAdded,
+        getSegmentStatus: state => state.segmentStatus,
     },
 
 
