@@ -694,7 +694,7 @@
                 let affCountry = self.affiliates.filter(item => (item.id === Number(event)))
 
 
-                let itemValue = affCountry.length !== 0 && `${event}/${affCountry[0].countryCode}` || `/`
+                let itemValue = affCountry.length !== 0 && `${event}/${affCountry[0].countryCode}` || `0/0`
 
 
                 // let recCheck = self.validateValue(self.segmentFilter, itemValue)
