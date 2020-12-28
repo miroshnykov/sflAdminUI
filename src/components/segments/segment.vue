@@ -141,23 +141,6 @@
             };
         },
         methods: {
-            // async addAffiliates () {
-            //     let order = this.getBucketAffiliates.sort((a, b) => (Number(a.id) - Number(b.id)))
-            //     let lastRecord = order[order.length - 1]
-            //     let lastId = lastRecord && lastRecord.id || 0
-            //     await this.addAffiliate()
-            //     this.showBucketModal(lastId + 1)
-
-            //     if (res){
-            //         this.$swal.fire({
-            //             type: 'success',
-            //             position: 'top-end',
-            //             title: `Segment ID ${segment.id} ${segment.name} updated`,
-            //             showConfirmButton: false,
-            //             timer: 1000
-            //         })
-            //     }
-            // },
             getAumWeight(lp) {
                 let sum = 0
                 lp.map(item => {
@@ -214,9 +197,6 @@
 
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])
             },
-            getTitleLp(info) {
-                return "dimon"
-            },
             handleChangeLp(lpId, item) {
                 item.landingPageId = lpId
             },
@@ -225,15 +205,6 @@
                     {id: 0, name: 'Active'},
                     {id: 1, name: 'Inactive'},
                 ]
-            },
-            getId(value) {
-                return `${this.id}`
-            },
-            setElId(value) {
-                return `${value}-${this.id}`
-            },
-            defineLpId(id) {
-                return `lp-${id}`
             },
             getFieldName(field) {
                 return this.getBucket.length > 0 && this.getBucket[0][field]

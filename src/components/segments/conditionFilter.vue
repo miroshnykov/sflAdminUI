@@ -255,51 +255,98 @@
         methods: {
             getCountriesModify(item) {
 
+                console.log(`Country:${JSON.stringify(item)}`)
+                if (item.dimensionId === 0) {
+                    let obj = []
+                    obj.push({value: 0, text: '*** Add more items ***'})
+                    return obj
+                    // return this.getCountries.map(item => {
+                    //     item.value = item.code
+                    //     item.text = item.name + ' (' + item.code + ') '
+                    //     return item
+                    // })
+                }
                 return this.getCountries.map(item => {
                     item.value = item.code
                     item.text = item.name + ' (' + item.code + ') '
                     return item
                 })
-                //
-                // const {value} = item
-                //
-                // if (value === '' || Number(value) === 0) {
-                //     return this.getCountries.map(item => {
-                //         item.value = item.code
-                //         item.text = item.name + ' (' + item.code + ') '
-                //         return item
-                //     })
-                // } else {
-                //     let obj = this.getCountries.filter(item => item.code === value)
-                //     obj.push({code: 0, name: '*** Add more items ***'})
-                //     return obj.map(item => {
-                //         item.value = item.code
-                //         item.text = item.name + ' (' + item.code + ') '
-                //         return item
-                //     })
-                // }
+                return
+                const value = this.getValue(item)
+                let refCountry = `country-${item.position}`
+                let countryEl = document.querySelector(`#${refCountry}`) && document.querySelector(`#${refCountry}`).parentNode || null
+                if (value === '' || Number(value) === 0) {
 
-            },
-            // getWebsitesModify() {
-            //     return this.getAffiliateWebsites.map(item => {
-            //         item.value = item.link
-            //         item.text = item.link + ' (' + item.id + ')  '
-            //         return item
-            //     })
-            // },
-            getAffiliatesModify(item) {
+                    if (countryEl) {
+                        let listMenu = countryEl.querySelector('.menu')
+                        if (listMenu) {
+                            listMenu.style.display = 'block'
+                        }
 
-                if (item.dimensionId === 0) {
-                    return this.getAffiliates.map(item => {
-                        item.value = item.id.toString()
-                        item.text = item.name + ' (' + item.id + ') '
+                    }
+
+                    let self = this
+                    self.countryEl = countryEl
+                    setTimeout(() => {
+                        if (self.countryEl) {
+                            let listMenu = self.countryEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'block'
+                            }
+                        }
+                    }, 200)
+
+                    return this.getCountries.map(item => {
+                        item.value = item.code
+                        item.text = item.name + ' (' + item.code + ') '
                         return item
                     })
+                } else {
+                    let obj = this.getCountries.filter(item => item.value === value)
+                    obj.push({value: 0, text: '*** Add more items ***'})
+
+                    let self = this
+                    self.countryEl = countryEl
+                    setTimeout(() => {
+                        if (self.countryEl) {
+                            let listMenu = self.countryEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'none'
+                            }
+
+                        }
+
+                    }, 200)
+
+                    return obj.map(item => {
+                        item.value = item.code
+                        item.text = item.name + ' (' + item.code + ') '
+                        return item
+                    })
+                }
+
+            },
+            getAffiliatesModify(item) {
+
+                console.log(`Affiliates:${JSON.stringify(item)}`)
+                if (item.dimensionId === 0) {
+                    let obj = []
+                    obj.push({id: 0, name: '*** Add more items ***'})
+                    console.log('Empty affiliate')
+                    return obj
+                    //
+                    // return this.getAffiliates.map(item => {
+                    //     item.value = item.id.toString()
+                    //     item.text = item.name + ' (' + item.id + ') '
+                    //     return item
+                    // })
                 }
                 const value = this.getValue(item)
                 let refAffiliate = `aff-${item.position}`
                 let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
                 if (value === '' || Number(value) === 0) {
+
+                    console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
 
                     if (affiliateEl) {
                         let listMenu = affiliateEl.querySelector('.menu')
@@ -329,6 +376,7 @@
                     let obj = this.getAffiliates.filter(item => item.id === Number(value))
                     obj.push({id: 0, name: '*** Add more items ***'})
 
+                    console.log(`Affiliates value:${value}:${JSON.stringify(item)}`)
                     let self = this
                     self.affiliateEl = affiliateEl
                     setTimeout(() => {
@@ -351,9 +399,29 @@
 
             },
             getProdsModify(item) {
-                const {value} = item
+
+                console.log(`Prods:${JSON.stringify(item)}`)
+
+                if (item.dimensionId === 0) {
+                    let obj = []
+                    obj.push({id: 0, name: '*** Add more items ***'})
+                    console.log('Empty prods')
+                    return obj
+                    // return this.getProds.map(item => {
+                    //     item.value = item.id.toString()
+                    //     item.text = item.name + ' (' + item.id + ') '
+                    //     return item
+                    // })
+                }
+
+                let refProd = `prod-${item.position}`
+                let prodEl = document.querySelector(`#${refProd}`) && document.querySelector(`#${refProd}`).parentNode || null
+
+                // const {value} = item
+                const value = this.getValue(item)
 
                 if (value === '' || Number(value) === 0) {
+                    console.log(`prod value:${value} :${JSON.stringify(item)}`)
 
                     let refProd = `prod-${item.position}`
                     let prodEl = document.querySelector(`#${refProd}`) && document.querySelector(`#${refProd}`).parentNode || null
@@ -364,6 +432,17 @@
                         }
                     }
 
+                    let self = this
+                    self.prodEl = prodEl
+                    setTimeout(() => {
+                        if (self.prodEl) {
+                            let listMenu = self.prodEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'block'
+                            }
+                        }
+                    }, 200)
+
                     return this.getProds.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '
@@ -372,6 +451,20 @@
                 } else {
                     let obj = this.getProds.filter(item => item.id === Number(value))
                     obj.push({id: 0, name: '*** Add more items ***'})
+                    console.log(`prod value:${value} :${JSON.stringify(item)}`)
+                    let self = this
+                    self.prodEl = prodEl
+                    setTimeout(() => {
+                        if (self.prodEl) {
+                            let listMenu = self.prodEl.querySelector('.menu')
+                            if (listMenu) {
+                                listMenu.style.display = 'none'
+                            }
+
+                        }
+
+                    }, 200)
+
                     return obj.map(item => {
                         item.value = item.id.toString()
                         item.text = item.name + ' (' + item.id + ') '

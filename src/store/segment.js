@@ -314,7 +314,6 @@ export default {
             console.log(`segmentStatus`)
             console.table(reFormatJSON(segmentsData))
 
-            debugger
             commit('setSegmentStore', {
                 segments: sortedByPostition,
                 segmentName: segmentsData && segmentsData[0].name || '',
