@@ -57,75 +57,8 @@ const getSegmentCountFilters = async (id) => {
     }
 }
 
-const createSegmentCondition = async (item) => {
 
-    let {
-        segmentId,
-        dimensionId,
-        value,
-        position,
-        segmentRuleIndex,
-        matchTypeId,
-        filterTypeId,
-        user,
-        dateAdded
-    } = item
-
-    try {
-        const res = await api.post(
-            '', {
-                query: `
-                    mutation{
-                          createSegmentCondition(
-                                segmentId: ${segmentId},
-                                dimensionId: ${dimensionId},
-                                value: "${value}",
-                                user: "${user}",
-                                matchTypeId:${matchTypeId},
-                                filterTypeId:${filterTypeId},
-                                position: ${position},
-                                segmentRuleIndex: ${segmentRuleIndex}
-                                dateAdded: ${dateAdded}
-                          ){
-                                value
-                          }
-                    }  
-                `,
-            }
-        )
-        console.log(' CreateSegmentCondition status:', res.status)
-        return res
-
-    } catch (e) {
-        catchHandler(e)
-    }
-}
-
-const deleteSegmentConditions = async (segmentId) => {
-    try {
-        const res = await api.post(
-            '', {
-                query: `
-                mutation{
-                      deleteSegmentConditions(
-                            segmentId:${segmentId}
-                      ){
-                            segmentId
-                      }
-                }`,
-            }
-        )
-
-        console.log('  >>> deleteSegmentConditions')
-        console.table(reFormatJSON(res))
-        return res
-    } catch (e) {
-        catchHandler(e)
-    }
-}
 export default {
     getSegmentCountFilters,
     getSegmentConditions,
-    deleteSegmentConditions,
-    createSegmentCondition
 }

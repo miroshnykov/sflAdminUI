@@ -1,7 +1,7 @@
 import {reFormatJSON} from '../helpers'
 
 import segment from '../api/segmentConditions'
-import segmentStatusApi from '../api/segment'
+import segmentApi from '../api/segment'
 import segments from '../api/segments'
 import {mapState} from 'vuex'
 
@@ -220,56 +220,46 @@ export default {
         },
         async saveConditionsCommit(state, data) {
 
-            const {segmentName, segmentStatus} = state
-            try {
-                await segment.deleteSegmentConditions(state.segmentId)
-            } catch (e) {
-                console.log('err', e)
-                data.$swal.fire({
-                    type: 'error',
-                    title: 'error in deleteSegmentConditions() ',
-                    text: 'Something went wrong!',
-                    footer: 'Errors '
-                })
-            }
-            let obj = {}
-            obj.name = segmentName
-            obj.status = segmentStatus
-            obj.segmentId = state.segmentId
+            const {segmentName, segmentStatus, segmentId, segmentFilter} = state
 
-            let updStatusRes = await segmentStatusApi.updateSegmentStatus(obj)
-            if (!updStatusRes && !updStatusRes.segmentId) {
+            let dataSend = {}
+            dataSend.id = segmentId
+            dataSend.name = segmentName
+            dataSend.status = segmentStatus
+
+            let toSendFilter = []
+            for (const filter of segmentFilter) {
+                toSendFilter.push({
+                    segmentId: segmentId,
+                    dimensionId: filter.dimensionId,
+                    value: `&${filter.value}&`,
+                    position: filter.position,
+                    segmentRuleIndex: filter.segmentRuleIndex,
+                    filterTypeId: filter.filterTypeId,
+                    matchTypeId: filter.matchTypeId,
+                })
+            }
+
+            let toSendFormat = JSON.stringify(toSendFilter).replace(/['"]+/g, '')
+            dataSend.filters = toSendFormat.replace(/[&]+/g, '"')
+
+            let resSaveCond = await segmentApi.saveConditionsApi(dataSend)
+            if (resSaveCond.segmentId) {
+                data.$swal.fire({
+                    type: 'success',
+                    position: 'top-end',
+                    title: 'Segment conditions has been saved',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            } else {
                 data.$swal.fire({
                     type: 'error',
-                    title: 'error in updateSegmentStatus() ',
+                    title: 'error in saveConditionsApi() ',
                     text: 'Something went wrong!',
                     footer: 'Errors '
                 })
-                return
             }
-            for (const item of state.segmentFilter) {
-                item.segmentId = state.segmentId
-                console.table('before createSegmentCondition ')
-                console.table(reFormatJSON(item))
-                try {
-                    await segment.createSegmentCondition(item)
-                } catch (e) {
-                    console.log('err', e)
-                    data.$swal.fire({
-                        type: 'error',
-                        title: 'error in createSegmentCondition()',
-                        text: 'Something went wrong!',
-                        footer: 'Errors '
-                    })
-                }
-            }
-            data.$swal.fire({
-                type: 'success',
-                position: 'top-end',
-                title: 'Segment conditions has been saved',
-                showConfirmButton: false,
-                timer: 1000
-            })
         },
     },
     actions: {
@@ -320,10 +310,11 @@ export default {
             console.log('>>> saveSegmentConditionsStore:')
             console.table(reFormatJSON(sortedByPostition))
 
-            let segmentsData = await segmentStatusApi.segmentStatus(id)
+            let segmentsData = await segmentApi.segmentStatus(id)
             console.log(`segmentStatus`)
             console.table(reFormatJSON(segmentsData))
 
+            debugger
             commit('setSegmentStore', {
                 segments: sortedByPostition,
                 segmentName: segmentsData && segmentsData[0].name || '',
@@ -337,14 +328,11 @@ export default {
         async createSegment({commit}, segmentData) {
             return await segments.createSegment(segmentData.name, segmentData.weight, segmentData.multiplier)
         },
-        async updateSegment({commit}, segmentInfo) {
-            return await segments.updateSegment(segmentInfo.id, segmentInfo.name, segmentInfo.weight, segmentInfo.multiplier)
-        },
         async updateLandingPage({commit}, segmentInfo) {
             return await segments.updateLandingPage(segmentInfo)
         },
         async updateSegmentStatus({commit}, segmentInfo) {
-            return await segmentStatusApi.updateSegmentStatus(segmentInfo)
+            return await segmentApi.updateSegmentStatus(segmentInfo)
         },
         async deleteSegment({commit}, segmentId) {
             return await segments.deleteSegment(segmentId)

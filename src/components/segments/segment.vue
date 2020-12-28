@@ -353,9 +353,6 @@
             getClass(segment) {
                 return 'segment__empty'
             },
-            updateSegment: function (segment, landingPages) {
-                this.update(Object.assign({}, segment, {landingPages}));
-            },
             ...mapActions("segments", ["update", "removeAndUpdateOrder"]),
             ...mapMutations("segments", ["toggleActive"]),
             ...mapMutations(["toggleMask", "toggleConfirm"]),
