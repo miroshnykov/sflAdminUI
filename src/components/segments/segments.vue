@@ -15,6 +15,16 @@
             </b-button>
             <!--            <button class="button&#45;&#45;fill enable-all" @click="showModal(true)">Enable all</button>-->
             <!--            <button class="button&#45;&#45;fill disable-all" @click="showModal(false)">Disable all</button>-->
+            <div class="checkbox-filter">
+                <b-form-checkbox
+                        v-model="selected"
+                        class="inactive"
+                        name="check-button"
+                        @change="activeRecords($event)"
+                        switch>
+                    <strong>{{ selected && 'active' || 'inactive' }}</strong>
+                </b-form-checkbox>
+            </div>
             <div class="segments">
                 <!--                 :options="{draggable: '.segment__draggable'}"-->
                 <!--                @choose="onUnpublishedChange"-->
@@ -60,8 +70,12 @@
 
         },
         methods: {
-            ...mapMutations('segments', ['reOrdering', 'searchFilter']),
+            ...mapMutations('segments', ['reOrdering', 'searchFilter','activeInactive']),
             ...mapActions("segments", ["saveSegmentsStore"]),
+            async activeRecords(status) {
+                this.selected = status
+                this.activeInactive(status)
+            },
             searchUpdate(event) {
                 let searchText = event.target.value
                 this.searchFilter(searchText)
@@ -223,6 +237,7 @@
         },
         data() {
             return {
+                selected: true,
                 segmentName: '',
                 isModalVisible: false,
             }
