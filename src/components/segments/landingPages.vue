@@ -25,12 +25,7 @@
                     </model-select>
 
 
-                    <!--                    :value="segment.landingPageId"-->
                 </div>
-<!--                <p class="text-left">-->
-<!--                    <label :id="defineLpLabelId(segment.id)">Choose:{{ segment.landingPageId }} </label>-->
-<!--                </p>-->
-<!--                <br>-->
 
                 <b-row class="text-center">
                     <b-col cols="6">
@@ -138,7 +133,6 @@
                 })
             },
             handleChangeLp(lpId, item) {
-                item.landingPageId = lpId
                 this.lpId = lpId
                 // let nameLp = this.getLandingPages.filter(i => {
                 //     return i.value === lpId
@@ -172,7 +166,7 @@
                     return
                 }
 
-                if (!data.landingPageId) {
+                if (!this.lpId) {
                     alert('landing page  missing')
                     document.querySelector(`.lpInput-${data.id}`).style.background = '#f38282'
                     return
@@ -182,7 +176,7 @@
                 let segmentLpData = {}
                 segmentLpData.id = this.id || 0
                 segmentLpData.segmentId = data.id || 0
-                segmentLpData.lpId = data.landingPageId || 0
+                segmentLpData.lpId = this.lpId || 0
                 let weight = document.querySelector(`#weight-${data.id}`).value
                 segmentLpData.weight = +weight || 0
 
