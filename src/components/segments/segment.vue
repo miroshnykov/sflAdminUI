@@ -9,26 +9,21 @@
 
                     <h1 class="segment__name" :title="segment.name">
                         <span v-bind:title="getTitle(segment)" class="segment__active"
-                              @click="toggleState(segment)"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
+                              @click="toggleState(segment)"><i class="far fa-chevron-up"
+                                                               data-fa-transform="shrink-4"></i></span>
                         {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
                         <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
                         <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                     </h1>
-                    <!--@focus="focusMenu" @blur="blur"-->
-
-                    <!-- TODO: Toggle doesnt work, also cant find where to change icon from plus symbol to chevron down, like the mock -->
-                    <!--                <button class="segment__toggle-menu"/>-->
-
-                    <!--            <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)"><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span>-->
 
                 </b-col>
                 <b-col col lg="4">
-                    <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit'"
+                    <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit Segment'"
                               style="z-index:2">
                         <i class="far fa-edit" data-fa-transform="shrink-1"></i>
                     </b-button>
 
-                    <b-button variant="light" @click="delSegment(segment.id)" v-b-tooltip.hover.top="'Delete'"
+                    <b-button variant="light" @click="delSegment(segment.id)" v-b-tooltip.hover.top="'Delete Segment'"
                               style="z-index:2">
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
@@ -45,21 +40,12 @@
             </b-row>
 
 
-            <!-- <label v-if="segment.landingPageId">ID: {{segment.landingPageId}}</label> -->
-
-            <!-- <div v-if="segment.lp.length !== 0" class="child-table"> -->
-            <!--            <div v-if="segment.lp.length !== 1" class="child-table">-->
-            <!-- TODO: Known issue - If number is 0, other segments other than the first one don't show data.
-            If number is 1, any modal popup repeats the amount of segments we have -->
-
-
             <b-row class="text-center lp-container" align-v="center">
                 <b-col col lg="6">
                     <span class="lp-label">Landing Pages</span>
                     <!-- <label class="segment-position">{{segment.position}}</label> -->
                 </b-col>
                 <b-col col lg="6">
-                    <!-- TODO: Saving LP doesnt work, please fix. Optional: Move popup modal to new page/component -->
                     <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
                               @click="showLPModal(segment.id)"
                     >
@@ -98,25 +84,22 @@
             >
 
                 <span class="landing-page">
-                    <!-- TODO: Could only get LP Name to show via HTML, but need ID and Weight also -->
-                    <span class="landing-page-name" v-if="lp.name.length<=37"
+                    <span class="landing-page-name" v-if="lp.name.length<=29"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+lp.id + ' Weight:'+lp.weight">
                          {{ lp.lpId }} {{ lp.name }}
                     </span>
-                    <!-- TODO: Same thing - Could only get LP Name to show via HTML, but need ID and Weight also -->
-                    <span class="landing-page-name" v-if="lp.name.length>=38"
+                    <span class="landing-page-name" v-if="lp.name.length>=30"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+ lp.id + ' Weight:'+lp.weight">
-                        {{ lp.name.substring(0,38)+"..." }}
+                        {{ lp.name.substring(0,30)+"..." }}
                     </span>
-                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete'"
-                              style="z-index:2">
-                        <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
-                    </b-button>
-
                     <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
-                              v-b-tooltip.hover.top="'Edit'"
+                              v-b-tooltip.hover.top="'Edit LP'"
                               style="z-index:2">
-                        <i class="far fa-edit" data-fa-transform="shrink-1"></i>
+                        <i class="far fa-pencil" data-fa-transform="shrink-2"></i>
+                    </b-button>
+                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete LP'"
+                              style="z-index:2">
+                        <i class="far fa-trash" data-fa-transform="shrink-2"></i>
                     </b-button>
 
                 </span>
@@ -125,9 +108,7 @@
             </b-badge>
 
             <br>
-            <!-- TODO: Show actual current + total Weight values -->
-            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getAumWeight(segment.lp)}} / 100</span>
-            <!--            </div>-->
+            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getSumWeight(segment.lp)}} / 100</span>
 
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
@@ -160,24 +141,7 @@
             };
         },
         methods: {
-            // async addAffiliates () {
-            //     let order = this.getBucketAffiliates.sort((a, b) => (Number(a.id) - Number(b.id)))
-            //     let lastRecord = order[order.length - 1]
-            //     let lastId = lastRecord && lastRecord.id || 0
-            //     await this.addAffiliate()
-            //     this.showBucketModal(lastId + 1)
-
-            //     if (res){
-            //         this.$swal.fire({
-            //             type: 'success',
-            //             position: 'top-end',
-            //             title: `Segment ID ${segment.id} ${segment.name} updated`,
-            //             showConfirmButton: false,
-            //             timer: 1000
-            //         })
-            //     }
-            // },
-            getAumWeight(lp) {
+            getSumWeight(lp) {
                 let sum = 0
                 lp.map(item => {
                     sum = sum + item.weight
@@ -233,9 +197,6 @@
 
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])
             },
-            getTitleLp(info) {
-                return "dimon"
-            },
             handleChangeLp(lpId, item) {
                 item.landingPageId = lpId
             },
@@ -245,15 +206,6 @@
                     {id: 1, name: 'Inactive'},
                 ]
             },
-            getId(value) {
-                return `${this.id}`
-            },
-            setElId(value) {
-                return `${value}-${this.id}`
-            },
-            defineLpId(id) {
-                return `lp-${id}`
-            },
             getFieldName(field) {
                 return this.getBucket.length > 0 && this.getBucket[0][field]
             },
@@ -261,7 +213,8 @@
                 console.log(e, group)
             },
             edit(id) {
-                this.$router.push(`/segment/${id}`)
+                let segmentType = this.$route.params.type
+                this.$router.push(`/segment/${segmentType}/${id}`)
             },
             async saveLp(segment) {
                 let res = await this.$store.dispatch('segment/updateLandingPage', segment)
@@ -339,7 +292,10 @@
                 }).then((result) => {
                     if (result.value) {
 
-                        this.$store.dispatch('segments/deleteSegmentAction', id).then(res => {
+                        let obj = {}
+                        obj.id = id
+                        obj.segmentType = this.$route.params.type
+                        this.$store.dispatch('segments/deleteSegmentAction', obj).then(res => {
                             if (res.id) {
                                 this.$swal.fire({
                                     type: 'success',
@@ -367,9 +323,6 @@
             },
             getClass(segment) {
                 return 'segment__empty'
-            },
-            updateSegment: function (segment, landingPages) {
-                this.update(Object.assign({}, segment, {landingPages}));
             },
             ...mapActions("segments", ["update", "removeAndUpdateOrder"]),
             ...mapMutations("segments", ["toggleActive"]),
@@ -414,6 +367,7 @@
         font-weight: 600;
         text-transform: uppercase;
         float: right;
+        margin-top: 5px;
     }
 
     .badge-light {
@@ -444,8 +398,8 @@
     .segmentInActive {
         opacity: 1;
         margin: 15px 20px 0px 0px;
-        // height: 80px;
-        width: 352px;
+        min-height: 130px;
+        min-width: 352px;
         padding: 1rem;
         position: relative;
         border-radius: 10px;

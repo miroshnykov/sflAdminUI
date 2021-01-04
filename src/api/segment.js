@@ -12,7 +12,7 @@ const segmentStatus = async (id) => {
                         name
                         status
                         dateUpdated
-                        
+                        dateAdded                        
                       } 
                     }
             `,
@@ -27,6 +27,39 @@ const segmentStatus = async (id) => {
     }
 
 }
+
+const saveConditionsApi = async (data) => {
+    const {id, name, status, filters} = data
+
+    try {
+
+        const res = await api.post(
+            '', {
+                query: `
+                
+                    mutation{
+                          saveConditions(
+                            id:${id}
+                            name:"${name}"
+                            status:"${status}"
+                            filters: ${filters}
+                            ){
+                              segmentId                        
+                          } 
+                    }
+            `,
+            }
+        )
+
+        let response = res.data.data.saveConditions
+        console.log('\nsegments from DB response:', response)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 
 const updateSegmentStatus = async (data) => {
 
@@ -59,5 +92,6 @@ const updateSegmentStatus = async (data) => {
 
 export default {
     segmentStatus,
+    saveConditionsApi,
     updateSegmentStatus
 }

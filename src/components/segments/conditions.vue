@@ -121,7 +121,7 @@
         name: 'conditions',
         computed: {
             ...mapState('segment', ['segmentFilter', 'segmentRuleCount', 'segmentId']),
-            ...mapGetters('segments', ['getSegmentsStore'])
+            // ...mapGetters('segments', ['getSegmentsStore'])
         },
         data() {
             return {
@@ -246,8 +246,6 @@
             },
             async saveConditions() {
                 if (!this.validate()) return
-                this.segmentName = document.querySelector(`#segmentName-${this.segmentId}`).value
-                this.segmentStatus = +document.querySelector(`#status-${this.segmentId}`).value && 'inactive' || 'active'
                 await this.$store.dispatch('segment/saveConditions', this)
             },
             ...mapMutations('segment', ['addFilter'])

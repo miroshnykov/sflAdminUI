@@ -7,8 +7,11 @@ import segment from './segment'
 import dimensions from './dimensions'
 import affiliates from './affiliates'
 import countries from './countries'
+import campaigns from './campaigns'
 import lp from './lp'
 import prods from './prods'
+import offers from './offers'
+import affiliateWebsites from './affiliateWebsites'
 
 import { getUserStore } from 'am-components-front'
 const user = getUserStore(
@@ -28,11 +31,14 @@ export default new Vuex.Store({
         segments,
         segment,
         dimensions,
+        campaigns,
         affiliates,
         countries,
         user,
         history,
         lp,
-        prods
+        prods,
+        offers,
+        affiliateWebsites
     }
 })

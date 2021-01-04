@@ -45,7 +45,7 @@
         },
         async mounted() {
             if (this.verifyTokenEmail) {
-                this.$router.push("/segments")
+                this.$router.push("/segments/block")
             }
         },
         methods: {
@@ -58,7 +58,7 @@
                 let loginRes = await loginApi.login(login, password)
                 console.log(`>> TOKEN:${loginRes.accessToken}`)
                 if (loginRes.accessToken) {
-                    this.$router.push('/segments')
+                    this.$router.push('/segments/block')
                     this.$cookies.set("accessToken", loginRes.accessToken)
                     this.$cookies.set("refreshToken", "refreshToken")
 

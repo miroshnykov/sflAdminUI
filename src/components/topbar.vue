@@ -5,9 +5,9 @@
                 <b-row class="text-center" align-v="center" style="width: 100%">
                     <b-col col lg="9">
                         <b-row align-v="center">
-                            <b-col col xl="7" lg="4" class="text-left">
-                                <h1>Edit Segment</h1>
-                            </b-col>
+<!--                            <b-col col xl="7" lg="4" class="text-left">-->
+<!--                                <h1>Edit Segment {{this.$route.params.type}}</h1>-->
+<!--                            </b-col>-->
                             <b-col col xl="5" lg="8" class="text-right">
                                 <!-- <b-button class="btn-save-changes" variant="none" @click="this.saveConditions">
                                     Save Changes
@@ -241,7 +241,7 @@
         left: 255px
         height: 80px
         z-index: 80
-        background: #fff
+        // background: #fff
 
         h1
             margin-top: 10px

@@ -16,21 +16,16 @@
                     <model-select
                             :options="getLpModify()"
                             @input="handleChangeLp($event, segment)"
-                            :id="defineLpId(segment.id)"
+                            :id="defineId(`lp`,segment.id)"
                             :value="this.lpId"
-                            :ref="defineLpId(segment.id)"
+                            :ref="defineId(`lp`,segment.id)"
                             placeholder="Search landing page..."
                             :class="getClassLp(segment.id)"
                     >
                     </model-select>
 
 
-                    <!--                    :value="segment.landingPageId"-->
                 </div>
-                <p class="text-left">
-                    <label :id="defineLpLabelId(segment.id)">Choose:{{ segment.landingPageId }} </label>
-                </p>
-                <br>
 
                 <b-row class="text-center">
                     <b-col cols="6">
@@ -40,8 +35,9 @@
                                    min="0" max="100"
                                    class="condition__matches custom-input text-center"
                                    onpaste="return false"
-                                   :id="defineWeightId(segment.id)"
+                                   :id="defineId(`weight`,segment.id)"
                                    :value="this.weight"
+                                   @change="updateTotalWeight($event, segment)"
                                    onkeypress="
                                                     return (
                                                         event.charCode == 8
@@ -68,6 +64,17 @@
                             <label class="text-center">Total Weight</label>
                             <input type="text"
                                    value="100"
+                                   class="condition__matches custom-input text-center"
+                                   disabled
+                            >
+                        </div>
+                    </b-col>
+                    <b-col cols="6">
+                        <div class="condition__controls condition-line">
+                            <label class="text-center">Sum Weight</label>
+                            <input type="text"
+                                   :id="defineId(`sumWeight`, segment.id)"
+                                   :value="getSumWeight(segment.lp)"
                                    class="condition__matches custom-input text-center"
                                    disabled
                             >
@@ -118,17 +125,34 @@
             getClassLp(id) {
                 return `condition__country condition__matches custom-select lpInput-${id}`
             },
-            setElIdByAff(value, id) {
-                return `${value}-${id}`
+            defineId(name, id) {
+                return `${name}-${id}`
             },
-            defineLpId(id) {
-                return `lp-${id}`
+            getSumWeight(lp, currentLpId) {
+                let sum = 0
+                lp.map(item => {
+                    if (currentLpId !== item.lpId) {
+                        // console.log('LpItem:', JSON.stringify(item))
+                        sum = sum + item.weight
+                    }
+                })
+                return sum
             },
-            defineWeightId(id) {
-                return `weight-${id}`
-            },
-            defineLpLabelId(id) {
-                return `lp-label-${id}`
+            updateTotalWeight(event, segment) {
+                let sumWeightEl = document.querySelector(`#sumWeight-${segment.id}`)
+
+                let sum = this.getSumWeight(segment.lp, this.lpId)
+                if (sumWeightEl) {
+                    let sumValue = sum + Number(event.target.value)
+                    sumWeightEl.value = sumValue
+                    if (sumValue > 100) {
+
+                        sumWeightEl.style.background = '#e42a33'
+                    } else {
+                        sumWeightEl.style.background = '#e3eef4'
+                    }
+
+                }
             },
             getLpModify() {
                 return this.getLandingPages.map(item => {
@@ -138,7 +162,6 @@
                 })
             },
             handleChangeLp(lpId, item) {
-                item.landingPageId = lpId
                 this.lpId = lpId
                 // let nameLp = this.getLandingPages.filter(i => {
                 //     return i.value === lpId
@@ -172,7 +195,7 @@
                     return
                 }
 
-                if (!data.landingPageId) {
+                if (!this.lpId) {
                     alert('landing page  missing')
                     document.querySelector(`.lpInput-${data.id}`).style.background = '#f38282'
                     return
@@ -182,7 +205,7 @@
                 let segmentLpData = {}
                 segmentLpData.id = this.id || 0
                 segmentLpData.segmentId = data.id || 0
-                segmentLpData.lpId = data.landingPageId || 0
+                segmentLpData.lpId = this.lpId || 0
                 let weight = document.querySelector(`#weight-${data.id}`).value
                 segmentLpData.weight = +weight || 0
 

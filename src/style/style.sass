@@ -112,13 +112,25 @@ h2, .h2
   min-height: 100vh
 // margin-left: 300px
 
-#campaigns
+#campaigns, #segments, #offers
   margin-top: 40px
   margin-bottom: 40px
 
-#edit-segment
+#edit-segment, #edit-offer
   margin-top: 80px
   margin-bottom: 40px
+
+#create-offer
+  margin-top: 30px
+  margin-bottom: 30px
+
+#settings
+  max-width: 600px
+  min-height: 400px
+  margin: auto
+  background: #fff
+  padding: 50px
+  border-radius: 20px
 
 /* Campaigns */
 // #segments
@@ -144,6 +156,12 @@ h2, .h2
 
   &.active
     background: #2ED47A
+
+  &.private
+    background: #36B8E1
+
+  &.applyToRun
+    background: #BB6BD9
 
   &.paused
     background: #FFB946
@@ -178,6 +196,10 @@ span.landing-page-box
   height: 30px
   cursor: pointer
 
+span.landing-page
+  line-height: 1.4em
+  vertical-align: middle
+
 input.quickedit
   padding: 5px 10px
   height: 30px
@@ -211,9 +233,6 @@ button.quickedit-cancel
     color: #FE5D65
     background: transparent
 
-.landingPage, .validateLandingPage
-  // float: left
-
 .custom-select,
 .custom-input,
 .ui.search.selection.dropdown > input.search
@@ -226,18 +245,15 @@ button.quickedit-cancel
   box-shadow: 0 0 0px #acc3cf !important
   cursor: pointer !important
 
-.custom-input::placeholder
-  color: #ACC3CF
-
 .custom-input
   position: relative
   // width: auto
+  // max-width: 280px
   width: 100%
   color: #7F98A5
   font-size: 16px
   font-weight: 600
-  // max-width: 280px
-  border-radius: 10px
+  border-radius: 7px
   padding: 10px 20px
   height: 45px
   text-align: left
@@ -433,7 +449,7 @@ button.btn
     text-transform: uppercase
     font-weight: 600
     padding: 0px
-    width: 25px !important
+    width: 20px !important
     margin: 0 auto
     color: #7F98A5
     font-size: 14px
@@ -934,6 +950,7 @@ button.swal2-confirm.swal2-styled
   display: inline-block
   top: -40px
   left: -5px
+  margin-right: 30px
 
 button.remove_condition
   margin-left: 10px
@@ -948,32 +965,21 @@ button.remove_condition
     //transform: scale(1.5)
     cursor: pointer
 
-// button.add-condition
-//   background: transparent
-//   color: #fff
-//   font-weight: 700
-//   border: 0
-//   transition: all 0.3s ease
-//   padding: 0px
-
-//   &:hover
-//     color: #36B8E1
-//     transform: scale(1.2)
-//     cursor: pointer
-
 button.add-condition
-  background: #3A3852
-  color: #fff
+  background: #fff
+  color: #ACC3CF
   font-size: 12px
   font-weight: 600
   letter-spacing: 0.5px
-  padding: 5px 10px
+  padding: 5px 15px
+  border: 2px solid #ACC3CF
+  box-sizing: border-box
   border-radius: 4px
-  border: 0
   transition: all 0.3s ease
 
   &:hover
-    background: #36b8e1
+    color: #36B8E1
+    border: 2px solid #36B8E1
     cursor: pointer
 
 button.add-condition.condition-active
@@ -1007,9 +1013,9 @@ button.add-condition.condition-active
   margin: 10px
 
 .campaign-block
-// float: left
-// margin-right: 10px
-// max-width: 200px
+  float: left
+  margin-right: 10px
+  max-width: 200px
 
 .filter__controls
   // display: grid
@@ -1070,14 +1076,14 @@ button.add-condition.condition-active
 
 .filter__title
   left: 50%
-  margin: 5px 0px
-  position: absolute
-  color: #7F98A5
-  font-size: 14px
-  letter-spacing: 1px
-  font-weight: 500
+  margin: 5px 0px -30px 0px
+  position: relative
+  color: #3A3852
+  font-size: 16px
+  letter-spacing: 0.5px
+  font-weight: 700
   transform: translate(-50%, 0)
-
+  text-align: left
 
 .condition__controls
   flex-grow: 1
@@ -1108,8 +1114,8 @@ button.add-condition.condition-active
     cursor: initial
 
 .condition__matches
-  // text-align: right
-  margin-right: 1px
+  text-align: left !important
+  margin-right: 10px
 
 /* The container must be positioned relative: */
 .custom-select
@@ -1350,7 +1356,7 @@ button.btn.btn-secondary.dropdown-toggle
   margin-top: 7px
 
   label
-    color: #fff
+    color: black
     font-size: 12px
     font-weight: 600
     letter-spacing: 1px
@@ -1372,8 +1378,8 @@ button.btn.btn-secondary.dropdown-toggle
   margin-right: 10px
 
 .condition-editing
-  background: rgba(255, 255, 255, 0.05)
-  outline: 2px dashed rgb(145, 148, 170) !important
+  background: rgba(255, 255, 255, 0.1)
+  outline: 1px dashed #ACC3CF !important
   padding-left: 20px !important
   outline-offset: -1px
 
@@ -1385,9 +1391,9 @@ button.btn.btn-secondary.dropdown-toggle
     top: 0px
     float: right
     margin-right: 20px
-    color: rgba(255, 255, 255, 0.5)
-    letter-spacing: 1px
-    font-size: 10px
+    color: #ACC3CF
+    letter-spacing: 0.5px
+    font-size: 11px
 
 .condition-button-or
   margin-top: 50px
@@ -1411,10 +1417,10 @@ button.btn.btn-secondary.dropdown-toggle
   font-size: 16px
   display: block
   text-align: left
-  margin-top: 5px
   color: #7F98A5
   font-weight: 500
   letter-spacing: 0.3px
+  margin-top: 5px
 
   strong
     color: #fff
