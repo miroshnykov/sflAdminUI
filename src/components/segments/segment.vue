@@ -108,7 +108,7 @@
             </b-badge>
 
             <br>
-            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getAumWeight(segment.lp)}} / 100</span>
+            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getSumWeight(segment.lp)}} / 100</span>
 
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
@@ -141,7 +141,7 @@
             };
         },
         methods: {
-            getAumWeight(lp) {
+            getSumWeight(lp) {
                 let sum = 0
                 lp.map(item => {
                     sum = sum + item.weight
