@@ -3,7 +3,7 @@
         <topbar></topbar>
         <menunav></menunav>
 
-        <h1>Editing: iPhone11</h1>
+        <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
         <b-row class="text-center">
             <b-col cols="1">
@@ -22,13 +22,10 @@
                     <input type="text"
                            placeholder="ex: My First Segment"
                            class="condition__matches campaign custom-input"
-                           :value="getSegmentStatus.length !==0 && getSegmentStatus[0].name"
-                           :id="defineSegmentNameId(id)"
+                           :id="defineId(`offerName`,id)"
+                           :value="getOffer.length !==0 && getOffer[0].name"
                     >
-                    <b-form-text id="lastModified">
-                        Last Modified: {{ getSegmentStatus.length !==0 && formatDate_(new
-                        Date(getSegmentStatus[0].dateUpdated * 1000)) }}
-                    </b-form-text>
+
                 </div>
             </b-col>
 
@@ -36,15 +33,13 @@
                 <div class="condition__controls">
                     <label>Status</label>
                     <select
-                            :id="defineStatusId(id)"
+                            :id="defineId(`offerStatus`,id)"
                             class="condition__dimension-name condition__matches custom-select"
-                            @change="handleChangeStatus($event, item)"
                     >
                         <option
                                 id="filterType"
                                 v-for="{id, name} in getStatusList()"
-                                :value="id"
-                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getSegmentStatus.length !==0 && getSegmentStatus[0].status)"
+                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getOffer.length !==0 && getOffer[0].status || '')"
                                 :key="id"
                         >{{name}}
                         </option>
@@ -52,25 +47,240 @@
                     </select>
                 </div>
             </b-col>
-            <!-- <b-col cols="3">
+            <b-col cols="3">
                 <div class="condition__controls">
-                    <label>Last Modified</label>
+                    <label>Advertiser</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
+
+                    </select>
+                </div>
+            </b-col>
+
+
+            <b-col cols="3">
+                <div class="campaign-block">
+                    <label for="label-platform">Conversion type</label>
+                    <label class="conversionType">CPI
+                        <input type="radio" :checked="checkConversionType(`cpi`)" name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+                    <label class="conversionType">CPA
+                        <input type="radio" :checked="checkConversionType(`cpa`)" name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+                    <label class="conversionType">CPL
+                        <input type="radio" :checked="checkConversionType(`cpl`)"  name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+                    <label class="conversionType">CPC
+                        <input type="radio" :checked="checkConversionType(`cpc`)"  name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+                    <label class="conversionType">CPM
+                        <input type="radio" :checked="checkConversionType(`cpm`)"  name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+                    <label class="conversionType">Hybrid/Multistep
+                        <input type="radio" :checked="checkConversionType(`hybrid/multistep`)"  name="radio">
+                        <span class="conversionTypeCheckMark"></span>
+                    </label>
+
+
+                </div>
+            </b-col>
+
+
+
+<!--            <b-col cols="3">-->
+<!--                <div class="campaign-block condition__controls">                    -->
+<!--                    <label for="label-platform"></label>-->
+<!--                    <label >DB {{getOffer.length !==0 && getOffer[0].conversionType}}</label>-->
+<!--                    <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+
+
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > CPI-->
+<!--                        </label>-->
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > CPA-->
+<!--                        </label>-->
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > CPL-->
+<!--                        </label>-->
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > CPC-->
+<!--                        </label>-->
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > CPM-->
+<!--                        </label>-->
+<!--                        <label class="btn btn-secondary-">-->
+<!--                            <input-->
+<!--                                    type="checkbox"-->
+<!--                                    autocomplete="off"-->
+<!--                            > Hybrid/Multistep-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </b-col>-->
+
+
+        </b-row>
+
+
+
+        <hr>
+        <b-row class="text-center">
+            <b-col cols="4">
+                <h2>Custom Pay-in/Pay-out</h2>
+            </b-col>
+            <b-col cols="2">
+                <b-button variant="secondary" class="btn-add-line" @click="">
+                    <i class="far fa-cog"></i> Customize
+                </b-button>
+            </b-col>
+            <b-col cols="5">
+            </b-col>
+
+            <b-col cols="4">
+                <div class="condition__controls">
+                    <label>Offer Name</label>
                     <input type="text"
+                           placeholder="ex: iPhone 11"
+                           :value="getOffer.length !==0 && getOffer[0].name"
                            class="condition__matches campaign custom-input"
-                           disabled
                     >
                 </div>
-            </b-col> -->
+            </b-col>
+            <b-col cols="1">
+                <div class="condition__controls">
+                    <label>Pay-in</label>
+                    <input type="number"
+                           step=1
+                           placeholder="10"
+                           :value="getOffer.length !==0 && getOffer[0].payIn"
+                           min="1" max="1000"
+                           class="condition__matches budgetTotal custom-input"
+                           pattern="^\d+(?:\.\d{1,2})?$"
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                    ">
+                </div>
+            </b-col>
+            <b-col cols="1">
+                <div class="condition__controls">
+                    <label>Pay-out</label>
+                    <input type="number"
+                           step=1
+                           placeholder="10"
+                           :value="getOffer.length !==0  && getOffer[0].payOut"
+                           min="1" max="1000"
+                           class="condition__matches budgetTotal custom-input"
+                           pattern="^\d+(?:\.\d{1,2})?$"
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                    ">
+                </div>
+            </b-col>
         </b-row>
 
         <hr>
+
+
+        <b-row class="text-center">
+            <b-col cols="4">
+                <h2>Restrictions</h2>
+            </b-col>
+            <b-col cols="2">
+                <b-button variant="secondary" class="btn-add-line" @click="">
+                    <i class="far fa-cog"></i> Customize
+                </b-button>
+            </b-col>
+            <b-col cols="5">
+            </b-col>
+
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>GEO Settings</label>
+                    <input type="text"
+                           class="condition__matches campaign custom-input"
+                           value="Custom (hover for allowed/banned)"
+                           disabled
+                    >
+                </div>
+            </b-col>
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>Caps</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option >No Caps</option>
+                        <option >Capped</option>
+                    </select>
+                </div>
+            </b-col>
+        </b-row>
+
+        <hr>
+
+        <b-row class="text-center">
+            <b-col cols="4">
+                <h2>Default Settings</h2>
+            </b-col>
+            <b-col cols="2">
+                <b-button variant="secondary" class="btn-add-line" @click="">
+                    <i class="far fa-cog"></i> Customize
+                </b-button>
+            </b-col>
+            <b-col cols="5">
+            </b-col>
+
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>Default LP</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option>1015 (www.ffmoffers.co...)</option>
+                        <option>1018 (www.ffmoffers.co...)</option>
+                    </select>
+                </div>
+            </b-col>
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>Default Redirect</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option >Offer 77 - Hyuna, iPhone 11</option>
+                        <option >Offer 92 - Hyuna, Samsung Galaxy S9</option>
+                    </select>
+                </div>
+            </b-col>
+        </b-row>
 
 
     </div>
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
     import logo from '../logo.vue'
     import topbar from '../topbar.vue'
     import menunav from '../menunav.vue'
@@ -80,33 +290,40 @@
         name: 'editOffer',
         components: {logo, menunav, topbar},
         computed: {
-            ...mapGetters('offers', ['getOffers']),
-            ...mapGetters('offer', ['getOfferFilter', 'getOfferStatus']),
+            ...mapGetters('offer', ['getOffer']),
         },
-        offerFilter: [],
-        // async mounted() {
-        //     await this.$store.dispatch('offer/getOfferConditions', this.id)
-        //     await this.$store.dispatch('offer/saveOfferStatusStore', this.id)
-        // },
+        async mounted() {
+            await this.$store.dispatch('offer/saveOfferStore', this.id)
+        },
         methods: {
+            async updateValue(conversionType) {
+                console.log(conversionType)
+                debugger
+            },
+            addClassActive(value) {
+                return value && 'active' || ''
+            },
+            checkConversionType(str){
+                let offer = this.getOffer
+                debugger
+                if (offer[0].conversionType === str){
+                    return `checked`
+                }
+
+            },
             formatDate_(date) {
                 return formatData(date)
             },
-            defineStatusId(id) {
-                return `status-${id}`
+            capitalizeFirstLetter(str) {
+                return str && str.charAt(0).toUpperCase() + str.slice(1)
             },
-            defineOfferNameId(id) {
-                return `offerName-${id}`
+            defineId(name, id) {
+                return `${name}-${id}`
             },
-            // capitalizeFirstLetter(str) {
-            //     return str && str.charAt(0).toUpperCase() + str.slice(1)
-            // },
             getStatusList() {
                 return [
-                    {id: 0, name: 'Public'},
-                    {id: 1, name: 'Private'},
-                    {id: 2, name: 'Apply to Run'},
-                    {id: 3, name: 'Inactive'},
+                    {id: 0, name: 'Active'},
+                    {id: 1, name: 'Inactive'},
                 ]
             },
         },
@@ -121,4 +338,54 @@
 <style lang="sass">
     .container
         margin-left: 290px
+    .conversionType
+        display: table-cell
+        position: relative
+        padding-left: 35px
+        margin-bottom: 12px
+        cursor: pointer
+        font-size: 22px
+        -webkit-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
+
+    .conversionType input
+        position: absolute
+        opacity: 0
+        cursor: pointer
+
+    .conversionTypeCheckMark
+        position: absolute
+        top: 0
+        left: 0
+        height: 25px
+        width: 25px
+        background-color: #eee
+        border-radius: 50%
+
+    .conversionType:hover input ~ .conversionTypeCheckMark
+        background-color: #ccc
+
+
+    .conversionType input:checked ~ .conversionTypeCheckMark
+        background-color: #2196F3
+
+    .conversionTypeCheckMark:after
+        content: ""
+        position: absolute
+        display: none
+
+    .conversionType input:checked ~ .conversionTypeCheckMark:after
+        display: block
+
+
+    .conversionType .conversionTypeCheckMark:after
+        top: 9px
+        left: 9px
+        width: 8px
+        height: 8px
+        border-radius: 50%
+        background: white
+
 </style>

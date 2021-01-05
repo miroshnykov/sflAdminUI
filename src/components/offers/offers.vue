@@ -6,7 +6,7 @@
 
         <div class="segment-panel">
             <!-- <input type="text" class="search-box"  placeholder="Search offers..."/> -->
-            <b-button variant="primary" @click="createOffer">
+            <b-button variant="primary" @click="addOffer">
                 Create New Offer
             </b-button>
 
@@ -104,6 +104,13 @@
                 >
                     <i class="fas fa-pencil"></i>
                 </button>
+                <button
+                        class="btn btn-link"
+                        v-b-tooltip.hover.top="'delete Offer'"
+                        @click="deleteOffer(props.row)"
+                >
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
 
             <!-- <div slot="child_row" slot-scope="props">
@@ -198,85 +205,122 @@
             edit(data) {
                 this.$router.push(`/offer/${data.id}`)
             },
-            async createOffer() {
-                this.$router.push(`/offer/new`)
+            deleteOffer(data) {
+                this.$swal.fire({
+                    type: 'warning',
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#FE5D65',
+                    cancelButtonColor: '#ACC3CF',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+
+                        let obj = {}
+                        obj.id = data.id
+                        this.$store.dispatch('offer/delOffer', obj).then(res => {
+                            if (res.id) {
+                                this.$swal.fire({
+                                    type: 'success',
+                                    position: 'top-end',
+                                    title: `Offer ID ${obj.id} deleted`,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                                location.reload()
+                            } else {
+                                this.$swal.fire({
+                                    title: `Offer ID ${obj.id} was not deleted`,
+                                    type: 'error',
+                                    text: 'Please check backend errors',
+                                    confirmButtonColor: '#2ED47A',
+                                })
+                            }
+                        })
+                    }
+                })
+
+            },
+            // async createOffer() {
+                // this.$router.push(`/offer/new`)
                 // let offerId = await this.$store.dispatch('offer/createOfferStore',this)
                 // if (offerId) {
                 //     this.$router.push(`/offer/${offerId}`)
                 // }
-            },
-            // addOffer() {
-            //     this.$swal.fire({
-            //         title: 'Create New Offer',
-            //         html:
-            //             `<label for="swal-input1"></label>
-            //             <input id="swal-input1" class="swal2-input" placeholder="Offer Name" maxlength="25"
-            //                  onblur="
-            //                      if(this.value === ''){
-            //                         alert('Enter offer name ')
-            //                         document.querySelector('#swal-input1').style.background = '#f38282'
-            //                         document.querySelector('.swal2-confirm').style.display = 'none'
-            //                         return false
-            //                     } else {
-            //                         document.querySelector('.swal2-confirm').style.display = 'inline-block'
-            //                         document.querySelector('#swal-input1').style.background = 'white'
-            //                     }
-            //                 "
-            //             >
-            //             <div class="row segment-popup">
-            //             <div class="col-md-6">
-            //         `,
-            //         confirmButtonColor: '#2ED47A',
-            //         cancelButtonColor: '#E3EEF4',
-            //         showCancelButton: true,
-            //         confirmButtonText: '<i class="fas fa-check"></i>',
-            //         cancelButtonText: '<i class="fas fa-times"></i>',
-            //         backdrop: `
-            //             rgba(0,0,123,0.2)
-            //         `,
-            //         preConfirm: () => {
-            //             if (document.getElementById('swal-input1').value
-            //             ) {
-            //                 return [
-            //                     document.getElementById('swal-input1').value
-            //                 ]
-            //             } else {
-            //                 this.$swal.fire({
-            //                     title: 'Validation Error',
-            //                     text: 'Please name your offer.',
-            //                 })
-            //                 return
-            //             }
-
-            //         }
-
-            //     }).then((result) => {
-            //         if (result.dismiss === "cancel") {
-            //             return
-            //         }
-
-            //         if (result.value[0]
-            //         ) {
-            //             let offerData = {}
-            //             offerData.name = result.value[0]
-            //             let self = this
-            //             self.offerName = offerData.name
-            //             this.$store.dispatch('offer/addOffer', offerData).then((res) => {
-            //                 let newOfferId = res.id
-            //                 self.$router.push(`/offer/${newOfferId}`)
-            //             })
-
-            //         } else {
-            //             this.$swal.fire({
-            //                 title: 'Missing information',
-            //                 type: 'error',
-            //                 text: 'Please name your segment and try again.',
-            //                 confirmButtonColor: '#2ED47A',
-            //             })
-            //         }
-
-            //     })
             // },
+            addOffer() {
+                this.$swal.fire({
+                    title: 'Create New Offer',
+                    html:
+                        `<label for="swal-input1"></label>
+                        <input id="swal-input1" class="swal2-input" placeholder="Offer Name" maxlength="25"
+                             onblur="
+                                 if(this.value === ''){
+                                    alert('Enter offer name ')
+                                    document.querySelector('#swal-input1').style.background = '#f38282'
+                                    document.querySelector('.swal2-confirm').style.display = 'none'
+                                    return false
+                                } else {
+                                    document.querySelector('.swal2-confirm').style.display = 'inline-block'
+                                    document.querySelector('#swal-input1').style.background = 'white'
+                                }
+                            "
+                        >
+                        <div class="row segment-popup">
+                        <div class="col-md-6">
+                    `,
+                    confirmButtonColor: '#2ED47A',
+                    cancelButtonColor: '#E3EEF4',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check"></i>',
+                    cancelButtonText: '<i class="fas fa-times"></i>',
+                    backdrop: `
+                        rgba(0,0,123,0.2)
+                    `,
+                    preConfirm: () => {
+                        if (document.getElementById('swal-input1').value
+                        ) {
+                            return [
+                                document.getElementById('swal-input1').value
+                            ]
+                        } else {
+                            this.$swal.fire({
+                                title: 'Validation Error',
+                                text: 'Please name your offer.',
+                            })
+                            return
+                        }
+
+                    }
+
+                }).then((result) => {
+                    if (result.dismiss === "cancel") {
+                        return
+                    }
+
+                    if (result.value[0]
+                    ) {
+                        let offerData = {}
+                        offerData.name = result.value[0]
+                        let self = this
+                        self.offerName = offerData.name
+                        this.$store.dispatch('offer/createOffer', offerData).then((res) => {
+                            let newOfferId = res.id
+                            self.$router.push(`/offer/${newOfferId}`)
+                        })
+
+                    } else {
+                        this.$swal.fire({
+                            title: 'Missing information',
+                            type: 'error',
+                            text: 'Please name your segment and try again.',
+                            confirmButtonColor: '#2ED47A',
+                        })
+                    }
+
+                })
+            },
         },
         data() {
             return {
