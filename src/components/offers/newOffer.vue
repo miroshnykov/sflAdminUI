@@ -110,9 +110,89 @@
                 <h2>Custom Pay-in/Pay-out</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
+                <b-button variant="secondary" class="btn-add-line" v-b-modal.modal-custom-payin-payout>
                     <i class="far fa-cog"></i> Customize
                 </b-button>
+
+                <b-modal id="modal-custom-payin-payout">
+                    <h1>Custom Pay-in/Pay-out</h1>
+
+                <b-row class="text-center">
+                    <b-col cols="3">
+                        <div class="condition__controls">
+                            <label>Base Pay-in</label>
+                            <i class="far fa-dollar-sign" style="position: relative;margin-right:5px"></i>
+                            <input type="number"
+                                step=1
+                                placeholder="10"
+                                min="1" max="1000"
+                                style="width:75%"
+                                class="condition__matches budgetTotal custom-input"
+                                pattern="^\d+(?:\.\d{1,2})?$"
+                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                            ">
+                        </div>
+                    </b-col>
+                    <b-col cols="3">
+                        <div class="condition__controls">
+                            <label>Base Pay-out</label>
+                            <i class="far fa-dollar-sign" style="position: relative;margin-right:5px"></i>
+                            <input type="number"
+                                step=1
+                                placeholder="10"
+                                min="1" max="1000"
+                                style="width:75%"
+                                class="condition__matches budgetTotal custom-input"
+                                pattern="^\d+(?:\.\d{1,2})?$"
+                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                            ">
+                        </div>
+                    </b-col>
+                </b-row>
+
+                    <table class="table table-striped child-row tableFixHead lp-table">
+                        <thead>
+                        <tr scope="row">
+                            <th scope="col">GEO</th>
+                            <th scope="col">Pay-in</th>
+                            <th scope="col">Pay-out</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tr scope="row">
+                            <td class="GEO" style="width: 140px">(UK) United King...</td>
+                            <td class="payin" style="width: 140px">
+                                <input type="number"
+                                    step=1
+                                    placeholder="10"
+                                    min="1" max="1000"
+                                    class="condition__matches payIn custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                                ">
+                            </td>
+                            <td class="payout" style="width: 140px">
+                                <input type="number"
+                                    step=1
+                                    placeholder="10"
+                                    min="1" max="1000"
+                                    class="condition__matches payOut custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                                ">
+                            </td>
+                            <td class="actions" style="width: 120px"><i class="far fa-trash"></i></td>
+                        </tr>
+                        <tr scope="row">
+                            <td><b-button variant="secondary" class="btn-add-line" style="float:left;" @click="">
+                                <i class="far fa-plus"></i> Add...
+                                </b-button>
+                            </td> 
+                        </tr>
+                    </table>
+                    
+                </b-modal>
+                
             </b-col>
             <b-col cols="5">
             </b-col>
@@ -161,9 +241,46 @@
                 <h2>Restrictions</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
+                <b-button variant="secondary" class="btn-add-line" v-b-modal.modal-restrictions>
                     <i class="far fa-cog"></i> Customize
                 </b-button>
+
+                <b-modal id="modal-restrictions">
+                    <h1>Custom GEO Settings</h1>
+                    <input type="text" class="search-box" placeholder="Type country..."/>
+
+                    <div class="table-geo">
+                        <b-col cols="6" style="float: left">
+                            <p><i class="far fa-check-circle green"></i> Andorra (AD)</p>
+                            <p><i class="far fa-check-circle green"></i> Afghanistan (AF)</p>
+                            <p><i class="far fa-ban red"></i> Antigua and Barbuda (AG)</p>
+                            <p><i class="far fa-check-circle green"></i> Albania (AL) </p>
+                            <p><i class="far fa-ban red"></i> Armenia (AM)</p>
+                        </b-col>
+                        <b-col cols="6" style="float: left">
+                            <p><i class="far fa-check-circle green"></i> Asia/Pacific Region (AP)</p>
+                            <p><i class="far fa-ban red"></i> Antarctica (AQ)</p>
+                            <p><i class="far fa-ban red"></i> Argentina (AR)</p>
+                            <p><i class="far fa-check-circle green"></i> American Samoa (AS)</p>
+                            <p><i class="far fa-check-circle green"></i> Austria (AT)</p>
+                        </b-col>
+                    </div>
+
+                    <a class="btn-link" href="">Allow All  /  Ban All</a>
+
+                    <div class="condition__controls">
+                        <label>Default Redirect</label>
+                        <input type="text"
+                            placeholder="Offer 77 - Hyuna, iPhone 11"
+                            class="condition__matches campaign custom-input"
+                            disabled
+                        >
+                    </div>
+
+                    <b-form-text>* Default redirect LP will be used for banned countries</b-form-text>
+                    
+                </b-modal>
+
             </b-col>
             <b-col cols="5">
             </b-col>
@@ -198,9 +315,54 @@
                 <h2>Default Settings</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
+                <b-button variant="secondary" class="btn-add-line" v-b-modal.modal-default-settings>
                     <i class="far fa-cog"></i> Customize
                 </b-button>
+
+                <b-modal id="modal-default-settings">
+                    <h1>Custom LPs per GEO</h1>
+                    <table class="table table-striped child-row tableFixHead lp-table">
+                        <thead>
+                        <tr scope="row">
+                            <th scope="col">GEO</th>
+                            <th scope="col">Landing Page</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tr scope="row">
+                            <td>(UK) United King...</td>
+                            <td><select class="condition__LP condition__matches custom-select">
+                                    <option id="LP">- Default -</option>
+                                    <option id="LP">1014 - www.ffm1.com/signup</option>
+                                    <option id="LP">1015 - www.ffm1.com/signup</option>
+                                    <hr>
+                                    <option id="add-LP">+ Add Landing Page...</option>
+                                </select>
+                            </td>
+                            <td><i class="far fa-trash"></i></td>
+                        </tr>
+                        <tr scope="row">
+                            <td>(FR) France</td>
+                            <td><select class="condition__LP condition__matches custom-select">
+                                    <option id="LP">- Default -</option>
+                                    <option id="LP">1014 - www.ffm1.com/signup</option>
+                                    <option id="LP">1015 - www.ffm1.com/signup</option>
+                                    <hr>
+                                    <option id="add-LP">+ Add Landing Page...</option>
+                                </select>
+                            </td>
+                            <td><i class="far fa-trash"></i></td>
+                        </tr>
+                        <tr scope="row">
+                            <td><b-button variant="secondary" class="btn-add-line" @click="">
+                                <i class="far fa-plus"></i> Add GEO
+                                </b-button>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </b-modal>
+
             </b-col>
             <b-col cols="5">
             </b-col>
