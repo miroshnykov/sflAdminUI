@@ -2,7 +2,7 @@
     <div id="campaigns">
         <menunav></menunav>
         <logo></logo>
-        <h1>Manage {{this.$route.params.type}} segments</h1>
+        <h1 style="text-transform: capitalize">Manage {{this.$route.params.type}} segments</h1>
 
         <div class="segment-panel">
             <input type="text" class="search-box" @input="searchUpdate" placeholder="Search segments..."/>
