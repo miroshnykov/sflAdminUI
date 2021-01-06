@@ -17,6 +17,7 @@ const getOffer = async (id) => {
                                 payIn
                                 payOut
                                 dateAdded
+                                geoRules
                           }
                     }
 
