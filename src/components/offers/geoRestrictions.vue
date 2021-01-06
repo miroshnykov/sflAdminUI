@@ -11,7 +11,6 @@
                 <div id="table-scroll">
 
 
-
                     <div v-if="getCountries.length !== 0" class="table-geo">
                         <b-col cols="6" style="float: left" v-for="(country, index) in getCountries">
                             <p>
@@ -90,7 +89,7 @@
                 id: 0,
             }
         },
-        props: ['geoId','geoRules'],
+        props: ['geoId', 'geoRules'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -149,29 +148,6 @@
 
 <style lang="sass">
 
-    #table-wrapper
-        position: relative
-
-    #table-scroll
-        height: 150px
-        overflow: auto
-        margin-top: 20px
-
-    #table-wrapper table
-        width: 100%
-
-    #table-wrapper table *
-        background: yellow
-        color: black
-
-    #table-wrapper table thead th .text
-        position: absolute
-        top: -20px
-        z-index: 2
-        height: 20px
-        width: 35%
-        border: 1px solid red
-
     .modal-mask
         position: fixed
         z-index: 9998
@@ -210,5 +186,27 @@
         .modal-leave .modal-container
             transform: scale(1.1)
 
+        #table-wrapper
+            position: relative
+
+        #table-scroll
+            height: 150px
+            overflow: auto
+            margin-top: 20px
+
+        #table-wrapper table
+            width: 100%
+
+        #table-wrapper table *
+            background: yellow
+            color: black
+
+        #table-wrapper table thead th .text
+            position: absolute
+            top: -20px
+            z-index: 2
+            height: 20px
+            width: 35%
+            border: 1px solid red
 
 </style>
