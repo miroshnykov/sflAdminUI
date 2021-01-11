@@ -11,6 +11,7 @@ import campaigns from './campaigns'
 import lp from './lp'
 import prods from './prods'
 import offers from './offers'
+import offer from './offer'
 import affiliateWebsites from './affiliateWebsites'
 
 import { getUserStore } from 'am-components-front'
@@ -38,6 +39,7 @@ export default new Vuex.Store({
         history,
         lp,
         prods,
+        offer,
         offers,
         affiliateWebsites
     }

@@ -44,7 +44,7 @@ export default new Router({
             component: newOffer
         },
         {
-            path: '/offer/:type/:id',
+            path: '/offer/:id',
             name: 'editoffer',
             component: editOffer
         },
