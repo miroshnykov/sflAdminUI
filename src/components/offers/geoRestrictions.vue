@@ -18,6 +18,7 @@
                                         :id="defineId(`countryCheckbox`,index)"
                                         type="checkbox"
                                         :checked="getClassActiveOrNotCountry(country.code)"
+                                        @change="changeCountry($event, country.code)"
                                 >
                                 {{country.name}}( {{country.code}} )
                             </p>
@@ -76,7 +77,7 @@
 
 <script>
     import {ModelSelect} from 'vue-search-select'
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapMutations} from 'vuex'
 
     export default {
         data() {
@@ -101,6 +102,15 @@
         //     debugger
         // },
         methods: {
+            ...mapMutations('offer', ['changeGeo']),
+            changeCountry(event, code) {
+                console.log(event.target.checked)
+                console.log(code)
+                let obj = {}
+                obj.countryCode = code
+                obj.checked = event.target.checked
+                this.changeGeo(obj)
+            },
             getClassActiveOrNotCountry(code) {
                 let include = true
                 let exclude = false
@@ -132,9 +142,7 @@
                 this.visible = true
             },
             saveLp(data) {
-                debugger
-
-
+                this.visible = false
             },
             close() {
                 this.visible = false

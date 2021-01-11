@@ -23,6 +23,7 @@
                            placeholder="ex: My First Segment"
                            class="condition__matches campaign custom-input"
                            :id="defineId(`offerName`,id)"
+                           @change="updValue($event, `name`)"
                            :value="getOffer.length !==0 && getOffer[0].name"
                     >
 
@@ -35,6 +36,7 @@
                     <select
                             :id="defineId(`offerStatus`,id)"
                             class="condition__dimension-name condition__matches custom-select"
+                            @change="updValue($event, `status`)"
                     >
                         <option
                                 id="filterType"
@@ -64,27 +66,57 @@
                 <div class="campaign-block">
                     <label for="label-platform">Conversion type</label>
                     <label class="conversionType">CPI
-                        <input type="radio" :checked="checkConversionType(`cpi`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`cpi`)"
+                                name="radio"
+                                @change="updValue(`cpi`, `conversionType`)"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
                     <label class="conversionType">CPA
-                        <input type="radio" :checked="checkConversionType(`cpa`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`cpa`)"
+                                @change="updValue(`cpa`, `conversionType`)"
+                                name="radio"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
                     <label class="conversionType">CPL
-                        <input type="radio" :checked="checkConversionType(`cpl`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`cpl`)"
+                                @change="updValue(`cpl`, `conversionType`)"
+                                name="radio"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
                     <label class="conversionType">CPC
-                        <input type="radio" :checked="checkConversionType(`cpc`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`cpc`)"
+                                @change="updValue(`cpc`, `conversionType`)"
+                                name="radio"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
                     <label class="conversionType">CPM
-                        <input type="radio" :checked="checkConversionType(`cpm`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`cpm`)"
+                                @change="updValue(`cpm`, `conversionType`)"
+                                name="radio"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
                     <label class="conversionType">Hybrid/Multistep
-                        <input type="radio" :checked="checkConversionType(`hybrid/multistep`)" name="radio">
+                        <input
+                                type="radio"
+                                :checked="checkConversionType(`hybrid/multistep`)"
+                                @change="updValue(`hybrid/multistep`, `conversionType`)"
+                                name="radio"
+                        >
                         <span class="conversionTypeCheckMark"></span>
                     </label>
 
@@ -175,6 +207,7 @@
                            placeholder="10"
                            :value="getOffer.length !==0 && getOffer[0].payIn"
                            min="1" max="1000"
+                           @change="updValue($event, `payIn`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
                            onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -189,6 +222,7 @@
                            placeholder="10"
                            :value="getOffer.length !==0  && getOffer[0].payOut"
                            min="1" max="1000"
+                           @change="updValue($event, `payOut`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
                            onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -295,12 +329,14 @@
             </b-col>
         </b-row>
 
-
+        <b-button class="btn-save" @click="this.saveOffer">
+            <i class="fad fa-save"></i> Save Changes
+        </b-button>
     </div>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapMutations} from 'vuex'
     import logo from '../logo.vue'
     import topbar from '../topbar.vue'
     import menunav from '../menunav.vue'
@@ -317,11 +353,48 @@
             await this.$store.dispatch('offer/saveOfferStore', this.id)
         },
         methods: {
+            ...mapMutations('offer', ['updOffer']),
+            updValue(event, name) {
+                let obj = {}
 
+                if (name === 'conversionType') {
+                    obj.fieldName = name
+                    obj.value = event
+                } else if (name === 'status') {
 
+                    obj.fieldName = name
+                    obj.value = event.target.value.toLowerCase()
+                } else {
+                    obj.fieldName = name
+                    obj.value = event.target.value
+                }
+
+                this.updOffer(obj)
+            },
             async updateValue(conversionType) {
                 console.log(conversionType)
                 debugger
+            },
+            async saveOffer() {
+                const {id} = await this.$store.dispatch('offer/saveOfferDb')
+                if (id) {
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Offer updated`,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    this.$swal.fire({
+                        title: 'Offer save errors',
+                        type: 'error',
+                        text: 'Please check backend errors ',
+                        confirmButtonColor: '#2ED47A',
+                    })
+                }
+
+
             },
             showGeoRestrictionsModal(id) {
                 let modal_id = 'modal_' + id
@@ -335,7 +408,7 @@
             checkConversionType(str) {
                 let offer = this.getOffer
                 // debugger
-                if (offer[0].conversionType === str) {
+                if (offer.length !== 0 && offer[0].conversionType === str) {
                     return `checked`
                 }
 

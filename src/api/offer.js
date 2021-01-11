@@ -63,6 +63,46 @@ const createOffer = async (name) => {
 
 }
 
+const saveOffer = async (data) => {
+
+    const {advertiser, conversionType, geoRules, id, name, payIn, payOut, status} = data
+    let geoRulesArr = JSON.parse(geoRules)
+    let geoRulesReFormat =  JSON.stringify(geoRulesArr).replace(/"/g, '\\"')
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation{
+                          saveOffer(
+                                id:${id}
+                                name:"${name}"
+                                advertiser:"${advertiser}"
+                                conversionType:"${conversionType}"
+                                geoRules:"${geoRulesReFormat}"
+                                payIn:${payIn}
+                                payOut:${payOut}
+                                status:"${status}"
+                          ){
+                                id
+                          }
+                    },
+
+            `,
+            }
+        )
+
+        let response = res.data.data.saveOffer
+        console.log(`\ncreate Offer count: { ${JSON.stringify(response)} } `)
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        console.log(e)
+        debugger
+        // catchHandler(e)
+    }
+
+}
+
 const delOffer = async (id) => {
 
     try {
@@ -94,5 +134,6 @@ const delOffer = async (id) => {
 export default {
     getOffer,
     createOffer,
+    saveOffer,
     delOffer
 }
