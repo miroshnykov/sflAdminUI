@@ -5,7 +5,13 @@
 
 
             <h1>Custom GEO Settings</h1>
-            <input type="text" class="search-box" placeholder="Type country..."/>
+            <input
+                    type="text"
+                    class="search-box"
+                    placeholder="Type country..."
+                    @input="searchCountry($event)"
+
+            />
 
             <div id="table-wrapper">
                 <div id="table-scroll">
@@ -103,6 +109,11 @@
         // },
         methods: {
             ...mapMutations('offer', ['changeGeo']),
+            ...mapMutations('countries', ['filterCountry']),
+            searchCountry(event) {
+                let searchValue = event.target.value
+                this.filterCountry(searchValue)
+            },
             changeCountry(event, code) {
                 console.log(event.target.checked)
                 console.log(code)
