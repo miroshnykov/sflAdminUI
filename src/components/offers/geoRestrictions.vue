@@ -50,7 +50,17 @@
             <!--            </div>-->
 
 
-            <a class="btn-link" href="">Allow All / Ban All</a>
+            <b-button variant="primary btn-sm"
+                      @click="allowAllEvent()"
+            >
+                <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Allow All
+            </b-button>
+
+            <b-button variant="primary btn-sm"
+                      @click="banAllEvent()"
+            >
+                <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Ban All
+            </b-button>
 
             <div class="condition__controls">
                 <label>Default Redirect</label>
@@ -108,8 +118,14 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo']),
+            ...mapMutations('offer', ['changeGeo','allowAll','banAll']),
             ...mapMutations('countries', ['filterCountry']),
+            allowAllEvent(){
+                this.allowAll()
+            },
+            banAllEvent(){
+                this.banAll(this.getCountries)
+            },
             searchCountry(event) {
                 let searchValue = event.target.value
                 this.filterCountry(searchValue)

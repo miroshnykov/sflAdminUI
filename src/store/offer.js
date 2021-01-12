@@ -1,6 +1,11 @@
 import {reFormatJSON, capitalizeFirstLetter} from '../helpers'
 import offer from '../api/offer'
 
+const geoRulesFormat = (geo) => {
+    let geoRules = {}
+    geoRules.geo = geo
+    return JSON.stringify(geoRules)
+}
 
 export default {
     state: {
@@ -18,6 +23,21 @@ export default {
         },
         async updOffer(state, data) {
             state.offer[0][data.fieldName] = data.value
+        },
+        allowAll(state) {
+            state.geo = []
+            state.offer[0].geoRules = geoRulesFormat(state.geo)
+
+        },
+        banAll(state, countries) {
+            countries.forEach(item => {
+                let countryCheck = state.geo.filter(g => (g.country === item.code))
+                if (countryCheck.length === 0) {
+                    state.geo.push({country: item.code, include: true})
+                }
+            })
+            state.offer[0].geoRules = geoRulesFormat(state.geo)
+
         },
         changeGeo(state, geo) {
             if (geo.checked) {
