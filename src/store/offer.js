@@ -7,10 +7,17 @@ const geoRulesFormat = (geo) => {
     return JSON.stringify(geoRules)
 }
 
+const customLPRulesFormat = (customLPRules) => {
+    let customLp = {}
+    customLp.customLPRules = customLPRules
+    return JSON.stringify(customLp)
+}
+
 export default {
     state: {
         offer: [],
         geo: [],
+        customLPRules: [],
     },
     namespaced: true,
     mutations: {
@@ -20,6 +27,22 @@ export default {
                 let geoRules = JSON.parse(offer[0].geoRules)
                 state.geo = geoRules.geo
             }
+            if (offer[0].customLPRules) {
+                let customLPRules = JSON.parse(offer[0].customLPRules)
+                state.customLPRules = customLPRules.customLPRules
+            }
+        },
+        addCustomLP(state) {
+            let position = state.customLPRules.length !== 0 && state.customLPRules.length  || 0
+            state.customLPRules.push({id: 0, pos: position, country: ''})
+            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+        },
+        delCustomLP(state, position) {
+            state.customLPRules = state.customLPRules.filter(item => {
+                return item.pos !== position
+            })
+
+            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
         },
         async updOffer(state, data) {
             state.offer[0][data.fieldName] = data.value

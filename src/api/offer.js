@@ -18,6 +18,8 @@ const getOffer = async (id) => {
                                 payOut
                                 dateAdded
                                 geoRules
+                                defaultLp
+                                customLPRules
                           }
                     }
 

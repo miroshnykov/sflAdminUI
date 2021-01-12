@@ -295,28 +295,47 @@
 
         <b-row class="text-center">
             <b-col cols="4">
-                <h2>Default Settings</h2>
+                <h2>Customize Landing pages per GEO</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
-                    <i class="far fa-cog"></i> Customize
+                <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                          @click="showCustomLPModal(id)"
+                >
+                    <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Customize
                 </b-button>
+
+                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
+                          :customLPId="id"
+                          :customLPRules="getOffer.length !==0  && JSON.parse(getOffer[0].customLPRules)">
+                </CustomLP>
+
+                <!--                <b-button variant="secondary" class="btn-add-line" @click="">-->
+                <!--                    <i class="far fa-cog"></i> Customize-->
+                <!--                </b-button>-->
             </b-col>
             <b-col cols="5">
             </b-col>
 
-            <b-col cols="3">
+
+        </b-row>
+        <hr>
+        <b-row class="text-center">
+            <b-col cols="4">
+                <h2> Landing page</h2>
+
                 <div class="condition__controls">
                     <label>Default LP</label>
-                    <select
-                            class="condition__dimension-name condition__matches custom-select"
+                    <model-select
+                            :options="getLpModify()"
+                            :id="defineId(`lpsId`,id)"
+                            placeholder="Search landing page..."
+                            :value="getOffer.length !==0  && getOffer[0].defaultLp"
                     >
-                        <option>1015 (www.ffmoffers.co...)</option>
-                        <option>1018 (www.ffmoffers.co...)</option>
-                    </select>
+                    </model-select>
+
+
                 </div>
-            </b-col>
-            <b-col cols="3">
+
                 <div class="condition__controls">
                     <label>Default Redirect</label>
                     <select
@@ -326,7 +345,19 @@
                         <option>Offer 92 - Hyuna, Samsung Galaxy S9</option>
                     </select>
                 </div>
+
             </b-col>
+            <b-col cols="2">
+
+                <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                          @click=""
+                >
+                    <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Add
+                </b-button>
+
+            </b-col>
+
+
         </b-row>
 
         <b-button class="btn-save" @click="this.saveOffer">
@@ -342,18 +373,36 @@
     import menunav from '../menunav.vue'
     import {formatData} from '../../helpers'
     import GeoRestrictions from './geoRestrictions'
+    import CustomLP from './customLP'
+    import {ModelSelect} from 'vue-search-select'
 
     export default {
         name: 'editOffer',
-        components: {logo, menunav, topbar, GeoRestrictions},
+        components: {
+            logo,
+            menunav,
+            topbar,
+            GeoRestrictions,
+            CustomLP,
+            ModelSelect
+        },
         computed: {
             ...mapGetters('offer', ['getOffer']),
+            ...mapGetters('lpOffers', ['getLpOffers'])
         },
         async mounted() {
             await this.$store.dispatch('offer/saveOfferStore', this.id)
+            await this.$store.dispatch('lpOffers/saveLpOffersStore')
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
+            getLpModify() {
+                return this.getLpOffers.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
             updValue(event, name) {
                 let obj = {}
 
@@ -398,6 +447,12 @@
             },
             showGeoRestrictionsModal(id) {
                 let modal_id = 'modal_' + id
+
+                this.$refs[modal_id].show(id)
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
+            showCustomLPModal(id) {
+                let modal_id = 'modal_lp' + id
 
                 this.$refs[modal_id].show(id)
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])

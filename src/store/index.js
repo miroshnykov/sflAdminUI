@@ -9,6 +9,7 @@ import affiliates from './affiliates'
 import countries from './countries'
 import campaigns from './campaigns'
 import lp from './lp'
+import lpOffers from './lpOffers'
 import prods from './prods'
 import offers from './offers'
 import offer from './offer'
@@ -38,6 +39,7 @@ export default new Vuex.Store({
         user,
         history,
         lp,
+        lpOffers,
         prods,
         offer,
         offers,
