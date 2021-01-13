@@ -453,7 +453,7 @@
             getOffersModify() {
                 return this.getOffers.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} `
+                    item.text = `${item.name} (OfferId-${item.id})`
                     return item
                 })
             },
