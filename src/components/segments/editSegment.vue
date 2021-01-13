@@ -25,11 +25,12 @@
                            :value="getSegmentName"
                            :id="defineSegmentNameId(id)"
                            @change="changeField($event, `segmentName`)"
+                           maxlength="25"
                     >
                     <!--                    -->
                     <b-form-text id="lastModified">
                         Date added: {{getSegmentDateAdded && formatDate_(new Date(getSegmentDateAdded * 1000))}}
-                        Last updated: {{ formatDate_(new Date(Number(getSegmentDateUpdated))) }}
+                        / Last updated: {{ formatDate_(new Date(Number(getSegmentDateUpdated))) }}
                     </b-form-text>
                 </div>
             </b-col>
