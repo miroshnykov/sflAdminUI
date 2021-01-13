@@ -339,12 +339,14 @@
 
                 <div class="condition__controls">
                     <label>Default Redirect</label>
-                    <select
-                            class="condition__dimension-name condition__matches custom-select"
+                    <model-select
+                            :options="getOffersModify()"
+                            :id="defineId(`offerIdRedirect`,id)"
+                            placeholder="Search landing page..."
+                            :value="getOffer.length !==0  && getOffer[0].offerIdRedirect"
+                            @input="updValue($event,`offerIdRedirect`)"
                     >
-                        <option>Offer 77 - Hyuna, iPhone 11</option>
-                        <option>Offer 92 - Hyuna, Samsung Galaxy S9</option>
-                    </select>
+                    </model-select>
                 </div>
 
             </b-col>
@@ -398,11 +400,21 @@
         },
         computed: {
             ...mapGetters('offer', ['getOffer']),
+            ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
         async mounted() {
+            await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore')
+
+            // await store.dispatch('affiliates/saveAffiliatesStore')
+            await this.$store.dispatch('countries/saveCountriesStore')
+            // await store.dispatch('dimensions/saveDimensionsStore')
+            // await store.dispatch('campaigns/saveCampaignsStore')
+            await this.$store.dispatch('lp/saveLPStore')
+            // await store.dispatch('prods/saveProdsStore')
+            // await store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
@@ -413,10 +425,21 @@
                     return item
                 })
             },
+            getOffersModify() {
+                return this.getOffers.map(item => {
+                    item.value = item.id
+                    item.text = `${item.name} `
+                    return item
+                })
+            },
             updValue(event, name) {
                 let obj = {}
 
-                if (name === 'conversionType' || name === 'defaultLp') {
+                if (
+                    name === 'conversionType'
+                    || name === 'defaultLp'
+                    || name === 'offerIdRedirect'
+                ) {
                     obj.fieldName = name
                     obj.value = event
                 } else if (name === 'status') {

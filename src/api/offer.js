@@ -19,6 +19,7 @@ const getOffer = async (id) => {
                                 dateAdded
                                 geoRules
                                 defaultLp
+                                offerIdRedirect
                                 customLPRules
                           }
                     }
@@ -77,7 +78,8 @@ const saveOffer = async (data) => {
         payIn,
         payOut,
         status,
-        defaultLp
+        defaultLp,
+        offerIdRedirect
     } = data
 
     let geoRulesArr = JSON.parse(geoRules)
@@ -101,6 +103,7 @@ const saveOffer = async (data) => {
                                 customLPRules:"${customLPRulesReFormat}"
                                 payIn:${payIn}
                                 defaultLp:${defaultLp}
+                                offerIdRedirect:${offerIdRedirect}
                                 payOut:${payOut}
                                 status:"${status}"
                           ){

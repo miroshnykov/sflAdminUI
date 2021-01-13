@@ -94,6 +94,13 @@
         segmentFilter: [],
         async mounted() {
             await this.$store.dispatch('segment/saveSegmentConditionsStore', this.id)
+            await this.$store.dispatch('affiliates/saveAffiliatesStore')
+            await this.$store.dispatch('countries/saveCountriesStore')
+            await this.$store.dispatch('dimensions/saveDimensionsStore')
+            await this.$store.dispatch('campaigns/saveCampaignsStore')
+            await this.$store.dispatch('lp/saveLPStore')
+            await this.$store.dispatch('prods/saveProdsStore')
+            await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
         },
         methods: {
             ...mapMutations("segment", ["updateField"]),
