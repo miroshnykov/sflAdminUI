@@ -13,7 +13,7 @@
                     <th scope="col"></th>
                 </tr>
                 </thead>
-                <tr scope="row" v-for="rules in customLPRules.customLPRules">
+                <tr scope="row" v-for="rules in getCustomLPRules()">
                     <td>
                         {{ JSON.stringify(rules) }}
                         <div class="condition-line1">
@@ -21,6 +21,7 @@
                                     :options="getCountriesModify()"
                                     :id="defineId(`customCountry`,rules.pos)"
                                     :value="rules.country"
+                                    @input="updateCustomLPAction($event, `country`, rules.pos)"
                                     class="condition__country condition__matches custom-select "
                             >
                             </model-select>
@@ -35,6 +36,7 @@
                                     :options="getLpModify()"
                                     :id="defineId(`customLPs`,rules.pos)"
                                     placeholder="Search landing page..."
+                                    @input="updateCustomLPAction($event, `id`, rules.pos)"
                                     :value="rules.id"
                             >
                             </model-select>
@@ -44,7 +46,8 @@
 
                     </td>
                     <td>
-                        <b-button variant="light" @click="delCustomLpAction(rules.pos)" v-b-tooltip.hover.top="'Delete Custom LPs'"
+                        <b-button variant="light" @click="delCustomLpAction(rules.pos)"
+                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
                                   style="z-index:2">
                             <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                         </b-button>
@@ -53,9 +56,10 @@
                 </tr>
 
                 <tr scope="row">
-                    <td><b-button variant="light" class="btn-add-line" @click="addCustomLpAction">
-                        <i class="far fa-plus"></i> Add GEO
-                    </b-button>
+                    <td>
+                        <b-button variant="light" class="btn-add-line" @click="addCustomLpAction">
+                            <i class="far fa-plus"></i> Add GEO
+                        </b-button>
                     </td>
                 </tr>
             </table>
@@ -64,7 +68,8 @@
             <b-row class="text-center">
                 <b-col cols="12">
                     <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveCustomLP(customLPRules)">
+                    <button type="button" class="btn btn-savebucket btn-primary pull-left"
+                            @click="saveCustomLP(customLPRules)">
                         Save
                     </button>
                 </b-col>
@@ -101,7 +106,7 @@
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
         methods: {
-            ...mapMutations('offer', ['changeGeo','allowAll','banAll','addCustomLP','delCustomLP']),
+            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll', 'addCustomLP', 'delCustomLP', 'updateCustomLP']),
             ...mapMutations('countries', ['filterCountry']),
             getLpModify() {
                 return this.getLpOffers.map(item => {
@@ -110,11 +115,15 @@
                     return item
                 })
             },
-            addCustomLpAction(){
+            addCustomLpAction() {
                 this.addCustomLP()
             },
-            delCustomLpAction(position){
+            delCustomLpAction(position) {
                 this.delCustomLP(position)
+            },
+            getCustomLPRules() {
+                let customLPRulesRecords = this.customLPRules
+                return customLPRulesRecords && customLPRulesRecords.customLPRules || []
             },
             getCountriesModify() {
                 return this.getCountries.map(item => {
@@ -122,6 +131,18 @@
                     item.text = item.name + ' (' + item.code + ') '
                     return item
                 })
+
+
+            },
+            updateCustomLPAction(value, field, position) {
+
+                debugger
+
+                    let updateFieldData = {}
+                    updateFieldData.value = value
+                    updateFieldData.field = field
+                    updateFieldData.position = position
+                    this.updateCustomLP(updateFieldData)
 
 
             },

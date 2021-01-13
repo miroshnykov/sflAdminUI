@@ -306,7 +306,7 @@
 
                 <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
                           :customLPId="id"
-                          :customLPRules="getOffer.length !==0  && JSON.parse(getOffer[0].customLPRules)">
+                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                 </CustomLP>
 
                 <!--                <b-button variant="secondary" class="btn-add-line" @click="">-->

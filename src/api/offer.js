@@ -67,9 +67,14 @@ const createOffer = async (name) => {
 
 const saveOffer = async (data) => {
 
-    const {advertiser, conversionType, geoRules, id, name, payIn, payOut, status} = data
+    const {advertiser, conversionType, geoRules, customLPRules, id, name, payIn, payOut, status} = data
     let geoRulesArr = JSON.parse(geoRules)
     let geoRulesReFormat =  JSON.stringify(geoRulesArr).replace(/"/g, '\\"')
+
+    let customLPRulesArr = JSON.parse(customLPRules)
+    let customLPRulesReFormat =  JSON.stringify(customLPRulesArr).replace(/"/g, '\\"')
+
+
     try {
         const res = await api.post(
             '', {
@@ -81,6 +86,7 @@ const saveOffer = async (data) => {
                                 advertiser:"${advertiser}"
                                 conversionType:"${conversionType}"
                                 geoRules:"${geoRulesReFormat}"
+                                customLPRules:"${customLPRulesReFormat}"
                                 payIn:${payIn}
                                 payOut:${payOut}
                                 status:"${status}"

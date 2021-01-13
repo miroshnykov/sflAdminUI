@@ -33,8 +33,16 @@ export default {
             }
         },
         addCustomLP(state) {
-            let position = state.customLPRules.length !== 0 && state.customLPRules.length  || 0
+            let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
             state.customLPRules.push({id: 0, pos: position, country: ''})
+            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+        },
+        updateCustomLP(state, data) {
+            state.customLPRules.forEach(item => {
+                if (item.pos === data.position) {
+                    item[data.field] = data.value
+                }
+            })
             state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
         },
         delCustomLP(state, position) {
@@ -76,7 +84,7 @@ export default {
             let offerRulesStr = JSON.stringify(offerRules)
             state.offer[0].geoRules = offerRulesStr
 
-        }
+        },
     },
     actions: {
         async saveOfferDb({commit}) {
