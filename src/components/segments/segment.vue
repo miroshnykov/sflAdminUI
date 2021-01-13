@@ -406,6 +406,7 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        max-width: 300px;
     }
 
     .segment__default {

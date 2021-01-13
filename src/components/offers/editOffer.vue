@@ -226,6 +226,7 @@
                            class="condition__matches campaign custom-input"
                            :id="defineId(`offerName`,id)"
                            @change="updValue($event, `name`)"
+                           maxlength="25"
                     >
                 </div>
             </b-col>
