@@ -57,7 +57,7 @@
 
                 <tr scope="row">
                     <td>
-                        <b-button variant="light" class="btn-add-line" @click="addCustomLpAction">
+                        <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
                             <i class="far fa-plus"></i> Add GEO
                         </b-button>
                     </td>

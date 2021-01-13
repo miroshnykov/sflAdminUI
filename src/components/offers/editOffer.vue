@@ -16,7 +16,7 @@
                     >
                 </div>
             </b-col>
-            <b-col cols="6">
+            <!-- <b-col cols="6">
                 <div class="condition__controls">
                     <label>Offer Name</label>
                     <input type="text"
@@ -27,6 +27,30 @@
                            :value="getOffer.length !==0 && getOffer[0].name"
                     >
 
+                </div>
+            </b-col> -->
+
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>Advertiser</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
+
+                    </select>
+                </div>
+            </b-col>
+
+            <b-col cols="3">
+                <div class="condition__controls">
+                    <label>Vertical</label>
+                    <select
+                            class="condition__dimension-name condition__matches custom-select"
+                    >
+                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
+                        <!-- TODO: Need to add Vertical field, like the mock -->
+                    </select>
                 </div>
             </b-col>
 
@@ -46,80 +70,84 @@
                         >{{name}}
                         </option>
 
-                    </select>
-                </div>
-            </b-col>
-            <b-col cols="3">
-                <div class="condition__controls">
-                    <label>Advertiser</label>
-                    <select
-                            class="condition__dimension-name condition__matches custom-select"
-                    >
-                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
+                        <!-- TODO: Replace with the 4 status types (Public, Private, Apply to Run, Inactive) like the mock -->
 
                     </select>
                 </div>
             </b-col>
 
+            <b-col cols="2">
+            </b-col>
+
 
             <b-col cols="3">
-                <div class="campaign-block">
-                    <label for="label-platform">Conversion type</label>
-                    <label class="conversionType">CPI
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`cpi`)"
-                                name="radio"
-                                @change="updValue(`cpi`, `conversionType`)"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
-                    <label class="conversionType">CPA
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`cpa`)"
-                                @change="updValue(`cpa`, `conversionType`)"
-                                name="radio"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
-                    <label class="conversionType">CPL
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`cpl`)"
-                                @change="updValue(`cpl`, `conversionType`)"
-                                name="radio"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
-                    <label class="conversionType">CPC
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`cpc`)"
-                                @change="updValue(`cpc`, `conversionType`)"
-                                name="radio"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
-                    <label class="conversionType">CPM
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`cpm`)"
-                                @change="updValue(`cpm`, `conversionType`)"
-                                name="radio"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
-                    <label class="conversionType">Hybrid/Multistep
-                        <input
-                                type="radio"
-                                :checked="checkConversionType(`hybrid/multistep`)"
-                                @change="updValue(`hybrid/multistep`, `conversionType`)"
-                                name="radio"
-                        >
-                        <span class="conversionTypeCheckMark"></span>
-                    </label>
+                <div class="campaign-block condition__controls">
+                    <label for="label-platform">Conversion Flow Type</label>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
+                        <!-- <label class="btn btn-secondary-" :class="addClassActive(item.platformAndroid)">
+                        <input
+                                type="checkbox"
+                                autocomplete="off"
+                                @change="updateValue(item,`platformAndroid`)"
+                        > Android
+                        </label> -->
+                        
+                        <label class="conversionType btn btn-secondary-">CPI
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`cpi`)"
+                                    name="radio"
+                                    @change="updValue(`cpi`, `conversionType`)"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">CPA
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`cpa`)"
+                                    @change="updValue(`cpa`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">CPL
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`cpl`)"
+                                    @change="updValue(`cpl`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">CPC
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`cpc`)"
+                                    @change="updValue(`cpc`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">CPM
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`cpm`)"
+                                    @change="updValue(`cpm`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">Hybrid/Multistep
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`hybrid/multistep`)"
+                                    @change="updValue(`hybrid/multistep`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                    </div>
 
                 </div>
             </b-col>
@@ -182,7 +210,7 @@
                 <h2>Custom Pay-in/Pay-out</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="secondary" class="btn-add-line" @click="">
+                <b-button variant="light" class="btn-add-line" @click="">
                     <i class="far fa-cog"></i> Customize
                 </b-button>
             </b-col>
@@ -196,6 +224,8 @@
                            placeholder="ex: iPhone 11"
                            :value="getOffer.length !==0 && getOffer[0].name"
                            class="condition__matches campaign custom-input"
+                           :id="defineId(`offerName`,id)"
+                           @change="updValue($event, `name`)"
                     >
                 </div>
             </b-col>
@@ -236,51 +266,39 @@
 
         <b-row class="text-center">
 
-            <b-col cols="4">
+            <b-col cols="12">
                 <h2>Restrictions</h2>
             </b-col>
 
-            <b-col col lg="2">
-                <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
-                          @click="showGeoRestrictionsModal(id)"
-                >
-                    <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Customize
-                </b-button>
-
-                <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
-                                 :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
-                </GeoRestrictions>
-
-
-            </b-col>
-
-            <b-col cols="5">
-            </b-col>
-
-            <!--            <b-col cols="4">-->
-            <!--                <h2>Restrictions</h2>-->
-            <!--            </b-col>-->
-            <!--            <b-col cols="2">-->
-            <!--                <b-button variant="secondary" class="btn-add-line" @click="">-->
-            <!--                    <i class="far fa-cog"></i> Customize-->
-            <!--                </b-button>-->
-            <!--            </b-col>-->
-            <!--            <b-col cols="5">-->
-            <!--            </b-col>-->
-
             <b-col cols="3">
-                <div class="condition__controls">
-                    <label>GEO Settings</label>
+                <div class="condition__controls"
+                    v-b-popover.hover.focus.bottom.html="'Armenia, France...'"
+                    title="Allowed and Banned Countries"
+                >
+                    <label class="pull-left">GEO Settings</label>
+                    <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                            @click="showGeoRestrictionsModal(id)"
+                    >
+                        <i class="far fa-cog"></i> Customize
+                    </b-button>
+
+                    <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
+                                    :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
+                    </GeoRestrictions>
                     <input type="text"
                            class="condition__matches campaign custom-input"
-                           value="Custom (hover for allowed/banned)"
+                           value="Custom (hover for list)"
                            disabled
                     >
                 </div>
             </b-col>
             <b-col cols="3">
                 <div class="condition__controls">
-                    <label>Caps</label>
+                    <label class="pull-left">Caps</label>
+
+                    <b-button variant="light" class="btn-add-line pull-right">
+                        <i class="far fa-cog"></i> Customize
+                    </b-button>
                     <select
                             class="condition__dimension-name condition__matches custom-select"
                     >
@@ -293,37 +311,62 @@
 
         <hr>
 
-        <b-row class="text-center">
+        <!-- <b-row class="text-center">
             <b-col cols="4">
                 <h2>Customize Landing pages per GEO</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
                           @click="showCustomLPModal(id)"
                 >
-                    <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Customize
+                    <i class="far fa-cog"></i> Customize
                 </b-button>
 
                 <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
                           :customLPId="id"
                           :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                 </CustomLP>
-
-                <!--                <b-button variant="secondary" class="btn-add-line" @click="">-->
-                <!--                    <i class="far fa-cog"></i> Customize-->
-                <!--                </b-button>-->
             </b-col>
             <b-col cols="5">
-            </b-col>
-
+            </b-col> -->
 
         </b-row>
         <hr>
         <b-row class="text-center">
             <b-col cols="4">
-                <h2> Landing page</h2>
+                <h2>Default Settings</h2>
+            </b-col>
+            <b-col cols="2">
+                <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                          @click="showCustomLPModal(id)"
+                >
+                    <i class="far fa-cog"></i> Customize
+                </b-button>
 
+                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
+                          :customLPId="id"
+                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
+                </CustomLP>
+            </b-col>
+
+            <b-col cols="6">
+            </b-col>
+
+            <b-col cols="3">
                 <div class="condition__controls">
+                    <div class="pull-right">
+                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                                @click="showOfferAddLpModal(id)"
+                        >
+                            <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP
+                        </b-button>
+
+                        <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
+                                :offerId="id"
+                        >
+                        </OfferLP>
+                    </div>
+
                     <label>Default LP</label>
                     <model-select
                             :options="getLpModify()"
@@ -333,10 +376,9 @@
                             @input="updValue($event,`defaultLp`)"
                     >
                     </model-select>
-
-
                 </div>
-
+            </b-col>
+            <b-col cols="3">
                 <div class="condition__controls">
                     <label>Default Redirect</label>
                     <model-select
@@ -348,23 +390,6 @@
                     >
                     </model-select>
                 </div>
-
-            </b-col>
-            <b-col cols="2">
-
-
-                <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
-                          @click="showOfferAddLpModal(id)"
-                >
-                    <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Add
-                </b-button>
-
-                <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
-                         :offerId="id"
-                >
-                </OfferLP>
-
-
             </b-col>
 
 
@@ -520,6 +545,10 @@
                 return [
                     {id: 0, name: 'Active'},
                     {id: 1, name: 'Inactive'},
+                    // {id: 0, name: 'Public'},
+                    // {id: 1, name: 'Private'},
+                    // {id: 2, name: 'Apply to Run'},
+                    // {id: 3, name: 'Inactive'},
                 ]
             },
         },
@@ -541,7 +570,7 @@
             padding-left: 35px
             margin-bottom: 12px
             cursor: pointer
-            font-size: 22px
+            font-size: 16px
             -webkit-user-select: none
             -moz-user-select: none
             -ms-user-select: none
@@ -554,10 +583,10 @@
 
         .conversionTypeCheckMark
             position: absolute
-            top: 0
-            left: 0
-            height: 25px
-            width: 25px
+            top: 10px
+            left: 10px
+            height: 15px
+            width: 15px
             background-color: #eee
             border-radius: 50%
 
@@ -566,7 +595,7 @@
 
 
         .conversionType input:checked ~ .conversionTypeCheckMark
-            background-color: #2196F3
+            background-color: #36B8E1
 
         .conversionTypeCheckMark:after
             content: ""
@@ -576,13 +605,22 @@
         .conversionType input:checked ~ .conversionTypeCheckMark:after
             display: block
 
-
         .conversionType .conversionTypeCheckMark:after
-            top: 9px
-            left: 9px
-            width: 8px
-            height: 8px
-            border-radius: 50%
-            background: white
+            // top: 6px
+            // left: 6px
+            // width: 8px
+            // height: 8px
+            // border-radius: 50%
+            background: transparent
+
+        .conversionType:active
+            color: #36B8E1
+            border-color: #36B8E1
+            z-index: 2
+
+        .conversionType.btn.btn-secondary-:focus-within
+            color: #36B8E1
+            border-color: #36B8E1
+            z-index: 2
 
 </style>
