@@ -31,8 +31,39 @@ const lpOffers = async () => {
 
 }
 
+const createLpOffer = async (data) => {
+
+    const {name, url, offerLpId} = data
+
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    mutation {
+                          createLpOffer(
+                                name:"${name}",
+                                url:"${url}",
+                                offerId:${offerLpId}) {
+                                id
+                          }
+                    }
+
+            `,
+            }
+        )
+
+        let response = res.data.data.createLpOffer
+        console.log('\ncreateLpOffer response:', response)
+        console.timeEnd(`lp`)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 
 export default {
     lpOffers,
-
+    createLpOffer
 }

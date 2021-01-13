@@ -330,6 +330,7 @@
                             :id="defineId(`lpsId`,id)"
                             placeholder="Search landing page..."
                             :value="getOffer.length !==0  && getOffer[0].defaultLp"
+                            @input="updValue($event,`defaultLp`)"
                     >
                     </model-select>
 
@@ -349,11 +350,18 @@
             </b-col>
             <b-col cols="2">
 
+
                 <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
-                          @click=""
+                          @click="showOfferAddLpModal(id)"
                 >
                     <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Add
                 </b-button>
+
+                <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
+                         :offerLpId="id"
+                >
+                </OfferLP>
+
 
             </b-col>
 
@@ -374,6 +382,7 @@
     import {formatData} from '../../helpers'
     import GeoRestrictions from './geoRestrictions'
     import CustomLP from './customLP'
+    import OfferLP from './offerLP'
     import {ModelSelect} from 'vue-search-select'
 
     export default {
@@ -384,6 +393,7 @@
             topbar,
             GeoRestrictions,
             CustomLP,
+            OfferLP,
             ModelSelect
         },
         computed: {
@@ -399,14 +409,14 @@
             getLpModify() {
                 return this.getLpOffers.map(item => {
                     item.value = item.id
-                    item.text = item.name + ' (' + item.id + ') '
+                    item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
                     return item
                 })
             },
             updValue(event, name) {
                 let obj = {}
 
-                if (name === 'conversionType') {
+                if (name === 'conversionType' || name === 'defaultLp') {
                     obj.fieldName = name
                     obj.value = event
                 } else if (name === 'status') {
@@ -453,6 +463,12 @@
             },
             showCustomLPModal(id) {
                 let modal_id = 'modal_lp' + id
+
+                this.$refs[modal_id].show(id)
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
+            showOfferAddLpModal(id) {
+                let modal_id = 'modal_add_lp' + id
 
                 this.$refs[modal_id].show(id)
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])

@@ -14,9 +14,8 @@ export default {
         async saveLpOffersStore({commit}) {
             commit('saveLpOffers', await lpOffers.lpOffers())
         },
-        async createLpOffer({commit}, obj) {
-
-
+        async createLpOfferDb({commit}, obj) {
+            return lpOffers.createLpOffer(obj)
         },
         async updateLpOffer({commit}, obj) {
 
