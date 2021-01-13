@@ -9,7 +9,7 @@
                 <h1 class="title">{{ this.editMode && 'Update Landing page' || 'Add Landing page' }}</h1>
 
                 <p class="text-left">
-                    <label>SegmentId:{{ segment.id }} </label>
+                    <label>Segment ID: {{ segment.id }}</label>
                 </p>
 
                 <div class="condition-line1">
@@ -28,7 +28,7 @@
                 </div>
 
                 <b-row class="text-center">
-                    <b-col cols="6">
+                    <b-col cols="4">
                         <div class="condition__controls condition-line">
                             <label class="text-center">Weight</label>
                             <input type="text"
@@ -59,7 +59,7 @@
                             </b-form-text> -->
                         </div>
                     </b-col>
-                    <b-col cols="6">
+                    <b-col cols="4">
                         <div class="condition__controls condition-line">
                             <label class="text-center">Total Weight</label>
                             <input type="text"
@@ -69,7 +69,7 @@
                             >
                         </div>
                     </b-col>
-                    <b-col cols="6">
+                    <b-col cols="4">
                         <div class="condition__controls condition-line">
                             <label class="text-center">Sum Weight</label>
                             <input type="text"

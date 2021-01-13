@@ -32,6 +32,13 @@ a
 a, button, span
   transition: all 0.5s ease
 
+
+.pull-right
+  float: right !important
+
+.pull-left
+  float: left !important
+
 hr
   border: 1.5px solid #E3EEF4
   margin-top: 40px
@@ -47,6 +54,15 @@ hr.small
   --fa-primary-opacity: 1
   --fa-secondary-color: #5c6489
   --fa-secondary-opacity: 1
+
+.green
+  color: #2ED47A
+
+.yellow
+  color: #FFB946
+
+.red
+  color: #FE5D65
 
 .flex
   display: flex
@@ -286,7 +302,38 @@ button.btn.btn-add-line.btn-secondary
   border-radius: 4px
 // float: right
 
+button.btn.btn-add-line.btn-light
+  color: #36B8E1
+  background: transparent
+  width: auto !important
+  font-size: 12px
+  letter-spacing: 0.5px
+  height: 30px
+  padding: 0px
+  border-radius: 4px
+  text-transform: none
+  float: right
+
 /* SEARCH BAR */
+input.search-box
+  padding: 10px 20px
+  border-radius: 7px
+  // border: 0px solid transparent
+  border: 2px solid #E3EEF4
+  height: 45px
+  width: 352px
+  // box-shadow: 0px 0px 3px 0px #E3EEF4
+
+input.search-box:before
+  content: '\F11C'
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  font-size: 16px
+  color: lightgrey
+  float: right
+  margin-top: 2px
+  margin-right: -20px
+
 .form-control
   display: block
   width: 100%
@@ -639,6 +686,21 @@ tr
   -webkit-box-sizing: border-box
   box-sizing: border-box
 
+.table-geo
+  padding: 15px
+  border: 2px solid #E3EEF4
+  border-radius: 7px
+  margin-top: 10px
+  margin-bottom: 10px
+  min-height: 185px
+
+  svg
+    margin-right: 10px
+
+  p
+    font-weight: 500
+    line-height: 1.4em
+
 .custom-control-input:checked ~ .custom-control-label::before
   color: #fff
   border-color: #36B8E1
@@ -838,16 +900,19 @@ ul.segment-info
   padding: 0rem 4rem 2rem 4rem
 
 .modal-dialog
-  max-width: 500px
+  max-width: 600px
   margin: 10rem auto
 
 .modal-content
   border: 1px solid rgba(0, 0, 0, 0)
   border-radius: 20px
 
+.modal-body
+  padding: 2rem
+
 .modal-footer
-    padding: 0rem 0rem 3rem 0rem
-    border-top: 0px solid transparent
+  padding: 0rem 0rem 3rem 0rem
+  border-top: 0px solid transparent
 
 h2.swal2-title
   font-size: 2rem
@@ -1429,16 +1494,17 @@ button.btn.btn-secondary.dropdown-toggle
 
 .create-rule
   text-align: center
+  max-width: 1000px
 
   h2
-    color: rgba(255, 255, 255, 0.5)
+    color: #7F98A5
     font-size: 18px
     font-weight: 700
     letter-spacing: 2px
     margin-bottom: 10px
 
   p
-    color: rgba(255, 255, 255, 0.5)
+    color: #7F98A5
     font-size: 14px
     font-weight: 500
     letter-spacing: 1px
@@ -1446,7 +1512,7 @@ button.btn.btn-secondary.dropdown-toggle
   svg
     margin-top: 10px
     margin-bottom: 20px
-    color: rgba(255, 255, 255, 0.3)
+    color: rgba(0, 0, 0, 0.2)
 
   section.filter
     // background: rgba(255, 255, 255, 0.05)

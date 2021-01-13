@@ -41,14 +41,14 @@ new Vue({
                     throw new Error('invalid token')
                 }
                 await store.dispatch('user/saveUserStore', this.verifyTokenEmail)
-
-                await store.dispatch('affiliates/saveAffiliatesStore')
-                await store.dispatch('countries/saveCountriesStore')
-                await store.dispatch('dimensions/saveDimensionsStore')
-                await store.dispatch('campaigns/saveCampaignsStore')
-                await store.dispatch('lp/saveLPStore')
-                await store.dispatch('prods/saveProdsStore')
-                await store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+                //
+                // await store.dispatch('affiliates/saveAffiliatesStore')
+                // await store.dispatch('countries/saveCountriesStore')
+                // await store.dispatch('dimensions/saveDimensionsStore')
+                // await store.dispatch('campaigns/saveCampaignsStore')
+                // await store.dispatch('lp/saveLPStore')
+                // await store.dispatch('prods/saveProdsStore')
+                // await store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
 
             } else {
                 let checkPatch = this.$root._route.path.includes('successLogin')

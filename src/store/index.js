@@ -9,8 +9,10 @@ import affiliates from './affiliates'
 import countries from './countries'
 import campaigns from './campaigns'
 import lp from './lp'
+import lpOffers from './lpOffers'
 import prods from './prods'
 import offers from './offers'
+import offer from './offer'
 import affiliateWebsites from './affiliateWebsites'
 
 import { getUserStore } from 'am-components-front'
@@ -37,7 +39,9 @@ export default new Vuex.Store({
         user,
         history,
         lp,
+        lpOffers,
         prods,
+        offer,
         offers,
         affiliateWebsites
     }

@@ -338,26 +338,6 @@
 </script>
 
 <style lang="scss">
-    input.search-box {
-        padding: 10px 20px;
-        border-radius: 10px;
-        border: 0px solid transparent;
-        height: 45px;
-        width: 352px;
-        box-shadow: 0px 0px 3px 0px #eee;
-    }
-
-    input.search-box:before {
-        content: '\F11C';
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        font-size: 16px;
-        color: lightgrey;
-        float: right;
-        margin-top: 2px;
-        margin-right: -20px;
-    }
-
     span.segment-name-id {
         color: #7F98A5;
     }
@@ -426,6 +406,7 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        max-width: 300px;
     }
 
     .segment__default {
