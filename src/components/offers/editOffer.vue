@@ -65,7 +65,7 @@
                         <option
                                 id="filterType"
                                 v-for="{id, name} in getStatusList()"
-                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getOffer.length !==0 && getOffer[0].status || '')"
+                                :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].status || '')"
                                 :key="id"
                         >{{name}}
                         </option>
@@ -92,7 +92,7 @@
                                 @change="updateValue(item,`platformAndroid`)"
                         > Android
                         </label> -->
-                        
+
                         <label class="conversionType btn btn-secondary-">CPI
                             <input
                                     type="radio"
@@ -273,18 +273,18 @@
 
             <b-col cols="3">
                 <div class="condition__controls"
-                    v-b-popover.hover.focus.bottom.html="'Armenia, France...'"
-                    title="Allowed and Banned Countries"
+                     v-b-popover.hover.focus.bottom.html="'Armenia, France...'"
+                     title="Allowed and Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                            @click="showGeoRestrictionsModal(id)"
+                              @click="showGeoRestrictionsModal(id)"
                     >
                         <i class="far fa-cog"></i> Customize
                     </b-button>
 
                     <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
-                                    :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
+                                     :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
                     </GeoRestrictions>
                     <input type="text"
                            class="condition__matches campaign custom-input"
@@ -357,13 +357,13 @@
                 <div class="condition__controls">
                     <div class="pull-right">
                         <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                                @click="showOfferAddLpModal(id)"
+                                  @click="showOfferAddLpModal(id)"
                         >
                             <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP
                         </b-button>
 
                         <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
-                                :offerId="id"
+                                 :offerId="id"
                         >
                         </OfferLP>
                     </div>
@@ -471,7 +471,12 @@
                 } else if (name === 'status') {
 
                     obj.fieldName = name
-                    obj.value = event.target.value.toLowerCase()
+                    if (event.target.value.toLowerCase() === 'apply to run') {
+                        obj.value = `apply_to_run`
+                    } else {
+                        obj.value = event.target.value.toLowerCase()
+                    }
+
                 } else {
                     obj.fieldName = name
                     obj.value = event.target.value
@@ -536,20 +541,18 @@
             formatDate_(date) {
                 return formatData(date)
             },
-            capitalizeFirstLetter(str) {
-                return str && str.charAt(0).toUpperCase() + str.slice(1)
+            formatStr(str) {
+                return str && str.toLowerCase().replace(/_/g, '').replace(/\s/g, '')
             },
             defineId(name, id) {
                 return `${name}-${id}`
             },
             getStatusList() {
                 return [
-                    {id: 0, name: 'Active'},
-                    {id: 1, name: 'Inactive'},
-                    // {id: 0, name: 'Public'},
-                    // {id: 1, name: 'Private'},
-                    // {id: 2, name: 'Apply to Run'},
-                    // {id: 3, name: 'Inactive'},
+                    {id: 0, name: 'Public'},
+                    {id: 1, name: 'Private'},
+                    {id: 2, name: 'Apply to Run'},
+                    {id: 3, name: 'Inactive'},
                 ]
             },
         },

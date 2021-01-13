@@ -82,16 +82,16 @@
             </div>
 
             <div slot="status" slot-scope="props">
-                <div v-if="props.row.status == 'inactive'">
+                <div v-if="props.row.status === 'inactive'">
                 <div class="status inactive">{{props.row.status}}</div>
                 </div>
-                <div v-else-if="props.row.status == 'active'">
+                <div v-else-if="props.row.status === 'public'">
                 <div class="status active">{{props.row.status}}</div>
                 </div>
-                <div v-else-if="props.row.status == 'private'">
+                <div v-else-if="props.row.status === 'private'">
                 <div class="status private">{{props.row.status}}</div>
                 </div>
-                <div v-else-if="props.row.status == 'applyToRun'">
+                <div v-else-if="props.row.status === 'apply_to_run'">
                 <div class="status applyToRun">{{props.row.status}}</div>
                 </div>
             </div>
