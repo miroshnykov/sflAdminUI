@@ -131,20 +131,13 @@
                     item.text = item.name + ' (' + item.code + ') '
                     return item
                 })
-
-
             },
             updateCustomLPAction(value, field, position) {
-
-                debugger
-
-                    let updateFieldData = {}
-                    updateFieldData.value = value
-                    updateFieldData.field = field
-                    updateFieldData.position = position
-                    this.updateCustomLP(updateFieldData)
-
-
+                let updateFieldData = {}
+                updateFieldData.value = value
+                updateFieldData.field = field
+                updateFieldData.position = position
+                this.updateCustomLP(updateFieldData)
             },
             defineId(name, id) {
                 return `${name}-${id}`

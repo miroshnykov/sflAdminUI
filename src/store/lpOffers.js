@@ -8,6 +8,9 @@ export default {
     mutations: {
         async saveLpOffers(state, lpOffers) {
             state.lpOffers = lpOffers
+        },
+        async addLpOffers(state, lp) {
+            state.lpOffers.push(lp)
         }
     },
     actions: {
@@ -15,7 +18,10 @@ export default {
             commit('saveLpOffers', await lpOffers.lpOffers())
         },
         async createLpOfferDb({commit}, obj) {
-            return lpOffers.createLpOffer(obj)
+            let res = await lpOffers.createLpOffer(obj)
+            obj.id = res.id
+            commit('addLpOffers', obj)
+            return res
         },
         async updateLpOffer({commit}, obj) {
 

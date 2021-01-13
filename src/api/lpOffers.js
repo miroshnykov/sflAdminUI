@@ -33,7 +33,7 @@ const lpOffers = async () => {
 
 const createLpOffer = async (data) => {
 
-    const {name, url, offerLpId} = data
+    const {name, url, offerId} = data
 
     try {
         const res = await api.post(
@@ -43,7 +43,7 @@ const createLpOffer = async (data) => {
                           createLpOffer(
                                 name:"${name}",
                                 url:"${url}",
-                                offerId:${offerLpId}) {
+                                offerId:${offerId}) {
                                 id
                           }
                     }

@@ -358,7 +358,7 @@
                 </b-button>
 
                 <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
-                         :offerLpId="id"
+                         :offerId="id"
                 >
                 </OfferLP>
 

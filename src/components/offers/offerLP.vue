@@ -71,16 +71,14 @@
                 id: 0,
             }
         },
-        props: ['offerLpId'],
+        props: ['offerId'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages'])
         },
         methods: {
             updateLP(event, field) {
-
                 this[field] = event.target.value
-                debugger
             },
             getClassLp(id) {
                 return `condition__country condition__matches custom-select lpInput-${id}`
@@ -108,19 +106,27 @@
             },
             async saveLp() {
 
-
                 let obj = {}
                 obj.name = this.name
                 obj.url = this.url
-                obj.offerLpId = this.offerLpId
+                obj.offerId = this.offerId
                 let res = await this.$store.dispatch('lpOffers/createLpOfferDb', obj)
-                debugger
-                if (res.id){
-                    alert('LP created')
+                if (res.id) {
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Lp created`,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
                 } else {
-                    alert('NOT created')
+                    this.$swal.fire({
+                        title: 'Lp save errors',
+                        type: 'error',
+                        text: 'Please check backend errors ',
+                        confirmButtonColor: '#2ED47A',
+                    })
                 }
-                debugger
                 this.visible = false
             },
             close() {
