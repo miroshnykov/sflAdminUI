@@ -20,7 +20,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].clickDay"
+                               :value="offerCap && offerCap[0].clickDay || 0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -39,7 +39,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].clickWeek"
+                               :value="offerCap && offerCap[0].clickWeek || 0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -55,7 +55,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].clickMonth"
+                               :value="offerCap && offerCap[0].clickMonth || 0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -129,7 +129,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].salesDay"
+                               :value="offerCap && offerCap[0].salesDay || 0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -148,7 +148,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].salesWeek"
+                               :value="offerCap && offerCap[0].salesWeek||0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -164,7 +164,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap[0].salesMonth"
+                               :value="offerCap && offerCap[0].salesMonth|| 0"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -226,14 +226,13 @@
             </b-row>
 
 
-
             <b-form-text>* Default redirect LP will be used for banned countries</b-form-text>
 
 
             <b-row class="text-center">
                 <b-col cols="12">
                     <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp(geoId)">
+                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp()">
                         Save
                     </button>
                 </b-col>
@@ -274,12 +273,12 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo','allowAll','banAll']),
+            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll']),
             ...mapMutations('countries', ['filterCountry']),
-            allowAllEvent(){
+            allowAllEvent() {
                 this.allowAll()
             },
-            banAllEvent(){
+            banAllEvent() {
                 this.banAll(this.getCountries)
             },
             searchCountry(event) {

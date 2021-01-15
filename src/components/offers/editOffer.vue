@@ -305,7 +305,7 @@
                     </b-button>
 
                     <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
-                          :offerId="id" :offerCap="getOfferCap.length !==0  && getOfferCap">
+                          :offerId="id" :offerCap="getOfferCap.length !==0 && getOfferCap">
                     </Caps>
 
                     <input type="text"
