@@ -10,124 +10,117 @@
                 Create New Offer
             </b-button>
 
-        <div class="offers">
-            <v-client-table :data="getOffers" :columns="columns" :options="options">
+            <div class="offers">
+                <v-client-table :data="getOffers" :columns="columns" :options="options">
 
-            <div slot="id" slot-scope="props" class="text-center">
-                <span class="id">{{props.row.id}}</span>
-            </div>
+                <div slot="id" slot-scope="props" class="text-center">
+                    <span class="id">{{props.row.id}}</span>
+                </div>
 
-           <!-- <div slot="offerId" slot-scope="props" class="text-center">
-               <span class="offerId">{{ offer.id }}</span>
-            </div> -->
+            <!-- <div slot="offerId" slot-scope="props" class="text-center">
+                <span class="offerId">{{ offer.id }}</span>
+                </div> -->
 
-            <div slot="name" slot-scope="{row, update, setEditing, isEditing, revertValue}">
-                <span @click="edit(row)">
-                    <span class="segment-name" @click="edit(row)">{{row.name}}</span>
-                </span>
-                <b-form-text id="spent-values">
-                    Updated {{timeSince_(row.dateUpdated)}} ago
-                    <!-- TODO: Currently doesn't work, says NAN instead of the number value -->
-                </b-form-text>
-            </div>
-            
-            <div slot="offerName" slot-scope="props">
-                <span @click="edit(row)">
-                  <span class="segment-name">{{ offer.name }}</span>
-                </span>
-                <b-form-text id="spent-values">
-                    Updated {{timeSince_(row.dateUpdated)}} ago
-                </b-form-text>
-            </div>
+                <div slot="name" slot-scope="{row, update, setEditing, isEditing, revertValue}">
+                    <span @click="edit(row)">
+                        <span class="segment-name" @click="edit(row)">{{row.name}}</span>
+                    </span>
+                    <b-form-text id="spent-values">
+                        Updated {{timeSince_(row.dateUpdated)}} ago
+                        <!-- TODO: Currently doesn't work, says NAN instead of the number value -->
+                    </b-form-text>
+                </div>
+                
+                <div slot="offerName" slot-scope="props">
+                    <span @click="edit(row)">
+                    <span class="segment-name">{{ offer.name }}</span>
+                    </span>
+                    <b-form-text id="spent-values">
+                        Updated {{timeSince_(row.dateUpdated)}} ago
+                    </b-form-text>
+                </div>
 
-            <div slot="payIn" slot-scope="props">
-                <span class="budget-daily">${{props.row.payIn}}</span>
-                <b-form-text id="currency">
-                    CAD
-                </b-form-text>
-            </div>
+                <div slot="payIn" slot-scope="props">
+                    <span class="budget-daily">${{props.row.payIn}}</span>
+                    <b-form-text id="currency">
+                        CAD
+                    </b-form-text>
+                </div>
 
-            <div slot="payOut" slot-scope="props">
-                <span class="budget-daily">${{props.row.payOut}}</span>
-                <b-form-text id="currency">
-                    CAD
-                </b-form-text>
-            </div>
+                <div slot="payOut" slot-scope="props">
+                    <span class="budget-daily">${{props.row.payOut}}</span>
+                    <b-form-text id="currency">
+                        CAD
+                    </b-form-text>
+                </div>
 
-                <!-- <div slot="landingPage" slot-scope="props">
+                    <!-- <div slot="landingPage" slot-scope="props">
+                    <span class="landing-page-box">
+                        <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
+                            {{ props.row.landingPage }}
+                        </span>
+                        <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
+                            {{ props.row.landingPage.substring(0,15)+"..." }}
+                        </span>
+                    </span>
+                        <button class="btn btn-link" @click="copyText(props.row.landingPage)"
+                                v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div> -->
+
+                <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box">
-                    <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
-                        {{ props.row.landingPage }}
-                    </span>
-                    <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
-                        {{ props.row.landingPage.substring(0,15)+"..." }}
+                    <span class="landing-page-name">
+                        http://domain.com/offers/offer-name?prod=moviesandtv
                     </span>
                 </span>
-                    <button class="btn btn-link" @click="copyText(props.row.landingPage)"
+                    <button class="btn btn-link"
                             v-b-tooltip.hover.right="'Copy URL to Clipboard'">
                         <i class="far fa-copy"></i>
                     </button>
+                </div>
+
+                <div slot="status" slot-scope="props">
+                    <div v-if="props.row.status === 'inactive'">
+                    <div class="status inactive">{{props.row.status}}</div>
+                    </div>
+                    <div v-else-if="props.row.status === 'public'">
+                    <div class="status active">{{props.row.status}}</div>
+                    </div>
+                    <div v-else-if="props.row.status === 'private'">
+                    <div class="status private">{{props.row.status}}</div>
+                    </div>
+                    <div v-else-if="props.row.status === 'apply_to_run'">
+                    <div class="status applyToRun">Apply to Run</div>
+                    </div>
+                </div>
+
+                <div slot="actions" slot-scope="props">
+                    <button
+                            class="btn btn-link"
+                            v-b-tooltip.hover.top="'Edit Offer'"
+                            @click="edit(props.row)"
+                    >
+                        <i class="fas fa-pencil"></i>
+                    </button>
+                    <button
+                            class="btn btn-link"
+                            v-b-tooltip.hover.top="'delete Offer'"
+                            @click="deleteOffer(props.row)"
+                    >
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+
+                <!-- <div slot="child_row" slot-scope="props">
+                    <div class="segment-child animated fadeIn">
+
+                    </div>
                 </div> -->
 
-            <div slot="landingPage" slot-scope="props">
-              <span class="landing-page-box">
-                <span class="landing-page-name">
-                    http://domain.com/offers/offer-name?prod=moviesandtv
-                </span>
-              </span>
-                <button class="btn btn-link"
-                        v-b-tooltip.hover.right="'Copy URL to Clipboard'">
-                    <i class="far fa-copy"></i>
-                </button>
+                </v-client-table>
             </div>
-
-            <div slot="status" slot-scope="props">
-                <div v-if="props.row.status === 'inactive'">
-                <div class="status inactive">{{props.row.status}}</div>
-                </div>
-                <div v-else-if="props.row.status === 'public'">
-                <div class="status active">{{props.row.status}}</div>
-                </div>
-                <div v-else-if="props.row.status === 'private'">
-                <div class="status private">{{props.row.status}}</div>
-                </div>
-                <div v-else-if="props.row.status === 'apply_to_run'">
-                <div class="status applyToRun">{{props.row.status}}</div>
-                </div>
-            </div>
-
-            <div slot="actions" slot-scope="props">
-                <button
-                        class="btn btn-link"
-                        v-b-tooltip.hover.top="'Edit Offer'"
-                        @click="edit(props.row)"
-                >
-                    <i class="fas fa-pencil"></i>
-                </button>
-                <button
-                        class="btn btn-link"
-                        v-b-tooltip.hover.top="'delete Offer'"
-                        @click="deleteOffer(props.row)"
-                >
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-
-            <!-- <div slot="child_row" slot-scope="props">
-                <div class="segment-child animated fadeIn">
-
-                </div>
-            </div> -->
-
-            </v-client-table>
-        </div>
-
-            <!-- <div class="offers">
-                <tr scope="row" v-for="offer in getOffers">
-                    <td>{{ offer.id }}</td>
-                    <td>{{ offer.name }}</td>
-                </tr>
-            </div> -->
         </div>
 
 

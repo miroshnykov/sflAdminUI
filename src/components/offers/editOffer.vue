@@ -273,11 +273,11 @@
 
             <b-col cols="3">
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.bottom.html="'Armenia, France...'"
+                     v-b-popover.hover.focus.bottom.html="'...'"
                      title="Allowed and Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
-                    <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                    <b-button variant="light" class="btn-add-line" v-b-modal.modal
                               @click="showGeoRestrictionsModal(id)"
                     >
                         <i class="far fa-cog"></i> Customize

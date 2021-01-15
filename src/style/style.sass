@@ -39,6 +39,9 @@ a, button, span
 .pull-left
   float: left !important
 
+.hidden
+  display: none !important
+
 hr
   border: 1.5px solid #E3EEF4
   margin-top: 40px
@@ -165,7 +168,7 @@ h2, .h2
   letter-spacing: 0.5px
   text-align: center
   width: 100px
-  margin: auto
+  // margin: auto
 
   &.inactive
     background: #7F98A5
@@ -313,6 +316,20 @@ button.btn.btn-add-line.btn-light
   border-radius: 4px
   text-transform: none
   float: right
+
+button.btn.btn-allow-ban-all.btn-light
+  color: grey
+  background: transparent
+  width: auto !important
+  font-size: 12px
+  letter-spacing: 0.5px
+  height: 30px
+  padding: 0px
+  text-transform: none
+  margin-right: 20px
+
+  &:hover
+    color: #36B8E1
 
 /* SEARCH BAR */
 input.search-box
@@ -687,12 +704,12 @@ tr
   box-sizing: border-box
 
 .table-geo
-  padding: 15px
-  border: 2px solid #E3EEF4
-  border-radius: 7px
-  margin-top: 10px
-  margin-bottom: 10px
-  min-height: 185px
+  // padding: 15px
+  // border: 2px solid #E3EEF4
+  // border-radius: 7px
+  // margin-top: 10px
+  // margin-bottom: 10px
+  // min-height: 215px
 
   svg
     margin-right: 10px
@@ -912,6 +929,10 @@ ul.segment-info
 
 .modal-footer
   padding: 0rem 0rem 3rem 0rem
+  border-top: 0px solid transparent
+
+.modal-footer-1
+  padding-top: 1rem
   border-top: 0px solid transparent
 
 h2.swal2-title
@@ -1228,9 +1249,19 @@ button.add-condition.condition-active
   min-width: 160px
   max-width: 100%
 
+.ui.search.dropdown:before
+  content: '\f11c'
+  font-family: "Font Awesome 5 Free"
+  font-weight: 900
+  font-size: 16px
+  color: lightgrey
+  float: right
+  margin-top: 2px
+  margin-right: -20px
+
 .ui.selection.dropdown
-  min-height: 45px
-  max-height: 45px
+  min-height: 44px !important
+  max-height: 44px !important
   border: 2px solid #e3eef4 !important
   -webkit-transition: all 0.3s ease !important
   -o-transition: all 0.3s ease !important
@@ -1889,7 +1920,7 @@ button.applyBtn.btn.btn-sm.btn-success
     padding: 1.2rem 0.5rem
 
 /* Mac laptop */
-@media only screen and (max-width: 1440px)
+@media only screen and (max-width: 1680px)
   .segments > div
     grid-row-gap: 0.5rem
     grid-template-columns: repeat(3, 1fr)
