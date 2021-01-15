@@ -62,15 +62,15 @@ new Vue({
                           !err.message.includes('Avoided redundant navigation to current location')
                         ) {
                           // But print any other errors to the console
-                          logError(err);
+                          console.log(err)
                         }
                     });
                 }
 
             }
         } catch (err) {
-            // console.log(err);
-            // router.push('/')
+            console.log(err)
+            router.push('/')
         }
 
     },

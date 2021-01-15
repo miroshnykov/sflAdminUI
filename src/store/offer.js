@@ -13,6 +13,22 @@ const customLPRulesFormat = (customLPRules) => {
     return JSON.stringify(customLp)
 }
 
+const newCap = () => {
+    let cap = {}
+    cap.clickDay = 0
+    cap.clickMonth = 0
+    cap.clickWeek = 0
+    cap.clicksRedirectOfferId = 0
+    cap.clicksRedirectStatus = 0
+    cap.offerId = 0
+    cap.salesDay = 0
+    cap.salesMonth = 0
+    cap.salesRedirectOfferId = 0
+    cap.salesRedirectStatus = 0
+    cap.salesWeek = 0
+    return cap
+}
+
 export default {
     state: {
         offer: [],
@@ -59,6 +75,16 @@ export default {
         async updOffer(state, data) {
             state.offer[0][data.fieldName] = data.value
         },
+        updOfferCap(state, data) {
+
+            if (state.offerCap.length !== 0) {
+                state.offerCap[0][data.fieldName] = data.value
+            } else {
+                let newEmptyCap = newCap()
+                newEmptyCap[data.fieldName] = data.value
+                state.offerCap.push(newEmptyCap)
+            }
+        },
         allowAll(state) {
             state.geo = []
             state.offer[0].geoRules = geoRulesFormat(state.geo)
@@ -93,6 +119,7 @@ export default {
     actions: {
         async saveOfferDb({commit}) {
             let data = this.getters['offer/getOffer'][0]
+            data.caps = this.getters['offer/getOfferCap'][0] || ''
             let res = await offer.saveOffer(data)
             return res
         },

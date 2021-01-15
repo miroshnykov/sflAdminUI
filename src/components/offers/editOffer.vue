@@ -305,12 +305,15 @@
                     </b-button>
 
                     <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
-                          :offerId="id" :offerCap="getOfferCap.length !==0 && getOfferCap">
+                          :offerId="id"
+                          :offerCap="getOfferCap.length !==0 && getOfferCap"
+                          :offers="getOffersModify()"
+                    >
                     </Caps>
 
                     <input type="text"
                            class="condition__matches campaign custom-input"
-                           :value="getCapsStatus(getOffer.length !==0  && getOffer[0].caps)"
+                           :value="getCapsStatus(getOfferCap)"
                            disabled
                     >
 
@@ -416,7 +419,7 @@
             ModelSelect
         },
         computed: {
-            ...mapGetters('offer', ['getOffer','getOfferCap']),
+            ...mapGetters('offer', ['getOffer', 'getOfferCap']),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
@@ -477,7 +480,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps && `Caps defined` || `No caps`
+                return caps.length !== 0 && `Caps defined` || `No caps`
             },
             async saveOffer() {
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
