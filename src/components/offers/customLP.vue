@@ -15,7 +15,7 @@
                 </thead>
                 <tr scope="row" v-for="rules in getCustomLPRules()">
                     <td>
-                        {{ JSON.stringify(rules) }}
+                        <span class="hidden">{{ JSON.stringify(rules) }}</span>
                         <div class="condition-line1">
                             <model-select
                                     :options="getCountriesModify()"
@@ -49,7 +49,7 @@
                         <b-button variant="light" @click="delCustomLpAction(rules.pos)"
                                   v-b-tooltip.hover.top="'Delete Custom LPs'"
                                   style="z-index:2">
-                            <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
+                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
                         </b-button>
 
                     </td>
@@ -176,9 +176,9 @@
 
         .modal-container
             min-width: 50vw
-            max-width: 80vw
+            max-width: 50vw
             max-height: 80vh
-            padding: 20px 30px
+            padding: 30px 30px 0px 30px
             background: #fff
             box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
             transition: all .3s ease
@@ -202,9 +202,13 @@
             position: relative
 
         #table-scroll
-            height: 150px
+            height: 220px
             overflow: auto
-            margin-top: 20px
+            padding: 15px
+            border: 2px solid #E3EEF4
+            border-radius: 7px
+            min-height: 215px
+            margin-top: 15px
 
         #table-wrapper table
             width: 100%
