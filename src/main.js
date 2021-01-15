@@ -55,13 +55,23 @@ new Vue({
                     || this.$root._route.path.includes('errorLogin')
 
                 if (!checkPatch) {
-                    router.push('/')
+                    router.push('/').catch(err => {
+                        // Ignore the vuex err regarding navigating to the page they are already on.
+                        if (
+                          err.name !== 'NavigationDuplicated' &&
+                          !err.message.includes('Avoided redundant navigation to current location') &&
+                          !err.message.includes('Cannot read property is_chrome of undefined')
+                        ) {
+                          // But print any other errors to the console
+                          console.log(err);
+                        }
+                    });
                 }
 
             }
         } catch (err) {
-            console.log(err);
-            router.push('/')
+            // console.log(err);
+            // router.push('/')
         }
 
     },
