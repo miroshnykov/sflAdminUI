@@ -38,6 +38,42 @@ const getOffer = async (id) => {
 
 }
 
+const getOfferCap = async (offerId) => {
+
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    {
+                          getOfferCap(offerId:${offerId}) {
+                                offerId
+                                clickDay
+                                clickWeek
+                                clickMonth
+                                clicksRedirectStatus
+                                clicksRedirectOfferId
+                                salesDay
+                                salesWeek
+                                salesMonth
+                                salesRedirectStatus
+                                salesRedirectOfferId
+                          }
+                    }
+
+            `,
+            }
+        )
+
+        let response = res.data.data.getOfferCap
+        console.log(`\ngetOfferCap count: { ${response.length} }  by id: { ${offerId} } `)
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+
+}
+
 const createOffer = async (name) => {
 
     try {
@@ -159,5 +195,6 @@ export default {
     getOffer,
     createOffer,
     saveOffer,
+    getOfferCap,
     delOffer
 }

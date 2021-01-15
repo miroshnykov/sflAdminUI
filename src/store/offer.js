@@ -16,6 +16,7 @@ const customLPRulesFormat = (customLPRules) => {
 export default {
     state: {
         offer: [],
+        offerCap: [],
         geo: [],
         customLPRules: [],
     },
@@ -31,6 +32,9 @@ export default {
                 let customLPRules = JSON.parse(offer[0].customLPRules)
                 state.customLPRules = customLPRules.customLPRules
             }
+        },
+        async saveOfferCap(state, offerCap) {
+            state.offerCap = offerCap
         },
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
@@ -95,6 +99,9 @@ export default {
         async saveOfferStore({commit}, id) {
             commit('saveOffer', await offer.getOffer(id))
         },
+        async saveOfferCapStore({commit}, offerId) {
+            commit('saveOfferCap', await offer.getOfferCap(offerId))
+        },
         async createOffer({commit}, data) {
             const {name} = data
             return await offer.createOffer(name)
@@ -106,6 +113,7 @@ export default {
     },
     getters: {
         getOffer: state => state.offer,
+        getOfferCap: state => state.offerCap,
     },
 
 };

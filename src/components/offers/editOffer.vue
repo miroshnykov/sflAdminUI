@@ -1,7 +1,7 @@
 <template>
     <div id="edit-offer">
-        <topbar></topbar>
-        <menunav></menunav>
+        <TopBar></TopBar>
+        <MenuNav></MenuNav>
 
         <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
@@ -297,41 +297,30 @@
                 <div class="condition__controls">
                     <label class="pull-left">Caps</label>
 
-                    <b-button variant="light" class="btn-add-line pull-right">
+
+                    <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                              @click="showCapsModal(id)"
+                    >
                         <i class="far fa-cog"></i> Customize
                     </b-button>
-                    <select
-                            class="condition__dimension-name condition__matches custom-select"
+
+                    <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
+                          :offerId="id" :offerCap="getOfferCap.length !==0  && getOfferCap">
+                    </Caps>
+
+                    <input type="text"
+                           class="condition__matches campaign custom-input"
+                           :value="getCapsStatus(getOffer.length !==0  && getOffer[0].caps)"
+                           disabled
                     >
-                        <option>No Caps</option>
-                        <option>Capped</option>
-                    </select>
+
+
                 </div>
             </b-col>
         </b-row>
 
         <hr>
 
-        <!-- <b-row class="text-center">
-            <b-col cols="4">
-                <h2>Customize Landing pages per GEO</h2>
-            </b-col>
-            <b-col cols="2">
-                <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                          @click="showCustomLPModal(id)"
-                >
-                    <i class="far fa-cog"></i> Customize
-                </b-button>
-
-                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
-                          :customLPId="id"
-                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
-                </CustomLP>
-            </b-col>
-            <b-col cols="5">
-            </b-col> -->
-
-        </b-row>
         <hr>
         <b-row class="text-center">
             <b-col cols="4">
@@ -405,10 +394,11 @@
 <script>
     import {mapGetters, mapMutations} from 'vuex'
     import logo from '../logo.vue'
-    import topbar from '../topbar.vue'
-    import menunav from '../menunav.vue'
+    import TopBar from '../topbar.vue'
+    import MenuNav from '../menunav.vue'
     import {formatData} from '../../helpers'
     import GeoRestrictions from './geoRestrictions'
+    import Caps from './caps'
     import CustomLP from './customLP'
     import OfferLP from './offerLP'
     import {ModelSelect} from 'vue-search-select'
@@ -417,21 +407,23 @@
         name: 'editOffer',
         components: {
             logo,
-            menunav,
-            topbar,
+            MenuNav,
+            TopBar,
             GeoRestrictions,
+            Caps,
             CustomLP,
             OfferLP,
             ModelSelect
         },
         computed: {
-            ...mapGetters('offer', ['getOffer']),
+            ...mapGetters('offer', ['getOffer','getOfferCap']),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
+            await this.$store.dispatch('offer/saveOfferCapStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
@@ -484,9 +476,8 @@
 
                 this.updOffer(obj)
             },
-            async updateValue(conversionType) {
-                console.log(conversionType)
-                debugger
+            getCapsStatus(caps) {
+                return caps && `Caps defined` || `No caps`
             },
             async saveOffer() {
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
@@ -511,6 +502,12 @@
             },
             showGeoRestrictionsModal(id) {
                 let modal_id = 'modal_' + id
+
+                this.$refs[modal_id].show(id)
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
+            showCapsModal(id) {
+                let modal_id = 'modal_caps' + id
 
                 this.$refs[modal_id].show(id)
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])
