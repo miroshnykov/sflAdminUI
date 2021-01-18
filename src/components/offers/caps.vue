@@ -3,19 +3,16 @@
 
         <div class="modal-container">
 
-
-            <h1>Custom GEO Settings</h1>
-
             <h1>Caps</h1>
 
-            <h2>Clicks</h2>
+            <h3 class="line">Clicks</h3>
 
-            <p> CAP {{JSON.stringify(offerCap)}}</p>
+            <p class="hidden">CAP {{JSON.stringify(offerCap)}}</p>
 
             <b-row class="clicks-amount text-center">
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount day </label>
+                        <label>Amount (Day)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -26,16 +23,11 @@
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
                                     ">
-
-
-                    </div>
-                    <div class="condition__controls">
-
                     </div>
                 </b-col>
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount week </label>
+                        <label>Amount (Week)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -46,13 +38,12 @@
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
                                     ">
-
                     </div>
                 </b-col>
 
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount Month </label>
+                        <label>Amount (Month)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -67,7 +58,8 @@
                     </div>
                 </b-col>
 
-                <b-col cols="4">
+                <!-- TODO: Future implementation to eventually have selectable Custom Day/Week/Month values, like the mock -->
+                <!-- <b-col cols="3">
                     <div class="condition__controls">
                         <label>&nbsp;</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -85,11 +77,11 @@
                             </label>
                         </div>
                     </div>
-                </b-col>
+                </b-col> -->
             </b-row>
 
             <b-row class="clicks-redirect text-center" style="margin-top: -20px">
-                <b-col cols="4">
+                <b-col cols="3">
                     <div class="condition__controls">
                         <label for="label-period">Redirect</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -108,9 +100,9 @@
                         </div>
                     </div>
                 </b-col>
-                <b-col cols="8">
+                <b-col cols="6">
                     <div class="condition__controls">
-                        <label>clicksRedirectOfferId </label>
+                        <label><span class="hidden">clicksRedirectOfferId</span> &nbsp;</label>
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="Search landing page..."
@@ -121,15 +113,14 @@
                     </div>
                 </b-col>
             </b-row>
-
-            <hr>
-            <h2>Sales</h2>
+            
+            <h3 class="line">Sales</h3>
 
             <b-row class="clicks-amount text-center">
 
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount day </label>
+                        <label>Amount (Day)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -140,16 +131,11 @@
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
                                     ">
-
-
-                    </div>
-                    <div class="condition__controls">
-
                     </div>
                 </b-col>
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount week </label>
+                        <label>Amount (Week)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -166,7 +152,7 @@
 
                 <b-col cols="3">
                     <div class="condition__controls">
-                        <label>Amount Month </label>
+                        <label>Amount (Month)</label>
                         <input type="number"
                                step=1
                                placeholder="1000"
@@ -181,7 +167,8 @@
                     </div>
                 </b-col>
 
-                <b-col cols="4">
+                <!-- TODO: Future implementation to eventually have selectable Custom Day/Week/Month values, like the mock -->
+                <!-- <b-col cols="3">
                     <div class="condition__controls">
                         <label>&nbsp;</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -199,11 +186,11 @@
                             </label>
                         </div>
                     </div>
-                </b-col>
+                </b-col> -->
             </b-row>
 
             <b-row class="clicks-redirect text-center" style="margin-top: -20px">
-                <b-col cols="4">
+                <b-col cols="3">
                     <div class="condition__controls">
                         <label for="label-period">Redirect</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -222,9 +209,9 @@
                         </div>
                     </div>
                 </b-col>
-                <b-col cols="8">
+                <b-col cols="6">
                     <div class="condition__controls">
-                        <label>salesRedirectOfferId </label>
+                        <label><span class="hidden">salesRedirectOfferId</span> &nbsp;</label>
                         <model-select
                                 :options="offers"
                                 placeholder="Search landing page..."
@@ -237,15 +224,13 @@
                 </b-col>
             </b-row>
 
-
             <b-form-text>* Default redirect LP will be used for banned countries</b-form-text>
 
-
-            <b-row class="text-center">
+            <b-row class="text-center modal-footer-1">
                 <b-col cols="12">
                     <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
                     <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp()">
-                        Save
+                        Add or Update
                     </button>
                 </b-col>
             </b-row>
@@ -365,5 +350,42 @@
 
 <style lang="sass">
 
+    .modal-mask
+        position: fixed
+        z-index: 9998
+        top: 0
+        left: 0
+        width: 100vw
+        height: 100vh
+        background-color: rgba(0, 0, 0, .7)
+        transition: opacity .3s ease
+        display: flex
+        align-items: center
+        justify-content: center
+
+
+        .modal-container
+            min-width: 50vw
+            max-width: 50vw
+            max-height: 100vh !important
+            padding: 30px 30px 0px 30px
+            background: #fff
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
+            transition: all .3s ease
+            overflow: auto
+
+
+        .modal-body
+            margin: 20px 0
+
+
+        .modal-enter,
+        .modal-leave
+            opacity: 0
+
+
+        .modal-enter .modal-container,
+        .modal-leave .modal-container
+            transform: scale(1.1)
 
 </style>

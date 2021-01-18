@@ -264,7 +264,6 @@
 
         <hr>
 
-
         <b-row class="text-center">
 
             <b-col cols="12">
@@ -327,7 +326,6 @@
 
         <hr>
 
-        <hr>
         <b-row class="text-center">
             <b-col cols="4">
                 <h2>Default Settings</h2>

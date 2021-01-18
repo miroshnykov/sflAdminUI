@@ -117,32 +117,6 @@
                 margin-left: -5px
                 margin-right: 10px
 
-        p.or
-            color: #7F98A5
-            text-align: center
-            text-transform: uppercase
-            letter-spacing: 1px
-            margin-top: 20px
-            margin-bottom: 20px
-
-            &:before,
-            &:after
-                background-color: rgba(255, 255, 255, 0.1)
-                content: ""
-                display: inline-block
-                height: 1px
-                position: relative
-                vertical-align: middle
-                width: 15%
-
-            &:before
-                right: 0.5em
-                margin-left: -50%
-
-            &:after
-                left: 0.5em
-                margin-right: -50%
-
         .fa-user-circle
             color: #ffffff
             background: linear-gradient(to right, #28cde1 0%, #5883e2 100%)
