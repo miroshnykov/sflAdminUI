@@ -368,8 +368,19 @@
                             placeholder="Search landing page..."
                             :value="getOffer.length !==0  && getOffer[0].defaultLp"
                             @input="updValue($event,`defaultLp`)"
+                            maxlength="15"
                     >
                     </model-select>
+
+                    <!-- <span class="landing-page-box">
+                        <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
+                            {{ props.row.landingPage }}
+                        </span>
+                        <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
+                            {{ props.row.landingPage.substring(0,15)+"..." }}
+                        </span>
+                    </span> -->
+
                 </div>
             </b-col>
             <b-col cols="3">
