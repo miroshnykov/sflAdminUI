@@ -21,6 +21,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].clickDay || 0"
+                               @change="updateCap($event, `clickDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -40,6 +41,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].clickWeek || 0"
+                               @change="updateCap($event, `clickWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -56,6 +58,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].clickMonth || 0"
+                               @change="updateCap($event, `clickMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -107,12 +110,14 @@
                 </b-col>
                 <b-col cols="8">
                     <div class="condition__controls">
-                        <label>&nbsp;</label>
-                        <input type="text"
-                               placeholder="Offer 55 - FFM, iPhone 11"
-                               class="condition__matches campaign custom-input"
-                               disabled
+                        <label>clicksRedirectOfferId </label>
+                        <model-select
+                                :options="getOffersList()"
+                                placeholder="Search landing page..."
+                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                @input="updateCap($event,`clicksRedirectOfferId`)"
                         >
+                        </model-select>
                     </div>
                 </b-col>
             </b-row>
@@ -130,6 +135,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].salesDay || 0"
+                               @change="updateCap($event, `salesDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -149,6 +155,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].salesWeek||0"
+                               @change="updateCap($event, `salesWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -165,6 +172,7 @@
                                placeholder="1000"
                                min="1" max="99999"
                                :value="offerCap && offerCap[0].salesMonth|| 0"
+                               @change="updateCap($event, `salesMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
                                onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
@@ -216,11 +224,15 @@
                 </b-col>
                 <b-col cols="8">
                     <div class="condition__controls">
-                        <label>&nbsp;</label>
-                        <input type="text"
-                               placeholder="Offer 884 - Gotzha: Global redirect, iPhon..."
-                               class="condition__matches campaign custom-input"
+                        <label>salesRedirectOfferId </label>
+                        <model-select
+                                :options="offers"
+                                placeholder="Search landing page..."
+                                :value="offerCap && offerCap[0].salesRedirectOfferId|| 0"
+                                @input="updateCap($event,`salesRedirectOfferId`)"
                         >
+                        </model-select>
+
                     </div>
                 </b-col>
             </b-row>
@@ -261,7 +273,7 @@
                 id: 0,
             }
         },
-        props: ['offerId', 'offerCap'],
+        props: ['offerId', 'offerCap','offers'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -273,10 +285,25 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll']),
+            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll','updOfferCap']),
             ...mapMutations('countries', ['filterCountry']),
             allowAllEvent() {
                 this.allowAll()
+            },
+            getOffersList(){
+                return this.offers
+            },
+            updateCap(event, field){
+                let obj={}
+                obj.fieldName = field
+                if (field === `salesRedirectOfferId` || field === `clicksRedirectOfferId`){
+                    obj.value = event
+                } else {
+                    obj.value = event.target.value
+                }
+
+                this.updOfferCap(obj)
+
             },
             banAllEvent() {
                 this.banAll(this.getCountries)

@@ -284,7 +284,10 @@
                     </b-button>
 
                     <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
-                                     :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
+                                     :geoId="id"
+                                     :geoRules="getOffer.length !==0  && getOffer[0].geoRules"
+                                     :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
+                    >
                     </GeoRestrictions>
                     <input type="text"
                            class="condition__matches campaign custom-input"
@@ -305,12 +308,15 @@
                     </b-button>
 
                     <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
-                          :offerId="id" :offerCap="getOfferCap.length !==0 && getOfferCap">
+                          :offerId="id"
+                          :offerCap="getOfferCap.length !==0 && getOfferCap"
+                          :offers="getOffersModify()"
+                    >
                     </Caps>
 
                     <input type="text"
                            class="condition__matches campaign custom-input"
-                           :value="getCapsStatus(getOffer.length !==0  && getOffer[0].caps)"
+                           :value="getCapsStatus(getOfferCap)"
                            disabled
                     >
 
@@ -416,7 +422,7 @@
             ModelSelect
         },
         computed: {
-            ...mapGetters('offer', ['getOffer','getOfferCap']),
+            ...mapGetters('offer', ['getOffer', 'getOfferCap']),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
@@ -441,6 +447,12 @@
                     item.value = item.id
                     item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
                     return item
+                })
+            },
+            getDefaultLPInfo(defaultLp) {
+                if (!defaultLp) return
+                return this.getLpOffers.filter(item => {
+                    return item.id === defaultLp
                 })
             },
             getOffersModify() {
@@ -477,7 +489,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps && `Caps defined` || `No caps`
+                return caps.length !== 0 && `Caps defined` || `No caps`
             },
             async saveOffer() {
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
