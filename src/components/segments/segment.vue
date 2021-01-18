@@ -7,19 +7,20 @@
             <b-row class="text-center" align-v="center">
                 <b-col col lg="8">
 
+                    <!-- TODO: Could use improvement, toggle currently only reveals one segment at a time -->
                     <h1 class="segment__name" :title="segment.name" @click="toggleDetails(segment)">
                         <span :title="getTitle(segment)" class="segment__active">
 
-                              <!-- {{ detailsAreVisible ? 'Hide' : 'Show' }} -->
+                              <!-- {{ detailsAreVisible ? 'Expand' : 'Collapse' }} -->
 
                             <!-- <span v-if="detailsAreVisible"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
                             <span v-else><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span> -->
 
-                            <span v-show="this.detailsAreVisible === false">
-                                <i class="far fa-chevron-up" data-fa-transform="shrink-4"></i>
+                            <span v-show="this.detailsAreVisible === false" v-b-tooltip.hover.top="'Expand'">
+                                <i class="fas fa-chevron-down primaryblue" data-fa-transform="shrink-2"></i>
                             </span>
-                            <span v-show="this.detailsAreVisible === true">
-                                <i class="far fa-chevron-down" data-fa-transform="shrink-4"></i>
+                            <span v-show="this.detailsAreVisible === true" v-b-tooltip.hover.top="'Collapse'">
+                                <i class="fas fa-chevron-up" data-fa-transform="shrink-2"></i>
                             </span>
 
                         </span>
@@ -417,11 +418,19 @@
         transition: all 0.3s ease;
     }
 
-    .segment.segment__draggable:hover {
-        border: 2px dashed #2ED47A;
+    .segment.segment__draggable:hover, .segmentInActive.segment__draggable:hover {
+        opacity: 0.8;
     }
 
-    .segmentInActive.segment__draggable:hover {
+    // .segment.segment__draggable:hover {
+    //     border: 2px dashed #2ED47A;
+    // }
+
+    // .segmentInActive.segment__draggable:hover {
+    //     border: 2px dashed #E3EEF4;
+    // }
+
+    .sortable-ghost {
         border: 2px dashed #E3EEF4;
     }
 
