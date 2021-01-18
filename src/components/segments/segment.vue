@@ -7,11 +7,24 @@
             <b-row class="text-center" align-v="center">
                 <b-col col lg="8">
 
-                    <h1 class="segment__name" :title="segment.name">
-                        <span v-bind:title="getTitle(segment)" class="segment__active"
-                              @click="toggleState(segment)"><i class="far fa-chevron-up"
-                                                               data-fa-transform="shrink-4"></i></span>
+                    <h1 class="segment__name" :title="segment.name" @click="toggleDetails(segment)">
+                        <span :title="getTitle(segment)" class="segment__active">
+
+                              <!-- {{ detailsAreVisible ? 'Hide' : 'Show' }} -->
+
+                            <!-- <span v-if="detailsAreVisible"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
+                            <span v-else><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span> -->
+
+                            <span v-show="this.detailsAreVisible === false">
+                                <i class="far fa-chevron-up" data-fa-transform="shrink-4"></i>
+                            </span>
+                            <span v-show="this.detailsAreVisible === true">
+                                <i class="far fa-chevron-down" data-fa-transform="shrink-4"></i>
+                            </span>
+
+                        </span>
                         {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
+
                         <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
                         <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                     </h1>
@@ -40,6 +53,7 @@
             </b-row>
 
 
+        <span class="detailsBlock" v-if="detailsAreVisible">
             <b-row class="text-center lp-container" align-v="center">
                 <b-col col lg="6">
                     <span class="lp-label">Landing Pages</span>
@@ -55,8 +69,6 @@
                     <LandingPagesComp :id="'modal_' + segment.id" :ref="'modal_' + segment.id"
                                       :segment="segment">
                     </LandingPagesComp>
-
-
                 </b-col>
             </b-row>
 
@@ -109,6 +121,7 @@
 
             <br>
             <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getSumWeight(segment.lp)}} / 100</span>
+        </span>
 
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
@@ -137,10 +150,14 @@
                 showMenu: false,
                 showLandingPages: false,
                 checked: false,
+                detailsAreVisible: false,
                 id: Number(this.$route.params.id),
             };
         },
         methods: {
+            toggleDetails() {
+                this.detailsAreVisible = !this.detailsAreVisible;
+            },
             getSumWeight(lp) {
                 let sum = 0
                 lp.map(item => {
@@ -319,7 +336,6 @@
             },
             getTitle(segment) {
                 return 'Expand or Collapse'
-
             },
             getClass(segment) {
                 return 'segment__empty'
@@ -365,12 +381,13 @@
     .segment {
         opacity: 1;
         margin: 15px 20px 0px 0px;
-        // height: 80px;
-        width: 352px;
+        min-height: auto;
+        max-width: 352px;
+        min-width: 352px;
         padding: 1rem;
         position: relative;
         border-radius: 10px;
-        border: solid #2ED47A 2px;
+        border: 2px solid #2ED47A;
         background: #fff;
         user-select: none;
     }
@@ -378,19 +395,34 @@
     .segmentInActive {
         opacity: 1;
         margin: 15px 20px 0px 0px;
-        min-height: 130px;
+        min-height: auto;
         min-width: 352px;
+        max-width: 352px;
         padding: 1rem;
         position: relative;
         border-radius: 10px;
-        border: solid rgba(75, 133, 225, 0.15) 2px;
+        // border: solid rgba(75, 133, 225, 0.15) 2px;
+        border: 2px solid #E3EEF4;
         background: #fff;
         user-select: none;
     }
 
-    .segment.segment__draggable {
+    .segment.segment__draggable, .segmentInActive.segment__draggable {
         cursor: grab;
         height: auto;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease; 
+        transition: all 0.3s ease;
+    }
+
+    .segment.segment__draggable:hover {
+        border: 2px dashed #2ED47A;
+    }
+
+    .segmentInActive.segment__draggable:hover {
+        border: 2px dashed #E3EEF4;
     }
 
     .segment__empty {
@@ -413,6 +445,4 @@
         font-style: italic;
         height: 80px;
     }
-
-
 </style>
