@@ -66,6 +66,7 @@
             let token = getCookie('accessToken')
             if (token) {
                 await this.saveSegmentsStore(segmentType)
+                this.activeInactive(`active`)
             }
 
         },
