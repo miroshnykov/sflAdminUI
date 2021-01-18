@@ -25,7 +25,8 @@
                                         :checked="getClassActiveOrNotCountry(country.code)"
                                         @change="changeCountry($event, country.code)"
                                 >
-                                <label :for="defineId(`countryCheckbox`,index)">{{country.name}} ({{country.code}})</label>
+                                <label :for="defineId(`countryCheckbox`,index)">{{country.name}}
+                                    ({{country.code}})</label>
                             </p>
                         </b-col>
 
@@ -51,14 +52,14 @@
             <b-row class="text-center">
                 <b-col cols="12">
                     <div class="allow-ban-all">
-                        <b-button variant="light" class="btn-allow-ban-all" 
-                                @click="allowAllEvent()"
+                        <b-button variant="light" class="btn-allow-ban-all"
+                                  @click="allowAllEvent()"
                         >
                             <i class="far fa-check-circle" data-fa-transform="shrink-1"></i> Allow All
                         </b-button>
 
-                        <b-button variant="light" class="btn-allow-ban-all" 
-                                @click="banAllEvent()"
+                        <b-button variant="light" class="btn-allow-ban-all"
+                                  @click="banAllEvent()"
                         >
                             <i class="far fa-ban" data-fa-transform="shrink-1"></i> Ban All
                         </b-button>
@@ -70,10 +71,11 @@
                 <b-col cols="6">
                     <div class="condition__controls">
                         <label>Default Redirect</label>
-                        <input type="text"
-                            placeholder="Offer 77 - Hyuna, iPhone 11"
-                            class="condition__matches campaign custom-input"
-                            disabled
+                        <input
+                                type="text"
+                                :value="offerDefaultLPInfo.length !==0 && offerDefaultLPInfo[0].text"
+                                class="condition__matches campaign custom-input"
+                                disabled
                         >
                     </div>
                 </b-col>
@@ -113,7 +115,7 @@
                 id: 0,
             }
         },
-        props: ['geoId', 'geoRules'],
+        props: ['geoId', 'geoRules', 'offerDefaultLPInfo'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -125,12 +127,12 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo','allowAll','banAll']),
+            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll']),
             ...mapMutations('countries', ['filterCountry']),
-            allowAllEvent(){
+            allowAllEvent() {
                 this.allowAll()
             },
-            banAllEvent(){
+            banAllEvent() {
                 this.banAll(this.getCountries)
             },
             searchCountry(event) {
@@ -258,37 +260,43 @@
 
         /*** custom checkboxes ***/
 
+
         input[type=checkbox]
             display:none !important
-            /* to hide the checkbox itself */
+        /* to hide the checkbox itself */
+
 
         input[type=checkbox] + label:before
             display: inline-block
             font-family: "Font Awesome 5 Free"
             font-size: 16px
-            // position: relative
-            // top: 5px
-            // left: 5px
+        // position: relative
+        // top: 5px
+        // left: 5px
 
         input[type=checkbox] + label:before
             content: '\f058'
             color: #2ED47A
             font-weight: 400
-            /* allow icon */
+        /* allow icon */
+
 
         input[type=checkbox] + label:before
             letter-spacing: 20px
-            /* space between checkbox and label */
+        /* space between checkbox and label */
+
 
         input[type=checkbox]:checked + label:before
             content: "\f05e"
             color: #EB5757
             font-weight: 900
-            /* ban icon */
+        /* ban icon */
+
 
         input[type=checkbox]:checked + label:before
             letter-spacing: 20px
-            /* allow space for check mark */
+        /* allow space for check mark */
+
 
         input.search-box:before
             content: '\F11C'

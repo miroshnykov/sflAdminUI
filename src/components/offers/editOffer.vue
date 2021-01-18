@@ -284,7 +284,10 @@
                     </b-button>
 
                     <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
-                                     :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
+                                     :geoId="id"
+                                     :geoRules="getOffer.length !==0  && getOffer[0].geoRules"
+                                     :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
+                    >
                     </GeoRestrictions>
                     <input type="text"
                            class="condition__matches campaign custom-input"
@@ -444,6 +447,12 @@
                     item.value = item.id
                     item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
                     return item
+                })
+            },
+            getDefaultLPInfo(defaultLp) {
+                if (!defaultLp) return
+                return this.getLpOffers.filter(item => {
+                    return item.id === defaultLp
                 })
             },
             getOffersModify() {
