@@ -13,7 +13,9 @@ export default {
         },
         filterCountry(state, searchText) {
             state.countries = state.countriesOrigin
-            state.countries = searchText ? state.countries.filter(({name}) => (name.toLowerCase().includes(searchText.toLowerCase()))) : state.countriesOrigin
+            state.countries = searchText ? state.countries.filter(({name, code}) => (
+                name.toLowerCase().includes(searchText.toLowerCase()) || code.toLowerCase().includes(searchText.toLowerCase())
+            )) : state.countriesOrigin
         }
     },
     actions: {

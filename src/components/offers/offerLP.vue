@@ -1,37 +1,32 @@
 <template>
     <div v-if="visible" class="modal-mask modal-transition">
-        <div class="modal-container">
+        <div class="modal-container" style="min-width: 35vw;max-width: 35vw;max-height: 50vh;padding: 0px 30px 0px 30px">
 
             <div class="modal-body">
-                <h1 class="title">Offer LP </h1>
-
-
-                <div class="condition-line1">
-
-
-                </div>
+                <h1 class="title">Add Landing Page</h1>
 
                 <b-row class="text-center">
-                    <b-col cols="4">
+                    <b-col cols="6">
                         <div class="condition__controls condition-line">
-                            <label class="text-center">Name</label>
+                            <label class="text-center">LP Name</label>
                             <input type="text"
                                    min="0" max="100"
                                    class="condition__matches custom-input text-center"
                                    :id="defineId(`offerLpName`)"
                                    @change="updateLP($event,`name`)"
+                                   maxlength="20"
                             >
-
                         </div>
                     </b-col>
-                    <b-col cols="4">
+                    <b-col cols="6">
                         <div class="condition__controls condition-line">
-                            <label class="text-center">Url</label>
+                            <label class="text-center">LP URL</label>
                             <input type="text"
                                    min="0" max="100"
                                    class="condition__matches custom-input text-center"
                                    :id="defineId(`offerLpUrl`)"
                                    @change="updateLP($event,`url`)"
+                                   maxlength="30"
                             >
                         </div>
                     </b-col>
@@ -148,43 +143,4 @@
 
 
 <style lang="sass">
-    .modal-mask
-        position: fixed
-        z-index: 9998
-        top: 0
-        left: 0
-        width: 100vw
-        height: 100vh
-        background-color: rgba(0, 0, 0, .7)
-        transition: opacity .3s ease
-        display: flex
-        align-items: center
-        justify-content: center
-
-
-        .modal-container
-            min-width: 50vw
-            max-width: 80vw
-            max-height: 80vh
-            padding: 20px 30px
-            background: #fff
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
-            transition: all .3s ease
-            overflow: auto
-
-
-        .modal-body
-            margin: 20px 0
-
-
-        .modal-enter,
-        .modal-leave
-            opacity: 0
-
-
-        .modal-enter .modal-container,
-        .modal-leave .modal-container
-            transform: scale(1.1)
-
-
 </style>

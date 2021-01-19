@@ -38,6 +38,42 @@ const getOffer = async (id) => {
 
 }
 
+const getOfferCap = async (offerId) => {
+
+    try {
+        const res = await api.post(
+            '', {
+                query: `
+                    {
+                          getOfferCap(offerId:${offerId}) {
+                                offerId
+                                clickDay
+                                clickWeek
+                                clickMonth
+                                clicksRedirectStatus
+                                clicksRedirectOfferId
+                                salesDay
+                                salesWeek
+                                salesMonth
+                                salesRedirectStatus
+                                salesRedirectOfferId
+                          }
+                    }
+
+            `,
+            }
+        )
+
+        let response = res.data.data.getOfferCap
+        console.log(`\ngetOfferCap count: { ${response.length} }  by id: { ${offerId} } `)
+        console.table(reFormatJSON(response))
+        return response
+    } catch (e) {
+        catchHandler(e)
+    }
+
+}
+
 const createOffer = async (name) => {
 
     try {
@@ -79,6 +115,7 @@ const saveOffer = async (data) => {
         payOut,
         status,
         defaultLp,
+        caps,
         offerIdRedirect
     } = data
 
@@ -87,6 +124,9 @@ const saveOffer = async (data) => {
 
     let customLPRulesArr = JSON.parse(customLPRules)
     let customLPRulesReFormat = JSON.stringify(customLPRulesArr).replace(/"/g, '\\"')
+
+
+    let capsFormat = caps && JSON.stringify(caps).replace(/"/g, '\\"') || ''
 
 
     try {
@@ -104,6 +144,7 @@ const saveOffer = async (data) => {
                                 payIn:${payIn}
                                 defaultLp:${defaultLp}
                                 offerIdRedirect:${offerIdRedirect}
+                                caps:"${capsFormat}"
                                 payOut:${payOut}
                                 status:"${status}"
                           ){
@@ -159,5 +200,6 @@ export default {
     getOffer,
     createOffer,
     saveOffer,
+    getOfferCap,
     delOffer
 }

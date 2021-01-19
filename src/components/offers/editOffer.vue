@@ -1,7 +1,7 @@
 <template>
     <div id="edit-offer">
-        <topbar></topbar>
-        <menunav></menunav>
+        <TopBar></TopBar>
+        <MenuNav></MenuNav>
 
         <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
@@ -65,7 +65,7 @@
                         <option
                                 id="filterType"
                                 v-for="{id, name} in getStatusList()"
-                                :selected="capitalizeFirstLetter(name) === capitalizeFirstLetter(getOffer.length !==0 && getOffer[0].status || '')"
+                                :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].status || '')"
                                 :key="id"
                         >{{name}}
                         </option>
@@ -92,7 +92,7 @@
                                 @change="updateValue(item,`platformAndroid`)"
                         > Android
                         </label> -->
-                        
+
                         <label class="conversionType btn btn-secondary-">CPI
                             <input
                                     type="radio"
@@ -264,7 +264,6 @@
 
         <hr>
 
-
         <b-row class="text-center">
 
             <b-col cols="12">
@@ -273,18 +272,21 @@
 
             <b-col cols="3">
                 <div class="condition__controls"
-                    v-b-popover.hover.focus.bottom.html="'Armenia, France...'"
-                    title="Allowed and Banned Countries"
+                     v-b-popover.hover.focus.bottom.html="'...'"
+                     title="Allowed and Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
-                    <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                            @click="showGeoRestrictionsModal(id)"
+                    <b-button variant="light" class="btn-add-line" v-b-modal.modal
+                              @click="showGeoRestrictionsModal(id)"
                     >
                         <i class="far fa-cog"></i> Customize
                     </b-button>
 
                     <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
-                                    :geoId="id" :geoRules="getOffer.length !==0  && getOffer[0].geoRules">
+                                     :geoId="id"
+                                     :geoRules="getOffer.length !==0  && getOffer[0].geoRules"
+                                     :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
+                    >
                     </GeoRestrictions>
                     <input type="text"
                            class="condition__matches campaign custom-input"
@@ -297,42 +299,33 @@
                 <div class="condition__controls">
                     <label class="pull-left">Caps</label>
 
-                    <b-button variant="light" class="btn-add-line pull-right">
+
+                    <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                              @click="showCapsModal(id)"
+                    >
                         <i class="far fa-cog"></i> Customize
                     </b-button>
-                    <select
-                            class="condition__dimension-name condition__matches custom-select"
+
+                    <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
+                          :offerId="id"
+                          :offerCap="getOfferCap.length !==0 && getOfferCap"
+                          :offers="getOffersModify()"
                     >
-                        <option>No Caps</option>
-                        <option>Capped</option>
-                    </select>
+                    </Caps>
+
+                    <input type="text"
+                           class="condition__matches campaign custom-input"
+                           :value="getCapsStatus(getOfferCap)"
+                           disabled
+                    >
+
+
                 </div>
             </b-col>
         </b-row>
 
         <hr>
 
-        <!-- <b-row class="text-center">
-            <b-col cols="4">
-                <h2>Customize Landing pages per GEO</h2>
-            </b-col>
-            <b-col cols="2">
-                <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                          @click="showCustomLPModal(id)"
-                >
-                    <i class="far fa-cog"></i> Customize
-                </b-button>
-
-                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
-                          :customLPId="id"
-                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
-                </CustomLP>
-            </b-col>
-            <b-col cols="5">
-            </b-col> -->
-
-        </b-row>
-        <hr>
         <b-row class="text-center">
             <b-col cols="4">
                 <h2>Default Settings</h2>
@@ -357,13 +350,13 @@
                 <div class="condition__controls">
                     <div class="pull-right">
                         <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                                @click="showOfferAddLpModal(id)"
+                                  @click="showOfferAddLpModal(id)"
                         >
                             <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP
                         </b-button>
 
                         <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
-                                :offerId="id"
+                                 :offerId="id"
                         >
                         </OfferLP>
                     </div>
@@ -375,8 +368,19 @@
                             placeholder="Search landing page..."
                             :value="getOffer.length !==0  && getOffer[0].defaultLp"
                             @input="updValue($event,`defaultLp`)"
+                            maxlength="15"
                     >
                     </model-select>
+
+                    <!-- <span class="landing-page-box">
+                        <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
+                            {{ props.row.landingPage }}
+                        </span>
+                        <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
+                            {{ props.row.landingPage.substring(0,15)+"..." }}
+                        </span>
+                    </span> -->
+
                 </div>
             </b-col>
             <b-col cols="3">
@@ -405,10 +409,11 @@
 <script>
     import {mapGetters, mapMutations} from 'vuex'
     import logo from '../logo.vue'
-    import topbar from '../topbar.vue'
-    import menunav from '../menunav.vue'
+    import TopBar from '../topbar.vue'
+    import MenuNav from '../menunav.vue'
     import {formatData} from '../../helpers'
     import GeoRestrictions from './geoRestrictions'
+    import Caps from './caps'
     import CustomLP from './customLP'
     import OfferLP from './offerLP'
     import {ModelSelect} from 'vue-search-select'
@@ -417,21 +422,23 @@
         name: 'editOffer',
         components: {
             logo,
-            menunav,
-            topbar,
+            MenuNav,
+            TopBar,
             GeoRestrictions,
+            Caps,
             CustomLP,
             OfferLP,
             ModelSelect
         },
         computed: {
-            ...mapGetters('offer', ['getOffer']),
+            ...mapGetters('offer', ['getOffer', 'getOfferCap']),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
+            await this.$store.dispatch('offer/saveOfferCapStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
@@ -449,6 +456,12 @@
                     item.value = item.id
                     item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
                     return item
+                })
+            },
+            getDefaultLPInfo(defaultLp) {
+                if (!defaultLp) return
+                return this.getLpOffers.filter(item => {
+                    return item.id === defaultLp
                 })
             },
             getOffersModify() {
@@ -471,7 +484,12 @@
                 } else if (name === 'status') {
 
                     obj.fieldName = name
-                    obj.value = event.target.value.toLowerCase()
+                    if (event.target.value.toLowerCase() === 'apply to run') {
+                        obj.value = `apply_to_run`
+                    } else {
+                        obj.value = event.target.value.toLowerCase()
+                    }
+
                 } else {
                     obj.fieldName = name
                     obj.value = event.target.value
@@ -479,9 +497,8 @@
 
                 this.updOffer(obj)
             },
-            async updateValue(conversionType) {
-                console.log(conversionType)
-                debugger
+            getCapsStatus(caps) {
+                return caps.length !== 0 && `Caps defined` || `No caps`
             },
             async saveOffer() {
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
@@ -506,6 +523,12 @@
             },
             showGeoRestrictionsModal(id) {
                 let modal_id = 'modal_' + id
+
+                this.$refs[modal_id].show(id)
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
+            showCapsModal(id) {
+                let modal_id = 'modal_caps' + id
 
                 this.$refs[modal_id].show(id)
                 console.log('this.$refs[modal_id]-', this.$refs[modal_id])
@@ -536,20 +559,18 @@
             formatDate_(date) {
                 return formatData(date)
             },
-            capitalizeFirstLetter(str) {
-                return str && str.charAt(0).toUpperCase() + str.slice(1)
+            formatStr(str) {
+                return str && str.toLowerCase().replace(/_/g, '').replace(/\s/g, '')
             },
             defineId(name, id) {
                 return `${name}-${id}`
             },
             getStatusList() {
                 return [
-                    {id: 0, name: 'Active'},
-                    {id: 1, name: 'Inactive'},
-                    // {id: 0, name: 'Public'},
-                    // {id: 1, name: 'Private'},
-                    // {id: 2, name: 'Apply to Run'},
-                    // {id: 3, name: 'Inactive'},
+                    {id: 0, name: 'Public'},
+                    {id: 1, name: 'Private'},
+                    {id: 2, name: 'Apply to Run'},
+                    {id: 3, name: 'Inactive'},
                 ]
             },
         },
