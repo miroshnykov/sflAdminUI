@@ -43,14 +43,16 @@ a, button, span
   display: none !important
 
 hr
-  border: 1.5px solid #E3EEF4
+  border: 1px solid #E3EEF4
   margin-top: 40px
   margin-bottom: 40px
+  width: 92%
 
 hr.small
   border: 1px solid #E3EEF4
   margin-top: 20px
   margin-bottom: 20px
+  width: 92%
 
 .theme-adcenter
   --fa-primary-color: #fff
@@ -66,6 +68,9 @@ hr.small
 
 .red
   color: #FE5D65
+
+.primaryblue
+  color: #36B8E1
 
 .flex
   display: flex
@@ -95,7 +100,7 @@ hr.small
 /* Headers */
 h1, .h1
   font-size: 24px
-  font-weight: 700
+  font-weight: 800
   letter-spacing: 0.3px
   color: #3A3852
   text-align: left
@@ -106,11 +111,33 @@ h1, .h1
 
 h2, .h2
   font-size: 18px
-  font-weight: 700
+  font-weight: 800
   letter-spacing: 0.3px
   color: #3A3852
   text-align: left
   margin-bottom: 20px
+
+h3.line
+  font-size: 18px
+  font-weight: 700
+  color: #7F98A5
+  text-align: left
+  letter-spacing: 0.3px
+  margin-top: 10px
+  margin-bottom: 10px
+
+  &:after
+    background-color: #E3EEF4
+    content: ""
+    display: inline-block
+    height: 2px
+    position: relative
+    vertical-align: middle
+    width: 92%
+
+  &:after
+    left: 0.5em
+    margin-right: -50%
 
 // h2, .h2
 //   font-size: 2.5rem
@@ -932,7 +959,7 @@ ul.segment-info
   border-top: 0px solid transparent
 
 .modal-footer-1
-  padding-top: 1rem
+  padding-top: 3rem
   border-top: 0px solid transparent
 
 h2.swal2-title
@@ -1180,6 +1207,28 @@ button.add-condition.condition-active
   padding-top: 1.5rem
   padding-bottom: 1.5rem
 
+.condition__controls label
+  font-size: 16px
+  display: block
+  text-align: left
+  color: #7F98A5
+  font-weight: 500
+  letter-spacing: 0.3px
+  margin-top: 5px
+  border-radius: 7px
+
+label.btn.btn-secondary-
+  font-size: 16px
+  display: block
+  text-align: left
+  color: #7F98A5
+  font-weight: 500
+  letter-spacing: 0.3px
+  margin-top: 0px
+  height: 45px
+  border-radius: 7px
+  line-height: 30px
+
 .condition__controls:last-child
   border: 0
   margin-top: 0rem
@@ -1268,6 +1317,7 @@ button.add-condition.condition-active
   -moz-transition: all 0.3s ease !important
   -ms-transition: all 0.3s ease !important
   transition: all 0.3s ease !important
+  border-radius: 7px !important
 
   &:hover
     border-color: #acc3cf !important
@@ -1508,15 +1558,6 @@ button.btn.btn-secondary.dropdown-toggle
   .disabled
     background: grey !important
     cursor: not-allowed !important
-
-.condition__controls label
-  font-size: 16px
-  display: block
-  text-align: left
-  color: #7F98A5
-  font-weight: 500
-  letter-spacing: 0.3px
-  margin-top: 5px
 
   strong
     color: #fff
@@ -1924,6 +1965,10 @@ button.applyBtn.btn.btn-sm.btn-success
   .segments > div
     grid-row-gap: 0.5rem
     grid-template-columns: repeat(3, 1fr)
+
+  .segment, .segmentInActive
+    max-width: 425px !important
+    min-width: 425px !important
 
 @media only screen and (max-width: 1400px)
   #campaigns

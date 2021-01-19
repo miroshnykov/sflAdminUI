@@ -301,11 +301,12 @@
             min-width: 50vw
             max-width: 50vw
             max-height: 80vh
-            padding: 20px 30px
+            padding: 30px 30px 0px 30px
             background: #fff
             box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
             transition: all .3s ease
             overflow: auto
+            border-radius: 10px
 
 
         .modal-body
