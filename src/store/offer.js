@@ -1,4 +1,4 @@
-import {reFormatJSON, capitalizeFirstLetter} from '../helpers'
+import {reFormatJSON, capitalizeFirstLetter, cloneObjectArray} from '../helpers'
 import offer from '../api/offer'
 
 const geoRulesFormat = (geo) => {
@@ -32,21 +32,27 @@ const newCap = () => {
 export default {
     state: {
         offer: [],
+        offerOrigin: [],
         offerCap: [],
         geo: [],
+        geoOrigin: [],
         customLPRules: [],
+        customLPRulesOrigin: [],
     },
     namespaced: true,
     mutations: {
         async saveOffer(state, offer) {
             state.offer = offer
+            state.offerOrigin = cloneObjectArray(offer)
             if (offer[0].geoRules) {
                 let geoRules = JSON.parse(offer[0].geoRules)
                 state.geo = geoRules.geo
+                state.geoOrigin = customLPRules(geoRules.geo)
             }
             if (offer[0].customLPRules) {
                 let customLPRules = JSON.parse(offer[0].customLPRules)
                 state.customLPRules = customLPRules.customLPRules
+                state.customLPRulesOrigin = cloneObjectArray(customLPRules.customLPRules)
             }
         },
         async saveOfferCap(state, offerCap) {
@@ -58,19 +64,39 @@ export default {
             state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
         },
         updateCustomLP(state, data) {
-            state.customLPRules.forEach(item => {
+
+            let customLpRulesMap = state.customLPRules.map(item => {
                 if (item.pos === data.position) {
                     item[data.field] = data.value
                 }
+                return item
             })
-            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+            state.offer[0].customLPRules = customLPRulesFormat(customLpRulesMap)
+
         },
-        delCustomLP(state, position) {
-            state.customLPRules = state.customLPRules.filter(item => {
-                return item.pos !== position
-            })
+        preSaveCustomLP(state) {
 
             state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+            state.customLPRulesOrigin = cloneObjectArray(state.customLPRules)
+            // console.table(reFormatJSON(state.customLPRulesOrigin))
+        },
+        cancelCustomLP(state) {
+
+            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRulesOrigin)
+            state.customLPRules = cloneObjectArray(state.customLPRulesOrigin)
+            // console.table(reFormatJSON(state.customLPRulesOrigin))
+        },
+        delCustomLP(state, position) {
+
+            state.customLPRules = state.customLPRules
+                .filter(item => (item.pos !== position))
+                .map((item, index) => {
+                    item.pos = index
+                    return item
+                })
+
+            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+
         },
         async updOffer(state, data) {
             state.offer[0][data.fieldName] = data.value
@@ -109,11 +135,25 @@ export default {
                 })
             }
 
-            let offerRules = {}
-            offerRules.geo = state.geo
-            let offerRulesStr = JSON.stringify(offerRules)
-            state.offer[0].geoRules = offerRulesStr
+            state.offer[0].geoRules = geoRulesFormat(state.geo)
 
+            // let offerRules = {}
+            // offerRules.geo = state.geo
+            // let offerRulesStr = JSON.stringify(offerRules)
+            // state.offer[0].geoRules = offerRulesStr
+
+        },
+        preSaveGeo(state) {
+
+            state.offer[0].geoRules = geoRulesFormat(state.geo)
+            state.geoOrigin = cloneObjectArray(state.geo)
+            // console.table(reFormatJSON(state.customLPRulesOrigin))
+        },
+        cancelGeo(state) {
+
+            state.offer[0].geoRules = geoRulesFormat(state.geoOrigin)
+            state.geoOrigin = cloneObjectArray(state.geoOrigin)
+            // console.table(reFormatJSON(state.customLPRulesOrigin))
         },
     },
     actions: {

@@ -127,7 +127,13 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll']),
+            ...mapMutations('offer', [
+                'changeGeo',
+                'allowAll',
+                'banAll',
+                'preSaveGeo',
+                'cancelGeo'
+            ]),
             ...mapMutations('countries', ['filterCountry']),
             allowAllEvent() {
                 this.allowAll()
@@ -179,9 +185,11 @@
             },
             saveLp(data) {
                 this.visible = false
+                this.preSaveGeo()
             },
             close() {
                 this.visible = false
+                this.cancelGeo()
 
             },
 

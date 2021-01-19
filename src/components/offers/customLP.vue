@@ -106,7 +106,15 @@
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
         methods: {
-            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll', 'addCustomLP', 'delCustomLP', 'updateCustomLP']),
+            ...mapMutations('offer', ['changeGeo',
+                'allowAll',
+                'banAll',
+                'addCustomLP',
+                'delCustomLP',
+                'updateCustomLP',
+                'preSaveCustomLP',
+                'cancelCustomLP'
+            ]),
             ...mapMutations('countries', ['filterCountry']),
             getLpModify() {
                 return this.getLpOffers.map(item => {
@@ -147,9 +155,11 @@
             },
             saveCustomLP(data) {
                 this.visible = false
+                this.preSaveCustomLP()
             },
             close() {
                 this.visible = false
+                this.cancelCustomLP()
 
             },
 
