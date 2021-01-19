@@ -34,6 +34,7 @@ export default {
         offer: [],
         offerOrigin: [],
         offerCap: [],
+        offerCapOrigin: [],
         geo: [],
         geoOrigin: [],
         customLPRules: [],
@@ -47,7 +48,7 @@ export default {
             if (offer[0].geoRules) {
                 let geoRules = JSON.parse(offer[0].geoRules)
                 state.geo = geoRules.geo
-                state.geoOrigin = customLPRules(geoRules.geo)
+                state.geoOrigin = cloneObjectArray(geoRules.geo)
             }
             if (offer[0].customLPRules) {
                 let customLPRules = JSON.parse(offer[0].customLPRules)
@@ -57,6 +58,7 @@ export default {
         },
         async saveOfferCap(state, offerCap) {
             state.offerCap = offerCap
+            state.offerCapOrigin = cloneObjectArray(offerCap)
         },
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
@@ -111,10 +113,15 @@ export default {
                 state.offerCap.push(newEmptyCap)
             }
         },
+        preSaveCap(state) {
+            state.offerCapOrigin = cloneObjectArray(state.offerCap)
+        },
+        cancelCap(state) {
+            state.offerCap = cloneObjectArray(state.offerCapOrigin)
+        },
         allowAll(state) {
             state.geo = []
             state.offer[0].geoRules = geoRulesFormat(state.geo)
-
         },
         banAll(state, countries) {
             countries.forEach(item => {

@@ -270,7 +270,14 @@
         //     debugger
         // },
         methods: {
-            ...mapMutations('offer', ['changeGeo', 'allowAll', 'banAll','updOfferCap']),
+            ...mapMutations('offer', [
+                'changeGeo',
+                'allowAll',
+                'banAll',
+                'updOfferCap',
+                'preSaveCap',
+                'cancelCap'
+            ]),
             ...mapMutations('countries', ['filterCountry']),
             allowAllEvent() {
                 this.allowAll()
@@ -337,10 +344,11 @@
             },
             saveLp(data) {
                 this.visible = false
+                this.preSaveCap()
             },
             close() {
                 this.visible = false
-
+                this.cancelCap()
             },
 
         }
