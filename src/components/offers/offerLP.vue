@@ -10,24 +10,61 @@
                         <div class="condition__controls condition-line">
                             <label class="text-center">LP Name</label>
                             <input type="text"
-                                   min="0" max="100"
+                                   placeholder="ex: Movies Signup LP"
                                    class="condition__matches custom-input text-center"
                                    :id="defineId(`offerLpName`)"
+                                   id="offerLpName"
                                    @change="updateLP($event,`name`)"
-                                   maxlength="20"
+                                   maxlength="15"
+                                    onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('#offerLpName').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('#offerLpName').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'none'
+                                            document.querySelector('#offerLpName').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
                             >
+
+                            <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
+                            Enter a name for the landing page.
+                            </b-form-invalid-feedback>
+
                         </div>
                     </b-col>
                     <b-col cols="6">
                         <div class="condition__controls condition-line">
                             <label class="text-center">LP URL</label>
                             <input type="text"
-                                   min="0" max="100"
                                    class="condition__matches custom-input text-center"
                                    :id="defineId(`offerLpUrl`)"
+                                   id="offerLpUrl"
                                    @change="updateLP($event,`url`)"
                                    maxlength="30"
+                                    onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('#offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
                             >
+
+                            <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
+                            Enter a website URL.
+                            </b-form-invalid-feedback>
+
                         </div>
                     </b-col>
 
@@ -72,6 +109,20 @@
             ...mapGetters('lp', ['getLandingPages'])
         },
         methods: {
+            checkValidateLP() {
+                if (document.getElementById('offerLpName').value
+                ) {
+                    return [
+                        document.getElementById('offerLpName').value
+                    ]
+                } else {
+                    this.$swal.fire({
+                        title: 'Validation Error',
+                        text: 'Please name your offer.',
+                    })
+                    return
+                }
+            },
             updateLP(event, field) {
                 this[field] = event.target.value
             },
@@ -100,13 +151,21 @@
                 this.visible = true
             },
             async saveLp() {
-
                 let obj = {}
                 obj.name = this.name
                 obj.url = this.url
                 obj.offerId = this.offerId
                 let res = await this.$store.dispatch('lpOffers/createLpOfferDb', obj)
+
+                if (document.getElementById('offerLpName').value
+                ) {
+                    return [
+                        document.getElementById('offerLpName').value
+                    ]
+                }
+
                 if (res.id) {
+
                     this.$swal.fire({
                         type: 'success',
                         position: 'top-end',
@@ -116,9 +175,9 @@
                     })
                 } else {
                     this.$swal.fire({
-                        title: 'Lp save errors',
+                        title: 'Missing information',
                         type: 'error',
-                        text: 'Please check backend errors ',
+                        text: 'Please name your offer or enter a page URL.',
                         confirmButtonColor: '#2ED47A',
                     })
                 }
@@ -126,7 +185,6 @@
             },
             close() {
                 this.visible = false
-
             },
             // async close () {
             //     this.visible = false

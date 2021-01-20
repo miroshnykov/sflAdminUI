@@ -73,7 +73,7 @@
                         <label>Default Redirect</label>
                         <input
                                 type="text"
-                                :value="offerDefaultLPInfo.length !==0 && offerDefaultLPInfo[0].text"
+                                :value="offerDefaultLPInfo && offerDefaultLPInfo[0].text"
                                 class="condition__matches campaign custom-input"
                                 disabled
                         >

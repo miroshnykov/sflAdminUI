@@ -119,15 +119,31 @@ const saveOffer = async (data) => {
         offerIdRedirect
     } = data
 
-    let geoRulesArr = JSON.parse(geoRules)
+    let geoRulesArr
+    if (geoRules) {
+        geoRulesArr = JSON.parse(geoRules)
+    } else {
+        let geoDefault = {}
+        geoDefault.geo = []
+        geoRulesArr = geoDefault
+    }
+
     let geoRulesReFormat = JSON.stringify(geoRulesArr).replace(/"/g, '\\"')
 
-    let customLPRulesArr = JSON.parse(customLPRules)
+
+    let customLPRulesArr
+    if (customLPRules) {
+        customLPRulesArr = JSON.parse(customLPRules)
+    } else {
+        let customLpDefault = {}
+        customLpDefault.customLPRules = []
+        customLPRulesArr = customLpDefault
+    }
+
     let customLPRulesReFormat = JSON.stringify(customLPRulesArr).replace(/"/g, '\\"')
 
 
     let capsFormat = caps && JSON.stringify(caps).replace(/"/g, '\\"') || ''
-
 
     try {
         const res = await api.post(
