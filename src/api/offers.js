@@ -17,6 +17,8 @@ const getOffers = async () => {
                                 payOut
                                 dateAdded
                                 dateUpdated
+                                defaultLandingPageId
+                                nameLandingPage 
                           }
                     }
             `,

@@ -9,7 +9,13 @@ export default {
     mutations: {
         async saveOffers(state, offers) {
             state.offers = offers
-        }
+        },
+        delOffer(state, id) {
+
+            state.offers = state.offers
+                .filter(item => (item.id !== id))
+
+        },
     },
     actions: {
         async saveOffersStore({commit}) {

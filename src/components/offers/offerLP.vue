@@ -157,12 +157,12 @@
                 obj.offerId = this.offerId
                 let res = await this.$store.dispatch('lpOffers/createLpOfferDb', obj)
 
-                if (document.getElementById('offerLpName').value
-                ) {
-                    return [
-                        document.getElementById('offerLpName').value
-                    ]
-                }
+                // if (document.getElementById('offerLpName').value
+                // ) {
+                //     return [
+                //         document.getElementById('offerLpName').value
+                //     ]
+                // }
 
                 if (res.id) {
 

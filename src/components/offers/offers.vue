@@ -72,7 +72,7 @@
                 <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box">
                     <span class="landing-page-name">
-                        http://domain.com/offers/offer-name?prod=moviesandtv
+                        {{props.row.nameLandingPage}}
                     </span>
                 </span>
                     <button class="btn btn-link"
@@ -159,6 +159,7 @@
 
         },
         methods: {
+            ...mapMutations('offers', ['delOffer']),
             ...mapActions("offers", ["saveOffersStore"]),
             async uOfferName(data) {
 
@@ -198,6 +199,9 @@
             edit(data) {
                 this.$router.push(`/offer/${data.id}`)
             },
+            deleteOfferAction(id){
+                this.delOffer(id)
+            },
             deleteOffer(data) {
                 this.$swal.fire({
                     type: 'warning',
@@ -213,7 +217,7 @@
                         let obj = {}
                         obj.id = data.id
                         this.$store.dispatch('offer/delOffer', obj).then(res => {
-                            if (res.id) {
+                            if (res && res.id) {
                                 this.$swal.fire({
                                     type: 'success',
                                     position: 'top-end',
@@ -221,7 +225,8 @@
                                     showConfirmButton: false,
                                     timer: 1000
                                 })
-                                location.reload()
+                                // location.reload()
+                                this.deleteOfferAction(data.id)
                             } else {
                                 this.$swal.fire({
                                     title: `Offer ID ${obj.id} was not deleted`,
