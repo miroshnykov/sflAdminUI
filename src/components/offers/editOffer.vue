@@ -273,7 +273,7 @@
             <b-col cols="3">
                 <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.bottom.html="getOffer[0].geoRules"
+                     v-b-popover.hover.focus.right.html="getBannedCountries()"
                      title="Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
@@ -369,7 +369,7 @@
                             placeholder="Search landing page..."
                             :value="getOffer.length !==0  && getOffer[0].defaultLp"
                             @input="updValue($event,`defaultLp`)"
-                            v-b-popover.hover.focus.bottom.html="getLpURL"
+                            v-b-popover.hover.focus.right.html="getLpURL(getOffer[0].defaultLp).url"
                     >
                     </model-select>
 
@@ -459,11 +459,20 @@
             //         return item
             //     })
             // },
-            getLpURL() {
-                return this.getLpOffers.map(item => {
-                    item.value = item.id
+            // getLpURL() {
+            //     return this.getLpOffers.map(item => {
+            //         item.value = item.id
+            //         item.text = `${item.url}`
+            //         return item.url
+            //     })
+            // },
+            getBannedCountries() {
+                return this.getOffer[0].geoRules
+            },
+            getLpURL(id) {
+                return this.getLpOffers.filter(item => {
                     item.text = `${item.url}`
-                    return item.url
+                    return item.id === id 
                 })
             },
             getLpModify() {
