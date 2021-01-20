@@ -418,17 +418,16 @@
         transition: all 0.3s ease;
     }
 
-    .segment.segment__draggable:hover, .segmentInActive.segment__draggable:hover {
-        opacity: 0.8;
+    // .segment.segment__draggable:hover, .segmentInActive.segment__draggable:hover {
+    // }
+
+    .segment.segment__draggable:hover {
+        box-shadow: 1px 1px 15px rgba(46,212,122,0.3);
     }
 
-    // .segment.segment__draggable:hover {
-    //     border: 2px dashed #2ED47A;
-    // }
-
-    // .segmentInActive.segment__draggable:hover {
-    //     border: 2px dashed #E3EEF4;
-    // }
+    .segmentInActive.segment__draggable:hover {
+        box-shadow: 1px 1px 15px rgba(227,238,244,0.3);
+    }
 
     .sortable-ghost {
         border: 2px dashed #E3EEF4;

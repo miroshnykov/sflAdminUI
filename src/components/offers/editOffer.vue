@@ -273,7 +273,7 @@
             <b-col cols="3">
                 <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.bottom.html="getOffer[0].geoRules"
+                     v-b-popover.hover.focus.right.html="getBannedCountries()"
                      title="Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
@@ -367,9 +367,9 @@
                             :options="getLpModify()"
                             :id="defineId(`lpsId`,id)"
                             placeholder="Search landing page..."
-                            :value="getOffer.length !==0  && getOffer[0].defaultLp"
+                            :value="getLPValue()"
                             @input="updValue($event,`defaultLp`)"
-                            v-b-popover.hover.focus.bottom.html="getLpURL"
+                            v-b-popover.hover.focus.right.html="getLpURL()"
                     >
                     </model-select>
 
@@ -459,12 +459,27 @@
             //         return item
             //     })
             // },
+            // getLpURL() {
+            //     return this.getLpOffers.map(item => {
+            //         item.value = item.id
+            //         item.text = `${item.url}`
+            //         return item.url
+            //     })
+            // },
+            getBannedCountries() {
+                if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
+                    let geoR = JSON.parse(this.getOffer[0].geoRules)
+                    let geoCountry = geoR.geo.map(item => item.country)
+                    return geoCountry.join(',')
+                }
+            },
             getLpURL() {
-                return this.getLpOffers.map(item => {
-                    item.value = item.id
-                    item.text = `${item.url}`
-                    return item.url
-                })
+
+                if (this.getOffer.length !== 0) {
+
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    return obj.length !== 0 && obj[0].url
+                }
             },
             getLpModify() {
                 return this.getLpOffers.map(item => {
@@ -485,6 +500,13 @@
                     item.text = `${item.name} (OfferId-${item.id})`
                     return item
                 })
+            },
+            getLPValue() {
+
+                if (this.getOffer.length !== 0) {
+                    return this.getOffer[0].defaultLp
+                }
+
             },
             updValue(event, name) {
                 let obj = {}

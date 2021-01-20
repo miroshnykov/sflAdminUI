@@ -295,6 +295,8 @@
         display: flex
         align-items: center
         justify-content: center
+        -webkit-app-region: no-drag
+        -webkit-user-drag: none
 
 
         .modal-container
