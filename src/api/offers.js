@@ -16,6 +16,7 @@ const getOffers = async () => {
                                 payIn
                                 payOut
                                 dateAdded
+                                dateUpdated
                           }
                     }
             `,
