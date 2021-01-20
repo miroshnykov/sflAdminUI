@@ -307,7 +307,7 @@
                         this.$swal.fire({
                             title: 'Missing information',
                             type: 'error',
-                            text: 'Please name your segment and try again.',
+                            text: 'Please name your offer and try again.',
                             confirmButtonColor: '#2ED47A',
                         })
                     }

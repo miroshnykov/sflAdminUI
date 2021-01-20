@@ -271,9 +271,10 @@
             </b-col>
 
             <b-col cols="3">
+                <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.bottom.html="'...'"
-                     title="Allowed and Banned Countries"
+                     v-b-popover.hover.focus.bottom.html="getOffer[0].geoRules"
+                     title="Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
@@ -368,7 +369,7 @@
                             placeholder="Search landing page..."
                             :value="getOffer.length !==0  && getOffer[0].defaultLp"
                             @input="updValue($event,`defaultLp`)"
-                            maxlength="15"
+                            v-b-popover.hover.focus.bottom.html="getLpURL"
                     >
                     </model-select>
 
@@ -451,10 +452,24 @@
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
+            // getLpModify() {
+            //     return this.getLpOffers.map(item => {
+            //         item.value = item.id
+            //         item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
+            //         return item
+            //     })
+            // },
+            getLpURL() {
+                return this.getLpOffers.map(item => {
+                    item.value = item.id
+                    item.text = `${item.url}`
+                    return item.url
+                })
+            },
             getLpModify() {
                 return this.getLpOffers.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
+                    item.text = `${item.name} (ID: ${item.offerId})`
                     return item
                 })
             },
