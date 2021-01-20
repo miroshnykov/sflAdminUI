@@ -284,7 +284,7 @@
 
                     <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
                                      :geoId="id"
-                                     :geoRules="getOffer.length !==0  && getOffer[0].geoRules"
+                                     :geoRules="getOffer.length !==0  && getOffer[0].geoRules && getOffer[0].geoRules"
                                      :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                     >
                     </GeoRestrictions>
