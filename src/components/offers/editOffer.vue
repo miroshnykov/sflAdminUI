@@ -367,9 +367,9 @@
                             :options="getLpModify()"
                             :id="defineId(`lpsId`,id)"
                             placeholder="Search landing page..."
-                            :value="getOffer.length !==0  && getOffer[0].defaultLp"
+                            :value="getLPValue()"
                             @input="updValue($event,`defaultLp`)"
-                            v-b-popover.hover.focus.right.html="getLpURL(getOffer[0].defaultLp).url"
+                            v-b-popover.hover.focus.right.html="getLpURL()"
                     >
                     </model-select>
 
@@ -467,13 +467,19 @@
             //     })
             // },
             getBannedCountries() {
-                return this.getOffer[0].geoRules
+                if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
+                    let geoR = JSON.parse(this.getOffer[0].geoRules)
+                    let geoCountry = geoR.geo.map(item => item.country)
+                    return geoCountry.join(',')
+                }
             },
-            getLpURL(id) {
-                return this.getLpOffers.filter(item => {
-                    item.text = `${item.url}`
-                    return item.id === id 
-                })
+            getLpURL() {
+
+                if (this.getOffer.length !== 0) {
+
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    return obj.length !== 0 && obj[0].url
+                }
             },
             getLpModify() {
                 return this.getLpOffers.map(item => {
@@ -494,6 +500,13 @@
                     item.text = `${item.name} (OfferId-${item.id})`
                     return item
                 })
+            },
+            getLPValue() {
+
+                if (this.getOffer.length !== 0) {
+                    return this.getOffer[0].defaultLp
+                }
+
             },
             updValue(event, name) {
                 let obj = {}
