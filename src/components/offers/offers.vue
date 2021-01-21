@@ -105,6 +105,7 @@
                         <i class="fas fa-pencil"></i>
                     </button>
                     <button
+                            :disabled="props.row.countOfCampaigns !== 0"
                             class="btn btn-link"
                             v-b-tooltip.hover.top="'delete Offer'"
                             @click="deleteOffer(props.row)"
@@ -142,6 +143,7 @@
         'payOut',
         'landingPage',
         'status',
+        'countOfCampaigns',
         'actions',
     ]
 
@@ -339,6 +341,7 @@
                         payIn: 'Pay-in',
                         payOut: 'Pay-out',
                         landingPage: 'Default LP',
+                        countOfCampaigns: 'Count of campaigns',
                         status: 'Status',
                     },
                     editableColumns: ['offerName'],

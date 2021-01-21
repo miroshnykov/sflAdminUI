@@ -19,6 +19,7 @@ const getOffers = async () => {
                                 dateUpdated
                                 defaultLandingPageId
                                 nameLandingPage 
+                                countOfCampaigns
                           }
                     }
             `,
