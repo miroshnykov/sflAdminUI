@@ -18,9 +18,10 @@ const segments = async (type) => {
                         lp{
                             id
                             segmentId
-                            lpId,
+                            lpId
                             name  
-                            weight                      
+                            weight   
+                            productId                   
                         }
 
                     } 

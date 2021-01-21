@@ -12,6 +12,7 @@ const lp = async () => {
                     lp{
                         id    
                         name
+                        productId
                     } 
                 }
             `,
