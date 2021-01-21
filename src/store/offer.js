@@ -188,6 +188,7 @@ export default {
     getters: {
         getOffer: state => state.offer,
         getOfferCap: state => state.offerCap,
+        getCustomLPRules: state => state.customLPRules
     },
 
 };
