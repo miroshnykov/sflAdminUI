@@ -13,7 +13,7 @@
                     <th scope="col"></th>
                 </tr>
                 </thead>
-                <tr scope="row" v-for="rules in getCustomLPRules()">
+                <tr scope="row" :id="defineId(`customLpRowId`,rules.pos)" v-for="rules in getCustomLPRules_()">
                     <td>
                         <span class="hidden">{{ JSON.stringify(rules) }}</span>
                         <div class="condition-line1">
@@ -103,7 +103,8 @@
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
             ...mapGetters('countries', ['getCountries']),
-            ...mapGetters('lpOffers', ['getLpOffers'])
+            ...mapGetters('lpOffers', ['getLpOffers']),
+            ...mapGetters('offer', ['getCustomLPRules'])
         },
         methods: {
             ...mapMutations('offer', ['changeGeo',
@@ -129,7 +130,7 @@
             delCustomLpAction(position) {
                 this.delCustomLP(position)
             },
-            getCustomLPRules() {
+            getCustomLPRules_() {
                 let customLPRulesRecords = this.customLPRules
                 return customLPRulesRecords && customLPRulesRecords.customLPRules || []
             },
@@ -141,11 +142,16 @@
                 })
             },
             updateCustomLPAction(value, field, position) {
+                let elRow = document.querySelector(`#customLpRowId-${position}`)
+                if (elRow) {
+                    elRow.style.background = null
+                }
                 let updateFieldData = {}
                 updateFieldData.value = value
                 updateFieldData.field = field
                 updateFieldData.position = position
                 this.updateCustomLP(updateFieldData)
+
             },
             defineId(name, id) {
                 return `${name}-${id}`
@@ -154,8 +160,19 @@
                 this.visible = true
             },
             saveCustomLP(data) {
-                this.visible = false
-                this.preSaveCustomLP()
+                let validation = this.getCustomLPRules
+
+                let res = validation.filter(item => (item.id === 0))
+                if (res.length !== 0) {
+                    res.forEach(item => {
+                        document.querySelector(`#customLpRowId-${item.pos}`).style.background = 'red'
+                    })
+
+                } else {
+                    this.preSaveCustomLP()
+                    this.visible = false
+                }
+
             },
             close() {
                 this.visible = false
