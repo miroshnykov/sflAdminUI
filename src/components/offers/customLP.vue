@@ -65,6 +65,107 @@
             </table>
 
 
+            <table class="table table-striped child-row tableFixHead lp-table">
+                <thead>
+                <tr scope="row">
+                    <th scope="col">setDefault</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Landing Page Url</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
+                    <td>
+                        <label class="conversionType btn btn-secondary-">ID{{lp.id}}
+                            <input
+                                    type="radio"
+                                    :checked="checkDefault(lp.id)"
+                                    name="radio"
+                                    @change="setDefaultLp(lp.id)"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <!--                        <span >{{ JSON.stringify(lp) }}</span>-->
+                        <label class="text-center">LP Name</label>
+                        <input type="text"
+                               placeholder="ex: Movies Signup LP"
+                               class="condition__matches custom-input text-center"
+                               :id="defineId(`defaultLpName`, lp.id)"
+                               :value="lp.name"
+                               @change="updateLP($event,`name`, lp.id)"
+                               maxlength="30"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('#offerLpName').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('#offerLpName').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'none'
+                                            document.querySelector('#offerLpName').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        >
+
+                        <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
+                            Enter a name for the landing page.
+                        </b-form-invalid-feedback>
+
+
+                    </td>
+                    <td>
+                        <label class="text-center">LP URL</label>
+                        <input type="text"
+                               class="condition__matches custom-input text-center"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="30"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('#offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        >
+
+                        <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
+                            Enter a website URL.
+                        </b-form-invalid-feedback>
+
+
+                    </td>
+                    <td>
+                        <b-button variant="light" @click="delLpOfferAction(lp.id)"
+                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
+                                  style="z-index:2">
+                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
+                        </b-button>
+
+                    </td>
+                </tr>
+
+                <tr scope="row">
+                    <td>
+                        <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
+                            <i class="far fa-plus"></i> Add Landing Pages
+                        </b-button>
+                    </td>
+                </tr>
+            </table>
+
+
             <b-row class="text-center">
                 <b-col cols="12">
                     <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
@@ -98,7 +199,7 @@
                 id: 0,
             }
         },
-        props: ['customLPId', 'customLPRules'],
+        props: ['defaultLp', 'customLPId', 'customLPRules'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -108,6 +209,7 @@
         },
         methods: {
             ...mapMutations('offer', ['changeGeo',
+                'updOffer',
                 'allowAll',
                 'banAll',
                 'addCustomLP',
@@ -117,6 +219,7 @@
                 'cancelCustomLP'
             ]),
             ...mapMutations('countries', ['filterCountry']),
+            ...mapMutations('lpOffers', ['addLpOffers', 'delLpOffers', 'updLpOffers']),
             getLpModify() {
                 return this.getLpOffers.map(item => {
                     item.value = item.id
@@ -124,8 +227,35 @@
                     return item
                 })
             },
+            updateLP(event, field, id) {
+                let elRow = document.querySelector(`#defaultLpRowId-${id}`)
+                if (elRow) {
+                    elRow.style.background = null
+                }
+
+                let obj = {}
+                obj.id = id
+                obj.field = field
+                obj.value = event.target.value
+                this.updLpOffers(obj)
+            },
+            setDefaultLp(id) {
+                let obj = {}
+                obj.fieldName = 'defaultLp'
+                obj.value = id
+                this.updOffer(obj)
+            },
+            checkDefault(id) {
+                return this.defaultLp() === id
+            },
             addCustomLpAction() {
                 this.addCustomLP()
+            },
+            addLpOfferAction() {
+                this.addLpOffers(this.customLPId)
+            },
+            delLpOfferAction(id) {
+                this.delLpOffers(id)
             },
             delCustomLpAction(position) {
                 this.delCustomLP(position)
@@ -161,13 +291,24 @@
             },
             saveCustomLP(data) {
                 let validation = this.getCustomLPRules
+                let validationLp = this.getLpOffers
 
                 let res = validation.filter(item => (item.id === 0))
+
+                let resLp = validationLp.filter(item => (item.name === '' || item.url === ''))
+                if (validationLp.length === 0) {
+                    alert('input at least on Landing Page')
+                    return
+                }
                 if (res.length !== 0) {
                     res.forEach(item => {
                         document.querySelector(`#customLpRowId-${item.pos}`).style.background = 'red'
                     })
 
+                } else if (resLp.length !== 0) {
+                    resLp.forEach(item => {
+                        document.querySelector(`#defaultLpRowId-${item.id}`).style.background = 'red'
+                    })
                 } else {
                     this.preSaveCustomLP()
                     this.visible = false

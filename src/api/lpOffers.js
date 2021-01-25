@@ -1,7 +1,7 @@
 import {api} from './request'
 import {catchHandler, reFormatJSON} from "../helpers";
 
-const lpOffers = async () => {
+const lpOffers = async (offerId) => {
 
     try {
         console.time(`lp`)
@@ -9,7 +9,7 @@ const lpOffers = async () => {
             '', {
                 query: `
                 {
-                    getLpOffers {
+                    getLpOffers(offerId:${offerId}) {
                         id
                         name
                         url

@@ -340,6 +340,7 @@
 
                 <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
                           :customLPId="id"
+                          :defaultLp="getLpDefault"
                           :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                 </CustomLP>
             </b-col>
@@ -350,19 +351,19 @@
             <b-col cols="3">
                 <div class="condition__controls">
                     <div class="pull-right">
-                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
-                                  @click="showOfferAddLpModal(id)"
-                        >
-                            <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP
-                        </b-button>
+<!--                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable-->
+<!--                                  @click="showOfferAddLpModal(id)"-->
+<!--                        >-->
+<!--                            <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP-->
+<!--                        </b-button>-->
 
-                        <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"
-                                 :offerId="id"
-                        >
-                        </OfferLP>
+<!--                        <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"-->
+<!--                                 :offerId="id"-->
+<!--                        >-->
+<!--                        </OfferLP>-->
                     </div>
 
-                    <label>Default LP</label>
+                    <label>Default LP {{getLPValue()}}</label>
                     <model-select
                             :options="getLpModify()"
                             :id="defineId(`lpsId`,id)"
@@ -440,7 +441,7 @@
             await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
             await this.$store.dispatch('offer/saveOfferCapStore', this.id)
-            await this.$store.dispatch('lpOffers/saveLpOffersStore')
+            await this.$store.dispatch('lpOffers/saveLpOffersStore', this.id)
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
             await this.$store.dispatch('countries/saveCountriesStore')
@@ -481,10 +482,15 @@
                     return obj.length !== 0 && obj[0].url
                 }
             },
+            getLpDefault() {
+                if (this.getOffer.length !== 0) {
+                    return this.getOffer[0].defaultLp
+                }
+            },
             getLpModify() {
                 return this.getLpOffers.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (ID: ${item.offerId})`
+                    item.text = `${item.name} (ID: ${item.id})`
                     return item
                 })
             },
@@ -502,11 +508,9 @@
                 })
             },
             getLPValue() {
-
                 if (this.getOffer.length !== 0) {
                     return this.getOffer[0].defaultLp
                 }
-
             },
             updValue(event, name) {
                 let obj = {}
