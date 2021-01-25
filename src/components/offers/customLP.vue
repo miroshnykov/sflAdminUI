@@ -124,7 +124,7 @@
                                :id="defineId(`defaultLpUrl`, lp.id)"
                                :value="lp.url"
                                @change="updateLP($event,`url`, lp.id)"
-                               maxlength="200"
+                               maxlength="500"
                                onblur="
                                         if(this.value === ''){
                                             document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
