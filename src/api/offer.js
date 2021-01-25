@@ -116,6 +116,7 @@ const saveOffer = async (data) => {
         status,
         defaultLp,
         caps,
+        lp,
         offerIdRedirect
     } = data
 
@@ -144,6 +145,7 @@ const saveOffer = async (data) => {
 
 
     let capsFormat = caps && JSON.stringify(caps).replace(/"/g, '\\"') || ''
+    let lpFormat = lp && JSON.stringify(lp).replace(/"/g, '\\"') || ''
 
     try {
         const res = await api.post(
@@ -161,6 +163,7 @@ const saveOffer = async (data) => {
                                 defaultLp:${defaultLp}
                                 offerIdRedirect:${offerIdRedirect}
                                 caps:"${capsFormat}"
+                                lp:"${lpFormat}"
                                 payOut:${payOut}
                                 status:"${status}"
                           ){

@@ -151,36 +151,36 @@
                 this.visible = true
             },
             async saveLp() {
-                let obj = {}
-                obj.name = this.name
-                obj.url = this.url
-                obj.offerId = this.offerId
-                let res = await this.$store.dispatch('lpOffers/createLpOfferDb', obj)
-
-                // if (document.getElementById('offerLpName').value
-                // ) {
-                //     return [
-                //         document.getElementById('offerLpName').value
-                //     ]
+                // let obj = {}
+                // obj.name = this.name
+                // obj.url = this.url
+                // obj.offerId = this.offerId
+                // let res = await this.$store.dispatch('lpOffers/createLpOfferDb', obj)
+                //
+                // // if (document.getElementById('offerLpName').value
+                // // ) {
+                // //     return [
+                // //         document.getElementById('offerLpName').value
+                // //     ]
+                // // }
+                //
+                // if (res.id) {
+                //
+                //     this.$swal.fire({
+                //         type: 'success',
+                //         position: 'top-end',
+                //         title: `Lp created`,
+                //         showConfirmButton: false,
+                //         timer: 1000
+                //     })
+                // } else {
+                //     this.$swal.fire({
+                //         title: 'Missing information',
+                //         type: 'error',
+                //         text: 'Please name your offer or enter a page URL.',
+                //         confirmButtonColor: '#2ED47A',
+                //     })
                 // }
-
-                if (res.id) {
-
-                    this.$swal.fire({
-                        type: 'success',
-                        position: 'top-end',
-                        title: `Lp created`,
-                        showConfirmButton: false,
-                        timer: 1000
-                    })
-                } else {
-                    this.$swal.fire({
-                        title: 'Missing information',
-                        type: 'error',
-                        text: 'Please name your offer or enter a page URL.',
-                        confirmButtonColor: '#2ED47A',
-                    })
-                }
                 this.visible = false
             },
             close() {

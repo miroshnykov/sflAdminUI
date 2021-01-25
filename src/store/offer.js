@@ -167,6 +167,11 @@ export default {
         async saveOfferDb({commit}) {
             let data = this.getters['offer/getOffer'][0]
             data.caps = this.getters['offer/getOfferCap'][0] || ''
+            data.lp = this.getters['lpOffers/getLpOffers'] || ''
+            if (data.lp.length === 0) {
+                alert(`Landing page is empty`)
+                return
+            }
             let res = await offer.saveOffer(data)
             return res
         },
