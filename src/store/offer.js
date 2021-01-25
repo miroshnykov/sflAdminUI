@@ -62,7 +62,7 @@ export default {
         },
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
-            state.customLPRules.push({id: 0, pos: position, country: ''})
+            state.customLPRules.push({id: 0, pos: position, country: '', lpName: '', lpUrl: ''})
             state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
         },
         updateCustomLP(state, data) {

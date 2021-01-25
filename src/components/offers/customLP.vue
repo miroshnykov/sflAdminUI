@@ -21,7 +21,7 @@
                                     :options="getCountriesModify()"
                                     :id="defineId(`customCountry`,rules.pos)"
                                     :value="rules.country"
-                                    @input="updateCustomLPAction($event, `country`, rules.pos)"
+                                    @input="updateCustomLPAction($event, `country`, rules)"
                                     class="condition__country condition__matches custom-select "
                             >
                             </model-select>
@@ -36,7 +36,7 @@
                                     :options="getLpModify()"
                                     :id="defineId(`customLPs`,rules.pos)"
                                     placeholder="Search landing page..."
-                                    @input="updateCustomLPAction($event, `id`, rules.pos)"
+                                    @input="updateCustomLPAction($event, `id`, rules)"
                                     :value="rules.id"
                             >
                             </model-select>
@@ -271,16 +271,25 @@
                     return item
                 })
             },
-            updateCustomLPAction(value, field, position) {
-                let elRow = document.querySelector(`#customLpRowId-${position}`)
+            updateCustomLPAction(value, field, rules) {
+                let elRow = document.querySelector(`#customLpRowId-${rules.position}`)
                 if (elRow) {
                     elRow.style.background = null
                 }
                 let updateFieldData = {}
                 updateFieldData.value = value
                 updateFieldData.field = field
-                updateFieldData.position = position
+                updateFieldData.position = rules.pos
                 this.updateCustomLP(updateFieldData)
+                if (field === 'id'){
+                    let lpName = this.getLpOffers.filter(item => (item.id === value))
+                    updateFieldData.field = 'lpName'
+                    updateFieldData.value = lpName[0].name
+                    this.updateCustomLP(updateFieldData)
+                    updateFieldData.field = 'lpUrl'
+                    updateFieldData.value = lpName[0].url
+                    this.updateCustomLP(updateFieldData)
+                }
 
             },
             defineId(name, id) {
