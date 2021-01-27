@@ -676,10 +676,10 @@
 
         .conversionTypeCheckMark
             position: absolute
-            top: 10px
-            left: 10px
-            height: 15px
-            width: 15px
+            top: 15px
+            left: 15px
+            height: 10px
+            width: 10px
             background-color: #eee
             border-radius: 50%
 

@@ -68,9 +68,9 @@
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
-                    <th scope="col">setDefault</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Landing Page Url</th>
+                    <th scope="col">Default LP</th>
+                    <th scope="col">Landing Page Name</th>
+                    <th scope="col">Landing Page URL</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -88,7 +88,6 @@
                     </td>
                     <td>
                         <!--                        <span >{{ JSON.stringify(lp) }}</span>-->
-                        <label class="text-center">LP Name</label>
                         <input type="text"
                                placeholder="ex: Movies Signup LP"
                                class="condition__matches custom-input text-center"
@@ -118,7 +117,6 @@
 
                     </td>
                     <td>
-                        <label class="text-center">LP URL</label>
                         <input type="text"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpUrl`, lp.id)"
@@ -401,5 +399,17 @@
             height: 20px
             width: 35%
             border: 1px solid red
+
+        .table th, .table td
+            color: #555
+            font-size: 14px
+            font-weight: 600
+            letter-spacing: 0.3px
+            padding: 1rem 1rem
+            vertical-align: middle
+            border-top: 0px
+
+        label.conversionType.btn.btn-secondary-
+            margin-bottom: 0
 
 </style>
