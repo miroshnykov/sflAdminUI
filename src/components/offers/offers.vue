@@ -107,7 +107,7 @@
                     <button
                             :disabled="props.row.countOfCampaigns !== 0"
                             class="btn btn-link"
-                            v-b-tooltip.hover.top="'delete Offer'"
+                            v-b-tooltip.hover.top="'Delete Offer'"
                             @click="deleteOffer(props.row)"
                     >
                         <i class="fas fa-trash"></i>
