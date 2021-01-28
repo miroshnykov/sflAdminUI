@@ -21,7 +21,7 @@
                                     :options="getCountriesModify()"
                                     :id="defineId(`customCountry`,rules.pos)"
                                     :value="rules.country"
-                                    @input="updateCustomLPAction($event, `country`, rules.pos)"
+                                    @input="updateCustomLPAction($event, `country`, rules)"
                                     class="condition__country condition__matches custom-select "
                             >
                             </model-select>
@@ -36,7 +36,7 @@
                                     :options="getLpModify()"
                                     :id="defineId(`customLPs`,rules.pos)"
                                     placeholder="Search landing page..."
-                                    @input="updateCustomLPAction($event, `id`, rules.pos)"
+                                    @input="updateCustomLPAction($event, `id`, rules)"
                                     :value="rules.id"
                             >
                             </model-select>
@@ -68,9 +68,9 @@
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
-                    <th scope="col">setDefault</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Landing Page Url</th>
+                    <th scope="col">Default LP</th>
+                    <th scope="col">Landing Page Name</th>
+                    <th scope="col">Landing Page URL</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -88,14 +88,13 @@
                     </td>
                     <td>
                         <!--                        <span >{{ JSON.stringify(lp) }}</span>-->
-                        <label class="text-center">LP Name</label>
                         <input type="text"
                                placeholder="ex: Movies Signup LP"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpName`, lp.id)"
                                :value="lp.name"
                                @change="updateLP($event,`name`, lp.id)"
-                               maxlength="30"
+                               maxlength="50"
                                onblur="
                                         if(this.value === ''){
                                             document.querySelector('#offerLpName').style.border = '2px solid #f38282'
@@ -118,13 +117,12 @@
 
                     </td>
                     <td>
-                        <label class="text-center">LP URL</label>
                         <input type="text"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpUrl`, lp.id)"
                                :value="lp.url"
                                @change="updateLP($event,`url`, lp.id)"
-                               maxlength="30"
+                               maxlength="500"
                                onblur="
                                         if(this.value === ''){
                                             document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
@@ -271,16 +269,25 @@
                     return item
                 })
             },
-            updateCustomLPAction(value, field, position) {
-                let elRow = document.querySelector(`#customLpRowId-${position}`)
+            updateCustomLPAction(value, field, rules) {
+                let elRow = document.querySelector(`#customLpRowId-${rules.position}`)
                 if (elRow) {
                     elRow.style.background = null
                 }
                 let updateFieldData = {}
                 updateFieldData.value = value
                 updateFieldData.field = field
-                updateFieldData.position = position
+                updateFieldData.position = rules.pos
                 this.updateCustomLP(updateFieldData)
+                if (field === 'id'){
+                    let lpName = this.getLpOffers.filter(item => (item.id === value))
+                    updateFieldData.field = 'lpName'
+                    updateFieldData.value = lpName[0].name
+                    this.updateCustomLP(updateFieldData)
+                    updateFieldData.field = 'lpUrl'
+                    updateFieldData.value = lpName[0].url
+                    this.updateCustomLP(updateFieldData)
+                }
 
             },
             defineId(name, id) {
@@ -392,5 +399,17 @@
             height: 20px
             width: 35%
             border: 1px solid red
+
+        .table th, .table td
+            color: #555
+            font-size: 14px
+            font-weight: 600
+            letter-spacing: 0.3px
+            padding: 1rem 1rem
+            vertical-align: middle
+            border-top: 0px
+
+        label.conversionType.btn.btn-secondary-
+            margin-bottom: 0
 
 </style>

@@ -62,7 +62,7 @@ export default {
         },
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
-            state.customLPRules.push({id: 0, pos: position, country: ''})
+            state.customLPRules.push({id: 0, pos: position, country: '', lpName: '', lpUrl: ''})
             state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
         },
         updateCustomLP(state, data) {
@@ -192,8 +192,13 @@ export default {
     },
     getters: {
         getOffer: state => state.offer,
+        getOfferOrigin: state => state.offerOrigin,
         getOfferCap: state => state.offerCap,
-        getCustomLPRules: state => state.customLPRules
+        getOfferCapOrigin: state => state.offerCapOrigin,
+        getOfferGeo: state => state.geo,
+        getOfferGeoOrigin: state => state.geoOrigin,
+        getCustomLPRules: state => state.customLPRules,
+        getCustomLPRulesOrigin: state => state.customLPRulesOrigin
     },
 
 };

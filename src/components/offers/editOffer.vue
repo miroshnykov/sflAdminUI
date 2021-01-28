@@ -5,6 +5,8 @@
 
         <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
+        <label class="editMode" v-show="checkEditMode()">Edit MODE </label>
+
         <b-row class="text-center">
             <b-col cols="1">
                 <div class="condition__controls">
@@ -433,7 +435,16 @@
             ModelSelect
         },
         computed: {
-            ...mapGetters('offer', ['getOffer', 'getOfferCap']),
+            ...mapGetters('offer', [
+                'getOffer',
+                'getOfferOrigin',
+                'getOfferCap',
+                'getOfferCapOrigin',
+                'getOfferGeo',
+                'getOfferGeoOrigin',
+                'getCustomLPRules',
+                'getCustomLPRulesOrigin',
+            ]),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('lpOffers', ['getLpOffers'])
         },
@@ -448,6 +459,15 @@
             // await store.dispatch('dimensions/saveDimensionsStore')
             // await store.dispatch('campaigns/saveCampaignsStore')
             await this.$store.dispatch('lp/saveLPStore')
+
+            // menuOffersId  disabled
+            // let el = document.querySelector(`#menuOffersId`)
+            // el.setAttribute("disabled","disabled")
+            // el.addClass("disabled")
+            // el.classList.add("disabled")
+            // el.disabled=""
+            // debugger
+
             // await store.dispatch('prods/saveProdsStore')
             // await store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
         },
@@ -467,6 +487,16 @@
             //         return item.url
             //     })
             // },
+            checkEditMode(){
+
+                if  (JSON.stringify(this.getOfferOrigin) !==JSON.stringify(this.getOffer)
+                    || JSON.stringify(this.getOfferCapOrigin) !==JSON.stringify(this.getOfferCap)
+                    || JSON.stringify(this.getOfferGeoOrigin) !==JSON.stringify(this.getOfferGeo)
+                    || JSON.stringify(this.getCustomLPRulesOrigin) !==JSON.stringify(this.getCustomLPRules)
+                ){
+                    return true
+                }
+            },
             getBannedCountries() {
                 if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
                     let geoR = JSON.parse(this.getOffer[0].geoRules)
@@ -646,10 +676,10 @@
 
         .conversionTypeCheckMark
             position: absolute
-            top: 10px
-            left: 10px
-            height: 15px
-            width: 15px
+            top: 15px
+            left: 15px
+            height: 10px
+            width: 10px
             background-color: #eee
             border-radius: 50%
 

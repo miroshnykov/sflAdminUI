@@ -184,6 +184,8 @@ h3.line
 //   -moz-osx-font-smoothing: grayscale
 //   text-align: center
 //   color: #fff
+.editMode
+  font-size: 24px
 
 .status
   color: #fff
@@ -1760,6 +1762,29 @@ button.applyBtn.btn.btn-sm.btn-success
 
 .b-form-tags-button.py-0
   display: none
+
+/* Tooltips */
+
+.tooltip
+  z-index: 98
+  font-family: “proxima-nova”, proxima-nova, Proxima Nova, Helvetica, Arial, sans-serif !important
+  font-style: normal
+  font-weight: 400
+  opacity: 1
+
+.tooltip.b-tooltip
+  opacity: 1
+
+.tooltip-inner
+  max-width: 250px
+  padding: .25rem .5rem
+  color: #fff
+  text-align: center
+  background-color: #3A3852
+  border-radius: .25rem
+
+.bs-tooltip-auto[x-placement^=top] .arrow:before, .bs-tooltip-top .arrow:before
+  border-top-color: #3A3852
 
 /* Animations */
 @-webkit-keyframes fadeIn
