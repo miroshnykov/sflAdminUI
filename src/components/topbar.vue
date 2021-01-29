@@ -95,15 +95,15 @@
 
 <style lang="sass">
     .header
-        background: transparent
-        // background: #fff
+        // background: transparent
+        background: #fff
         height: 80px
         width: 100%
         position: fixed
         left: 0
         top: 0
-        z-index: 79
-        margin-top: 20px
+        z-index: 1
+        margin-top: 0
 
         .header-container
             width: 100%
@@ -239,7 +239,7 @@
         top: 0
         right: 0
         left: 255px
-        height: 80px
+        height: 75px
         z-index: 80
         // background: #fff
 
