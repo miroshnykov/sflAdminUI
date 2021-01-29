@@ -446,7 +446,7 @@
                 'getCustomLPRulesOrigin',
             ]),
             ...mapGetters('offers', ['getOffers']),
-            ...mapGetters('lpOffers', ['getLpOffers'])
+            ...mapGetters('lpOffers', ['getLpOffers','getCheckSumLpOffer'])
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
@@ -491,6 +491,7 @@
 
                 if  (JSON.stringify(this.getOfferOrigin) !==JSON.stringify(this.getOffer)
                     || JSON.stringify(this.getOfferCapOrigin) !==JSON.stringify(this.getOfferCap)
+                    || JSON.stringify(this.getCheckSumLpOffer) !==JSON.stringify(this.getLpOffers)
                     || JSON.stringify(this.getOfferGeoOrigin) !==JSON.stringify(this.getOfferGeo)
                     || JSON.stringify(this.getCustomLPRulesOrigin) !==JSON.stringify(this.getCustomLPRules)
                 ){

@@ -1,13 +1,16 @@
+import {cloneObjectArray} from '../helpers'
 import lpOffers from '../api/lpOffers'
 
 export default {
     state: {
         lpOffers: [],
+        checkSumLpOffer: [],
     },
     namespaced: true,
     mutations: {
         async saveLpOffers(state, lpOffers) {
             state.lpOffers = lpOffers
+            state.checkSumLpOffer = cloneObjectArray(lpOffers)
         },
         async addLpOffers(state, offerId) {
 
@@ -63,6 +66,7 @@ export default {
     },
     getters: {
         getLpOffers: state => state.lpOffers,
+        getCheckSumLpOffer: state => state.checkSumLpOffer,
     },
 
 }
