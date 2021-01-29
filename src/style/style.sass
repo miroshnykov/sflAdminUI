@@ -117,6 +117,18 @@ h2, .h2
   text-align: left
   margin-bottom: 20px
 
+h1.title, h2.title
+  font-size: 20px
+  font-weight: 800
+  color: #3A3852
+  text-align: center
+  // background: linear-gradient(to right, #e1d4e1 0%, #63e2d9 100%)
+  // -webkit-background-clip: text
+  // -webkit-text-fill-color: transparent
+  z-index: 1
+  position: fixed
+  top: 25px
+
 h3.line
   font-size: 18px
   font-weight: 700
@@ -139,15 +151,7 @@ h3.line
     left: 0.5em
     margin-right: -50%
 
-// h2, .h2
-//   font-size: 2.5rem
-//   font-weight: 800
-//   color: #fff
-//   text-align: center
-//   background: linear-gradient(to right, #e1d4e1 0%, #63e2d9 100%)
-//   -webkit-background-clip: text
-//   -webkit-text-fill-color: transparent
-//   margin-bottom: 30px
+
 
 /* Containers */
 .container, .container-lg, .container-md, .container-sm, .container-xl
@@ -163,8 +167,8 @@ h3.line
   margin-bottom: 40px
 
 #edit-segment, #edit-offer
-  margin-top: 80px
-  margin-bottom: 40px
+  margin-top: 100px
+  margin-bottom: 50px
 
 #create-offer
   margin-top: 30px
@@ -186,7 +190,17 @@ h3.line
 //   color: #fff
 
 .editMode
-  font-size: 20px
+  font-size: 14px
+  font-weight: 800
+  text-transform: uppercase
+  color: #fff
+  outline: 2px solid #fff
+  outline-offset: -5px
+  padding: 10px 20px
+  background: orange
+
+  svg
+    color: #fff
 
 .editingMode
   font-size: 14px
@@ -572,8 +586,8 @@ button.btn
 
   &.btn-save
     position: fixed
-    top: 20px
-    right: 200px
+    top: 17px
+    right: 250px
     display: block
     text-align: center
     float: right

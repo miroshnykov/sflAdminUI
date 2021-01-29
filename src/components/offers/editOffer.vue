@@ -3,9 +3,9 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
-        <h2><span class="editingMode">Editing <i class="far fa-pencil" data-fa-transform="shrink-2"></i></span> {{getOffer.length !==0 && getOffer[0].name}}</h2>
+        <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil" data-fa-transform="shrink-2"></i></span> {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
-        <label class="editMode" v-show="checkEditMode()">Edit MODE</label>
+        <label class="editMode" v-show="checkEditMode()"><i class="fas fa-exclamation-triangle" data-fa-transform="shrink-2"></i> You have unsaved changes</label>
 
         <b-row class="text-center">
             <b-col cols="1">
@@ -290,7 +290,7 @@
                                      :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                     >
                     </GeoRestrictions>
-                    <div v-b-popover.hover.click.blur.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
+                    <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
                         <input type="text"
                             class="condition__matches campaign custom-input"
                             value="Custom (hover for list)"
@@ -474,28 +474,15 @@
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
-            // getLpModify() {
-            //     return this.getLpOffers.map(item => {
-            //         item.value = item.id
-            //         item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
-            //         return item
-            //     })
-            // },
-            // getLpURL() {
-            //     return this.getLpOffers.map(item => {
-            //         item.value = item.id
-            //         item.text = `${item.url}`
-            //         return item.url
-            //     })
-            // },
             checkEditMode(){
-
                 if  (JSON.stringify(this.getOfferOrigin) !==JSON.stringify(this.getOffer)
                     || JSON.stringify(this.getOfferCapOrigin) !==JSON.stringify(this.getOfferCap)
                     || JSON.stringify(this.getCheckSumLpOffer) !==JSON.stringify(this.getLpOffers)
                     || JSON.stringify(this.getOfferGeoOrigin) !==JSON.stringify(this.getOfferGeo)
                     || JSON.stringify(this.getCustomLPRulesOrigin) !==JSON.stringify(this.getCustomLPRules)
                 ){
+                    document.querySelector('.nav-active').style.display = 'none'
+                    document.querySelector('.nav-disabled').style.display = 'block'
                     return true
                 }
             },
@@ -583,6 +570,7 @@
                         showConfirmButton: false,
                         timer: 1000
                     })
+                    location.reload()
                 } else {
                     this.$swal.fire({
                         title: 'Offer save errors',
