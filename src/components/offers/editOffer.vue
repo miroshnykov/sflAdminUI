@@ -3,9 +3,9 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
-        <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
+        <h2><span class="editingMode">Editing <i class="far fa-pencil" data-fa-transform="shrink-2"></i></span> {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
-        <label class="editMode" v-show="checkEditMode()">Edit MODE </label>
+        <label class="editMode" v-show="checkEditMode()">Edit MODE</label>
 
         <b-row class="text-center">
             <b-col cols="1">
