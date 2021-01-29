@@ -1,10 +1,10 @@
 <template>
     <div class="menu-nav">
         <b-nav vertical class="w-25">
-            <a @click="this.mainPage" class="logo"></a>
-            <b-nav-item active><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
-            <b-nav-item active><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
-            <b-nav-item active><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+            <a class="logo"></a>
+            <b-nav-item active class="nav-blockedSegments"><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+            <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
+            <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
             <!-- <hr class="nav">
             <b-nav-item active><a @click="this.sflAdvertisers"><i class="far fa-sign-in-alt"></i> Go to SFL Advertisers</a></b-nav-item> -->
         </b-nav>
@@ -36,7 +36,7 @@
                 location.reload()
             },
             mainPage() {
-                tthis.$router.push('/segments/block')
+                this.$router.push('/')
                 location.reload()
             },
         },
