@@ -8,10 +8,10 @@
                 <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
             </span>
 
-            <span class="nav-disabled" style="display: none">
-                <b-nav-item disabled><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
-                <b-nav-item disabled><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
-                <b-nav-item disabled><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+            <span class="nav-disabled" style="display: none;cursor: not-allowed;">
+                <b-nav-item disabled><a><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+                <b-nav-item disabled><a><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
+                <b-nav-item disabled><a><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
             </span>
 
             <!-- <hr class="nav">
@@ -98,7 +98,7 @@
             letter-spacing: 0.3px
             color: rgba(255, 255, 255, 0.2)
             pointer-events: none
-            // opacity: 0.5
+            cursor: not-allowed
 
         li.nav-item a svg
             margin-right: 5px
