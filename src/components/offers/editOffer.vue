@@ -275,8 +275,7 @@
             <b-col cols="3">
                 <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.v-danger.right.html="getBannedCountries()"
-                     title="Banned Countries"
+
                 >
                     <label class="pull-left">GEO Settings</label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
@@ -291,11 +290,13 @@
                                      :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                     >
                     </GeoRestrictions>
-                    <input type="text"
-                           class="condition__matches campaign custom-input"
-                           value="Custom (hover for list)"
-                           disabled
-                    >
+                    <div v-b-popover.hover.click.blur.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
+                        <input type="text"
+                            class="condition__matches campaign custom-input"
+                            value="Custom (hover for list)"
+                            disabled
+                        >
+                    </div>
                 </div>
             </b-col>
             <b-col cols="3">
