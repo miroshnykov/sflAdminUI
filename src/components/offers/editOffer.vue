@@ -275,7 +275,7 @@
             <b-col cols="3">
                 <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.right.html="getBannedCountries()"
+                     v-b-popover.hover.v-danger.right.html="getBannedCountries()"
                      title="Banned Countries"
                 >
                     <label class="pull-left">GEO Settings</label>
@@ -501,7 +501,7 @@
                 if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
                     let geoR = JSON.parse(this.getOffer[0].geoRules)
                     let geoCountry = geoR.geo.map(item => item.country)
-                    return geoCountry.join(',')
+                    return geoCountry.join(', ')
                 }
             },
             getLpURL() {
