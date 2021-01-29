@@ -75,7 +75,9 @@
                         {{props.row.nameLandingPage}}
                     </span>
                 </span>
-                    <button class="btn btn-link"
+                    <button
+                            @click="copyText(props.row.nameLandingPage)"
+                            class="btn btn-link"
                             v-b-tooltip.hover.right="'Copy URL to Clipboard'">
                         <i class="far fa-copy"></i>
                     </button>
