@@ -480,9 +480,8 @@
                     || JSON.stringify(this.getOfferGeoOrigin) !==JSON.stringify(this.getOfferGeo)
                     || JSON.stringify(this.getCustomLPRulesOrigin) !==JSON.stringify(this.getCustomLPRules)
                 ){
-                    document.querySelector('.nav-blockedSegments').style.display = 'none'
-                    document.querySelector('.nav-standardSegments').style.display = 'none'
-                    document.querySelector('.nav-customOffers').style.display = 'none'
+                    document.querySelector('.nav-active').style.display = 'none'
+                    document.querySelector('.nav-disabled').style.display = 'block'
                     return true
                 }
             },

@@ -2,9 +2,18 @@
     <div class="menu-nav">
         <b-nav vertical class="w-25">
             <a class="logo"></a>
-            <b-nav-item active class="nav-blockedSegments"><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
-            <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
-            <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+            <span class="nav-active">
+                <b-nav-item active class="nav-blockedSegments"><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+                <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
+                <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+            </span>
+
+            <span class="nav-disabled" style="display: none">
+                <b-nav-item disabled><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
+                <b-nav-item disabled><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
+                <b-nav-item disabled><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+            </span>
+
             <!-- <hr class="nav">
             <b-nav-item active><a @click="this.sflAdvertisers"><i class="far fa-sign-in-alt"></i> Go to SFL Advertisers</a></b-nav-item> -->
         </b-nav>
@@ -72,9 +81,10 @@
 
         .nav-link
             display: block
-            padding: 0rem
-            margin-left: 5px
+            padding: 1.5rem 0rem
+            margin-left: 0px
             margin-right: -15px
+            cursor: pointer
 
         a.nav-link.active
             font-size: 14px
@@ -87,6 +97,8 @@
             font-weight: 400
             letter-spacing: 0.3px
             color: rgba(255, 255, 255, 0.2)
+            pointer-events: none
+            // opacity: 0.5
 
         li.nav-item a svg
             margin-right: 5px
