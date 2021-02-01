@@ -17,7 +17,9 @@
                 <div id="table-scroll">
 
                     <div v-if="getCountries.length !== 0" class="table-geo">
-                        <b-col cols="6" style="float: left" v-for="(country, index) in getCountries">
+                        <b-col cols="6" style="float: left" v-for="(country, index) in getCountries"
+                               :key="index"
+                        >
                             <p>
                                 <input
                                         :id="defineId(`countryCheckbox`,index)"
@@ -34,20 +36,6 @@
 
                 </div>
             </div>
-
-            <!--            <div v-if="getCountries.length !== 0" class="child-table">-->
-            <!--                <span>Country</span>-->
-            <!--                <table class="table table-striped child-row tableFixHead">-->
-            <!--                    <thead>-->
-            <!--                    <tr>-->
-            <!--                        <th scope="col">Name</th>-->
-            <!--                    </tr>-->
-            <!--                    </thead>-->
-            <!--                    <tr scope="row" v-for="country in getCountries">-->
-            <!--                        <td>{{ country.name }}</td>-->
-            <!--                    </tr>-->
-            <!--                </table>-->
-            <!--            </div>-->
 
             <b-row class="text-center">
                 <b-col cols="12">
