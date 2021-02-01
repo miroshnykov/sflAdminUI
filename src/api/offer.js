@@ -12,6 +12,7 @@ const getOffer = async (id) => {
                                 id
                                 name
                                 advertiser
+                                verticals
                                 conversionType
                                 status
                                 payIn
@@ -106,6 +107,7 @@ const saveOffer = async (data) => {
 
     const {
         advertiser,
+        verticals,
         conversionType,
         geoRules,
         customLPRules,
@@ -156,6 +158,7 @@ const saveOffer = async (data) => {
                                 id:${id}
                                 name:"${name}"
                                 advertiser:"${advertiser}"
+                                verticals:"${verticals}"
                                 conversionType:"${conversionType}"
                                 geoRules:"${geoRulesReFormat}"
                                 customLPRules:"${customLPRulesReFormat}"
