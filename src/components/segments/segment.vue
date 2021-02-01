@@ -25,9 +25,6 @@
 
                         </span>
                         {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
-
-                        <!--                <span v-bind:title="getTitle(segment)" v-bind:class="getClass(segment)" @click="toggleState(segment)">⭕️</span>-->
-                        <!--                <span v-if="segment.isDefault" class="segment__default">(Default)</span>-->
                     </h1>
 
                 </b-col>
@@ -412,6 +409,15 @@
     .segment.segment__draggable, .segmentInActive.segment__draggable {
         cursor: grab;
         height: auto;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease; 
+        transition: all 0.3s ease;
+    }
+
+    .segment.segment__collapsed {
+        height: 55px !important;
         -webkit-transition: all 0.3s ease;
         -o-transition: all 0.3s ease;
         -moz-transition: all 0.3s ease;
