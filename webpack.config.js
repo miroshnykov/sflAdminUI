@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const Dotenv = require('dotenv-webpack')
 const config = require('plain-config')()
 
-console.log("Config:",config)
+// console.log("Config:",config)
 module.exports = {
     // entry: './src/main.js',
     entry: ["@babel/polyfill", "./src/main.js"],

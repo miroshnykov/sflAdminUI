@@ -3,7 +3,7 @@
         <topbar></topbar>
         <menunav></menunav>
 
-        <h1 style="text-transform: capitalize">Edit Segment ({{this.$route.params.type}})</h1>
+        <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil" data-fa-transform="shrink-2"></i></span> Segment ({{this.$route.params.type}})</h2>
 
         <b-row class="text-center">
             <b-col cols="1">

@@ -3,9 +3,13 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
-        <h2>Editing: {{getOffer.length !==0 && getOffer[0].name}}</h2>
+        <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil"
+                                                               data-fa-transform="shrink-2"></i></span>
+            {{getOffer.length !==0 && getOffer[0].name}}</h2>
 
-        <label class="editMode" v-show="checkEditMode()">Edit MODE </label>
+        <label class="editMode" v-show="checkEditMode()"><i class="fas fa-exclamation-triangle"
+                                                            data-fa-transform="shrink-2"></i> You have unsaved
+            changes</label>
 
         <b-row class="text-center">
             <b-col cols="1">
@@ -35,12 +39,22 @@
             <b-col cols="3">
                 <div class="condition__controls">
                     <label>Advertiser</label>
+
                     <select
+                            :id="defineId(`advertiser`,id)"
                             class="condition__dimension-name condition__matches custom-select"
+                            @change="updValue($event, `advertiser`)"
                     >
-                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
+                        <option :value="null">-- Select advertiser --</option>
+                        <option
+                                v-for="{id, name} in getAdveritserList()"
+                                :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].advertiser || '')"
+                                :key="id"
+                        >{{name}}
+                        </option>
 
                     </select>
+
                 </div>
             </b-col>
 
@@ -48,11 +62,21 @@
                 <div class="condition__controls">
                     <label>Vertical</label>
                     <select
+                            :id="defineId(`verticals`,id)"
                             class="condition__dimension-name condition__matches custom-select"
+                            @change="updValue($event, `verticals`)"
                     >
-                        <option id="advertiserType">{{getOffer.length !==0 && getOffer[0].advertiser}}</option>
-                        <!-- TODO: Need to add Vertical field, like the mock -->
+                        <option :value="null">-- Select verticals --</option>
+                        <option
+                                v-for="{id, name} in getVerticalsList()"
+                                :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].verticals || '')"
+                                :key="id"
+                        >{{name}}
+                        </option>
+
                     </select>
+
+
                 </div>
             </b-col>
 
@@ -71,8 +95,6 @@
                                 :key="id"
                         >{{name}}
                         </option>
-
-                        <!-- TODO: Replace with the 4 status types (Public, Private, Apply to Run, Inactive) like the mock -->
 
                     </select>
                 </div>
@@ -275,8 +297,7 @@
             <b-col cols="3">
                 <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
                 <div class="condition__controls"
-                     v-b-popover.hover.focus.right.html="getBannedCountries()"
-                     title="Banned Countries"
+
                 >
                     <label class="pull-left">GEO Settings</label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
@@ -291,11 +312,13 @@
                                      :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                     >
                     </GeoRestrictions>
-                    <input type="text"
-                           class="condition__matches campaign custom-input"
-                           value="Custom (hover for list)"
-                           disabled
-                    >
+                    <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
+                        <input type="text"
+                               class="condition__matches campaign custom-input"
+                               value="Custom (hover for list)"
+                               disabled
+                        >
+                    </div>
                 </div>
             </b-col>
             <b-col cols="3">
@@ -353,16 +376,16 @@
             <b-col cols="3">
                 <div class="condition__controls">
                     <div class="pull-right">
-<!--                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable-->
-<!--                                  @click="showOfferAddLpModal(id)"-->
-<!--                        >-->
-<!--                            <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP-->
-<!--                        </b-button>-->
+                        <!--                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable-->
+                        <!--                                  @click="showOfferAddLpModal(id)"-->
+                        <!--                        >-->
+                        <!--                            <i class="far fa-plus" data-fa-transform="shrink-1"></i> Add LP-->
+                        <!--                        </b-button>-->
 
-<!--                        <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"-->
-<!--                                 :offerId="id"-->
-<!--                        >-->
-<!--                        </OfferLP>-->
+                        <!--                        <OfferLP :id="'modal_add_lp' + id" :ref="'modal_add_lp' + id"-->
+                        <!--                                 :offerId="id"-->
+                        <!--                        >-->
+                        <!--                        </OfferLP>-->
                     </div>
 
                     <label>Default LP {{getLPValue()}}</label>
@@ -446,7 +469,7 @@
                 'getCustomLPRulesOrigin',
             ]),
             ...mapGetters('offers', ['getOffers']),
-            ...mapGetters('lpOffers', ['getLpOffers'])
+            ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer'])
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
@@ -473,27 +496,15 @@
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
-            // getLpModify() {
-            //     return this.getLpOffers.map(item => {
-            //         item.value = item.id
-            //         item.text = `${item.name} (offerId-${item.offerId}) ${item.url}`
-            //         return item
-            //     })
-            // },
-            // getLpURL() {
-            //     return this.getLpOffers.map(item => {
-            //         item.value = item.id
-            //         item.text = `${item.url}`
-            //         return item.url
-            //     })
-            // },
-            checkEditMode(){
-
-                if  (JSON.stringify(this.getOfferOrigin) !==JSON.stringify(this.getOffer)
-                    || JSON.stringify(this.getOfferCapOrigin) !==JSON.stringify(this.getOfferCap)
-                    || JSON.stringify(this.getOfferGeoOrigin) !==JSON.stringify(this.getOfferGeo)
-                    || JSON.stringify(this.getCustomLPRulesOrigin) !==JSON.stringify(this.getCustomLPRules)
-                ){
+            checkEditMode() {
+                if (JSON.stringify(this.getOfferOrigin) !== JSON.stringify(this.getOffer)
+                    || JSON.stringify(this.getOfferCapOrigin) !== JSON.stringify(this.getOfferCap)
+                    || JSON.stringify(this.getCheckSumLpOffer) !== JSON.stringify(this.getLpOffers)
+                    || JSON.stringify(this.getOfferGeoOrigin) !== JSON.stringify(this.getOfferGeo)
+                    || JSON.stringify(this.getCustomLPRulesOrigin) !== JSON.stringify(this.getCustomLPRules)
+                ) {
+                    document.querySelector('.nav-active').style.display = 'none'
+                    document.querySelector('.nav-disabled').style.display = 'block'
                     return true
                 }
             },
@@ -501,7 +512,7 @@
                 if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
                     let geoR = JSON.parse(this.getOffer[0].geoRules)
                     let geoCountry = geoR.geo.map(item => item.country)
-                    return geoCountry.join(',')
+                    return geoCountry.join(', ')
                 }
             },
             getLpURL() {
@@ -581,6 +592,7 @@
                         showConfirmButton: false,
                         timer: 1000
                     })
+                    location.reload()
                 } else {
                     this.$swal.fire({
                         title: 'Offer save errors',
@@ -642,6 +654,20 @@
                     {id: 1, name: 'Private'},
                     {id: 2, name: 'Apply to Run'},
                     {id: 3, name: 'Inactive'},
+                ]
+            },
+            getAdveritserList() {
+                return [
+                    {id: 0, name: 'FFM-Online'},
+                    {id: 1, name: 'Milkbox'},
+                ]
+            },
+            getVerticalsList() {
+                return [
+                    {id: 0, name: 'Multimedia'},
+                    {id: 1, name: 'Mobile'},
+                    {id: 2, name: 'Adult'},
+                    {id: 3, name: 'Software'},
                 ]
             },
         },

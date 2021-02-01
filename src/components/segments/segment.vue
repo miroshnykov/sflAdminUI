@@ -93,6 +93,7 @@
 
             <b-badge variant="light"
                      v-for="lp in segment.lp"
+                     :key = "lp.id"
                      v-b-modal.modal-edit-lp
             >
 
