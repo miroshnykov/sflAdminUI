@@ -600,6 +600,7 @@
                 }).then((result) => {
                     if (result.value) {
                         this.$router.push("/offers")
+                        location.reload()
                     }
                 })
             },
