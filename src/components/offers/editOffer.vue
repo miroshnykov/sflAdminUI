@@ -605,6 +605,31 @@
                 })
             },
             async saveOffer() {
+                let offerData = this.getOffer
+                let emptyKey = []
+                offerData.forEach(item => {
+                    let keys = Object.keys(item)
+                    keys.forEach(key => {
+                        if (
+                            key === 'geoRules' ||
+                            key === 'customLPRules' ||
+                            key === 'offerIdRedirect'
+                        ) {
+                            return
+                        }
+                        if (Number(item[key]) === 0) {
+                            emptyKey.push(key)
+                        }
+                    })
+                })
+                if (emptyKey.length !== 0) {
+                    this.$swal.fire({
+                        title: 'Validation Error',
+                        text: `Fields: ${JSON.stringify(emptyKey)} is empty `,
+                    })
+                    return
+                }
+
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
                 if (id) {
                     this.$swal.fire({
