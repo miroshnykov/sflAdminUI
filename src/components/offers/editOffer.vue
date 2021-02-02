@@ -3,6 +3,10 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
+        <b-button v-show="checkEditMode()" class="btn-cancel-edit" @click="this.cancelEdit">
+            <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
+        </b-button>
+
         <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil"
                                                                data-fa-transform="shrink-2"></i></span>
             {{getOffer.length !==0 && getOffer[0].name}}</h2>
@@ -428,8 +432,9 @@
         </b-row>
 
         <b-button class="btn-save" @click="this.saveOffer">
-            <i class="fad fa-save"></i> Save Changes
+            <i class="fas fa-save" data-fa-transform="shrink-2"></i> Save Changes
         </b-button>
+
     </div>
 </template>
 
@@ -582,7 +587,49 @@
             getCapsStatus(caps) {
                 return caps.length !== 0 && `Caps defined` || `No caps`
             },
+            async cancelEdit() {
+                this.$swal.fire({
+                    type: 'warning',
+                    title: 'Are you sure?',
+                    text: "Your changes will be discarded.",
+                    showCancelButton: true,
+                    confirmButtonColor: '#FFB946',
+                    cancelButtonColor: '#ACC3CF',
+                    confirmButtonText: 'Yes, exit',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$router.push("/offers")
+                        location.reload()
+                    }
+                })
+            },
             async saveOffer() {
+                let offerData = this.getOffer
+                let emptyKey = []
+                offerData.forEach(item => {
+                    let keys = Object.keys(item)
+                    keys.forEach(key => {
+                        if (
+                            key === 'geoRules' ||
+                            key === 'customLPRules' ||
+                            key === 'offerIdRedirect'
+                        ) {
+                            return
+                        }
+                        if (Number(item[key]) === 0) {
+                            emptyKey.push(key)
+                        }
+                    })
+                })
+                if (emptyKey.length !== 0) {
+                    this.$swal.fire({
+                        title: 'Validation Error',
+                        text: `Fields: ${JSON.stringify(emptyKey)} is empty `,
+                    })
+                    return
+                }
+
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
                 if (id) {
                     this.$swal.fire({

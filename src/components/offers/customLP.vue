@@ -68,7 +68,7 @@
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
-                    <th scope="col">Default LP</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Landing Page Name</th>
                     <th scope="col">Landing Page URL</th>
                     <th scope="col"></th>
@@ -76,14 +76,14 @@
                 </thead>
                 <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
                     <td>
-                        <label class="conversionType btn btn-secondary-">ID{{lp.id}}
+                        <label class="lpID btn btn-secondary-">ID: {{lp.id}}
                             <input
-                                    type="radio"
+                                    type="checkbox"
                                     :checked="checkDefault(lp.id)"
                                     name="radio"
                                     @change="setDefaultLp(lp.id)"
                             >
-                            <span class="conversionTypeCheckMark"></span>
+                            <!-- <span class="conversionTypeCheckMark"></span> -->
                         </label>
                     </td>
                     <td>
@@ -409,7 +409,7 @@
             vertical-align: middle
             border-top: 0px
 
-        label.conversionType.btn.btn-secondary-
+        label.conversionType.btn.btn-secondary-, label.lpID.btn.btn-secondary-
             margin-bottom: 0
 
 </style>
