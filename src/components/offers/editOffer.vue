@@ -3,6 +3,10 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
+        <b-button v-show="checkEditMode()" class="btn-cancel-edit" @click="this.cancelEdit">
+            <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
+        </b-button>
+
         <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil"
                                                                data-fa-transform="shrink-2"></i></span>
             {{getOffer.length !==0 && getOffer[0].name}}</h2>
@@ -429,9 +433,6 @@
 
         <b-button class="btn-save" @click="this.saveOffer">
             <i class="fas fa-save" data-fa-transform="shrink-2"></i> Save Changes
-        </b-button>
-        <b-button v-show="checkEditMode()" class="btn-cancel-edit" @click="this.cancelEdit">
-            <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
         </b-button>
 
     </div>
