@@ -3,10 +3,6 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
-        <b-button v-show="checkEditMode()" class="btn-add-line" @click="this.cancelEdit">
-            <i class="fad fa-trash-alt"></i> Cancel
-        </b-button>
-
         <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil"
                                                                data-fa-transform="shrink-2"></i></span>
             {{getOffer.length !==0 && getOffer[0].name}}</h2>
@@ -432,8 +428,12 @@
         </b-row>
 
         <b-button class="btn-save" @click="this.saveOffer">
-            <i class="fad fa-save"></i> Save Changes
+            Save Changes <i class="fas fa-save"></i> 
         </b-button>
+        <b-button v-show="checkEditMode()" class="btn-cancel-edit" @click="this.cancelEdit">
+            Cancel <i class="fas fa-times"></i>
+        </b-button>
+
     </div>
 </template>
 
@@ -590,11 +590,12 @@
                 this.$swal.fire({
                     type: 'warning',
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    text: "Your changes will be discarded.",
                     showCancelButton: true,
-                    confirmButtonColor: '#FE5D65',
+                    confirmButtonColor: '#FFB946',
                     cancelButtonColor: '#ACC3CF',
-                    confirmButtonText: 'Yes, exit it!'
+                    confirmButtonText: 'Yes, exit',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.value) {
                         this.$router.push("/offers")
