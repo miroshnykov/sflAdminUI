@@ -157,7 +157,7 @@
             getLpModify() {
                 return this.getLandingPages.map(item => {
                     item.value = item.id
-                    item.text = item.name + ' (' + item.productId + ') '
+                    item.text = item.name + ' (' + item.id + ') '
                     return item
                 })
             },
