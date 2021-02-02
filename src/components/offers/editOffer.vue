@@ -428,10 +428,10 @@
         </b-row>
 
         <b-button class="btn-save" @click="this.saveOffer">
-            Save Changes <i class="fas fa-save"></i> 
+            <i class="fas fa-save" data-fa-transform="shrink-2"></i> Save Changes
         </b-button>
         <b-button v-show="checkEditMode()" class="btn-cancel-edit" @click="this.cancelEdit">
-            Cancel <i class="fas fa-times"></i>
+            <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
         </b-button>
 
     </div>
