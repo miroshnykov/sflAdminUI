@@ -97,7 +97,7 @@
                 <span class="landing-page">
                     <span class="landing-page-name" v-if="lp.name.length<=29"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+lp.id + ' Weight:'+lp.weight">
-                         {{ lp.productId }} {{ lp.name }}
+                         {{ lp.lpId }} {{ lp.name }}
                     </span>
                     <span class="landing-page-name" v-if="lp.name.length>=30"
                           v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+ lp.id + ' Weight:'+lp.weight">
