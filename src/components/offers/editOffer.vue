@@ -3,6 +3,10 @@
         <TopBar></TopBar>
         <MenuNav></MenuNav>
 
+        <b-button v-show="checkEditMode()" class="btn-add-line" @click="this.cancelEdit">
+            <i class="fad fa-trash-alt"></i> Cancel
+        </b-button>
+
         <h2 class="title"><span class="editingMode">Editing <i class="far fa-pencil"
                                                                data-fa-transform="shrink-2"></i></span>
             {{getOffer.length !==0 && getOffer[0].name}}</h2>
@@ -581,6 +585,21 @@
             },
             getCapsStatus(caps) {
                 return caps.length !== 0 && `Caps defined` || `No caps`
+            },
+            async cancelEdit() {
+                this.$swal.fire({
+                    type: 'warning',
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#FE5D65',
+                    cancelButtonColor: '#ACC3CF',
+                    confirmButtonText: 'Yes, exit it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$router.push("/offers")
+                    }
+                })
             },
             async saveOffer() {
                 const {id} = await this.$store.dispatch('offer/saveOfferDb')
