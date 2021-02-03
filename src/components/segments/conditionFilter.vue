@@ -9,7 +9,7 @@
                 <button
                         class="filter__remove"
                         type="button"
-                        v-b-tooltip.hover.top="'Delete Condition'"
+                        v-b-tooltip.hover.bottomright="'Delete Condition'"
                         @click="deleteFilter(indexFilters)"
                 >
                     <i class="far fa-trash-alt"></i>
@@ -1413,8 +1413,8 @@
         margin: 15px 0;
         display: block;
         position: relative;
-        top: 40px;
-        left: 0px;
+        top: 50px;
+        left: -35px;
     }
 
     ._and span {

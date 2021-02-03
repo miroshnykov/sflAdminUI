@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
 
-        <section :class="getClassSegment(segment.status)" :id="segment.id"
+        <section :class="getClassSegment(segment.status)" :id="defineId(`segmentSectionId`,segment.id)"
                  @change="updateGroup($event, group)">
 
             <b-row class="text-center" align-v="center">
@@ -154,6 +154,9 @@
             };
         },
         methods: {
+            defineId(name, id) {
+                return `${name}-${id}`
+            },
             toggleDetails() {
                 this.detailsAreVisible = !this.detailsAreVisible;
             },
