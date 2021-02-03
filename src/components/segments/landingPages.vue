@@ -185,6 +185,10 @@
                     this.id = id
                     this.weight = weight
                 }
+                let segmentSectionEl = document.querySelector(`#segmentSectionId-${this.segmentId}`)
+                if (segmentSectionEl){
+                    segmentSectionEl.classList.remove("segment__draggable")
+                }
             },
             saveLp(data) {
                 let weightValue = document.querySelector(`#weight-${data.id}`).value
@@ -261,12 +265,17 @@
 
             },
             close() {
+                let segmentSectionEl = document.querySelector(`#segmentSectionId-${this.segmentId}`)
+                if (segmentSectionEl){
+                    segmentSectionEl.classList.add("segment__draggable")
+                }
                 this.visible = false
                 this.editMode = false
                 this.segmentId = 0
                 this.lpId = 0
                 this.id = 0
                 this.weight = 0
+
             },
             // async close () {
             //     this.visible = false
