@@ -1413,8 +1413,8 @@
         margin: 15px 0;
         display: block;
         position: relative;
-        top: 40px;
-        left: 0px;
+        top: 50px;
+        left: -35px;
     }
 
     ._and span {
