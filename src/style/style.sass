@@ -1190,6 +1190,7 @@ button.add-condition.condition-active
   // display: grid
   // margin-bottom: 2rem
   // justify-content: space-between
+  margin-left: 35px
 
   .row.align-items-center
     width: 100%
@@ -1834,11 +1835,17 @@ button.applyBtn.btn.btn-sm.btn-success
   padding: .25rem .5rem
   color: #fff
   text-align: center
-  background-color: #3A3852
+  background-color: #3A3852 !important
   border-radius: .25rem
 
 .bs-tooltip-auto[x-placement^=top] .arrow:before, .bs-tooltip-top .arrow:before
-  border-top-color: #3A3852
+  border-top-color: #3A3852 !important
+
+.bs-tooltip-bottom .arrow:before
+  border-bottom-color: #3A3852 !important
+
+.bs-tooltip-right .arrow:before
+  border-right-color: #3A3852 !important
 
 /* Animations */
 @-webkit-keyframes fadeIn

@@ -9,7 +9,7 @@
                 <button
                         class="filter__remove"
                         type="button"
-                        v-b-tooltip.hover.top="'Delete Condition'"
+                        v-b-tooltip.hover.bottomright="'Delete Condition'"
                         @click="deleteFilter(indexFilters)"
                 >
                     <i class="far fa-trash-alt"></i>
