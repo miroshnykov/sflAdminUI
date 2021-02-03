@@ -157,7 +157,7 @@
                 <tr scope="row">
                     <td>
                         <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
-                            <i class="far fa-plus"></i> Add Landing Pages
+                            <i class="far fa-plus"></i> Add LP
                         </b-button>
                     </td>
                 </tr>
