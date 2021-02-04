@@ -81,7 +81,8 @@
             </b-row>
 
             <b-row class="clicks-redirect text-center" style="margin-top: -20px">
-                <b-col cols="3">
+                <!-- Hide for now -->
+                <!-- <b-col cols="3">
                     <div class="condition__controls">
                         <label for="label-period">Redirect</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -99,13 +100,13 @@
                             </label>
                         </div>
                     </div>
-                </b-col>
+                </b-col> -->
                 <b-col cols="6">
                     <div class="condition__controls">
-                        <label><span class="hidden">clicksRedirectOfferId</span> &nbsp;</label>
+                        <label>Redirects to</label>
                         <model-select
                                 :options="getOffersList()"
-                                placeholder="Search landing page..."
+                                placeholder="Search or select landing page..."
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                         >
@@ -190,7 +191,8 @@
             </b-row>
 
             <b-row class="clicks-redirect text-center" style="margin-top: -20px">
-                <b-col cols="3">
+                <!-- Hide for now -->
+                <!-- <b-col cols="3">
                     <div class="condition__controls">
                         <label for="label-period">Redirect</label>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -208,13 +210,13 @@
                             </label>
                         </div>
                     </div>
-                </b-col>
+                </b-col> -->
                 <b-col cols="6">
                     <div class="condition__controls">
-                        <label><span class="hidden">salesRedirectOfferId</span> &nbsp;</label>
+                        <label>Redirects to</label>
                         <model-select
                                 :options="offers"
-                                placeholder="Search landing page..."
+                                placeholder="Search or select landing page..."
                                 :value="offerCap && offerCap[0].salesRedirectOfferId|| 0"
                                 @input="updateCap($event,`salesRedirectOfferId`)"
                         >
@@ -228,8 +230,8 @@
 
             <b-row class="text-center modal-footer-1">
                 <b-col cols="12">
-                    <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp()">
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveLp()">
                         Add or Update
                     </button>
                 </b-col>
