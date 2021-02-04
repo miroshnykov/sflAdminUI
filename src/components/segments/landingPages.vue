@@ -86,8 +86,8 @@
 
             <b-row class="text-center">
                 <b-col cols="12">
-                    <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp(segment)">
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveLp(segment)">
                         Save
                     </button>
                 </b-col>

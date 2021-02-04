@@ -121,7 +121,7 @@
                         > Android
                         </label> -->
 
-                        <label class="conversionType btn btn-secondary-">CPI
+                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per install'">CPI
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpi`)"
@@ -130,7 +130,7 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">CPA
+                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per action'">CPA
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpa`)"
@@ -139,7 +139,7 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">CPL
+                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per lead'">CPL
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpl`)"
@@ -148,7 +148,7 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">CPC
+                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per click'">CPC
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpc`)"
@@ -157,7 +157,7 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">CPM
+                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per mille or thousand'">CPM
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpm`)"
@@ -238,7 +238,7 @@
                 <h2>Custom Pay-in/Pay-out</h2>
             </b-col>
             <b-col cols="2">
-                <b-button variant="light" class="btn-add-line" @click="">
+                <b-button variant="light" class="btn-add-line btn-grey" v-b-tooltip.hover.bottom.html="'Coming Soon'">
                     <i class="far fa-cog"></i> Customize
                 </b-button>
             </b-col>
@@ -299,11 +299,8 @@
             </b-col>
 
             <b-col cols="3">
-                <!-- TODO: Add a preview list (that looks cleaner) to show which countries are banned -->
-                <div class="condition__controls"
-
-                >
-                    <label class="pull-left">GEO Settings</label>
+                <div class="condition__controls">
+                    <label class="pull-left">GEO Settings <span class="question" v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i class="fad fa-question-circle"></i></span></label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
                               @click="showGeoRestrictionsModal(id)"
                     >
@@ -319,7 +316,7 @@
                     <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
                         <input type="text"
                                class="condition__matches campaign custom-input"
-                               value="Custom (hover for list)"
+                               :value="getBannedCountriesStatus()"
                                disabled
                         >
                     </div>
@@ -343,12 +340,14 @@
                     >
                     </Caps>
 
+                    <!-- Add tooltip for showing Caps -->
+                    <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
                     <input type="text"
                            class="condition__matches campaign custom-input"
                            :value="getCapsStatus(getOfferCap)"
                            disabled
                     >
-
+                    </div>
 
                 </div>
             </b-col>
@@ -399,7 +398,7 @@
                             placeholder="Search landing page..."
                             :value="getLPValue()"
                             @input="updValue($event,`defaultLp`)"
-                            v-b-popover.hover.focus.right.html="getLpURL()"
+                            v-b-tooltip.hover.focus.bottom.html="getLpURL()"
                     >
                     </model-select>
 
@@ -520,8 +519,18 @@
                     return geoCountry.join(', ')
                 }
             },
+            getBannedCountriesStatus() {
+                if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
+                    let geoR = JSON.parse(this.getOffer[0].geoRules)
+                    let geoCountry = geoR.geo.map(item => item.country)
+                    return `Custom (Hover for banned countries)`
+                } else {
+                    return `Banned Countries (hover for list)`
+                }
+                // return this.getOffer.length !== 0 && `Allow all countries`
+                // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
+            },
             getLpURL() {
-
                 if (this.getOffer.length !== 0) {
 
                     let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
@@ -585,7 +594,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps.length !== 0 && `Caps defined` || `No caps`
+                return caps.length !== 0 && `Enabled` || `Disabled`
             },
             async cancelEdit() {
                 this.$swal.fire({
@@ -596,7 +605,8 @@
                     confirmButtonColor: '#FFB946',
                     cancelButtonColor: '#ACC3CF',
                     confirmButtonText: 'Yes, exit',
-                    cancelButtonText: 'Cancel'
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true,
                 }).then((result) => {
                     if (result.value) {
                         this.$router.push("/offers")
@@ -642,9 +652,9 @@
                     location.reload()
                 } else {
                     this.$swal.fire({
-                        title: 'Offer save errors',
+                        title: 'Offer failed to save',
                         type: 'error',
-                        text: 'Please check backend errors ',
+                        text: 'Please check backend errors',
                         confirmButtonColor: '#2ED47A',
                     })
                 }

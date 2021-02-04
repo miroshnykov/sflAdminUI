@@ -116,6 +116,7 @@
                     confirmButtonColor: '#2ED47A',
                     cancelButtonColor: '#E3EEF4',
                     showCancelButton: true,
+                    reverseButtons: true,
                     confirmButtonText: '<i class="fas fa-check"></i>',
                     cancelButtonText: '<i class="fas fa-times"></i>',
                     backdrop: `

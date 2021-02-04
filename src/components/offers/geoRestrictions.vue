@@ -73,8 +73,8 @@
 
             <b-row class="text-center modal-footer-1">
                 <b-col cols="12">
-                    <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left" @click="saveLp(geoId)">
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveLp(geoId)">
                         Save
                     </button>
                 </b-col>

@@ -214,7 +214,8 @@
                     showCancelButton: true,
                     confirmButtonColor: '#FE5D65',
                     cancelButtonColor: '#ACC3CF',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, delete',
+                    reverseButtons: true,
                 }).then((result) => {
                     if (result.value) {
 
@@ -275,6 +276,7 @@
                     confirmButtonColor: '#2ED47A',
                     cancelButtonColor: '#E3EEF4',
                     showCancelButton: true,
+                    reverseButtons: true,
                     confirmButtonText: '<i class="fas fa-check"></i>',
                     cancelButtonText: '<i class="fas fa-times"></i>',
                     backdrop: `
