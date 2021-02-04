@@ -259,7 +259,8 @@
                     showCancelButton: true,
                     confirmButtonColor: '#FE5D65',
                     cancelButtonColor: '#ACC3CF',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, delete',
+                    reverseButtons: true,
                 }).then((result) => {
                     if (result.value) {
 
@@ -307,7 +308,8 @@
                     showCancelButton: true,
                     confirmButtonColor: '#FE5D65',
                     cancelButtonColor: '#ACC3CF',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, delete',
+                    reverseButtons: true,
                 }).then((result) => {
                     if (result.value) {
 

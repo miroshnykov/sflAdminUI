@@ -157,7 +157,7 @@
                 <tr scope="row">
                     <td>
                         <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
-                            <i class="far fa-plus"></i> Add Landing Pages
+                            <i class="far fa-plus"></i> Add LP
                         </b-button>
                     </td>
                 </tr>
@@ -166,11 +166,8 @@
 
             <b-row class="text-center">
                 <b-col cols="12">
-                    <button type="button" class="btn btn-cancel btn-secondary pull-right" @click="close">Cancel</button>
-                    <button type="button" class="btn btn-savebucket btn-primary pull-left"
-                            @click="saveCustomLP(customLPRules)">
-                        Save
-                    </button>
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveCustomLP(customLPRules)">Save</button>
                 </b-col>
             </b-row>
 
@@ -401,8 +398,8 @@
             border: 1px solid red
 
         .table th, .table td
-            color: #555
-            font-size: 14px
+            color: #7F98A5
+            font-size: 16px
             font-weight: 600
             letter-spacing: 0.3px
             padding: 1rem 1rem

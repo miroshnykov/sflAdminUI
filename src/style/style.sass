@@ -348,43 +348,6 @@ td .text-muted
 #totalClicks
   line-height: 2rem
 
-/* TARGETING */
-button.btn.btn-add-line.btn-secondary
-  background: #36B8E1
-  width: auto
-  font-size: 10px
-  letter-spacing: 1px
-  height: 30px
-  padding: 0px 20px
-  border-radius: 4px
-// float: right
-
-button.btn.btn-add-line.btn-light
-  color: #36B8E1
-  background: transparent
-  width: auto !important
-  font-size: 12px
-  letter-spacing: 0.5px
-  height: 30px
-  padding: 0px
-  border-radius: 4px
-  text-transform: none
-  float: right
-
-button.btn.btn-allow-ban-all.btn-light
-  color: grey
-  background: transparent
-  width: auto !important
-  font-size: 12px
-  letter-spacing: 0.5px
-  height: 30px
-  padding: 0px
-  text-transform: none
-  margin-right: 20px
-
-  &:hover
-    color: #36B8E1
-
 /* SEARCH BAR */
 input.search-box
   padding: 10px 20px
@@ -498,6 +461,7 @@ button.btn
     &:hover
       background-size: 150%
       box-shadow: 0 0 8px #28cde1
+      background: #2294D0
 
     &.btn-sm
       max-width: 90px
@@ -705,6 +669,46 @@ button.btn
     color: #fe5d65
     background: transparent
 
+.btn-grey
+  color: #ACC3CF !important
+  cursor: not-allowed !important
+
+button.btn.btn-add-line.btn-secondary
+  background: #36B8E1
+  width: auto
+  font-size: 10px
+  letter-spacing: 1px
+  height: 30px
+  padding: 0px 20px
+  border-radius: 4px
+// float: right
+
+button.btn.btn-add-line.btn-light
+  color: #36B8E1
+  background: transparent
+  width: auto !important
+  font-size: 12px
+  letter-spacing: 0.5px
+  height: 30px
+  padding: 0px
+  border-radius: 4px
+  text-transform: none
+  float: right
+
+button.btn.btn-allow-ban-all.btn-light
+  color: grey
+  background: transparent
+  width: auto !important
+  font-size: 12px
+  letter-spacing: 0.5px
+  height: 30px
+  padding: 0px
+  text-transform: none
+  margin-right: 20px
+
+  &:hover
+    color: #36B8E1
+
 /* Dropdown Button */
 .dropdown-toggle
   white-space: nowrap
@@ -891,7 +895,29 @@ tr
 
 .lp-table
   line-height: 14px !important
-  padding: 1rem 0.5rem !important
+  padding: 0.5rem 1rem !important
+  border: 2px solid #E3EEF4
+  border-radius: 7px
+  border-collapse: initial
+  overflow: scroll
+
+  thead tr th
+    text-align: left
+    border-bottom: 2px solid #E3EEF4
+    border-color: #E3EEF4
+    line-height: 2rem
+
+  .table th, .table td
+    color: #7F98A5
+    font-size: 16px
+    font-weight: 600
+    letter-spacing: 0.3px
+    padding: 0.5rem 1rem 0.5rem 1rem
+    vertical-align: middle
+    border-top: 0px
+
+  .table tr
+    padding: 1rem 1rem
 
 .child-table
   width: 100%
@@ -1096,20 +1122,38 @@ h2.swal2-title
   text-align: center
   text-transform: uppercase
   color: #fff
-  font-size: 11px
+  font-size: 13px !important
   font-weight: 600
-  letter-spacing: 2px
-  border-radius: 50px !important
+  letter-spacing: 1px
+  border-radius: 7px !important
   cursor: pointer
+  transition: all 0.5s ease
 
-button.swal2-confirm.swal2-styled
+.swal2-confirm
   // background: linear-gradient(to right, hsl(160,61%,58%), hsl(144,65%,45%))
   // background-size: 100%
   border: 0
   transition: all 0.5s ease
+  float: right
 
   &:hover
     background-size: 300%
+
+.swal2-cancel
+  background: initial
+  background-color: #ACC3CF
+  transition: all 0.5s ease
+  float: left
+
+  &:hover
+    background-color: #7F98A5
+
+div#swal2-content
+  font-size: 16px
+  font-weight: 500
+  color: #7F98A5
+  letter-spacing: 0.3px
+  margin: 10px 0px 20px 0px
 
 /* Condition Filter */
 .condition-button-delete
@@ -1459,8 +1503,8 @@ select.add-condition.custom-select
 .select-items div:hover, .same-as-selected
   background-color: rgba(0, 0, 0, 0.1)
 
-/* Advertising Budget */
-a.question
+/* Question tooltip */
+a.question, span.question
   font-size: 16px
   cursor: pointer
 
@@ -1831,7 +1875,7 @@ button.applyBtn.btn.btn-sm.btn-success
   opacity: 1
 
 .tooltip-inner
-  max-width: 250px
+  max-width: 280px
   padding: .25rem .5rem
   color: #fff
   text-align: center
