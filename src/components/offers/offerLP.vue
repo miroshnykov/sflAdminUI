@@ -3,7 +3,7 @@
         <div class="modal-container" style="min-width: 35vw;max-width: 35vw;max-height: 50vh;padding: 0px 30px 0px 30px">
 
             <div class="modal-body">
-                <h1 class="title">Add Landing Page</h1>
+                <h1>Add Landing Page</h1>
 
                 <b-row class="text-center">
                     <b-col cols="6">
