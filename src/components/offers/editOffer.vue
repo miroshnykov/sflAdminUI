@@ -121,7 +121,8 @@
                         > Android
                         </label> -->
 
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per install'">CPI
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per install'">CPI
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpi`)"
@@ -130,7 +131,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per action'">CPA
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per action'">CPA
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpa`)"
@@ -139,7 +141,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per lead'">CPL
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per lead'">CPL
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpl`)"
@@ -148,7 +151,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per click'">CPC
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per click'">CPC
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpc`)"
@@ -157,11 +161,21 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per mille or thousand'">CPM
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per mille or thousand'">CPM
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpm`)"
                                     @change="updValue(`cpm`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">revShare
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`revShare`)"
+                                    @change="updValue(`revShare`, `conversionType`)"
                                     name="radio"
                             >
                             <span class="conversionTypeCheckMark"></span>
@@ -179,6 +193,24 @@
 
                 </div>
             </b-col>
+            <label v-show="checkConversionType(`revShare`)">payoutPercent
+            </label>
+            <input type="text"
+                   class="condition__matches campaign custom-input"
+                   :value="getOffer.length !==0 && getOffer[0].payoutPercent"
+                   @change="updValue($event, `payoutPercent`)"
+                   v-show="checkConversionType(`revShare`)"
+            >
+
+            <label v-show="checkConversionType(`hybrid/multistep`)">isCpmOptionEnabled
+            </label>
+            <input type="checkbox"
+                   class="condition__matches campaign custom-input"
+                   :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                   :checked="getOffer[0].isCpmOptionEnabled"
+                   @change="updValue($event, `isCpmOptionEnabled`)"
+                   v-show="checkConversionType(`hybrid/multistep`)"
+            >
 
 
             <!--            <b-col cols="3">-->
@@ -300,7 +332,9 @@
 
             <b-col cols="3">
                 <div class="condition__controls">
-                    <label class="pull-left">GEO Settings <span class="question" v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i class="fad fa-question-circle"></i></span></label>
+                    <label class="pull-left">GEO Settings <span class="question"
+                                                                v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i
+                            class="fad fa-question-circle"></i></span></label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
                               @click="showGeoRestrictionsModal(id)"
                     >
@@ -342,11 +376,11 @@
 
                     <!-- Add tooltip for showing Caps -->
                     <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
-                    <input type="text"
-                           class="condition__matches campaign custom-input"
-                           :value="getCapsStatus(getOfferCap)"
-                           disabled
-                    >
+                        <input type="text"
+                               class="condition__matches campaign custom-input"
+                               :value="getCapsStatus(getOfferCap)"
+                               disabled
+                        >
                     </div>
 
                 </div>
@@ -588,9 +622,14 @@
 
                 } else {
                     obj.fieldName = name
-                    obj.value = event.target.value
+                    if (name === 'isCpmOptionEnabled') {
+                        obj.value = Number(event.target.checked)
+                    } else {
+                        obj.value = event.target.value
+                    }
                 }
 
+                debugger
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
@@ -623,6 +662,8 @@
                         if (
                             key === 'geoRules' ||
                             key === 'customLPRules' ||
+                            key === 'payoutPercent' ||
+                            key === 'isCpmOptionEnabled' ||
                             key === 'offerIdRedirect'
                         ) {
                             return

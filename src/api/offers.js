@@ -17,6 +17,8 @@ const getOffers = async () => {
                                 payOut
                                 dateAdded
                                 dateUpdated
+                                isCpmOptionEnabled
+                                payoutPercent
                                 defaultLandingPageId
                                 nameLandingPage 
                                 urlLandingPage

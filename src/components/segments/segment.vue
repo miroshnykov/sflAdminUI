@@ -39,6 +39,12 @@
                         <i class="far fa-trash-alt" data-fa-transform="shrink-1"></i>
                     </b-button>
 
+                    <b-button variant="light" @click="editNew(segment.id)" v-b-tooltip.hover.top="'Edit Segment New'"
+                              style="z-index:2">
+                        <i class="far fa-pencil-square-o" data-fa-transform="shrink-1"></i>
+                    </b-button>
+
+
                     <b-form-checkbox
                             class="active"
                             name="check-button"
@@ -234,6 +240,10 @@
             edit(id) {
                 let segmentType = this.$route.params.type
                 this.$router.push(`/segment/${segmentType}/${id}`)
+            },
+            editNew(id) {
+                let segmentType = this.$route.params.type
+                this.$router.push(`/segmentView/${segmentType}/${id}`)
             },
             async saveLp(segment) {
                 let res = await this.$store.dispatch('segment/updateLandingPage', segment)

@@ -5,7 +5,7 @@
 
             <b-row class="text-center">
                 <b-col cols="7">
-                    <h2>Rules &amp; Conditions</h2>
+                    <h2>Rules({{this.segmentRuleCount}}) &amp; Conditions({{this.segmentFilter.length}})</h2>
                 </b-col>
                 <b-col cols="2">
                     <b-button v-show="this.segmentRuleCount === 0" variant="secondary" class="btn-add-line"
