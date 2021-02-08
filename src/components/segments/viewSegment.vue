@@ -71,7 +71,8 @@
                 <th scope="col"></th>
             </tr>
             </thead>
-            <tr scope="row" v-for="segmentItem in this.getSegmentFilter">
+            <tr :id="defineRowId(segmentItem.position)" scope="row" v-for="segmentItem in this.getSegmentFilter">
+
                 <td>{{ JSON.stringify(segmentItem.position) }}</td>
                 <td>{{ JSON.stringify(segmentItem.segmentRuleIndex) }}</td>
                 <td>{{ JSON.stringify(segmentItem.dimensionName) }}</td>
@@ -109,6 +110,18 @@
         segmentFilter: [],
         async mounted() {
             await this.$store.dispatch('segment/saveSegmentConditionsStore', this.id)
+            let position = this.$route.params.position
+            if (position){
+                let positionMove = Number(position) - 5
+                const el = document.getElementById(`segmentRow-${positionMove}`)
+                el.scrollIntoView({behavior: "smooth"})
+
+                const elColor = document.getElementById(`segmentRow-${position}`)
+                elColor.style.background = 'azure'
+
+            }
+
+
             // await this.$store.dispatch('affiliates/saveAffiliatesStore')
             // await this.$store.dispatch('countries/saveCountriesStore')
             // await this.$store.dispatch('dimensions/saveDimensionsStore')
@@ -156,6 +169,9 @@
             },
             defineStatusId(id) {
                 return `status-${id}`
+            },
+            defineRowId(id) {
+                return `segmentRow-${id}`
             },
             defineSegmentNameId(id) {
                 return `segmentName-${id}`

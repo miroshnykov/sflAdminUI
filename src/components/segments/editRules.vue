@@ -266,7 +266,7 @@
         methods: {
             ...mapMutations('segments', ['searchFilter']),
             closeEdit(){
-                this.$router.push(`/segmentView/${this.$route.params.type}/${this.$route.params.id}`)
+                this.$router.push(`/segmentView/${this.$route.params.type}/${this.$route.params.id}/${this.$route.params.position}`)
             },
             getRules(field){
 

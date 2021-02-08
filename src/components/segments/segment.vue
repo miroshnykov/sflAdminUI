@@ -243,7 +243,7 @@
             },
             editNew(id) {
                 let segmentType = this.$route.params.type
-                this.$router.push(`/segmentView/${segmentType}/${id}`)
+                this.$router.push(`/segmentView/${segmentType}/${id}/0`)
             },
             async saveLp(segment) {
                 let res = await this.$store.dispatch('segment/updateLandingPage', segment)

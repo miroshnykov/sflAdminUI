@@ -37,7 +37,7 @@ export default new Router({
             component: editSegment
         },
         {
-            path: '/segmentView/:type/:id',
+            path: '/segmentView/:type/:id/:position',
             name: 'segment',
             component: viewSegment
         },
