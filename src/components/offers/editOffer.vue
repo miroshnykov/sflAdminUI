@@ -108,7 +108,7 @@
             </b-col>
 
 
-            <b-col cols="3">
+            <b-col cols="7">
                 <div class="campaign-block condition__controls">
                     <label for="label-platform">Conversion Flow Type</label>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -171,7 +171,7 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">revShare
+                        <label class="conversionType btn btn-secondary-">RevShare
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`revShare`)"
@@ -193,7 +193,60 @@
 
                 </div>
             </b-col>
-            <label v-show="checkConversionType(`revShare`)">payoutPercent
+
+            <b-col cols="2" v-show="checkConversionType(`revShare`)">
+                <div class="condition__controls">
+                    <label>RevShare Payout %</label>
+                    <input type="number"
+                        class="condition__matches campaign custom-input payoutPercent"
+                        :value="getOffer.length !==0 && getOffer[0].payoutPercent"
+                        @change="updValue($event, `payoutPercent`)"
+                        v-show="checkConversionType(`revShare`)"
+                        step=1
+                        min="0" max="100"
+                        onkeypress="
+                            return (
+                                event.charCode == 8
+                                || event.charCode == 0
+                                || event.charCode == 13
+                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        onpaste="return false"
+                        onkeyup="
+                            if(this.value === '' || parseInt(this.value)>100){
+                                this.value = 100
+                                return false
+                            }
+                        "
+                    >
+                </div>
+            </b-col>
+
+            <b-col cols="2" v-show="checkConversionType(`hybrid/multistep`)">
+                <div class="condition__controls">
+                    <!-- <label>Enable CPM Option</label>
+                    <input type="checkbox"
+                        class="condition__matches campaign custom-input"
+                        :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                        :checked="getOffer[0].isCpmOptionEnabled"
+                        @change="updValue($event, `isCpmOptionEnabled`)"
+                        v-show="checkConversionType(`hybrid/multistep`)"
+                    > -->
+                    <label>&nbsp;</label>
+                    <b-form-checkbox
+                        size="lg"
+                        type="checkbox"
+                        class="condition__matches campaign"
+                        :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                        :checked="getOffer[0].isCpmOptionEnabled"
+                        @change="updValue($event, `isCpmOptionEnabled`)"
+                        v-show="checkConversionType(`hybrid/multistep`)"
+                    >
+                    Enable CPM Option
+                    </b-form-checkbox>
+                </div>
+            </b-col>
+
+            <!-- <label v-show="checkConversionType(`revShare`)">RevShare Payout %
             </label>
             <input type="text"
                    class="condition__matches campaign custom-input"
@@ -210,7 +263,7 @@
                    :checked="getOffer[0].isCpmOptionEnabled"
                    @change="updValue($event, `isCpmOptionEnabled`)"
                    v-show="checkConversionType(`hybrid/multistep`)"
-            >
+            > -->
 
 
             <!--            <b-col cols="3">-->
@@ -301,8 +354,21 @@
                            @change="updValue($event, `payIn`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
-                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                    ">
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                            onkeypress="
+                                return (
+                                    event.charCode == 8
+                                    || event.charCode == 0
+                                    || event.charCode == 13
+                                ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            onpaste="return false"
+                            onkeyup="
+                                if(this.value === '' || parseInt(this.value)>100){
+                                    this.value = 100
+                                    return false
+                                }
+                            "
+                    >
                 </div>
             </b-col>
             <b-col cols="1">
@@ -316,8 +382,21 @@
                            @change="updValue($event, `payOut`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
-                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                    ">
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                            onkeypress="
+                                return (
+                                    event.charCode == 8
+                                    || event.charCode == 0
+                                    || event.charCode == 13
+                                ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            onpaste="return false"
+                            onkeyup="
+                                if(this.value === '' || parseInt(this.value)>100){
+                                    this.value = 100
+                                    return false
+                                }
+                            "
+                    >
                 </div>
             </b-col>
         </b-row>
@@ -771,7 +850,8 @@
         },
         data() {
             return {
-                id: Number(this.$route.params.id)
+                id: Number(this.$route.params.id),
+                selected: true,
             };
         }
     };
