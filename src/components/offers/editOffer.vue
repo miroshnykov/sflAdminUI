@@ -742,6 +742,7 @@
                             key === 'geoRules' ||
                             key === 'customLPRules' ||
                             key === 'payoutPercent' ||
+                            key === 'caps' ||
                             key === 'isCpmOptionEnabled' ||
                             key === 'offerIdRedirect'
                         ) {
