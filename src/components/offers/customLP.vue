@@ -76,7 +76,7 @@
                 </thead>
                 <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
                     <td>
-                        <label class="lpID btn btn-secondary-">ID: {{lp.id}}
+                        <label class="lpID btn btn-secondary-">{{lp.id}}
                             <input
                                     type="checkbox"
                                     :checked="checkDefault(lp.id)"
@@ -347,8 +347,8 @@
 
 
         .modal-container
-            min-width: 50vw
-            max-width: 50vw
+            min-width: 60vw
+            max-width: 60vw
             max-height: 80vh
             padding: 30px 30px 0px 30px
             background: #fff
