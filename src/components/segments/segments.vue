@@ -198,8 +198,8 @@
                 let toSend = []
                 let i
                 for (i = 0; i < el.length; ++i) {
-                    // console.log(`count:${i}, ID:${el[i].id}`)
-                    toSend.push({id: el[i].id, position: i})
+                    let segmentBlockId = Number(el[i].id.replace( /^\D+/g, ''))
+                    toSend.push({id: segmentBlockId, position: i})
                 }
 
                 console.log('to send:', toSend)
