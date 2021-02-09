@@ -109,11 +109,6 @@
             ...mapGetters('lp', ['getLandingPages']),
             ...mapGetters('countries', ['getCountries'])
         },
-        // async mounted() {
-        //    debugger
-        //     let rule = this.geoRules
-        //     debugger
-        // },
         methods: {
             ...mapMutations('offer', [
                 'changeGeo',

@@ -1,42 +1,28 @@
 <template>
-    <div id="editRules">
+    <!--    <div  v-if="visible" class="modal-container">-->
+    <!--  Modal content goes here -->
+    <!--        <slot></slot>-->
+    <div v-if="visible" class="modal-mask modal-transition">
+        <div class="modal-container">
 
-        <b-row class="editRules">
-            <b-col cols="10">
-                <h1>editRules</h1>
-            </b-col>
-            <b-col cols="2">
-                <div class="action-buttons">
-                    <b-button variant="link"
-                              @click="closeEdit"
-                              v-b-tooltip.hover.right="'Back to Fraud Review'">
-                        <i class="far fa-times"></i>
-                    </b-button>
-                </div>
-            </b-col>
+            <div class="modal-body">
+                <h1>condition edit</h1>
 
-            <b-col cols="12">
-                <p>Edit rule</p>
-            </b-col>
+                <p class="text-left">
+                    <label>Segment {{JSON.stringify(segmentItem)}} </label>
+                </p>
 
-            PARAMS {{JSON.stringify(this.$route.params)}}
-            EDIT RULES1 {{JSON.stringify(this.editRule)}}
-
-        </b-row>
-
-        <transition name="expand-down">
-
- <span
-         :id="defineId(`condition`,editRule.position)"
-         :ref="defineId(`condition`,editRule.position)"
-         class="condition__controls" :class="getEditingClass(editRule)"
- >
+                <span
+                        :id="defineId(`condition`,segmentItem.position)"
+                        :ref="defineId(`condition`,segmentItem.position)"
+                        class="condition__controls" :class="getEditingClass(segmentItem)"
+                >
                             <div class="condition-line">
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineId(`filtertype`,editRule.position)"
-                                        :ref="defineId(`filtertype`,editRule.position)"
-                                        @change="handleFilterType($event, editRule)"
+                                        :id="defineId(`filtertype`,segmentItem.position)"
+                                        :ref="defineId(`filtertype`,segmentItem.position)"
+                                        @change="handleFilterType($event, segmentItem)"
                                 >
 
                                   <!-- <option :value="null">-- Select Filter --</option> -->
@@ -54,11 +40,11 @@
 
                             <div class="condition-line">
                                   <select
-                                          :id="defineId(`dimension`,editRule.position)"
-                                          :ref="defineId(`dimension`,editRule.position)"
+                                          :id="defineId(`dimension`,segmentItem.position)"
+                                          :ref="defineId(`dimension`,segmentItem.position)"
                                           class="condition__dimension-name condition__matches custom-select"
-                                          @change="handleChangeDimension($event, editRule)"
-                                          :disabled="editRule.disabled"
+                                          @change="handleChangeDimension($event, segmentItem)"
+                                          :disabled="segmentItem.disabled"
                                   >
                                       <option :value="null">-- Select Dimension --</option>
 
@@ -79,15 +65,15 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getAffiliatesModify(editRule)"
-                                        @input="handleChangeAff($event,editRule )"
-                                        :id="defineId(`aff`,editRule.position)"
+                                        :options="getAffiliatesModify(segmentItem)"
+                                        @input="handleChangeAff($event,segmentItem )"
+                                        :id="defineId(`aff`,segmentItem.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getValue(editRule)
-                                        v-show="checkAff(editRule)"
+                                        :value=getValue(segmentItem)
+                                        v-show="checkAff(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkAff(editRule)" for="label-affiliate">Affiliate ID &amp; Name
+                                <label v-show="checkAff(segmentItem)" for="label-affiliate">Affiliate ID &amp; Name
                                 </label>
 
                             </div>
@@ -95,15 +81,15 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getProdsModify(editRule)"
-                                        @input="handleChangeProd($event, editRule)"
-                                        :id="defineId(`prod`,editRule.position)"
+                                        :options="getProdsModify(segmentItem)"
+                                        @input="handleChangeProd($event, segmentItem)"
+                                        :id="defineId(`prod`,segmentItem.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getValue(editRule)
-                                        v-show="checkProd(editRule)"
+                                        :value=getValue(segmentItem)
+                                        v-show="checkProd(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkProd(editRule)" for="label-prod">Prods ID &amp; Name
+                                <label v-show="checkProd(segmentItem)" for="label-prod">Prods ID &amp; Name
                                 </label>
 
                             </div>
@@ -112,10 +98,10 @@
 
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineId(`matchtype`,editRule.position)"
-                                        :ref="defineId(`matchtype`,editRule.position)"
-                                        @change="handleMatchType($event, editRule)"
-                                        v-show="editRule.dimensionName === 'affiliate_sub_campaign'"
+                                        :id="defineId(`matchtype`,segmentItem.position)"
+                                        :ref="defineId(`matchtype`,segmentItem.position)"
+                                        @change="handleMatchType($event, segmentItem)"
+                                        v-show="segmentItem.dimensionName === 'affiliate_sub_campaign'"
                                 >
                                     <!-- <option :value="null">-- Match type --</option> -->
                                     <option
@@ -133,78 +119,78 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getCountriesModify(editRule)"
-                                        @input="handleChangeCountry($event, editRule)"
-                                        :id="defineId(`country`,editRule.position)"
-                                        :ref="defineId(`country`,editRule.position)"
+                                        :options="getCountriesModify(segmentItem)"
+                                        @input="handleChangeCountry($event, segmentItem)"
+                                        :id="defineId(`country`,segmentItem.position)"
+                                        :ref="defineId(`country`,segmentItem.position)"
                                         class="condition__country condition__matches custom-select "
-                                        :class="getClassDisabled(editRule)"
-                                        :value="editRule.value.substr(editRule.value.indexOf('/')+1)"
-                                        v-show="checkCountry(editRule)"
+                                        :class="getClassDisabled(segmentItem)"
+                                        :value="segmentItem.value.substr(segmentItem.value.indexOf('/')+1)"
+                                        v-show="checkCountry(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkCountry(editRule)" for="label-country">Country</label>
+                                <label v-show="checkCountry(segmentItem)" for="label-country">Country</label>
 
                             </div>
 
 
                             <div class="condition-line">
                                 <select
-                                        :ref="defineId(`campaign`,editRule.position)"
+                                        :ref="defineId(`campaign`,segmentItem.position)"
                                         class="condition__campaign condition__matches custom-select"
-                                        @change="handleChangeCampaign($event, editRule)"
-                                        v-show="checkCampaign(editRule)"
+                                        @change="handleChangeCampaign($event, segmentItem)"
+                                        v-show="checkCampaign(segmentItem)"
                                 >
                                     <option :value="null">-- Select Campaign --</option>
                                     <option
-                                            v-for="{id, name} in getAffiliateCampaigns(editRule)"
+                                            v-for="{id, name} in getAffiliateCampaigns(segmentItem)"
                                             :value="id"
-                                            :selected="id === editRule.value || id === Number(editRule.value.substr(editRule.value.indexOf('/')+1))"
+                                            :selected="id === segmentItem.value || id === Number(segmentItem.value.substr(segmentItem.value.indexOf('/')+1))"
                                             :key="id"
                                     >{{name}}</option>
                                 </select>
-                                <label v-show="checkCampaign(editRule)" for="label-campaign">Campaign
+                                <label v-show="checkCampaign(segmentItem)" for="label-campaign">Campaign
                                 </label>
                             </div>
 
                             <div class="condition-line">
                                 <input type="text"
-                                       :id="defineId(`subcampaign`,editRule.position)"
-                                       :ref="defineId(`subcampaign`,editRule.position)"
+                                       :id="defineId(`subcampaign`,segmentItem.position)"
+                                       :ref="defineId(`subcampaign`,segmentItem.position)"
                                        placeholder="Sub Campaign Name"
                                        class="condition__matches custom-input"
-                                       :value="(editRule.dimensionName === 'affiliate_sub_campaign') && editRule.value.substr(editRule.value.indexOf('/')+1, 40) || ''"
-                                       v-show="checkSubCampaign(editRule)"
-                                       @change="handleChangeSubCampaign($event, editRule)"
+                                       :value="(segmentItem.dimensionName === 'affiliate_sub_campaign') && segmentItem.value.substr(segmentItem.value.indexOf('/')+1, 40) || ''"
+                                       v-show="checkSubCampaign(segmentItem)"
+                                       @change="handleChangeSubCampaign($event, segmentItem)"
                                 >
-                                <label v-show="checkSubCampaign(editRule)"
+                                <label v-show="checkSubCampaign(segmentItem)"
                                        for="label-sub-campaign">Sub Campaign</label>
                             </div>
 
                             <div class="condition-line">
 
                                 <input type="text"
-                                       :id="defineId(`website`,editRule.position)"
-                                       :ref="defineId(`website`,editRule.position)"
+                                       :id="defineId(`website`,segmentItem.position)"
+                                       :ref="defineId(`website`,segmentItem.position)"
                                        placeholder="Website"
                                        class="condition__matches custom-input"
-                                       :value="(editRule.dimensionName === 'website') && editRule.value||''"
-                                       v-show="checkWebsite(editRule)"
-                                       @change="handleChangeWebsite($event, editRule)"
+                                       :value="(segmentItem.dimensionName === 'website') && segmentItem.value||''"
+                                       v-show="checkWebsite(segmentItem)"
+                                       @change="handleChangeWebsite($event, segmentItem)"
                                 >
 
                                 <!--                                <model-select-->
                                 <!--                                        :options="getWebsitesModify()"-->
-                                <!--                                        @input="handleChangeWebsite($event, editRule)"-->
-                                <!--                                        :id="defineId(`website`,editRule.position)"-->
-                                <!--                                        :ref="defineId(`website`,editRule.position)"-->
+                                <!--                                        @input="handleChangeWebsite($event, segmentItem)"-->
+                                <!--                                        :id="defineId(`website`,segmentItem.position)"-->
+                                <!--                                        :ref="defineId(`website`,segmentItem.position)"-->
                                 <!--                                        class="condition__country condition__matches custom-select "-->
-                                <!--                                        v-show="checkWebsite(editRule)"-->
-                                <!--                                        :value="editRule.value"-->
+                                <!--                                        v-show="checkWebsite(segmentItem)"-->
+                                <!--                                        :value="segmentItem.value"-->
 
                                 <!--                                >-->
                                 <!--                                </model-select>-->
-                                <label v-show="checkWebsite(editRule)" for="label-website">Website</label>
+                                <label v-show="checkWebsite(segmentItem)" for="label-website">Website</label>
 
 
                             </div>
@@ -212,7 +198,7 @@
                             <div class="condition-button-delete">
                                   <button
                                           type="button"
-                                          @click="removeCondition(editRule.position)"
+                                          @click="removeCondition(segmentItem.position)"
                                           class="remove_condition"
                                           variant="danger"
                                           v-b-tooltip.hover.top="'Delete Rule'"
@@ -222,22 +208,44 @@
                             </div>
 
 
-<!--<b-button class="btn-save" @click="this.saveConditions">-->
-<!--                <i class="fad fa-save"></i> Save Changes-->
-<!--            </b-button>-->
+                    <!--<b-button class="btn-save" @click="this.saveConditions">-->
+                    <!--                <i class="fad fa-save"></i> Save Changes-->
+                    <!--            </b-button>-->
                         </span>
 
-        </transition>
+
+            </div>
+
+            <b-row class="text-center">
+                <b-col cols="12">
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveLp()">
+                        Save
+                    </button>
+                </b-col>
+            </b-row>
+
+            <div class="modal-footer">
+            </div>
+
+        </div>
     </div>
+
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex'
-    import 'bootstrap/dist/css/bootstrap.css'
     import {ModelSelect} from 'vue-search-select'
+    import {mapGetters} from 'vuex'
 
     export default {
-        name: 'edit-rules',
+        data() {
+            return {
+                visible: false,
+                id: 0,
+            }
+        },
+        props: ['segmentItem'],
+        components: {ModelSelect},
         computed: {
             ...mapGetters('segment', ['getSegmentFilter']),
             ...mapGetters('segments', ['getSegments']),
@@ -247,58 +255,104 @@
             ...mapGetters('dimensions', ['getDimensions']),
             ...mapGetters('campaigns', ['getAffiliateCampaigns']),
         },
-        components: {ModelSelect},
         async mounted() {
-            let arr = this.getSegmentFilter.filter(item => {
-                return item.position === Number(this.$route.params.position)
-            })
-
-            this.editRule = arr[0]
-
-            await this.$store.dispatch('segment/saveSegmentConditionsStore', this.$route.params.id)
             await this.$store.dispatch('dimensions/saveDimensionsStore')
-            if (this.editRule.dimensionId === 1) {
+            if (this.segmentItem.dimensionId === 1) {
                 await this.$store.dispatch('affiliates/saveAffiliatesStore')
             }
-            if (this.editRule.dimensionId === 2) {
+            if (this.segmentItem.dimensionId === 2) {
                 await this.$store.dispatch('countries/saveCountriesStore')
             }
-            if (this.editRule.dimensionId === 3) {
+            if (this.segmentItem.dimensionId === 3) {
                 await this.$store.dispatch('affiliates/saveAffiliatesStore')
                 await this.$store.dispatch('countries/saveCountriesStore')
             }
-            if (this.editRule.dimensionId === 4) {
-                 await this.$store.dispatch('prods/saveProdsStore')
+            if (this.segmentItem.dimensionId === 4) {
+                await this.$store.dispatch('prods/saveProdsStore')
             }
-            if (this.editRule.dimensionId === 5) {
+            if (this.segmentItem.dimensionId === 5) {
                 await this.$store.dispatch('affiliates/saveAffiliatesStore')
                 await this.$store.dispatch('campaigns/saveCampaignsStore')
             }
-            if (this.editRule.dimensionId === 6) {
+            if (this.segmentItem.dimensionId === 6) {
                 await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
             }
-            //
-            //
+            // await this.$store.dispatch('countries/saveCountriesStore')
             // await this.$store.dispatch('campaigns/saveCampaignsStore')
             // // await this.$store.dispatch('lp/saveLPStore')
             // await this.$store.dispatch('prods/saveProdsStore')
             // await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
-
-
         },
         methods: {
-            ...mapMutations('segments', ['searchFilter']),
-            ...mapMutations('segment', ['addCondition','updateField']),
-            closeEdit() {
-                this.$router.push(`/segmentView/${this.$route.params.type}/${this.$route.params.id}/${this.$route.params.position}`)
-            },
             getRules(field) {
+                return this.segmentItem[field]
+            },
+            getClassLp(id) {
+                return `condition__country condition__matches custom-select lpInput-${id}`
+            },
+            defineId(name, id) {
+                return `${name}-${id}`
+            },
+            getSumWeight(lp, currentLpId) {
+                let sum = 0
+                lp.map(item => {
+                    if (currentLpId !== item.lpId) {
+                        // console.log('LpItem:', JSON.stringify(item))
+                        sum = sum + item.weight
+                    }
+                })
+                return sum
+            },
+            updateTotalWeight(event, segment) {
+                let sumWeightEl = document.querySelector(`#sumWeight-${segment.id}`)
 
-                // let dim = this.editRule[field]
-                // if (field === 'dimensionId'){
-                //     debugger
-                // }
-                return this.editRule[field]
+                let sum = this.getSumWeight(segment.lp, this.lpId)
+                if (sumWeightEl) {
+                    let sumValue = sum + Number(event.target.value)
+                    sumWeightEl.value = sumValue
+                    if (sumValue > 100) {
+
+                        sumWeightEl.style.background = '#e42a33'
+                    } else {
+                        sumWeightEl.style.background = '#e3eef4'
+                    }
+
+                }
+            },
+            getLpModify() {
+                debugger
+                return this.getLandingPages.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
+            handleChangeLp(lpId, item) {
+                this.lpId = lpId
+                // let nameLp = this.getLandingPages.filter(i => {
+                //     return i.value === lpId
+                // })
+                // document.querySelector(`#lp-label-${item.id}`).textContent = `Choose LP:` + lpId + nameLp[0].text
+                // document.querySelector(`.lpInput-${item.id}`).style.background = 'white'
+            },
+            getAffiliatesModify() {
+                return this.getAffiliates.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
+            show() {
+                this.visible = true
+            },
+            saveLp(data) {
+
+                this.visible = false
+            },
+            close() {
+                this.visible = false
+                this.id = 0
+
             },
             getCountriesModify(item) {
 
@@ -832,7 +886,7 @@
                 item.dimensionName = `affiliate`
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate`)
 
-                let updateFieldData={}
+                let updateFieldData = {}
                 updateFieldData.value = item.value
                 updateFieldData.field = 'value'
                 this.updateField(updateFieldData)
@@ -1191,12 +1245,52 @@
                 item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_sub_campaign`)
 
             },
-        },
-
-        data() {
-            return {
-                editRule: []
-            }
-        },
+        }
     }
 </script>
+
+
+<style lang="sass">
+    .modal-mask
+        position: fixed
+        z-index: 9998
+        top: 0
+        left: 0
+        width: 100vw
+        height: 100vh
+        background-color: rgba(0, 0, 0, .7)
+        transition: opacity .3s ease
+        display: flex
+        align-items: center
+        justify-content: center
+        -webkit-app-region: no-drag
+        -webkit-user-drag: none
+
+
+        .modal-container
+            min-width: 50vw
+            max-width: 50vw
+            max-height: 80vh
+            padding: 30px 30px 0px 30px
+            background: #fff
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
+            transition: all .3s ease
+            overflow: auto
+            border-radius: 10px
+
+
+        .modal-body
+            margin: 20px 0
+
+
+        .modal-enter,
+        .modal-leave
+            opacity: 0
+
+
+        .modal-enter .modal-container,
+        .modal-leave .modal-container
+            transform: scale(1.1)
+
+
+</style>
