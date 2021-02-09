@@ -1,41 +1,36 @@
 <template>
-    <transition name="expand-down">
-        <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter">
-            <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
-            <div class="filter__controls">
-                <div class="error" style="display:none">Error validation message</div>
-                <div v-show="Number(indexFilters) !== 0" class="_and"><span>and</span></div>
+    <!--    <div  v-if="visible" class="modal-container">-->
+    <!--  Modal content goes here -->
+    <!--        <slot></slot>-->
+    <div v-if="visible" class="modal-mask modal-transition">
+        <div class="modal-container">
 
-                <button
-                        class="filter__remove"
-                        type="button"
-                        v-b-tooltip.hover.bottomright="'Delete Condition'"
-                        @click="deleteFilter(indexFilters)"
+            <div class="modal-body">
+                <h1>condition edit</h1>
+
+                <p class="text-left">
+                    <label>Segment {{JSON.stringify(segmentItem)}} </label>
+                </p>
+
+                <span
+                        :id="defineId(`condition`,segmentItem.position)"
+                        :ref="defineId(`condition`,segmentItem.position)"
+                        class="condition__controls" :class="getEditingClass(segmentItem)"
                 >
-                    <i class="far fa-trash-alt"></i>
-                </button>
-
-                <template v-for="item in this.segmentFilter">
-                    <template v-if="item.segmentRuleIndex === indexFilters">
-                        <span
-                                :id="defineId(`condition`,item.position)"
-                                :ref="defineId(`condition`,item.position)"
-                                class="condition__controls" :class="getEditingClass(item)"
-                        >
                             <div class="condition-line">
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineId(`filtertype`,item.position)"
-                                        :ref="defineId(`filtertype`,item.position)"
-                                        @change="handleFilterType($event, item)"
+                                        :id="defineId(`filtertype`,segmentItem.position)"
+                                        :ref="defineId(`filtertype`,segmentItem.position)"
+                                        @change="handleFilterType($event, segmentItem)"
                                 >
 
                                   <!-- <option :value="null">-- Select Filter --</option> -->
                                   <option
                                           id="filterType"
                                           v-for="{id, name} in getFilterList()"
+                                          :selected="id === getRules(`filterTypeId`)"
                                           :value="id"
-                                          :selected="id === item.filterTypeId"
                                           :key="id"
                                   >{{name}}
                                   </option>
@@ -45,18 +40,18 @@
 
                             <div class="condition-line">
                                   <select
-                                          :id="defineId(`dimension`,item.position)"
-                                          :ref="defineId(`dimension`,item.position)"
+                                          :id="defineId(`dimension`,segmentItem.position)"
+                                          :ref="defineId(`dimension`,segmentItem.position)"
                                           class="condition__dimension-name condition__matches custom-select"
-                                          @change="handleChangeDimension($event, item)"
-                                          :disabled="item.disabled"
+                                          @change="handleChangeDimension($event, segmentItem)"
+                                          :disabled="segmentItem.disabled"
                                   >
                                       <option :value="null">-- Select Dimension --</option>
 
                                       <option
                                               v-for="{id, name, displayedName} in getDimensions"
                                               :value="id"
-                                              :selected="id === item.dimensionId"
+                                              :selected="id === getRules(`dimensionId`)"
                                               :key="id"
 
                                       >{{name}}
@@ -70,15 +65,15 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getAffiliatesModify(item)"
-                                        @input="handleChangeAff($event, item)"
-                                        :id="defineId(`aff`,item.position)"
+                                        :options="getAffiliatesModify(segmentItem)"
+                                        @input="handleChangeAff($event,segmentItem )"
+                                        :id="defineId(`aff`,segmentItem.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getValue(item)
-                                        v-show="checkAff(item)"
+                                        :value=getValue(segmentItem)
+                                        v-show="checkAff(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkAff(item)" for="label-affiliate">Affiliate ID &amp; Name
+                                <label v-show="checkAff(segmentItem)" for="label-affiliate">Affiliate ID &amp; Name
                                 </label>
 
                             </div>
@@ -86,15 +81,15 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getProdsModify(item)"
-                                        @input="handleChangeProd($event, item)"
-                                        :id="defineId(`prod`,item.position)"
+                                        :options="getProdsModify(segmentItem)"
+                                        @input="handleChangeProd($event, segmentItem)"
+                                        :id="defineId(`prod`,segmentItem.position)"
                                         class="condition__affiliate condition__matches custom-select"
-                                        :value=getValue(item)
-                                        v-show="checkProd(item)"
+                                        :value=getValue(segmentItem)
+                                        v-show="checkProd(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkProd(item)" for="label-prod">Prods ID &amp; Name
+                                <label v-show="checkProd(segmentItem)" for="label-prod">Prods ID &amp; Name
                                 </label>
 
                             </div>
@@ -103,16 +98,16 @@
 
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
-                                        :id="defineId(`matchtype`,item.position)"
-                                        :ref="defineId(`matchtype`,item.position)"
-                                        @change="handleMatchType($event, item)"
-                                        v-show="item.dimensionName === 'affiliate_sub_campaign'"
+                                        :id="defineId(`matchtype`,segmentItem.position)"
+                                        :ref="defineId(`matchtype`,segmentItem.position)"
+                                        @change="handleMatchType($event, segmentItem)"
+                                        v-show="segmentItem.dimensionName === 'affiliate_sub_campaign'"
                                 >
                                     <!-- <option :value="null">-- Match type --</option> -->
                                     <option
                                             v-for="{id, name} in getMatchList()"
                                             :value="id"
-                                            :selected="id === item.matchTypeId"
+                                            :selected="id === getRules(`matchTypeId`)"
                                             :key="id"
                                     >{{name}}
 
@@ -124,78 +119,78 @@
                             <div class="condition-line">
 
                                 <model-select
-                                        :options="getCountriesModify(item)"
-                                        @input="handleChangeCountry($event, item)"
-                                        :id="defineId(`country`,item.position)"
-                                        :ref="defineId(`country`,item.position)"
+                                        :options="getCountriesModify(segmentItem)"
+                                        @input="handleChangeCountry($event, segmentItem)"
+                                        :id="defineId(`country`,segmentItem.position)"
+                                        :ref="defineId(`country`,segmentItem.position)"
                                         class="condition__country condition__matches custom-select "
-                                        :class="getClassDisabled(item)"
-                                        :value="item.value.substr(item.value.indexOf('/')+1)"
-                                        v-show="checkCountry(item)"
+                                        :class="getClassDisabled(segmentItem)"
+                                        :value="segmentItem.value.substr(segmentItem.value.indexOf('/')+1)"
+                                        v-show="checkCountry(segmentItem)"
                                 >
                                 </model-select>
-                                <label v-show="checkCountry(item)" for="label-country">Country</label>
+                                <label v-show="checkCountry(segmentItem)" for="label-country">Country</label>
 
                             </div>
 
 
                             <div class="condition-line">
                                 <select
-                                        :ref="defineId(`campaign`,item.position)"
+                                        :ref="defineId(`campaign`,segmentItem.position)"
                                         class="condition__campaign condition__matches custom-select"
-                                        @change="handleChangeCampaign($event, item)"
-                                        v-show="checkCampaign(item)"
+                                        @change="handleChangeCampaign($event, segmentItem)"
+                                        v-show="checkCampaign(segmentItem)"
                                 >
                                     <option :value="null">-- Select Campaign --</option>
                                     <option
-                                            v-for="{id, name} in getAffiliateCampaigns(item)"
+                                            v-for="{id, name} in getAffiliateCampaigns(segmentItem)"
                                             :value="id"
-                                            :selected="id === item.value || id === Number(item.value.substr(item.value.indexOf('/')+1))"
+                                            :selected="id === segmentItem.value || id === Number(segmentItem.value.substr(segmentItem.value.indexOf('/')+1))"
                                             :key="id"
                                     >{{name}}</option>
                                 </select>
-                                <label v-show="checkCampaign(item)" for="label-campaign">Campaign
+                                <label v-show="checkCampaign(segmentItem)" for="label-campaign">Campaign
                                 </label>
                             </div>
 
                             <div class="condition-line">
                                 <input type="text"
-                                       :id="defineId(`subcampaign`,item.position)"
-                                       :ref="defineId(`subcampaign`,item.position)"
+                                       :id="defineId(`subcampaign`,segmentItem.position)"
+                                       :ref="defineId(`subcampaign`,segmentItem.position)"
                                        placeholder="Sub Campaign Name"
                                        class="condition__matches custom-input"
-                                       :value="(item.dimensionName === 'affiliate_sub_campaign') && item.value.substr(item.value.indexOf('/')+1, 40) || ''"
-                                       v-show="checkSubCampaign(item)"
-                                       @change="handleChangeSubCampaign($event, item)"
+                                       :value="(segmentItem.dimensionName === 'affiliate_sub_campaign') && segmentItem.value.substr(segmentItem.value.indexOf('/')+1, 40) || ''"
+                                       v-show="checkSubCampaign(segmentItem)"
+                                       @change="handleChangeSubCampaign($event, segmentItem)"
                                 >
-                                <label v-show="checkSubCampaign(item)"
+                                <label v-show="checkSubCampaign(segmentItem)"
                                        for="label-sub-campaign">Sub Campaign</label>
                             </div>
 
                             <div class="condition-line">
 
                                 <input type="text"
-                                       :id="defineId(`website`,item.position)"
-                                       :ref="defineId(`website`,item.position)"
+                                       :id="defineId(`website`,segmentItem.position)"
+                                       :ref="defineId(`website`,segmentItem.position)"
                                        placeholder="Website"
                                        class="condition__matches custom-input"
-                                       :value="(item.dimensionName === 'website') && item.value||''"
-                                       v-show="checkWebsite(item)"
-                                       @change="handleChangeWebsite($event, item)"
+                                       :value="(segmentItem.dimensionName === 'website') && segmentItem.value||''"
+                                       v-show="checkWebsite(segmentItem)"
+                                       @change="handleChangeWebsite($event, segmentItem)"
                                 >
 
                                 <!--                                <model-select-->
                                 <!--                                        :options="getWebsitesModify()"-->
-                                <!--                                        @input="handleChangeWebsite($event, item)"-->
-                                <!--                                        :id="defineId(`website`,item.position)"-->
-                                <!--                                        :ref="defineId(`website`,item.position)"-->
+                                <!--                                        @input="handleChangeWebsite($event, segmentItem)"-->
+                                <!--                                        :id="defineId(`website`,segmentItem.position)"-->
+                                <!--                                        :ref="defineId(`website`,segmentItem.position)"-->
                                 <!--                                        class="condition__country condition__matches custom-select "-->
-                                <!--                                        v-show="checkWebsite(item)"-->
-                                <!--                                        :value="item.value"-->
+                                <!--                                        v-show="checkWebsite(segmentItem)"-->
+                                <!--                                        :value="segmentItem.value"-->
 
                                 <!--                                >-->
                                 <!--                                </model-select>-->
-                                <label v-show="checkWebsite(item)" for="label-website">Website</label>
+                                <label v-show="checkWebsite(segmentItem)" for="label-website">Website</label>
 
 
                             </div>
@@ -203,7 +198,7 @@
                             <div class="condition-button-delete">
                                   <button
                                           type="button"
-                                          @click="removeCondition(item.position, indexFilters)"
+                                          @click="removeCondition(segmentItem.position)"
                                           class="remove_condition"
                                           variant="danger"
                                           v-b-tooltip.hover.top="'Delete Rule'"
@@ -212,47 +207,153 @@
                                   </button>
                             </div>
 
-                            <div class="condition-button-or">
-                                <button
-                                        @click="addCondition(item.segmentRuleIndex)"
-                                        class="add-condition"
-                                        v-b-tooltip.hover.top="'Add OR condition'"
-                                        v-show="item.orAndDisabled"
-                                >
-                                    OR
-                                </button>
-                            </div>
 
-                            <div class="condition-button-and">
-                                <button
-                                        @click="addFilter(item)"
-                                        class="add-condition"
-                                        v-b-tooltip.hover.top="'Add AND condition'"
-                                        v-show="item.orAndDisabled"
-                                >
-                                    AND
-                              </button>
-                            </div>
-
-                            <div v-show="!item.orAndDisabled" class="_or"><span>or</span></div>
-
+                    <!--<b-button class="btn-save" @click="this.saveConditions">-->
+                    <!--                <i class="fad fa-save"></i> Save Changes-->
+                    <!--            </b-button>-->
                         </span>
-                    </template>
-                </template>
+
+
             </div>
-        </section>
-    </transition>
+
+            <b-row class="text-center">
+                <b-col cols="12">
+                    <button type="button" class="btn btn-cancel btn-secondary pull-left" @click="close">Cancel</button>
+                    <button type="button" class="btn btn-savebucket btn-primary pull-right" @click="saveLp()">
+                        Save
+                    </button>
+                </b-col>
+            </b-row>
+
+            <div class="modal-footer">
+            </div>
+
+        </div>
+    </div>
+
 </template>
 
 <script>
-    import {mapMutations, mapState, mapGetters} from 'vuex'
-    import {reFormatJSON} from '../../helpers'
     import {ModelSelect} from 'vue-search-select'
+    import {mapGetters} from 'vuex'
 
     export default {
-        name: "condition-filter",
-        props: ["filter", "indexFilters"],
+        data() {
+            return {
+                visible: false,
+                id: 0,
+            }
+        },
+        props: ['segmentItem'],
+        components: {ModelSelect},
+        computed: {
+            ...mapGetters('segment', ['getSegmentFilter']),
+            ...mapGetters('segments', ['getSegments']),
+            ...mapGetters('countries', ['getCountries']),
+            ...mapGetters('affiliates', ['getAffiliates']),
+            ...mapGetters('prods', ['getProds']),
+            ...mapGetters('dimensions', ['getDimensions']),
+            ...mapGetters('campaigns', ['getAffiliateCampaigns']),
+        },
+        async mounted() {
+            await this.$store.dispatch('dimensions/saveDimensionsStore')
+            if (this.segmentItem.dimensionId === 1) {
+                await this.$store.dispatch('affiliates/saveAffiliatesStore')
+            }
+            if (this.segmentItem.dimensionId === 2) {
+                await this.$store.dispatch('countries/saveCountriesStore')
+            }
+            if (this.segmentItem.dimensionId === 3) {
+                await this.$store.dispatch('affiliates/saveAffiliatesStore')
+                await this.$store.dispatch('countries/saveCountriesStore')
+            }
+            if (this.segmentItem.dimensionId === 4) {
+                await this.$store.dispatch('prods/saveProdsStore')
+            }
+            if (this.segmentItem.dimensionId === 5) {
+                await this.$store.dispatch('affiliates/saveAffiliatesStore')
+                await this.$store.dispatch('campaigns/saveCampaignsStore')
+            }
+            if (this.segmentItem.dimensionId === 6) {
+                await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+            }
+            // await this.$store.dispatch('countries/saveCountriesStore')
+            // await this.$store.dispatch('campaigns/saveCampaignsStore')
+            // // await this.$store.dispatch('lp/saveLPStore')
+            // await this.$store.dispatch('prods/saveProdsStore')
+            // await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+        },
         methods: {
+            getRules(field) {
+                return this.segmentItem[field]
+            },
+            getClassLp(id) {
+                return `condition__country condition__matches custom-select lpInput-${id}`
+            },
+            defineId(name, id) {
+                return `${name}-${id}`
+            },
+            getSumWeight(lp, currentLpId) {
+                let sum = 0
+                lp.map(item => {
+                    if (currentLpId !== item.lpId) {
+                        // console.log('LpItem:', JSON.stringify(item))
+                        sum = sum + item.weight
+                    }
+                })
+                return sum
+            },
+            updateTotalWeight(event, segment) {
+                let sumWeightEl = document.querySelector(`#sumWeight-${segment.id}`)
+
+                let sum = this.getSumWeight(segment.lp, this.lpId)
+                if (sumWeightEl) {
+                    let sumValue = sum + Number(event.target.value)
+                    sumWeightEl.value = sumValue
+                    if (sumValue > 100) {
+
+                        sumWeightEl.style.background = '#e42a33'
+                    } else {
+                        sumWeightEl.style.background = '#e3eef4'
+                    }
+
+                }
+            },
+            getLpModify() {
+                debugger
+                return this.getLandingPages.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
+            handleChangeLp(lpId, item) {
+                this.lpId = lpId
+                // let nameLp = this.getLandingPages.filter(i => {
+                //     return i.value === lpId
+                // })
+                // document.querySelector(`#lp-label-${item.id}`).textContent = `Choose LP:` + lpId + nameLp[0].text
+                // document.querySelector(`.lpInput-${item.id}`).style.background = 'white'
+            },
+            getAffiliatesModify() {
+                return this.getAffiliates.map(item => {
+                    item.value = item.id
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
+            show() {
+                this.visible = true
+            },
+            saveLp(data) {
+
+                this.visible = false
+            },
+            close() {
+                this.visible = false
+                this.id = 0
+
+            },
             getCountriesModify(item) {
 
                 // console.log(`Country:${JSON.stringify(item)}`)
@@ -328,7 +429,20 @@
             },
             getAffiliatesModify(item) {
 
+
+                // debugger
+                if (item.dimensionId === 1) {
+                    return this.getAffiliates.map(item => {
+                        item.value = item.id.toString()
+                        item.text = item.name + ' (' + item.id + ') '
+                        return item
+                    })
+                }
+
+                return
                 // console.log(`Affiliates:${JSON.stringify(item)}`)
+                // debugger
+                console.log('ITEM dimensionId:', item.dimensionId)
                 if (item.dimensionId === 0) {
                     let obj = []
                     obj.push({id: 0, name: '*** Add more items ***'})
@@ -483,6 +597,7 @@
             getEditingClass(item) {
                 // console.log(' >>>  getEditingClass item:')
                 // console.table(reFormatJSON(item))
+                if (item.length === 0) return
                 if (item.value.substr(item.value.indexOf('/') + 1, item.value.length) === ''
                     || item.value === ''
                     || item.dimensionId === 0
@@ -712,6 +827,7 @@
 
             },
             handleChangeDimension(event, item) {
+                debugger
                 let dimensionRef = `dimension-${item.position}`
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 console.log(`dimensionName:${dimensionName}`)
@@ -734,12 +850,13 @@
             },
             handleDimAff(event, item, self) {
 
+                debugger
                 let affRef = `aff-${item.position}`
                 let dimensionRef = `dimension-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let recCheck = self.validateValue(this.getSegmentFilter, event)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -755,7 +872,11 @@
                     return
                 }
                 let refCondition = `condition-${item.position}`
-                self.$refs[refCondition][0].style.background = null
+                debugger
+                // if (refCondition){
+                //     self.$refs[refCondition][0].style.background = null
+                // }
+
 
                 item.user = this.verifyTokenEmail
                 item.dateAdded = this.getCurrentDate()
@@ -765,6 +886,10 @@
                 item.dimensionName = `affiliate`
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate`)
 
+                let updateFieldData = {}
+                updateFieldData.value = item.value
+                updateFieldData.field = 'value'
+                this.updateField(updateFieldData)
                 // self.$refs[dimensionRef][0].disabled = true
                 // console.log(' !!!!!!!!!!!!!1 dimensionRef ',self.$refs[dimensionRef])
                 // console.log('disabled:', self.$refs[dimensionRef][0].disabled)
@@ -819,7 +944,7 @@
             handleDimAffCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let recCheck = self.validateValue(this.getSegmentFilter, event)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -869,7 +994,7 @@
             handleDimAffSubCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let recCheck = self.validateValue(this.getSegmentFilter, event)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -906,9 +1031,11 @@
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_sub_campaign`)
             },
             handleChangeAff(event, item) {
+                debugger
                 let dimensionRef = `dimension-${item.position}`
 
-                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                // let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let dimensionName = item.dimensionName
                 // console.log(' dimensionName', dimensionName)
 
                 let self = this
@@ -939,7 +1066,7 @@
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event)
+                let recCheck = this.validateValue(this.getSegmentFilter, event)
                 if (recCheck.length > 0) {
                     this.$swal.fire({
                         type: `warning`,
@@ -978,7 +1105,7 @@
                 let self = this
                 switch (dimensionName) {
                     case `country`:
-                        let recCheck = this.validateValue(this.segmentFilter, event)
+                        let recCheck = this.validateValue(this.getSegmentFilter, event)
                         if (recCheck.length > 0) {
                             this.$swal.fire({
                                 type: `warning`,
@@ -1025,7 +1152,7 @@
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let recCheck = this.validateValue(this.getSegmentFilter, event.target.value)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1058,7 +1185,7 @@
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let recCheck = this.validateValue(this.getSegmentFilter, event.target.value)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1093,7 +1220,7 @@
                 let refCondition = `condition-${item.position}`
                 this.$refs[refCondition][0].style.background = null
                 let itemValue = item.value.substr(0, item.value.indexOf('/') + 1) + event.target.value
-                let recCheck = this.validateValue(this.segmentFilter, itemValue)
+                let recCheck = this.validateValue(this.getSegmentFilter, itemValue)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1118,312 +1245,52 @@
                 item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_sub_campaign`)
 
             },
-            ...mapMutations("segment", [
-                "addCondition",
-                "addFilter",
-                "deleteFilter",
-                "removeCondition"
-            ])
-        },
-        watch: {
-            segmentFilter: (newVal, oldVal) => {
-                // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-            }
-        },
-        updated() {
-            let filterId = 0
-            if (this.$el.id) {
-                filterId = Number(this.$el.id.match(/(\d+)/)[0])
-            }
-            if (!this.$store) return
-            let segmentFilter = this.$store.state.segment.segmentFilter
-            if (segmentFilter.length > 0) {
-                let newCondition = segmentFilter.filter(item => (item.dimensionId === 0 && item.segmentRuleIndex === filterId))
-                if (newCondition.length > 0) {
-                    let newConditionGroup = segmentFilter.filter(item => (item.segmentRuleIndex === newCondition[0].segmentRuleIndex))
-                    let newConditionGroupCondition = newConditionGroup.filter(item => (item.dimensionId !== 0 && item.segmentRuleIndex === filterId))
-                    newConditionGroupCondition = newConditionGroupCondition[0]
-                    // console.log(' !!!!! newConditionGroupCondition:')
-                    // console.table(JSON.parse(JSON.stringify(newConditionGroupCondition)))
-
-                    if (newConditionGroupCondition) {
-                        newCondition.forEach(item => {
-                            let dimensionRef = `dimension-${item.position}`
-                            if (this.$refs[dimensionRef]) {
-                                this.$refs[dimensionRef][0].value = newConditionGroupCondition.dimensionId
-                                this.$refs[dimensionRef][0].disabled = true
-
-                                this.changeDimension(newConditionGroupCondition.dimensionName, item)
-                            }
-                            // if (document.querySelector(`#dimension-${item.position}`)) {
-                            // document.querySelector(`#dimension-${item.position}`).value = newConditionGroup1.dimensionName
-                            // document.querySelector(`#dimension-${item.position}`).disabled = true
-                            // }
-                        })
-                    }
-                }
-            }
-        },
-        components: {ModelSelect},
-        computed: {
-            ...mapState('dimensions', ['dimensionTypes']),
-            ...mapState('affiliates', ['affiliates']),
-            ...mapState('user', ["googleAuthUrl", "verifyTokenEmail"]),
-            ...mapState('segment', ['segmentFilter']),
-            ...mapState('campaigns', ['campaignsExample']),
-            ...mapGetters('countries', ['getCountries']),
-            // ...mapGetters('affiliateWebsites', ['getAffiliateWebsites']),
-            ...mapGetters('affiliates', ['getAffiliates']),
-            ...mapGetters('prods', ['getProds']),
-            ...mapGetters('dimensions', ['getDimensions']),
-            ...mapGetters('campaigns', ['getAffiliateCampaigns']),
-
         }
     }
 </script>
 
-<style lang="scss">
-    .virtual-list-height > div {
-        height: 100%;
-    }
 
-    button--fill {
-        width: 100px;
-        height: 40px;
-        color: #999999;
-        position: relative;
-        margin-left: 0.5rem;
-        transition: all 0.5s;
-        border: 0px;
-        background: white;
+<style lang="sass">
+    .modal-mask
+        position: fixed
+        z-index: 9998
+        top: 0
+        left: 0
+        width: 100vw
+        height: 100vh
+        background-color: rgba(0, 0, 0, .7)
+        transition: opacity .3s ease
+        display: flex
+        align-items: center
+        justify-content: center
+        -webkit-app-region: no-drag
+        -webkit-user-drag: none
 
-        &:before,
-        &:after {
-            top: -1px;
-            left: -1px;
-            content: "";
-            width: inherit;
-            height: inherit;
-            display: block;
-            position: absolute;
-            transform: scale(0);
-            transition: all 0.15s;
-            border-radius: inherit;
-            background: rgba(128, 128, 128, 0.1);
-        }
 
-        &:hover:not(:disabled):before,
-        &:focus:before {
-            transform: scale(1);
-        }
+        .modal-container
+            min-width: 50vw
+            max-width: 50vw
+            max-height: 80vh
+            padding: 30px 30px 0px 30px
+            background: #fff
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
+            transition: all .3s ease
+            overflow: auto
+            border-radius: 10px
 
-        &:active:after {
-            transform: scale(1);
-            transition: all 0.25s;
-            background: rgba(128, 128, 128, 0.3);
-        }
 
-        &:focus,
-        &:hover {
-            color: #999999;
-        }
+        .modal-body
+            margin: 20px 0
 
-        &:focus {
-            outline: none;
-        }
-    }
 
-    .condition-group {
-        .and {
-            color: #999;
-            display: flex;
-            text-align: left;
-            padding: 1rem 0;
-            align-items: center;
+        .modal-enter,
+        .modal-leave
+            opacity: 0
 
-            &:after {
-                content: "";
-                height: 1px;
-                width: 100%;
-                margin-left: 0.5rem;
-                background: currentcolor;
-                display: inline-block;
-            }
-        }
-    }
 
-    .filter {
-        border: none;
-        margin-top: 0rem;
-        padding: 0rem;
-        min-width: 920px;
-        border-radius: 10px;
-        // overflow: hidden;
-    }
+        .modal-enter .modal-container,
+        .modal-leave .modal-container
+            transform: scale(1.1)
 
-    .filter__remove {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        border: none;
-        color: #ACC3CF;
-        background: none;
-        font-size: 1.2rem;
-        position: relative;
-        top: 68px;
-        left: -50px;
-        transition: all 0.2s;
 
-        &:before,
-        &:after {
-            top: 0;
-            left: 0;
-            content: "";
-            display: block;
-            width: inherit;
-            height: inherit;
-            border-radius: 50%;
-            position: absolute;
-            transform: scale(0);
-            transition: all 0.15s;
-        }
-
-        &:hover:before,
-        &:focus:before {
-            transform: scale(1);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        &:active:after {
-            transform: scale(1);
-            transition: all 0.25s;
-            background: rgba(128, 128, 128, 0.3);
-        }
-
-        &:focus,
-        &:hover {
-            color: #fe5d65;
-        }
-
-        &:focus {
-            outline: none;
-        }
-    }
-
-    .country_code {
-        font-weight: bold
-    }
-
-    .filter__controls {
-        display: grid;
-        // margin-bottom: 2rem;
-        justify-content: space-between;
-    }
-
-    .ui.search.dropdown {
-        min-width: 250px;
-        max-width: 250px;
-    }
-
-    .ui.search.selection.dropdown > input.search, .ui.search.selection.dropdown > span.sizer {
-        line-height: 1.21428571em;
-        padding: .5em 2.1em .5em 1em;
-    }
-
-    .ui.dropdown > .dropdown.icon:before {
-        content: '' !important;
-    }
-
-    select.add-condition.custom-select {
-        color: #7F98A5;
-        font-weight: 600;
-        border: 2px solid #7F98A5;
-        //background-color: rgba(255, 255, 255, 0.1);
-        background-color: #E3EEF4;
-    }
-
-    .select-selected {
-        background-color: DodgerBlue;
-    }
-
-    /* Style the arrow inside the select element: */
-    .select-selected:after {
-        position: absolute;
-        content: "";
-        top: 14px;
-        right: 10px;
-        width: 0;
-        height: 0;
-        border: 6px solid transparent;
-        border-color: #fff transparent transparent transparent;
-    }
-
-    /* Point the arrow upwards when the select box is open (active): */
-    .select-selected.select-arrow-active:after {
-        border-color: transparent transparent #fff transparent;
-        top: 7px;
-    }
-
-    /* style the items (options), including the selected item: */
-    .select-items div, .select-selected {
-        color: #ffffff;
-        padding: 8px 16px;
-        border-radius: 50px;
-        border: 1px solid transparent;
-        border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-        cursor: pointer;
-    }
-
-    /* Style items (options): */
-    .select-items {
-        position: absolute;
-        background-color: DodgerBlue;
-        top: 100%;
-        left: 0;
-        right: 0;
-        z-index: 99;
-    }
-
-    /* Hide the items when the select box is closed: */
-    .select-hide {
-        display: none;
-    }
-
-    .select-items div:hover, .same-as-selected {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Or - And Conditions */
-    ._or {
-        display: block
-    }
-
-    ._or span {
-        color: #7F98A5;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        padding-right: 10px;
-        text-transform: uppercase;
-    }
-
-    ._and {
-        border-bottom: 2px solid #DFE0EB;
-        line-height: 0;
-        margin: 15px 0;
-        display: block;
-        position: relative;
-        top: 50px;
-        left: -35px;
-    }
-
-    ._and span {
-        background-color: #F7F8FC;
-        color: #ACC3CF;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        padding-right: 10px;
-        text-transform: uppercase;
-    }
 </style>

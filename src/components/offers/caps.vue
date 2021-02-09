@@ -375,8 +375,8 @@
 
 
         .modal-container
-            min-width: 50vw
-            max-width: 50vw
+            min-width: 60vw
+            max-width: 60vw
             max-height: 100vh !important
             padding: 30px 30px 0px 30px
             background: #fff

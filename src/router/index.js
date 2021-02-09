@@ -8,6 +8,8 @@ import offers from '../components/offers/offers'
 import newOffer from '../components/offers/newOffer'
 import editOffer from '../components/offers/editOffer'
 import editSegment from '../components/segments/editSegment.vue'
+import viewSegment from '../components/segments/viewSegment.vue'
+import editRules from '../components/segments/editRules.vue'
 
 Vue.use(Router)
 
@@ -33,6 +35,16 @@ export default new Router({
             path: '/segment/:type/:id',
             name: 'segment',
             component: editSegment
+        },
+        {
+            path: '/segmentView/:type/:id/:position',
+            name: 'segment',
+            component: viewSegment
+        },
+        {
+            path: '/segmentEditRules/:type/:id/rule/:position',
+            name: 'segment',
+            component: editRules
         },
         {
             path: '/offers',

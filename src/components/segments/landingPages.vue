@@ -6,7 +6,7 @@
         <div class="modal-container">
 
             <div class="modal-body">
-                <h1 class="title">{{ this.editMode && 'Update Landing page' || 'Add Landing page' }}</h1>
+                <h1>{{ this.editMode && 'Update Landing page' || 'Add Landing page' }}</h1>
 
                 <p class="text-left">
                     <label>Segment ID: {{ segment.id }}</label>
@@ -309,8 +309,8 @@
 
 
         .modal-container
-            min-width: 50vw
-            max-width: 50vw
+            min-width: 60vw
+            max-width: 60vw
             max-height: 80vh
             padding: 30px 30px 0px 30px
             background: #fff

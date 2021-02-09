@@ -108,7 +108,7 @@
             </b-col>
 
 
-            <b-col cols="3">
+            <b-col cols="7">
                 <div class="campaign-block condition__controls">
                     <label for="label-platform">Conversion Flow Type</label>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -121,7 +121,8 @@
                         > Android
                         </label> -->
 
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per install'">CPI
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per install'">CPI
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpi`)"
@@ -130,7 +131,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per action'">CPA
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per action'">CPA
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpa`)"
@@ -139,7 +141,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per lead'">CPL
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per lead'">CPL
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpl`)"
@@ -148,7 +151,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per click'">CPC
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per click'">CPC
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpc`)"
@@ -157,11 +161,21 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-" v-b-tooltip.hover.bottom.html="'Cost per mille or thousand'">CPM
+                        <label class="conversionType btn btn-secondary-"
+                               v-b-tooltip.hover.bottom.html="'Cost per mille or thousand'">CPM
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`cpm`)"
                                     @change="updValue(`cpm`, `conversionType`)"
+                                    name="radio"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                        <label class="conversionType btn btn-secondary-">RevShare
+                            <input
+                                    type="radio"
+                                    :checked="checkConversionType(`revShare`)"
+                                    @change="updValue(`revShare`, `conversionType`)"
                                     name="radio"
                             >
                             <span class="conversionTypeCheckMark"></span>
@@ -179,6 +193,77 @@
 
                 </div>
             </b-col>
+
+            <b-col cols="2" v-show="checkConversionType(`revShare`)">
+                <div class="condition__controls">
+                    <label>RevShare Payout %</label>
+                    <input type="number"
+                        class="condition__matches campaign custom-input payoutPercent"
+                        :value="getOffer.length !==0 && getOffer[0].payoutPercent"
+                        @change="updValue($event, `payoutPercent`)"
+                        v-show="checkConversionType(`revShare`)"
+                        step=1
+                        min="0" max="100"
+                        onkeypress="
+                            return (
+                                event.charCode == 8
+                                || event.charCode == 0
+                                || event.charCode == 13
+                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        onpaste="return false"
+                        onkeyup="
+                            if(this.value === '' || parseInt(this.value)>100){
+                                this.value = 100
+                                return false
+                            }
+                        "
+                    >
+                </div>
+            </b-col>
+
+            <b-col cols="2" v-show="checkConversionType(`hybrid/multistep`)">
+                <div class="condition__controls">
+                    <!-- <label>Enable CPM Option</label>
+                    <input type="checkbox"
+                        class="condition__matches campaign custom-input"
+                        :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                        :checked="getOffer[0].isCpmOptionEnabled"
+                        @change="updValue($event, `isCpmOptionEnabled`)"
+                        v-show="checkConversionType(`hybrid/multistep`)"
+                    > -->
+                    <label>&nbsp;</label>
+                    <b-form-checkbox
+                        size="lg"
+                        type="checkbox"
+                        class="condition__matches campaign"
+                        :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                        :checked="getOffer[0].isCpmOptionEnabled"
+                        @change="updValue($event, `isCpmOptionEnabled`)"
+                        v-show="checkConversionType(`hybrid/multistep`)"
+                    >
+                    Enable CPM Option
+                    </b-form-checkbox>
+                </div>
+            </b-col>
+
+            <!-- <label v-show="checkConversionType(`revShare`)">RevShare Payout %
+            </label>
+            <input type="text"
+                   class="condition__matches campaign custom-input"
+                   :value="getOffer.length !==0 && getOffer[0].payoutPercent"
+                   @change="updValue($event, `payoutPercent`)"
+                   v-show="checkConversionType(`revShare`)"
+            >
+
+            <label v-show="checkConversionType(`hybrid/multistep`)">isCpmOptionEnabled
+            </label>
+            <input type="checkbox"
+                   class="condition__matches campaign custom-input"
+                   :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
+                   :checked="getOffer[0].isCpmOptionEnabled"
+                   @change="updValue($event, `isCpmOptionEnabled`)"
+                   v-show="checkConversionType(`hybrid/multistep`)"
+            > -->
 
 
             <!--            <b-col cols="3">-->
@@ -269,8 +354,21 @@
                            @change="updValue($event, `payIn`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
-                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                    ">
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                            onkeypress="
+                                return (
+                                    event.charCode == 8
+                                    || event.charCode == 0
+                                    || event.charCode == 13
+                                ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            onpaste="return false"
+                            onkeyup="
+                                if(this.value === '' || parseInt(this.value)>100){
+                                    this.value = 100
+                                    return false
+                                }
+                            "
+                    >
                 </div>
             </b-col>
             <b-col cols="1">
@@ -284,8 +382,21 @@
                            @change="updValue($event, `payOut`)"
                            class="condition__matches budgetTotal custom-input"
                            pattern="^\d+(?:\.\d{1,2})?$"
-                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                    ">
+                           onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                            onkeypress="
+                                return (
+                                    event.charCode == 8
+                                    || event.charCode == 0
+                                    || event.charCode == 13
+                                ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            onpaste="return false"
+                            onkeyup="
+                                if(this.value === '' || parseInt(this.value)>100){
+                                    this.value = 100
+                                    return false
+                                }
+                            "
+                    >
                 </div>
             </b-col>
         </b-row>
@@ -300,7 +411,9 @@
 
             <b-col cols="3">
                 <div class="condition__controls">
-                    <label class="pull-left">GEO Settings <span class="question" v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i class="fad fa-question-circle"></i></span></label>
+                    <label class="pull-left">GEO Settings <span class="question"
+                                                                v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i
+                            class="fad fa-question-circle"></i></span></label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
                               @click="showGeoRestrictionsModal(id)"
                     >
@@ -342,11 +455,11 @@
 
                     <!-- Add tooltip for showing Caps -->
                     <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
-                    <input type="text"
-                           class="condition__matches campaign custom-input"
-                           :value="getCapsStatus(getOfferCap)"
-                           disabled
-                    >
+                        <input type="text"
+                               class="condition__matches campaign custom-input"
+                               :value="getCapsStatus(getOfferCap)"
+                               disabled
+                        >
                     </div>
 
                 </div>
@@ -588,9 +701,14 @@
 
                 } else {
                     obj.fieldName = name
-                    obj.value = event.target.value
+                    if (name === 'isCpmOptionEnabled') {
+                        obj.value = Number(event.target.checked)
+                    } else {
+                        obj.value = event.target.value
+                    }
                 }
 
+                debugger
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
@@ -623,6 +741,8 @@
                         if (
                             key === 'geoRules' ||
                             key === 'customLPRules' ||
+                            key === 'payoutPercent' ||
+                            key === 'isCpmOptionEnabled' ||
                             key === 'offerIdRedirect'
                         ) {
                             return
@@ -730,7 +850,8 @@
         },
         data() {
             return {
-                id: Number(this.$route.params.id)
+                id: Number(this.$route.params.id),
+                selected: true,
             };
         }
     };

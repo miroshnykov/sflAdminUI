@@ -17,6 +17,8 @@ const getOffer = async (id) => {
                                 status
                                 payIn
                                 payOut
+                                isCpmOptionEnabled
+                                payoutPercent
                                 dateAdded
                                 geoRules
                                 defaultLp
@@ -110,6 +112,8 @@ const saveOffer = async (data) => {
         verticals,
         conversionType,
         geoRules,
+        payoutPercent,
+        isCpmOptionEnabled,
         customLPRules,
         id,
         name,
@@ -149,6 +153,7 @@ const saveOffer = async (data) => {
     let capsFormat = caps && JSON.stringify(caps).replace(/"/g, '\\"') || ''
     let lpFormat = lp && JSON.stringify(lp).replace(/"/g, '\\"') || ''
 
+    debugger
     try {
         const res = await api.post(
             '', {
@@ -159,6 +164,8 @@ const saveOffer = async (data) => {
                                 name:"${name}"
                                 advertiser:"${advertiser}"
                                 verticals:"${verticals}"
+                                payoutPercent:${payoutPercent}
+                                isCpmOptionEnabled:${isCpmOptionEnabled}
                                 conversionType:"${conversionType}"
                                 geoRules:"${geoRulesReFormat}"
                                 customLPRules:"${customLPRulesReFormat}"

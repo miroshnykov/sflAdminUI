@@ -109,11 +109,6 @@
             ...mapGetters('lp', ['getLandingPages']),
             ...mapGetters('countries', ['getCountries'])
         },
-        // async mounted() {
-        //    debugger
-        //     let rule = this.geoRules
-        //     debugger
-        // },
         methods: {
             ...mapMutations('offer', [
                 'changeGeo',
@@ -202,8 +197,8 @@
         justify-content: center
 
         .modal-container
-            min-width: 50vw
-            max-width: 50vw
+            min-width: 60vw
+            max-width: 60vw
             max-height: 80vh
             padding: 30px 30px 0px 30px
             background: #fff

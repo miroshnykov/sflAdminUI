@@ -57,23 +57,69 @@
                     </select>
                 </div>
             </b-col>
-            <!-- <b-col cols="3">
-                <div class="condition__controls">
-                    <label>Last Modified</label>
-                    <input type="text"
-                           class="condition__matches campaign custom-input"
-                           disabled
-                    >
-                </div>
-            </b-col> -->
+
         </b-row>
 
-        <hr>
 
+        <table class="table table-striped child-row tableFixHead lp-table">
+            <thead>
+            <tr>
+                <th scope="col">Position</th>
+                <th scope="col">Rules</th>
+                <th scope="col">Dim Name</th>
+                <th scope="col">Value</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
 
-        <conditions :segmentFilter="this.getSegmentFilter"/>
+            <tr :id="defineRowId(segmentItem.position)" scope="row" v-for="segmentItem in this.getSegmentFilter">
 
-        <hr>
+                <td>{{ JSON.stringify(segmentItem.position) }}</td>
+                <td>{{ JSON.stringify(segmentItem.segmentRuleIndex) }}</td>
+                <td>{{ JSON.stringify(segmentItem.dimensionName) }}</td>
+                <td>{{ JSON.stringify(segmentItem.value) }}</td>
+<!--                <td>enable:{{JSON.stringify(editEnableDisable[segmentItem.position])}}</td>-->
+                <td>
+
+                    <b-button variant="light" class="btn-add-line" style="float:left;" @click="editEnableDisableSwitcher(segmentItem.position)">
+                        <i class="far fa-plus"></i> Edit
+                    </b-button>
+
+                    <span class="detailsBlock" v-if="editEnableDisable[segmentItem.position]">
+                        <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                                  @click="showEditConditionsModal(segmentItem.position)"
+                        >
+                            <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> Edit
+                        </b-button>
+
+                        <EditConditions
+                                :ref="`modal_conditions_` + segmentItem.position"
+                                :segmentItem="segmentItem"
+                        >
+                        </EditConditions>
+                    </span>
+
+                    <button
+                            @click="addCondition(segmentItem.segmentRuleIndex)"
+                            class="add-condition"
+                            v-b-tooltip.hover.top="'Add OR condition'"
+                            v-show="segmentItem.orAndDisabled"
+                    >
+                        OR
+                    </button>
+
+                    <button
+                            @click="addFilter(segmentItem)"
+                            class="add-condition"
+                            v-b-tooltip.hover.top="'Add AND condition'"
+                            v-show="segmentItem.orAndDisabled"
+                    >
+                        AND
+                    </button>
+                </td>
+                <td style="visibility:hidden;">{{detailsAreVisible}}</td>
+            </tr>
+        </table>
 
 
     </div>
@@ -86,10 +132,12 @@
     import topbar from '../topbar.vue'
     import menunav from '../menunav.vue'
     import {formatData} from '../../helpers'
+    import EditConditions from './editConditions'
+    import Caps from '../offers/caps'
 
     export default {
         name: 'edit-segment',
-        components: {logo, menunav, topbar, conditions},
+        components: {logo, menunav, topbar, conditions, EditConditions, Caps},
         computed: {
             ...mapGetters('segments', ['getSegments']),
             ...mapGetters('segment', ['getSegmentFilter', 'getSegmentName', 'getSegmentStatus', 'getSegmentDateUpdated', 'getSegmentDateAdded']),
@@ -97,18 +145,48 @@
         segmentFilter: [],
         async mounted() {
             await this.$store.dispatch('segment/saveSegmentConditionsStore', this.id)
-            await this.$store.dispatch('affiliates/saveAffiliatesStore')
-            await this.$store.dispatch('countries/saveCountriesStore')
-            await this.$store.dispatch('dimensions/saveDimensionsStore')
-            await this.$store.dispatch('campaigns/saveCampaignsStore')
+            let position = this.$route.params.position
+            if (position) {
+                let positionMove = Number(position) - 5
+                if (positionMove > 0) {
+                    const el = document.getElementById(`segmentRow-${positionMove}`)
+                    el.scrollIntoView({behavior: "smooth"})
+
+                    const elColor = document.getElementById(`segmentRow-${position}`)
+                    elColor.style.background = 'azure'
+                }
+
+
+            }
+
+
+            // await this.$store.dispatch('affiliates/saveAffiliatesStore')
+            // await this.$store.dispatch('countries/saveCountriesStore')
+            // await this.$store.dispatch('dimensions/saveDimensionsStore')
+            // await this.$store.dispatch('campaigns/saveCampaignsStore')
             // await this.$store.dispatch('lp/saveLPStore')
-            await this.$store.dispatch('prods/saveProdsStore')
-            await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+            // await this.$store.dispatch('prods/saveProdsStore')
+            // await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
         },
         methods: {
-            ...mapMutations("segment", ["updateField"]),
+            ...mapMutations('segment', ['updateField', 'addCondition', 'addFilter']),
+            editEnableDisableSwitcher(position) {
+                this.editEnableDisable[position] = !this.editEnableDisable[position]
+                this.detailsAreVisible = !this.detailsAreVisible;
+            },
+            showEditConditionsModal(id) {
+                let modal_id = 'modal_conditions_' + id
+                this.$refs[modal_id][0].show(id)
+
+                console.log('this.$refs[modal_id]-', this.$refs[modal_id])
+            },
             getFieldName(field) {
                 return this.getCampaign.length > 0 && this.getCampaign[0][field]
+            },
+            editRule(item) {
+                // /segment/:type/:id/rule/:position
+                // debugger
+                this.$router.push(`/segmentEditRules/${this.$route.params.type}/${this.id}/rule/${item.position}`)
             },
             async changeField(event, field) {
 
@@ -140,6 +218,9 @@
             defineStatusId(id) {
                 return `status-${id}`
             },
+            defineRowId(id) {
+                return `segmentRow-${id}`
+            },
             defineSegmentNameId(id) {
                 return `segmentName-${id}`
             },
@@ -169,7 +250,9 @@
         },
         data() {
             return {
-                id: Number(this.$route.params.id)
+                id: Number(this.$route.params.id),
+                detailsAreVisible: false,
+                editEnableDisable: [],
             };
         }
     };
