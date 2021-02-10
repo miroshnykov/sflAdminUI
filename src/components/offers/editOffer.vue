@@ -236,8 +236,7 @@
                         size="lg"
                         type="checkbox"
                         class="condition__matches campaign"
-                        :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
-                        :checked="getOffer[0].isCpmOptionEnabled"
+                        :checked="!!getOfferField(`isCpmOptionEnabled`)"
                         @change="updValue($event, `isCpmOptionEnabled`)"
                         v-show="checkConversionType(`hybrid/multistep`)"
                     >
@@ -245,73 +244,6 @@
                     </b-form-checkbox>
                 </div>
             </b-col>
-
-            <!-- <label v-show="checkConversionType(`revShare`)">RevShare Payout %
-            </label>
-            <input type="text"
-                   class="condition__matches campaign custom-input"
-                   :value="getOffer.length !==0 && getOffer[0].payoutPercent"
-                   @change="updValue($event, `payoutPercent`)"
-                   v-show="checkConversionType(`revShare`)"
-            >
-
-            <label v-show="checkConversionType(`hybrid/multistep`)">isCpmOptionEnabled
-            </label>
-            <input type="checkbox"
-                   class="condition__matches campaign custom-input"
-                   :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
-                   :checked="getOffer[0].isCpmOptionEnabled"
-                   @change="updValue($event, `isCpmOptionEnabled`)"
-                   v-show="checkConversionType(`hybrid/multistep`)"
-            > -->
-
-
-            <!--            <b-col cols="3">-->
-            <!--                <div class="campaign-block condition__controls">                    -->
-            <!--                    <label for="label-platform"></label>-->
-            <!--                    <label >DB {{getOffer.length !==0 && getOffer[0].conversionType}}</label>-->
-            <!--                    <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-
-
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > CPI-->
-            <!--                        </label>-->
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > CPA-->
-            <!--                        </label>-->
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > CPL-->
-            <!--                        </label>-->
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > CPC-->
-            <!--                        </label>-->
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > CPM-->
-            <!--                        </label>-->
-            <!--                        <label class="btn btn-secondary-">-->
-            <!--                            <input-->
-            <!--                                    type="checkbox"-->
-            <!--                                    autocomplete="off"-->
-            <!--                            > Hybrid/Multistep-->
-            <!--                        </label>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </b-col>-->
 
 
         </b-row>
@@ -680,6 +612,11 @@
                     return this.getOffer[0].defaultLp
                 }
             },
+            getOfferField(name) {
+                if (this.getOffer.length !== 0) {
+                    return this.getOffer[0][name]
+                }
+            },
             updValue(event, name) {
                 let obj = {}
 
@@ -702,7 +639,7 @@
                 } else {
                     obj.fieldName = name
                     if (name === 'isCpmOptionEnabled') {
-                        obj.value = Number(event.target.checked)
+                        obj.value = Number(!this.getOfferField(`isCpmOptionEnabled`))
                     } else {
                         obj.value = event.target.value
                     }

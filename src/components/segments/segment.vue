@@ -8,7 +8,7 @@
                 <b-col col lg="8">
 
                     <!-- TODO: Could use improvement, toggle currently only reveals one segment at a time -->
-                    <h1 class="segment__name" :title="segment.name" @click="toggleDetails(segment)">
+                    <h1 class="segment__name" :title="getTitleWithSegmentId(segment)" @click="toggleDetails(segment)">
                         <span :title="getTitle(segment)" class="segment__active">
 
                               <!-- {{ detailsAreVisible ? 'Expand' : 'Collapse' }} -->
@@ -350,6 +350,9 @@
             },
             getTitle(segment) {
                 return 'Expand or Collapse'
+            },
+            getTitleWithSegmentId(segment) {
+                return `${segment.name}, ID:${segment.id}`
             },
             getClass(segment) {
                 return 'segment__empty'
