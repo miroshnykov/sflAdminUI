@@ -41,7 +41,7 @@
 
                     <b-button variant="light" @click="editNew(segment.id)" v-b-tooltip.hover.top="'Edit Segment New'"
                               style="z-index:2">
-                        <i class="far fa-pencil-square-o" data-fa-transform="shrink-1"></i>
+                        <i class="far fa-pencil" data-fa-transform="shrink-1"></i>
                     </b-button>
 
 

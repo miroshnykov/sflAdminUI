@@ -347,6 +347,13 @@
             saveLp(data) {
                 this.visible = false
                 this.preSaveCap()
+                this.$swal.fire({
+                    type: 'success',
+                    position: 'center',
+                    text: `Cap settings saved`,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
             },
             close() {
                 this.visible = false
