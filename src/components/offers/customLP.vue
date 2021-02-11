@@ -4,7 +4,7 @@
         <div class="modal-container">
 
 
-            <h1>Custom LPs per GEO</h1>
+            <h1>Custom Default LPs per GEO</h1>
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
@@ -316,6 +316,13 @@
                 } else {
                     this.preSaveCustomLP()
                     this.visible = false
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'center',
+                        text: `Custom LP Saved`,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
                 }
 
             },

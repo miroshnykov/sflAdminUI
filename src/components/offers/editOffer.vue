@@ -171,7 +171,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">RevShare
+                        <label class="conversionType btn btn-secondary-"
+                                v-b-tooltip.hover.bottom.html="'Revenue Sharing'">RevShare
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`revShare`)"
@@ -180,7 +181,8 @@
                             >
                             <span class="conversionTypeCheckMark"></span>
                         </label>
-                        <label class="conversionType btn btn-secondary-">Hybrid/Multistep
+                        <label class="conversionType btn btn-secondary-"
+                                v-b-tooltip.hover.bottom.html="'Multiple Conversions'">Hybrid/Multistep
                             <input
                                     type="radio"
                                     :checked="checkConversionType(`hybrid/multistep`)"
@@ -252,7 +254,7 @@
         <hr>
         <b-row class="text-center">
             <b-col cols="4">
-                <h2>Custom Pay-in/Pay-out</h2>
+                <h2>Pay-in/Pay-out Settings</h2>
             </b-col>
             <b-col cols="2">
                 <b-button variant="light" class="btn-add-line btn-grey" v-b-tooltip.hover.bottom.html="'Coming Soon'">
@@ -295,8 +297,8 @@
                                 ) ? null : event.charCode >= 48 && event.charCode <= 57"
                             onpaste="return false"
                             onkeyup="
-                                if(this.value === '' || parseInt(this.value)>100){
-                                    this.value = 100
+                                if(this.value === '' || parseInt(this.value)>1000){
+                                    this.value = 1000
                                     return false
                                 }
                             "
@@ -323,8 +325,8 @@
                                 ) ? null : event.charCode >= 48 && event.charCode <= 57"
                             onpaste="return false"
                             onkeyup="
-                                if(this.value === '' || parseInt(this.value)>100){
-                                    this.value = 100
+                                if(this.value === '' || parseInt(this.value)>1000){
+                                    this.value = 1000
                                     return false
                                 }
                             "
@@ -338,14 +340,16 @@
         <b-row class="text-center">
 
             <b-col cols="12">
-                <h2>Restrictions</h2>
+                <h2>Restriction Settings</h2>
             </b-col>
 
             <b-col cols="3">
                 <div class="condition__controls">
-                    <label class="pull-left">GEO Settings <span class="question"
-                                                                v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'"><i
-                            class="fad fa-question-circle"></i></span></label>
+                    <label class="pull-left">GEO Settings
+                        <span class="question" v-b-tooltip.hover.right.html="'Allow or ban certain countries from traffic'">
+                            <i class="fad fa-question-circle"></i>
+                        </span>
+                    </label>
                     <b-button variant="light" class="btn-add-line" v-b-modal.modal
                               @click="showGeoRestrictionsModal(id)"
                     >
@@ -358,7 +362,7 @@
                                      :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                     >
                     </GeoRestrictions>
-                    <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()" title="Banned Countries">
+                    <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()">
                         <input type="text"
                                class="condition__matches campaign custom-input"
                                :value="getBannedCountriesStatus()"
@@ -436,7 +440,12 @@
                         <!--                        </OfferLP>-->
                     </div>
 
-                    <label>Default LP {{getLPValue()}}</label>
+                    <!-- <label>Default LP {{getLPValue()}}</label> -->
+                    <label>Default LP
+                        <span class="question" v-b-tooltip.hover.right.html="'Hover for Landing Page URL'">
+                            <i class="fad fa-question-circle"></i>
+                        </span>
+                    </label>
                     <model-select
                             :options="getLpModify()"
                             :id="defineId(`lpsId`,id)"
@@ -460,7 +469,7 @@
             </b-col>
             <b-col cols="3">
                 <div class="condition__controls">
-                    <label>Default Redirect</label>
+                    <label>Default Offer Redirect</label>
                     <model-select
                             :options="getOffersModify()"
                             :id="defineId(`offerIdRedirect`,id)"
@@ -590,7 +599,7 @@
             getLpModify() {
                 return this.getLpOffers.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (ID: ${item.id})`
+                    item.text = `${item.name} (LP ID: ${item.id})`
                     return item
                 })
             },
@@ -603,7 +612,7 @@
             getOffersModify() {
                 return this.getOffers.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (OfferId-${item.id})`
+                    item.text = `${item.name} (Offer ID: ${item.id})`
                     return item
                 })
             },
