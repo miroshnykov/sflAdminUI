@@ -3,7 +3,8 @@
 
         <div class="modal-container">
 
-            <h1>Custom GEO Settings</h1>
+            <!-- <h1>Custom GEO Settings</h1> -->
+            <h1>Customize Settings per GEO</h1>
 
             <input
                     type="text"
@@ -37,19 +38,35 @@
                 </div>
             </div>
 
+
+            <b-row class="text-center">
+                <b-col cols="12">
+                    <div class="allow-ban-all">
+                        <!-- TODO: Banned GEOs should be listed in country code only, same as tooltip on editOffer.vue-->
+                        <b-form-text>Banned GEOs selected: {{ geoRules }}
+                            <!-- <input type="text"
+                                class="condition__matches campaign custom-input"
+                                :value="getBannedCountries()"
+                                disabled
+                            > -->
+                        </b-form-text>
+                    </div>
+                </b-col>
+            </b-row>
+
             <b-row class="text-center">
                 <b-col cols="12">
                     <div class="allow-ban-all">
                         <b-button variant="light" class="btn-allow-ban-all"
                                   @click="allowAllEvent()"
                         >
-                            <i class="far fa-check-circle" data-fa-transform="shrink-1"></i> Allow All
+                            <i class="far fa-check-circle" data-fa-transform="shrink-1"></i> Allow All GEOs
                         </b-button>
 
                         <b-button variant="light" class="btn-allow-ban-all"
                                   @click="banAllEvent()"
                         >
-                            <i class="far fa-ban" data-fa-transform="shrink-1"></i> Ban All
+                            <i class="far fa-ban" data-fa-transform="shrink-1"></i> Ban All GEOs
                         </b-button>
                     </div>
                 </b-col>
@@ -58,7 +75,7 @@
             <b-row class="text-center">
                 <b-col cols="6">
                     <div class="condition__controls">
-                        <label>Default Redirect</label>
+                        <label>Default LP for banned GEOs *</label>
                         <input
                                 type="text"
                                 :value="offerDefaultLPInfo && offerDefaultLPInfo[0].text"
@@ -69,7 +86,7 @@
                 </b-col>
             </b-row>
 
-            <b-form-text>* Default redirect LP will be used for banned countries</b-form-text>
+            <b-form-text>* Can be changed/ustomizable under Default Settings</b-form-text>
 
             <b-row class="text-center modal-footer-1">
                 <b-col cols="12">
@@ -124,6 +141,13 @@
             banAllEvent() {
                 this.banAll(this.getCountries)
             },
+            // getBannedCountries() {
+            //     if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
+            //         let geoR = JSON.parse(this.getOffer[0].geoRules)
+            //         let geoCountry = geoR.geo.map(item => item.country)
+            //         return geoCountry.join(', ')
+            //     }
+            // },
             searchCountry(event) {
                 let searchValue = event.target.value
                 this.filterCountry(searchValue)
@@ -169,11 +193,17 @@
             saveLp(data) {
                 this.visible = false
                 this.preSaveGeo()
+                this.$swal.fire({
+                    type: 'success',
+                    position: 'center',
+                    text: `GEO Settings saved`,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
             },
             close() {
                 this.visible = false
                 this.cancelGeo()
-
             },
 
         }
