@@ -48,7 +48,7 @@
                 </div>
             </b-col>
             <b-col cols="1">
-                <span v-b-tooltip.hover.bottom.html="'You have unsaved changes'">
+                <span class="pull-right" v-b-tooltip.hover.bottom.html="'You have unsaved changes'">
                     <label class="editMode" v-show="checkEditMode()">
                         <i class="fas fa-exclamation-triangle" data-fa-transform="shrink-2"></i>
                     </label>
@@ -72,12 +72,12 @@
             <b-tabs content-class="mt-3">
                 <b-tab title="General" active>
                     <b-row class="text-center offer-description">
-                        <b-col cols="9">
+                        <b-col cols="11">
                             <div class="condition__controls">
                                 <label>Description</label>
                                 <b-form-textarea
                                     id="textarea"
-                                    placeholder="Media offers for everyone in EU  region with some limitations..."
+                                    placeholder="Media offers for everyone in EU region with some limitations..."
                                     rows="4"
                                     max-rows="6"
                                 ></b-form-textarea>
@@ -86,7 +86,7 @@
                     </b-row>
 
                     <b-row class="text-center general_tab">
-                        <b-col cols="3">
+                        <b-col cols="4">
                             <div class="condition__controls">
                                 <label>Advertiser</label>
 
@@ -122,11 +122,11 @@
                                             :key="id"
                                     >{{name}}
                                     </option>
-
                                 </select>
-
-
                             </div>
+                        </b-col>
+
+                        <b-col cols="1">
                         </b-col>
 
                         <b-col cols="3">
@@ -149,11 +149,11 @@
                             </div>
                         </b-col>
 
-                        <b-col cols="2">
+                        <b-col cols="1">
                         </b-col>
 
 
-                        <b-col cols="7">
+                        <b-col cols="8">
                             <div class="campaign-block condition__controls">
                                 <label for="label-platform">Conversion Flow Type</label>
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -242,9 +242,10 @@
                         </b-col>
 
                         <b-col cols="3" v-show="checkConversionType(`revShare`)">
-                            <div class="condition__controls">
-                                <label>RevShare Payout %</label>
+                            <div class="condition__controls percent">
+                                <label>RevShare Payout</label>
                                 <input type="number"
+                                    id="percentages"
                                     class="condition__matches campaign custom-input payoutPercent"
                                     :value="getOffer.length !==0 && getOffer[0].payoutPercent"
                                     @change="updValue($event, `payoutPercent`)"
@@ -369,15 +370,20 @@
 
                         <b-col cols="6">
                             <div class="condition__controls">
-                                <label>Postback for the advertiser</label>
-                                <model-select
+                                <label>Postback for the Advertiser</label>
+                                <!-- <model-select
                                         :options="getOffersModify()"
                                         :id="defineId(`offerIdRedirect`,id)"
                                         placeholder="Search landing page..."
                                         :value="getOffer.length !==0  && getOffer[0].offerIdRedirect"
                                         @input="updValue($event,`offerIdRedirect`)"
                                 >
-                                </model-select>
+                                </model-select> -->
+                                <input type="text"
+                                    value="http://track.com/clickid=[put LID here]"
+                                    class="condition__matches campaign custom-input"
+                                    maxlength="25"
+                                >
                             </div>
                         </b-col>
                         <b-col cols="1">
@@ -400,8 +406,8 @@
                             <h2>Pay-in/Pay-out Settings</h2>
                         </b-col> -->
 
-                        <b-col cols="2">
-                            <div class="condition__controls">
+                        <b-col cols="3">
+                            <div class="condition__controls dollar">
                                 <label>Pay-in</label>
                                 <input type="number"
                                     step=1
@@ -430,7 +436,7 @@
                         </b-col>
                         <b-col cols="10">
                         </b-col>
-                        <b-col cols="4">
+                        <b-col cols="3">
                             <div class="condition__controls">
                                 <label>Payout Type</label>
                                 <select
@@ -447,8 +453,8 @@
                                 </select>
                             </div>
                         </b-col>
-                        <b-col cols="2">
-                            <div class="condition__controls">
+                        <b-col cols="3">
+                            <div class="condition__controls dollar">
                                 <label>Pay-out</label>
                                 <input type="number"
                                     step=1
@@ -475,6 +481,35 @@
                                 >
                             </div>
                         </b-col>
+                        <!-- TODO: Show when percentage is selected -->
+                        <!-- <b-col cols="3">
+                            <div class="condition__controls percentage">
+                                <label>Pay-out</label>
+                                <input type="number"
+                                    step=1
+                                    placeholder="10"
+                                    :value="getOffer.length !==0  && getOffer[0].payOut"
+                                    min="1" max="1000"
+                                    @change="updValue($event, `payOut`)"
+                                    class="condition__matches budgetTotal custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                                        onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                        onpaste="return false"
+                                        onkeyup="
+                                            if(this.value === '' || parseInt(this.value)>1000){
+                                                this.value = 1000
+                                                return false
+                                            }
+                                        "
+                                >
+                            </div>
+                        </b-col> -->
                         <b-col cols="2" style="margin-top: 60px">
                             <b-button variant="light" class="btn-add-line btn-grey pull-left" v-b-tooltip.hover.bottom.html="'Coming Soon'">
                                 <i class="far fa-cog"></i> Customize
@@ -1049,15 +1084,53 @@
                 width: 100%
                 height: calc(1.5em + 1rem + 5px)
                 padding: 15px
-                font-size: 1rem
+                color: #7F98A5
+                font-size: 16px
                 font-weight: 500
+                letter-spacing: 0.3px
                 line-height: 1
-                border: 0px
-                background: #f4f4f4
+                border: 2px solid #E3EEF4
+                background: #fff
                 border-radius: 7px
                 min-width: 250px
                 max-height: 300px
                 resize: vertical !important
                 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
 
+                &::placeholder
+                    color: #ACC3CF
+
+            .percent::before
+                content: '\F541'
+                font-family: "Font Awesome 5 Free"
+                font-weight: 900
+                font-size: 18px
+                color: #ACC3CF
+                opacity: 0.7
+                float: right
+                position: relative
+                top: 45px
+                right: 15px
+                z-index: 1
+
+            .dollar::before
+                content: '\f155'
+                font-family: "Font Awesome 5 Free"
+                font-weight: 900
+                font-size: 18px
+                color: #ACC3CF
+                opacity: 0.7
+                float: right
+                position: relative
+                top: 45px
+                right: 15px
+                z-index: 1
+
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button
+                -webkit-appearance: none
+                margin: 0
+
+            input[type=number]
+                -moz-appearance: textfield
 </style>
