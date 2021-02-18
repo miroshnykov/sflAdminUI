@@ -1090,7 +1090,7 @@
             float: left
 
             &.offer-id
-                width: 50px
+                width: 70px
 
             &.offer-name
                 width: 170px
