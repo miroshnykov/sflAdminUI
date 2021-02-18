@@ -590,15 +590,25 @@
                                     type="checkbox"
                                     class="condition__matches campaign"
                                 >
-                                Start Date: 2021-02-17, 10:30 AM
+                                Start Date: {{date}}
                                 </b-form-checkbox>
+
+                                <span class="datepicker">
+                                    <date-picker class="custom-input date-picker" name="date" v-model="date" :config="options"></date-picker>
+                                </span>
+
                                 <b-form-checkbox
                                     size="lg"
                                     type="checkbox"
                                     class="condition__matches campaign"
                                 >
-                                End Date: 2021-02-17, 10:30 AM
+                                End Date: {{date}}
                                 </b-form-checkbox>
+
+                                <span class="datepicker">
+                                    <date-picker class="custom-input date-picker" name="date" v-model="date" :config="options"></date-picker>
+                                </span>
+
                             </div>
                         </b-col>
                         <b-col cols="6">
@@ -622,6 +632,9 @@
     import CustomLP from './customLP'
     import OfferLP from './offerLP'
     import {ModelSelect} from 'vue-search-select'
+    // import 'bootstrap/dist/css/bootstrap.css';
+    import datePicker from 'vue-bootstrap-datetimepicker';
+    import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
     export default {
         name: 'editOffer',
@@ -633,7 +646,8 @@
             Caps,
             CustomLP,
             OfferLP,
-            ModelSelect
+            ModelSelect,
+            datePicker
         },
         computed: {
             ...mapGetters('offer', [
@@ -919,6 +933,15 @@
             return {
                 id: Number(this.$route.params.id),
                 selected: true,
+                value: '',
+                date: null,
+                options: {
+                    // https://momentjs.com/docs/#/displaying/
+                    format: 'DD/MM/YYYY h:mm:ss',
+                    useCurrent: false,
+                    showClear: true,
+                    showClose: true,
+                },
             };
         }
     };
@@ -1133,4 +1156,23 @@
 
             input[type=number]
                 -moz-appearance: textfield
+
+            input.form-control.custom-input.date-picker
+                border: 2px solid #E3EEF4
+                border-radius: 4px
+                padding: 5px
+                margin: 10px 0px
+
+            span.datepicker::before
+                content: '\f073'
+                font-family: "Font Awesome 5 Free"
+                font-weight: 900
+                font-size: 18px
+                color: #ACC3CF
+                opacity: 0.7
+                float: left
+                position: relative
+                top: 32px
+                left: 15px
+                z-index: 1
 </style>
