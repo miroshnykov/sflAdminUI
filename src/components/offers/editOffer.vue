@@ -13,10 +13,9 @@
                 <div class="condition__controls">
                     <label>ID</label>
                     <input type="text"
-                           class="condition__matches campaign custom-input"
+                           class="condition__matches campaign custom-input offer-id"
                            :value="id"
                            disabled
-                           style="width: 70px"
                     >
                 </div>
             </b-col>
@@ -26,14 +25,14 @@
                     <input type="text"
                            placeholder="ex: iPhone 11"
                            :value="getOffer.length !==0 && getOffer[0].name"
-                           class="condition__matches campaign custom-input"
+                           class="condition__matches campaign custom-input offer-name"
                            :id="defineId(`offerName`,id)"
                            @change="updValue($event, `name`)"
                            maxlength="25"
                     >
                 </div>
             </b-col>
-            <b-col cols="2" style="max-width: 23%;flex: 0 0 23%;">
+            <b-col cols="3">
                 <div class="condition__controls">
                     <label>Offer Manager</label>
                     <select
@@ -59,7 +58,7 @@
                     <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
                 </b-button>
                 <b-button class="btn-save" @click="this.saveOffer">
-                    <i class="fas fa-save" data-fa-transform="shrink-2"></i> Save Changes
+                    <i class="fas fa-save" data-fa-transform="shrink-2"></i> Save
                 </b-button>
                 <!-- To add later
                     <b-button class="btn-preview">
@@ -241,17 +240,17 @@
                             </div>
                         </b-col>
 
-                        <b-col cols="3" v-show="checkConversionType(`revShare`)">
-                            <div class="condition__controls percent">
+                        <b-col cols="2" v-show="checkConversionType(`revShare`)">
+                            <div class="condition__controls percentage">
                                 <label>RevShare Payout</label>
                                 <input type="number"
-                                    id="percentages"
                                     class="condition__matches campaign custom-input payoutPercent"
                                     :value="getOffer.length !==0 && getOffer[0].payoutPercent"
                                     @change="updValue($event, `payoutPercent`)"
                                     v-show="checkConversionType(`revShare`)"
                                     step=1
-                                    min="0" max="100"
+                                    min="0"
+                                    max="99"
                                     onkeypress="
                                         return (
                                             event.charCode == 8
@@ -259,12 +258,7 @@
                                             || event.charCode == 13
                                         ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                     onpaste="return false"
-                                    onkeyup="
-                                        if(this.value === '' || parseInt(this.value)>100){
-                                            this.value = 100
-                                            return false
-                                        }
-                                    "
+                                    onKeyPress="if(this.value.length==2) return false;"
                                 >
                             </div>
                         </b-col>
@@ -318,7 +312,7 @@
 
                                 <!-- <label>Default LP {{getLPValue()}}</label> -->
                                 <label>Default LP
-                                    <span class="question" v-b-tooltip.hover.right.html="'Hover for Landing Page URL'">
+                                    <span class="question" v-b-tooltip.hover.right.html="'Add or select a landing page is mandatory'">
                                         <i class="fad fa-question-circle"></i>
                                     </span>
                                 </label>
@@ -339,7 +333,7 @@
                                 <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal-scrollable
                                         @click="showCustomLPModal(id)"
                                 >
-                                    <i class="far fa-cog"></i> Customize
+                                    <i class="far fa-cog"></i> Add LP/Customize
                                 </b-button>
 
                                 <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
@@ -354,7 +348,11 @@
 
                         <b-col cols="6">
                             <div class="condition__controls">
-                                <label>Default Offer Redirect</label>
+                                <label>Exit Traffic
+                                    <span class="question" v-b-tooltip.hover.right.html="'Traffic to send out if there is a redirect'">
+                                        <i class="fad fa-question-circle"></i>
+                                    </span>
+                                </label>
                                 <model-select
                                         :options="getOffersModify()"
                                         :id="defineId(`offerIdRedirect`,id)"
@@ -400,7 +398,7 @@
                     </b-row>
                 </b-tab>
 
-                <b-tab title="PayIn / PayOut">
+                <b-tab title="Pay In / Pay Out">
                     <b-row class="text-center payinpayout_tab">
                         <!-- <b-col cols="4">
                             <h2>Pay-in/Pay-out Settings</h2>
@@ -408,12 +406,13 @@
 
                         <b-col cols="3">
                             <div class="condition__controls dollar">
-                                <label>Pay-in</label>
+                                <label>Pay In</label>
                                 <input type="number"
                                     step=1
+                                    min="0"
+                                    max="999"
                                     placeholder="10"
                                     :value="getOffer.length !==0 && getOffer[0].payIn"
-                                    min="1" max="1000"
                                     @change="updValue($event, `payIn`)"
                                     class="condition__matches budgetTotal custom-input"
                                     pattern="^\d+(?:\.\d{1,2})?$"
@@ -425,12 +424,7 @@
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                         onpaste="return false"
-                                        onkeyup="
-                                            if(this.value === '' || parseInt(this.value)>1000){
-                                                this.value = 1000
-                                                return false
-                                            }
-                                        "
+                                        onKeyPress="if(this.value.length==3) return false;"
                                 >
                             </div>
                         </b-col>
@@ -441,12 +435,14 @@
                                 <label>Payout Type</label>
                                 <select
                                         class="condition__dimension-name condition__matches custom-select"
+                                        v-model="payoutType"
+                                        @change="changePayoutType()"
                                 >
                                     <!-- <option :value="null">-- Select --</option> -->
-                                    <option>
+                                    <option value="1">
                                         Fixed Payout
                                     </option>
-                                    <option>
+                                    <option value="2">
                                         Percentage
                                     </option>
 
@@ -454,8 +450,31 @@
                             </div>
                         </b-col>
                         <b-col cols="3">
-                            <div class="condition__controls dollar">
-                                <label>Pay-out</label>
+                            <div class="condition__controls dollar" v-show="this.payoutType === '1'">
+                                <label>Pay Out</label>
+                                <input type="number"
+                                    step=1
+                                    min="0"
+                                    max="999"
+                                    placeholder="10"
+                                    :value="getOffer.length !==0  && getOffer[0].payOut"
+                                    @change="updValue($event, `payOut`)"
+                                    class="condition__matches budgetTotal custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
+                                        onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                        onpaste="return false"
+                                        onKeyPress="if(this.value.length==3) return false;"
+                                >
+                            </div>
+
+                            <div class="condition__controls percentage" v-show="this.payoutType === '2'">
+                                <label>Pay Out</label>
                                 <input type="number"
                                     step=1
                                     placeholder="10"
@@ -481,35 +500,6 @@
                                 >
                             </div>
                         </b-col>
-                        <!-- TODO: Show when percentage is selected -->
-                        <!-- <b-col cols="3">
-                            <div class="condition__controls percentage">
-                                <label>Pay-out</label>
-                                <input type="number"
-                                    step=1
-                                    placeholder="10"
-                                    :value="getOffer.length !==0  && getOffer[0].payOut"
-                                    min="1" max="1000"
-                                    @change="updValue($event, `payOut`)"
-                                    class="condition__matches budgetTotal custom-input"
-                                    pattern="^\d+(?:\.\d{1,2})?$"
-                                    onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
-                                        onkeypress="
-                                            return (
-                                                event.charCode == 8
-                                                || event.charCode == 0
-                                                || event.charCode == 13
-                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                        onpaste="return false"
-                                        onkeyup="
-                                            if(this.value === '' || parseInt(this.value)>1000){
-                                                this.value = 1000
-                                                return false
-                                            }
-                                        "
-                                >
-                            </div>
-                        </b-col> -->
                         <b-col cols="2" style="margin-top: 60px">
                             <b-button variant="light" class="btn-add-line btn-grey pull-left" v-b-tooltip.hover.bottom.html="'Coming Soon'">
                                 <i class="far fa-cog"></i> Customize
@@ -531,7 +521,20 @@
                                         <i class="fad fa-question-circle"></i>
                                     </span>
                                 </label>
-                                <b-button variant="light" class="btn-add-line" v-b-modal.modal
+                                <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()">
+                                    <input type="text"
+                                        class="condition__matches campaign custom-input"
+                                        :value="getBannedCountriesStatus()"
+                                        @click="showGeoRestrictionsModal(id)"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </b-col>
+                        <b-col cols="2">
+                            <div class="condition__controls">
+                                <label>&nbsp;</label>
+                                <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal
                                         @click="showGeoRestrictionsModal(id)"
                                 >
                                     <i class="far fa-cog"></i> Customize
@@ -543,21 +546,28 @@
                                                 :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
                                 >
                                 </GeoRestrictions>
-                                <div v-b-popover.hover.v-danger.bottom.html="getBannedCountries()">
-                                    <input type="text"
-                                        class="condition__matches campaign custom-input"
-                                        :value="getBannedCountriesStatus()"
-                                        disabled
-                                    >
-                                </div>
                             </div>
                         </b-col>
-                        <b-col cols="7">
+                        <b-col cols="5">
                         </b-col>
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable
+                                <!-- Add tooltip for showing Caps -->
+                                <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
+                                    <input type="text"
+                                        class="condition__matches campaign custom-input"
+                                        :value="getCapsStatus(getOfferCap)"
+                                        @click="showCapsModal(id)"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </b-col>
+                        <b-col cols="2">
+                            <div class="condition__controls">
+                                <label>&nbsp;</label>
+                                <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal-scrollable
                                         @click="showCapsModal(id)"
                                 >
                                     <i class="far fa-cog"></i> Customize
@@ -569,20 +579,11 @@
                                     :offers="getOffersModify()"
                                 >
                                 </Caps>
-
-                                <!-- Add tooltip for showing Caps -->
-                                <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
-                                    <input type="text"
-                                        class="condition__matches campaign custom-input"
-                                        :value="getCapsStatus(getOfferCap)"
-                                        disabled
-                                    >
-                                </div>
                             </div>
                         </b-col>
-                        <b-col cols="7">
+                        <b-col cols="5">
                         </b-col>
-                        <b-col cols="6">
+                        <b-col cols="5">
                             <div class="condition__controls">
                                 <label>&nbsp;</label>
                                 <b-form-checkbox
@@ -590,11 +591,11 @@
                                     type="checkbox"
                                     class="condition__matches campaign"
                                 >
-                                Start Date: {{date}}
+                                Start Date
                                 </b-form-checkbox>
 
                                 <span class="datepicker">
-                                    <date-picker class="custom-input date-picker" name="date" v-model="date" :config="options"></date-picker>
+                                    <date-picker class="custom-input date-picker" name="date" v-model="startDate" :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
 
                                 <b-form-checkbox
@@ -602,16 +603,16 @@
                                     type="checkbox"
                                     class="condition__matches campaign"
                                 >
-                                End Date: {{date}}
+                                End Date
                                 </b-form-checkbox>
 
                                 <span class="datepicker">
-                                    <date-picker class="custom-input date-picker" name="date" v-model="date" :config="options"></date-picker>
+                                    <date-picker class="custom-input date-picker" name="date" v-model="endDate" :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
 
                             </div>
                         </b-col>
-                        <b-col cols="6">
+                        <b-col cols="7">
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -928,23 +929,41 @@
                     {id: 3, name: 'Software'},
                 ]
             },
+            changePayoutType() {
+                this.payoutType
+                // this.payoutType = !this.payoutType;
+            },
         },
         data() {
             return {
                 id: Number(this.$route.params.id),
                 selected: true,
-                value: '',
-                date: null,
+                payoutType: '1',
+                startDate: null,
+                endDate: null,
                 options: {
                     // https://momentjs.com/docs/#/displaying/
-                    format: 'DD/MM/YYYY h:mm:ss',
-                    useCurrent: false,
+                    format: 'MM/DD/YYYY h:mm:ss',
+                    useCurrent: true,
                     showClear: true,
-                    showClose: true,
+                    showClose: false,
+                    sideBySide: true,
+                    icons: {
+                        time: 'far fa-clock',
+                        date: 'far fa-calendar',
+                        up: 'fas fa-chevron-up',
+                        down: 'fas fa-chevron-down',
+                        previous: 'fas fa-chevron-left',
+                        next: 'fas fa-chevron-right',
+                        today: 'fas fa-calendar-check',
+                        clear: 'far fa-ban',
+                        close: 'far fa-times-circle'
+                    },
                 },
             };
         }
     };
+    
 </script>
 
 <style lang="sass">
@@ -1022,11 +1041,12 @@
             position: initial
             float: left
             width: auto
+            padding: 0px 20px
             margin-right: 10px
 
         .title
             .condition__controls label
-                font-size: 16px
+                font-size: 14px
                 display: inline-block
                 text-align: left
                 color: #7F98A5
@@ -1037,9 +1057,14 @@
                 float: left
 
         .row.text-center.title .col-2
-            -ms-flex: 0 0 20%
-            flex: 0 0 20%
-            max-width: 20%
+            -ms-flex: 0 0 18%
+            flex: 0 0 18%
+            max-width: 18%
+
+        .row.text-center.title .col-3
+            -ms-flex: 0 0 22%
+            flex: 0 0 22%
+            max-width: 22%
 
         .row.text-center.title .custom-input
             position: initial
@@ -1052,7 +1077,14 @@
             height: 40px
             text-align: left
             border: 2px solid #e3eef4
-            float: right
+            margin-left: 10px
+            float: left
+
+            &.offer-id
+                width: 50px
+
+            &.offer-name
+                width: 170px
 
         .row.text-center.title .custom-select
             text-align: left
@@ -1065,13 +1097,17 @@
             font-size: 16px
             font-weight: 600
             border: 2px solid #e3eef4
-            float: right
+            margin-left: 10px
+            float: left
 
         .row.text-center.title .condition__controls
             border: 0
             margin-top: -1rem
             margin-bottom: 0rem
             padding-bottom: 0rem
+
+        .row.text-center.title .condition__matches 
+            margin-right: 0px
 
         .offer-tabs 
             margin-top: 20px
@@ -1123,7 +1159,7 @@
                 &::placeholder
                     color: #ACC3CF
 
-            .percent::before
+            .percentage::before
                 content: '\F541'
                 font-family: "Font Awesome 5 Free"
                 font-weight: 900
@@ -1132,7 +1168,7 @@
                 opacity: 0.7
                 float: right
                 position: relative
-                top: 45px
+                top: 43px
                 right: 15px
                 z-index: 1
 
@@ -1145,7 +1181,7 @@
                 opacity: 0.7
                 float: right
                 position: relative
-                top: 45px
+                top: 43px
                 right: 15px
                 z-index: 1
 
@@ -1158,20 +1194,22 @@
                 -moz-appearance: textfield
 
             input.form-control.custom-input.date-picker
+                font-size: 16px
                 border: 2px solid #E3EEF4
                 border-radius: 4px
-                padding: 5px
-                margin: 10px 0px
+                padding: 5px 10px 5px 40px
+                margin-top: 0px
 
             span.datepicker::before
                 content: '\f073'
                 font-family: "Font Awesome 5 Free"
-                font-weight: 900
+                font-weight: 300
                 font-size: 18px
                 color: #ACC3CF
                 opacity: 0.7
                 float: left
                 position: relative
+                margin-top: -15px
                 top: 32px
                 left: 15px
                 z-index: 1
