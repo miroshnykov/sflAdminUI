@@ -833,6 +833,16 @@
                         }
                     })
                 })
+
+                let offerId
+                if (offerData.length !== 0) {
+                    offerId = offerData[0].id
+                }
+                let el = document.querySelector(`#lpsId-${offerId}`)
+                if (el.nextElementSibling.textContent.indexOf('Search landing page') === 0) {
+                    emptyKey.push('DefaultLandingPages missing')
+                }
+
                 if (emptyKey.length !== 0) {
                     this.$swal.fire({
                         title: 'Validation Error',
@@ -962,7 +972,7 @@
             };
         }
     };
-    
+
 </script>
 
 <style lang="sass">
@@ -1105,10 +1115,10 @@
             margin-bottom: 0rem
             padding-bottom: 0rem
 
-        .row.text-center.title .condition__matches 
+        .row.text-center.title .condition__matches
             margin-right: 0px
 
-        .offer-tabs 
+        .offer-tabs
             margin-top: 20px
         
         .tabs
