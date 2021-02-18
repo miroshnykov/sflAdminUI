@@ -2,30 +2,17 @@
     <div class="header">
         <div class="header-container">
             <b-navbar toggleable="lg" type="light" fixed="top">
-                <b-row class="text-center" align-v="center" style="width: 100%">
+                <!-- <b-row class="text-center" align-v="center" style="width: 100%">
                     <b-col col lg="9">
-                        <b-row align-v="center">
-<!--                            <b-col col xl="7" lg="4" class="text-left">-->
-<!--                                <h1>Edit Segment {{this.$route.params.type}}</h1>-->
-<!--                            </b-col>-->
-                            <b-col col xl="5" lg="8" class="text-right">
-                                <!-- <b-button class="btn-save-changes" variant="none" @click="this.saveConditions">
-                                    Save Changes
-                                </b-button>
-                                <b-button class="btn-save-start" variant="none" @click="this.saveConditions" disabled>
-                                    Save &amp; Start
-                                </b-button> -->
-                            </b-col>
-                        </b-row>
                     </b-col>
                     <b-col col lg="3">
                         <b-row align-v="center">
                             <b-col cols="3">
-                                <!-- Hide for now -->
-                                <!-- <div class="header-icons">
+                                Hide for now
+                                <div class="header-icons">
                                     <span class="search"><i class="fas fa-search"></i></span>
                                     <span class="notification"><i class="fas fa-bell"></i></span>
-                                </div> -->
+                                </div>
                             </b-col>
 
                             <b-col cols="9">
@@ -54,41 +41,18 @@
                             </b-col>
                         </b-row>
                     </b-col>
-                </b-row>
+                </b-row> -->
             </b-navbar>
         </div>
     </div>
 </template>
 
 <script>
-    import {deleteCookie} from '../helpers'
     import {mapState} from 'vuex'
 
     export default {
         data() {
             return {}
-        },
-        computed: {
-            ...mapState('user', ['user']),
-        },
-        methods: {
-            getUrlAvatar() {
-                return this.user.length > 0 && this.user[0].picture
-            },
-            getUserEmail() {
-                return this.user.length > 0 && this.user[0].email
-            },
-            getUserName() {
-                return this.user.length > 0 && this.user[0].name
-            },
-            getUserFirstName() {
-                return this.user.length > 0 && this.user[0].given_name
-            },
-            loginOut() {
-                deleteCookie('accessToken')
-                this.$router.push(`/`)
-                location.reload()
-            }
         },
     }
 </script>

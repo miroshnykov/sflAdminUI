@@ -250,7 +250,7 @@
                                     v-show="checkConversionType(`revShare`)"
                                     step=1
                                     min="0"
-                                    max="99"
+                                    max="999"
                                     onkeypress="
                                         return (
                                             event.charCode == 8
@@ -258,7 +258,7 @@
                                             || event.charCode == 13
                                         ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                     onpaste="return false"
-                                    onKeyPress="if(this.value.length==2) return false;"
+                                    onKeyPress="if(this.value.length==3) return false;"
                                 >
                             </div>
                         </b-col>
@@ -422,7 +422,8 @@
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
-                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
                                         onpaste="return false"
                                         onKeyPress="if(this.value.length==3) return false;"
                                 >
@@ -467,7 +468,8 @@
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
-                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
                                         onpaste="return false"
                                         onKeyPress="if(this.value.length==3) return false;"
                                 >
@@ -477,9 +479,10 @@
                                 <label>Pay Out</label>
                                 <input type="number"
                                     step=1
+                                    min="0"
+                                    max="999"
                                     placeholder="10"
                                     :value="getOffer.length !==0  && getOffer[0].payOut"
-                                    min="1" max="1000"
                                     @change="updValue($event, `payOut`)"
                                     class="condition__matches budgetTotal custom-input"
                                     pattern="^\d+(?:\.\d{1,2})?$"
@@ -489,14 +492,10 @@
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
-                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
                                         onpaste="return false"
-                                        onkeyup="
-                                            if(this.value === '' || parseInt(this.value)>1000){
-                                                this.value = 1000
-                                                return false
-                                            }
-                                        "
+                                        onKeyPress="if(this.value.length==3) return false;"
                                 >
                             </div>
                         </b-col>
