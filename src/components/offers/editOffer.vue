@@ -33,7 +33,7 @@
                     >
                 </div>
             </b-col>
-            <b-col cols="2">
+            <b-col cols="2" style="max-width: 23%;flex: 0 0 23%;">
                 <div class="condition__controls">
                     <label>Offer Manager</label>
                     <select
