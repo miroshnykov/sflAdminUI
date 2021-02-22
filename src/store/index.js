@@ -13,6 +13,7 @@ import lpOffers from './lpOffers'
 import prods from './prods'
 import offers from './offers'
 import offer from './offer'
+import offerHistory from './offerHistory'
 import affiliateWebsites from './affiliateWebsites'
 
 import { getUserStore } from 'am-components-front'
@@ -42,6 +43,7 @@ export default new Vuex.Store({
         lpOffers,
         prods,
         offer,
+        offerHistory,
         offers,
         affiliateWebsites
     }
