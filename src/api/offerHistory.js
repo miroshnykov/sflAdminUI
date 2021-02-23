@@ -11,6 +11,7 @@ const offerHistory = async (id) => {
                     id
                     sflOfferId
                     user
+                    action
                     dateAdded
                     logs
                     

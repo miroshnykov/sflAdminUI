@@ -630,6 +630,7 @@
                         <tr scope="row">
                             <th scope="col">User</th>
                             <th scope="col">Data of activity</th>
+                            <th scope="col">Action</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
@@ -643,7 +644,11 @@
 
                             </td>
                             <td>
-                                <span v-for="historyDetails in JSON.parse(history.logs)" >
+                                <span>{{ history.action  }}</span>
+
+                            </td>
+                            <td>
+                                <span v-for="historyDetails in JSON.parse(history.logs)">
                                      {{historyDetails}}
                                 </span>
                             </td>
@@ -665,7 +670,7 @@
     import logo from '../logo.vue'
     import TopBar from '../topbar.vue'
     import MenuNav from '../menunav.vue'
-    import {formatData} from '../../helpers'
+    import {formatData, cloneObjectArray} from '../../helpers'
     import GeoRestrictions from './geoRestrictions'
     import Caps from './caps'
     import CustomLP from './customLP'
@@ -775,7 +780,8 @@
                 }
             },
             getLpModify() {
-                return this.getLpOffers.map(item => {
+                let lpModify = cloneObjectArray(this.getLpOffers)
+                return lpModify.map(item => {
                     item.value = item.id
                     item.text = `${item.name} (LP ID: ${item.id})`
                     return item
