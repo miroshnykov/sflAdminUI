@@ -68,6 +68,18 @@
             </b-col> -->
         </b-row>
 
+        <b-col cols="2">
+            <label> Product override </label>
+            <b-form-checkbox
+                    class="active"
+                    name="check-button"
+                    :checked="!!getSegmentIsOverrideProduct"
+                    @change="activeInactiveSwitch($event)"
+                    switch
+            >
+            </b-form-checkbox>
+        </b-col>
+
         <hr>
 
 
@@ -91,7 +103,14 @@
         components: {menunav, topbar, conditions},
         computed: {
             ...mapGetters('segments', ['getSegments']),
-            ...mapGetters('segment', ['getSegmentFilter', 'getSegmentName', 'getSegmentStatus', 'getSegmentDateUpdated', 'getSegmentDateAdded']),
+            ...mapGetters('segment', [
+                'getSegmentFilter',
+                'getSegmentName',
+                'getSegmentStatus',
+                'getSegmentIsOverrideProduct',
+                'getSegmentDateUpdated',
+                'getSegmentDateAdded'
+            ]),
         },
         segmentFilter: [],
         async mounted() {
@@ -105,9 +124,12 @@
             await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
         },
         methods: {
-            ...mapMutations("segment", ["updateField"]),
+            ...mapMutations('segment', ['updateField','overrideProduct']),
             getFieldName(field) {
                 return this.getCampaign.length > 0 && this.getCampaign[0][field]
+            },
+            activeInactiveSwitch(data) {
+                this.overrideProduct(data)
             },
             async changeField(event, field) {
 
