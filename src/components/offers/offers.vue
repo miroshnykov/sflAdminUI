@@ -86,6 +86,10 @@
                     </button>
                 </div>
 
+                <div slot="verticals" slot-scope="props">
+                    <span class="segment-name">{{props.row.verticals}}</span>
+                </div>
+
                 <div slot="status" slot-scope="props">
                     <div v-if="props.row.status === 'inactive'">
                     <div class="status inactive">{{props.row.status}}</div>
