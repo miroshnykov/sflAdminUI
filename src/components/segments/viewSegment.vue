@@ -127,7 +127,6 @@
 
 <script>
     import {mapState, mapGetters, mapMutations} from 'vuex'
-    import logo from '../logo.vue'
     import conditions from './conditions.vue'
     import topbar from '../topbar.vue'
     import menunav from '../menunav.vue'
@@ -137,7 +136,7 @@
 
     export default {
         name: 'edit-segment',
-        components: {logo, menunav, topbar, conditions, EditConditions, Caps},
+        components: {menunav, topbar, conditions, EditConditions, Caps},
         computed: {
             ...mapGetters('segments', ['getSegments']),
             ...mapGetters('segment', ['getSegmentFilter', 'getSegmentName', 'getSegmentStatus', 'getSegmentDateUpdated', 'getSegmentDateAdded']),

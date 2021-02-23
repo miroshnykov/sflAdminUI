@@ -1,7 +1,6 @@
 <template>
     <div id="campaigns">
         <menunav></menunav>
-        <logo></logo>
         <h1 style="text-transform: capitalize">Manage {{this.$route.params.type}} segments</h1>
 
         <div class="segment-panel">
@@ -44,7 +43,6 @@
 <script>
     import 'bootstrap/dist/css/bootstrap.css'
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import logo from '../logo.vue'
     import menunav from '../menunav.vue'
     import {formatData, timeSince} from '../../helpers'
     import Segment from "./segment";
@@ -55,7 +53,7 @@
         // mounted() {
         //     this.getCampaigns()
         // },
-        components: {logo, menunav, Segment, draggable},
+        components: {menunav, Segment, draggable},
         computed: {
             ...mapState('segments', ['segments']),
             ...mapGetters('segments', ['getSegments'])
