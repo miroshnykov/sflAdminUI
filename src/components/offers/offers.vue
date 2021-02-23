@@ -1,7 +1,6 @@
 <template>
     <div id="campaigns">
         <menunav></menunav>
-        <logo></logo>
         <h1>Manage Custom Offers</h1>
 
         <div class="segment-panel">
@@ -38,6 +37,10 @@
                     <b-form-text id="spent-values">
                         Updated {{timeSince_(row.dateUpdated)}} ago
                     </b-form-text>
+                </div>
+
+                <div slot="advertiser" slot-scope="props">
+                    <span class="segment-name">{{props.row.advertiser}}</span>
                 </div>
 
                 <div slot="payIn" slot-scope="props">
@@ -81,6 +84,10 @@
                             v-b-tooltip.hover.right="'Copy URL to Clipboard'">
                         <i class="far fa-copy"></i>
                     </button>
+                </div>
+
+                <div slot="verticals" slot-scope="props">
+                    <span class="segment-name">{{props.row.verticals}}</span>
                 </div>
 
                 <div slot="status" slot-scope="props">
@@ -133,7 +140,6 @@
 <script>
     import 'bootstrap/dist/css/bootstrap.css'
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import logo from '../logo.vue'
     import menunav from '../menunav.vue'
     import {formatData, timeSince} from '../../helpers'
     import {getCookie} from '../../helpers'
@@ -141,16 +147,18 @@
     let tableColumnsLog = [
         'id',
         'name',
+        'advertiser',
         'payIn',
         'payOut',
         'landingPage',
+        'verticals',
         'status',
         'countOfCampaigns',
         'actions',
     ]
 
     export default {
-        components: {logo, menunav},
+        components: {menunav},
         computed: {
             ...mapGetters('offers', ['getOffers'])
         },
@@ -341,17 +349,17 @@
                         id: 'ID',
                         name: 'Offer Name',
                         advertiser: 'Advertiser',
-                        vertical: 'Vertical',
-                        payIn: 'Pay-in',
-                        payOut: 'Pay-out',
+                        verticals: 'Vertical',
+                        payIn: 'PayIn',
+                        payOut: 'PayOut',
                         landingPage: 'Default LP',
-                        countOfCampaigns: 'Count of campaigns',
+                        countOfCampaigns: 'Campaigns',
                         status: 'Status',
                     },
                     editableColumns: ['offerName'],
                     // sortable: tableColumnsLog,
                     // sortable: [''],
-                    sortable: ['id','name','advertiser','vertical','status'],
+                    sortable: ['id','name','advertiser','verticals','status'],
                     sortIcon: {
                         base: 'fa fad',
                         up: 'fa-sort-up',
