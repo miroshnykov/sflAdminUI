@@ -5,7 +5,6 @@ import successLogin from '../components/successLogin'
 import errorLogin from '../components/errorLogin'
 import segments from '../components/segments/segments'
 import offers from '../components/offers/offers'
-import newOffer from '../components/offers/newOffer'
 import editOffer from '../components/offers/editOffer'
 import editSegment from '../components/segments/editSegment.vue'
 import viewSegment from '../components/segments/viewSegment.vue'
@@ -49,11 +48,6 @@ export default new Router({
         {
             path: '/offers',
             component: offers
-        },
-        {
-            path: '/offer/new',
-            name: 'newOffer',
-            component: newOffer
         },
         {
             path: '/offer/:id',

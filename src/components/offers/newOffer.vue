@@ -592,7 +592,6 @@
 
 <script>
     import {mapState, mapGetters} from 'vuex'
-    import logo from '../logo.vue'
     import topbar from '../topbar.vue'
     import menunav from '../menunav.vue'
     import {formatData} from '../../helpers'
@@ -600,7 +599,7 @@
 
     export default {
         name: 'newOffer',
-        components: {logo, menunav, topbar},
+        components: {menunav, topbar},
         computed: {
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('offer', ['getOfferFilter', 'getOfferStatus']),

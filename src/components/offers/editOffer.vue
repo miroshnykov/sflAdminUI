@@ -629,17 +629,17 @@
                         <thead>
                         <tr scope="row">
                             <th scope="col">User</th>
-                            <th scope="col">Data of activity</th>
+                            <th scope="col">Date/Time</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
                         <tr scope="row" v-for="history in getOfferHistoryModify()">
                             <td>
-                                <span>{{history.user }}</span>
+                                <span>{{history.user}}</span>
 
                             </td>
                             <td>
-                                <span>{{ formatDate_(new Date(history.dateAdded * 1000))  }}</span>
+                                <span>{{ formatDate_(new Date(history.dateAdded * 1000)) }}</span>
 
                             </td>
                             <td>
@@ -662,7 +662,6 @@
 
 <script>
     import {mapGetters, mapMutations} from 'vuex'
-    import logo from '../logo.vue'
     import TopBar from '../topbar.vue'
     import MenuNav from '../menunav.vue'
     import {formatData} from '../../helpers'
@@ -671,14 +670,13 @@
     import CustomLP from './customLP'
     import OfferLP from './offerLP'
     import {ModelSelect} from 'vue-search-select'
-    // import 'bootstrap/dist/css/bootstrap.css';
+    import 'bootstrap/dist/css/bootstrap.css';
     import datePicker from 'vue-bootstrap-datetimepicker';
     import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
     export default {
         name: 'editOffer',
         components: {
-            logo,
             MenuNav,
             TopBar,
             GeoRestrictions,
