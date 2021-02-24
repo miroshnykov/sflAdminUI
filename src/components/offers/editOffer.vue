@@ -311,7 +311,7 @@
                                 </div>
 
                                 <!-- <label>Default LP {{getLPValue()}}</label> -->
-                                <label>Default LP
+                                <span>Default LP
                                     <span class="question"
                                           v-b-tooltip.hover.right.html="'Add or select a landing page is mandatory'">
                                         <i class="fad fa-question-circle"></i>
@@ -327,7 +327,7 @@
                                             :defaultLp="getLpDefault"
                                             :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                                     </CustomLP>
-                                </label>
+                                </span>
                                 <model-select
                                         :options="getLpModify()"
                                         :id="defineId(`lpsId`,id)"
@@ -808,14 +808,6 @@
                     return item
                 })
             },
-            // getLpModify() {
-            //     let lpModify = cloneObjectArray(this.getLpOffers)
-            //     return lpModify.map(item => {
-            //         item.value = item.id
-            //         item.text = `${item.name} (LP ID: ${item.id})`
-            //         return item
-            //     })
-            // },
             getDefaultLPInfo(defaultLp) {
                 if (!defaultLp) return
                 return this.getLpOffers.filter(item => {
