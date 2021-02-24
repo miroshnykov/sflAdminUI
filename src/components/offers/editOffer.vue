@@ -355,7 +355,7 @@
                                 </CustomLP>
                             </div>
                         </b-col> -->
-                        <b-col cols="1">
+                        <b-col cols="2">
                             <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
                                 <button class="btn btn-link pull-left" @click="copyText(defaultLp)"
