@@ -30,22 +30,22 @@
                         <!-- <span >{{ JSON.stringify(lp) }}</span>-->
                         <input type="text"
                                placeholder="ex: Movies Signup LP"
-                               class="condition__matches custom-input text-center"
+                               class="condition__matches custom-input text-center offerLpName"
                                :id="defineId(`defaultLpName`, lp.id)"
                                :value="lp.name"
                                @change="updateLP($event,`name`, lp.id)"
                                maxlength="30"
                                onblur="
                                         if(this.value === ''){
-                                            document.querySelector('#offerLpName').style.border = '2px solid #f38282'
+                                            document.querySelector('.offerLpName').style.border = '2px solid #f38282'
                                             document.querySelector('.btn-savebucket').style.display = 'none'
                                             document.querySelector('#input-live-feedback-name').style.display = 'block'
                                             return false
                                         } else {
                                             document.querySelector('.btn-savebucket').style.display = 'inline-block'
-                                            document.querySelector('#offerLpName').style.background = 'white'
+                                            document.querySelector('.offerLpName').style.background = 'white'
                                             document.querySelector('#input-live-feedback-name').style.display = 'none'
-                                            document.querySelector('#offerLpName').style.border = '2px solid #e3eef4'
+                                            document.querySelector('.offerLpName').style.border = '2px solid #e3eef4'
                                         }
                                     "
                         >
@@ -57,7 +57,27 @@
 
                     </td>
                     <td width="60%">
-                        <textarea type="text"
+                        <input type="text"
+                               class="condition__matches custom-input text-center offerLpUrl"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="500"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('.offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        >
+                        <!-- <textarea type="text"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpUrl`, lp.id)"
                                :value="lp.url"
@@ -77,7 +97,7 @@
                                         }
                                     "
                         >
-                        </textarea>
+                        </textarea> -->
 
                             <!-- <b-form-textarea
                                class="condition__matches custom-input text-center"
@@ -101,7 +121,7 @@
                             ></b-form-textarea> -->
 
                         <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
-                            Enter a website URL.
+                            Enter a valid website URL.
                         </b-form-invalid-feedback>
 
 
