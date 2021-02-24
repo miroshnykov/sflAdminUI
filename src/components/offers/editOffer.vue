@@ -316,6 +316,17 @@
                                           v-b-tooltip.hover.right.html="'Add or select a landing page is mandatory'">
                                         <i class="fad fa-question-circle"></i>
                                     </span>
+                                    <b-button variant="light" class="btn-add-line pull-right" v-b-modal.modal-scrollable
+                                            @click="showCustomLPModal(id)"
+                                    >
+                                        <i class="far fa-cog"></i> Add LP/Customize
+                                    </b-button>
+
+                                    <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
+                                            :customLPId="id"
+                                            :defaultLp="getLpDefault"
+                                            :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
+                                    </CustomLP>
                                 </label>
                                 <model-select
                                         :options="getLpModify()"
@@ -328,7 +339,7 @@
                                 </model-select>
                             </div>
                         </b-col>
-                        <b-col cols="2">
+                        <!-- <b-col cols="2">
                             <div class="condition__controls">
                                 <label>&nbsp;</label>
                                 <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal-scrollable
@@ -342,6 +353,19 @@
                                           :defaultLp="getLpDefault"
                                           :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                                 </CustomLP>
+                            </div>
+                        </b-col> -->
+                        <b-col cols="1">
+                            <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
+                                <label>&nbsp;</label>
+                                <button class="btn btn-link pull-left" @click="copyText(defaultLp)"
+                                        v-b-tooltip.hover.bottom="'Copy URL to Clipboard'">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                                <button class="btn btn-link pull-left" @click="openURL(props.row.landingPage)"
+                                        v-b-tooltip.hover.bottom="'Open URL in a new page'">
+                                    <i class="far fa-external-link-alt"></i>
+                                </button>
                             </div>
                         </b-col>
                         <b-col cols="4">
@@ -387,7 +411,7 @@
                             </div>
                         </b-col>
                         <b-col cols="1">
-                            <div class="condition__controls" style="margin-top: 10px; margin-left: -10px;">
+                            <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
                                 <button class="btn btn-link pull-left" @click="copyText(props.row.landingPage)"
                                         v-b-tooltip.hover.right="'Copy URL to Clipboard'">
@@ -768,7 +792,7 @@
                 if (this.getOffer.length !== 0) {
 
                     let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
-                    return obj.length !== 0 && obj[0].url
+                    return obj.length !== 0 && 'Name: ' + obj[0].name + '<br>(ID:' + obj[0].id + ')'
                 }
             },
             getLpDefault() {
@@ -780,10 +804,18 @@
                 let lpModify = cloneObjectArray(this.getLpOffers)
                 return lpModify.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (LP ID: ${item.id})`
+                    item.text = `${item.url}`
                     return item
                 })
             },
+            // getLpModify() {
+            //     let lpModify = cloneObjectArray(this.getLpOffers)
+            //     return lpModify.map(item => {
+            //         item.value = item.id
+            //         item.text = `${item.name} (LP ID: ${item.id})`
+            //         return item
+            //     })
+            // },
             getDefaultLPInfo(defaultLp) {
                 if (!defaultLp) return
                 return this.getLpOffers.filter(item => {
@@ -1208,6 +1240,7 @@
                 background: #fff
                 border-radius: 7px
                 min-width: 250px
+                min-height: 45px
                 max-height: 300px
                 resize: vertical !important
                 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out

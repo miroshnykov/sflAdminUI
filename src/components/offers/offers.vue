@@ -152,8 +152,8 @@
         'payOut',
         'landingPage',
         'verticals',
-        'status',
         'countOfCampaigns',
+        'status',
         'actions',
     ]
 
