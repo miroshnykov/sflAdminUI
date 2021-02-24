@@ -58,6 +58,7 @@ export default {
         segmentName: '',
         segmentDateUpdated: '',
         segmentDateAdded: '',
+        segmentIsOverrideProduct: 0,
         segmentStatus: '',
         segmentRuleCount: 0
     },
@@ -71,6 +72,7 @@ export default {
             state.segmentDateAdded = data.segmentDateAdded
             state.segmentName = data.segmentName
             state.segmentStatus = data.segmentStatus
+            state.segmentIsOverrideProduct = data.segmentIsOverrideProduct
             state.segmentRuleCount = data.segmentRuleCount
         },
         updateField(state, data) {
@@ -218,14 +220,18 @@ export default {
             state.segmentFilter = deleteFilter_(state, indexFilters)
             state.segmentRuleCount = state.segmentRuleCount - 1
         },
+        overrideProduct(state, isOverrideProduct) {
+            state.segmentIsOverrideProduct = isOverrideProduct
+        },
         async saveConditionsCommit(state, data) {
 
-            const {segmentName, segmentStatus, segmentId, segmentFilter} = state
+            const {segmentName, segmentStatus, segmentId, segmentFilter, segmentIsOverrideProduct} = state
 
             let dataSend = {}
             dataSend.id = segmentId
             dataSend.name = segmentName
             dataSend.status = segmentStatus
+            dataSend.isOverrideProduct = segmentIsOverrideProduct
 
             let toSendFilter = []
             for (const filter of segmentFilter) {
@@ -318,6 +324,7 @@ export default {
                 segments: sortedByPostition,
                 segmentName: segmentsData && segmentsData[0].name || '',
                 segmentStatus: segmentsData && segmentsData[0].status || '',
+                segmentIsOverrideProduct: segmentsData && segmentsData[0].isOverrideProduct || '',
                 segmentDateUpdated: segmentsData && segmentsData[0].dateUpdated || '',
                 segmentDateAdded: segmentsData && segmentsData[0].dateAdded || '',
                 segmentId: id,
@@ -346,6 +353,7 @@ export default {
         getSegmentDateUpdated: state => state.segmentDateUpdated,
         getSegmentDateAdded: state => state.segmentDateAdded,
         getSegmentStatus: state => state.segmentStatus,
+        getSegmentIsOverrideProduct: state => state.segmentIsOverrideProduct,
     },
 
 

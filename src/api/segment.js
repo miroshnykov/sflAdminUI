@@ -11,6 +11,7 @@ const segmentStatus = async (id) => {
                       segmentStatus(id:${id}){
                         name
                         status
+                        isOverrideProduct
                         dateUpdated
                         dateAdded                        
                       } 
@@ -29,7 +30,7 @@ const segmentStatus = async (id) => {
 }
 
 const saveConditionsApi = async (data) => {
-    const {id, name, status, filters} = data
+    const {id, name, status, filters, isOverrideProduct} = data
 
     try {
 
@@ -42,6 +43,7 @@ const saveConditionsApi = async (data) => {
                             id:${id}
                             name:"${name}"
                             status:"${status}"
+                            isOverrideProduct:${Number(isOverrideProduct)}
                             filters: ${filters}
                             ){
                               segmentId                        
