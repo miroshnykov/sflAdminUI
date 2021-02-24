@@ -3,79 +3,19 @@
 
         <div class="modal-container">
 
-
-            <h1>Custom Default LPs per GEO</h1>
-            <table class="table table-striped child-row tableFixHead lp-table">
-                <thead>
-                <tr scope="row">
-                    <th scope="col">GEO</th>
-                    <th scope="col">Landing Page</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tr scope="row" :id="defineId(`customLpRowId`,rules.pos)" v-for="rules in getCustomLPRules_()">
-                    <td>
-                        <span class="hidden">{{ JSON.stringify(rules) }}</span>
-                        <div class="condition-line1">
-                            <model-select
-                                    :options="getCountriesModify()"
-                                    :id="defineId(`customCountry`,rules.pos)"
-                                    :value="rules.country"
-                                    @input="updateCustomLPAction($event, `country`, rules)"
-                                    class="condition__country condition__matches custom-select "
-                            >
-                            </model-select>
-
-
-                        </div>
-
-                    </td>
-                    <td>
-                        <div class="condition-line1">
-                            <model-select
-                                    :options="getLpModify()"
-                                    :id="defineId(`customLPs`,rules.pos)"
-                                    placeholder="Search landing page..."
-                                    @input="updateCustomLPAction($event, `id`, rules)"
-                                    :value="rules.id"
-                            >
-                            </model-select>
-
-
-                        </div>
-
-                    </td>
-                    <td>
-                        <b-button variant="light" @click="delCustomLpAction(rules.pos)"
-                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
-                                  style="z-index:2">
-                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
-                        </b-button>
-
-                    </td>
-                </tr>
-
-                <tr scope="row">
-                    <td>
-                        <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
-                            <i class="far fa-plus"></i> Add GEO
-                        </b-button>
-                    </td>
-                </tr>
-            </table>
-
+            <h1>List of landing pages</h1>
 
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
-                    <th scope="col">ID</th>
+                    <!-- <th scope="col">ID</th> -->
                     <th scope="col">Landing Page Name</th>
                     <th scope="col">Landing Page URL</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
-                    <td>
+                    <!-- <td>
                         <label class="lpID btn btn-secondary-">{{lp.id}}
                             <input
                                     type="checkbox"
@@ -83,18 +23,18 @@
                                     name="radio"
                                     @change="setDefaultLp(lp.id)"
                             >
-                            <!-- <span class="conversionTypeCheckMark"></span> -->
+                            <span class="conversionTypeCheckMark"></span>
                         </label>
-                    </td>
-                    <td>
-                        <!--                        <span >{{ JSON.stringify(lp) }}</span>-->
+                    </td> -->
+                    <td width="30%">
+                        <!-- <span >{{ JSON.stringify(lp) }}</span>-->
                         <input type="text"
                                placeholder="ex: Movies Signup LP"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpName`, lp.id)"
                                :value="lp.name"
                                @change="updateLP($event,`name`, lp.id)"
-                               maxlength="50"
+                               maxlength="30"
                                onblur="
                                         if(this.value === ''){
                                             document.querySelector('#offerLpName').style.border = '2px solid #f38282'
@@ -116,8 +56,8 @@
 
 
                     </td>
-                    <td>
-                        <input type="text"
+                    <td width="60%">
+                        <textarea type="text"
                                class="condition__matches custom-input text-center"
                                :id="defineId(`defaultLpUrl`, lp.id)"
                                :value="lp.url"
@@ -137,6 +77,28 @@
                                         }
                                     "
                         >
+                        </textarea>
+
+                            <!-- <b-form-textarea
+                               class="condition__matches custom-input text-center"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="500"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('#offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                            ></b-form-textarea> -->
 
                         <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
                             Enter a website URL.
@@ -144,7 +106,7 @@
 
 
                     </td>
-                    <td>
+                    <td width="10%">
                         <b-button variant="light" @click="delLpOfferAction(lp.id)"
                                   v-b-tooltip.hover.top="'Delete Custom LPs'"
                                   style="z-index:2">
@@ -163,6 +125,65 @@
                 </tr>
             </table>
 
+            <h1 style="margin-top:30px">Custom landing pages per GEO</h1>
+            <table class="table table-striped child-row tableFixHead lp-table">
+                <thead>
+                <tr scope="row">
+                    <th scope="col">GEO</th>
+                    <th scope="col">Landing Page</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tr scope="row" :id="defineId(`customLpRowId`,rules.pos)" v-for="rules in getCustomLPRules_()">
+                    <td width="30%">
+                        <span class="hidden">{{ JSON.stringify(rules) }}</span>
+                        <div class="condition-line1">
+                            <model-select
+                                    :options="getCountriesModify()"
+                                    :id="defineId(`customCountry`,rules.pos)"
+                                    :value="rules.country"
+                                    @input="updateCustomLPAction($event, `country`, rules)"
+                                    class="condition__country condition__matches custom-select "
+                            >
+                            </model-select>
+
+
+                        </div>
+
+                    </td>
+                    <td width="60%">
+                        <div class="condition-line1">
+                            <model-select
+                                    :options="getLpModify()"
+                                    :id="defineId(`customLPs`,rules.pos)"
+                                    placeholder="Search landing page..."
+                                    @input="updateCustomLPAction($event, `id`, rules)"
+                                    :value="rules.id"
+                            >
+                            </model-select>
+
+
+                        </div>
+
+                    </td>
+                    <td width="10%">
+                        <b-button variant="light" @click="delCustomLpAction(rules.pos)"
+                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
+                                  style="z-index:2">
+                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
+                        </b-button>
+
+                    </td>
+                </tr>
+
+                <tr scope="row">
+                    <td>
+                        <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
+                            <i class="far fa-plus"></i> Add GEO
+                        </b-button>
+                    </td>
+                </tr>
+            </table>
 
             <b-row class="text-center">
                 <b-col cols="12">
@@ -415,5 +436,26 @@
 
         label.conversionType.btn.btn-secondary-, label.lpID.btn.btn-secondary-
             margin-bottom: 0
+
+        textarea
+            display: block
+            width: 100%
+            height: 45px
+            padding: 12px 15px
+            color: #7F98A5
+            font-size: 16px
+            font-weight: 500
+            letter-spacing: 0.3px
+            line-height: 1
+            border: 2px solid #E3EEF4
+            background: #fff
+            border-radius: 7px
+            min-height: 45px
+            max-height: 200px
+            resize: vertical !important
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+
+            &::placeholder
+                color: #ACC3CF
 
 </style>
