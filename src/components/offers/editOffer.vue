@@ -570,8 +570,8 @@
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <!-- Add tooltip for showing Caps -->
-                                <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
+                                <!-- TODO: Add Caps details in tooltip -->
+                                <div v-b-tooltip.hover.v-info.bottom.html="'Caps details here (coming soon)'">
                                     <input type="text"
                                            class="condition__matches campaign custom-input"
                                            :value="getCapsStatus(getOfferCap)"
@@ -606,29 +606,30 @@
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    Start Date
+                                    Offer start date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="startDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
+                            
+                            </div>
+                            <div class="condition__controls" style="margin-top: 20px">
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    End Date
+                                    Offer end date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="endDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
                             </div>
                         </b-col>
                         <b-col cols="7">
@@ -891,7 +892,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps.length !== 0 && `Enabled` || `Disabled`
+                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
             },
             async cancelEdit() {
                 this.$swal.fire({
