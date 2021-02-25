@@ -41,14 +41,10 @@
 
             <b-row class="text-center">
                 <b-col cols="12">
-                    <div class="allow-ban-all">
-                        <!-- TODO: Banned GEOs should be listed in country code only, same as tooltip on editOffer.vue-->
-                        <b-form-text>Banned GEOs selected: {{ listOfBannedCountries(geoRules) }}
-                            <!-- <input type="text"
-                                class="condition__matches campaign custom-input"
-                                :value="getBannedCountries()"
-                                disabled
-                            > -->
+                    <div class="allow-ban-all text-left">
+                        <b-form-text><b>Banned GEOs selected:</b>
+                        <br>
+                        {{ listOfBannedCountries(geoRules) }}
                         </b-form-text>
                     </div>
                 </b-col>
