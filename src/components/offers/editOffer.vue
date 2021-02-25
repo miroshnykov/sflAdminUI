@@ -914,6 +914,7 @@
                             key === 'geoRules' ||
                             key === 'customLPRules' ||
                             key === 'payoutPercent' ||
+                            key === 'descriptions' ||
                             key === 'caps' ||
                             key === 'isCpmOptionEnabled' ||
                             key === 'offerIdRedirect'
