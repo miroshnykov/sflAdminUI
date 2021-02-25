@@ -79,6 +79,8 @@
                                         placeholder="Media offers for everyone in EU region with some limitations..."
                                         rows="4"
                                         max-rows="6"
+                                        :value="getOffer.length !==0 && getOffer[0].descriptions"
+                                        @change="updValue($event, `descriptions`)"
                                 ></b-form-textarea>
                             </div>
                         </b-col>
@@ -319,15 +321,15 @@
                                 </span>
                                 <span>
                                     <b-button variant="light" class="btn-add-line pull-right" v-b-modal.modal-scrollable
-                                            @click="showCustomLPModal(id)"
+                                              @click="showCustomLPModal(id)"
                                     >
                                         <i class="far fa-cog"></i> Add LP/Customize
                                     </b-button>
 
                                     <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
-                                            :customLPId="id"
-                                            :defaultLp="getLpDefault"
-                                            :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
+                                              :customLPId="id"
+                                              :defaultLp="getLpDefault"
+                                              :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
                                     </CustomLP>
                                 </span>
                                 <model-select
@@ -641,6 +643,7 @@
                         <tr scope="row">
                             <th scope="col">User</th>
                             <th scope="col">Date/Time</th>
+                            <th scope="col">Action</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
@@ -659,7 +662,9 @@
                             </td>
                             <td>
                                 <span v-for="historyDetails in JSON.parse(history.logs)">
-                                     {{historyDetails}}
+                                    <div> field:  <span>{{historyDetails.field}} </span> </div>
+                                    <div> newValue: <span>{{historyDetails.newValue}}</span></div>
+                                    <div> oldValue: <span>{{historyDetails.oldValue}}</span></div>
                                 </span>
                             </td>
                         </tr>
@@ -792,10 +797,16 @@
                 }
             },
             openURL() {
-                    // TODO: Needs adjustments to show proper external page
-                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
-                    let route = this.$router.resolve({path: `${obj[0].url}`});
-                    window.open(route.href, '_blank');
+                let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                let url = obj[0].url
+
+                let prefix = 'http'
+
+                if (url.substr(0, prefix.length) !== prefix) {
+                    url = prefix + '://' + url
+                }
+
+                window.open(url, '_blank');
             },
             getLpURL() {
                 if (this.getOffer.length !== 0) {
@@ -846,6 +857,7 @@
                 if (
                     name === 'conversionType'
                     || name === 'defaultLp'
+                    || name === 'descriptions'
                     || name === 'offerIdRedirect'
                 ) {
                     obj.fieldName = name
