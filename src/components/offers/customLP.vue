@@ -425,26 +425,4 @@
 
         label.conversionType.btn.btn-secondary-, label.lpID.btn.btn-secondary-
             margin-bottom: 0
-
-        textarea
-            display: block
-            width: 100%
-            height: 45px
-            padding: 12px 15px
-            color: #7F98A5
-            font-size: 16px
-            font-weight: 500
-            letter-spacing: 0.3px
-            line-height: 1
-            border: 2px solid #E3EEF4
-            background: #fff
-            border-radius: 7px
-            min-height: 45px
-            max-height: 200px
-            resize: vertical !important
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
-
-            &::placeholder
-                color: #ACC3CF
-
 </style>

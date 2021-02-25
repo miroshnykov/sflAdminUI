@@ -76,9 +76,9 @@
                                 <label>Description</label>
                                 <b-form-textarea
                                         id="textarea"
-                                        placeholder="Media offers for everyone in EU region with some limitations..."
-                                        rows="4"
-                                        max-rows="6"
+                                        placeholder="Description or notes about this offer..."
+                                        rows="3"
+                                        max-rows="4"
                                         :value="getOffer.length !==0 && getOffer[0].descriptions"
                                         @change="updValue($event, `descriptions`)"
                                 ></b-form-textarea>
@@ -638,33 +638,40 @@
 
                 <b-tab title="History">
 
-                    <table class="table table-striped child-row tableFixHead lp-table">
+                    <table class="table table-striped child-row tableFixHead lp-table no-border">
                         <thead>
                         <tr scope="row">
-                            <th scope="col">User</th>
+                            <th scope="col">User (E-mail)</th>
                             <th scope="col">Date/Time</th>
+                            <th scope="col">Field</th>
                             <th scope="col">Action</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
                         <tr scope="row" v-for="history in getOfferHistoryModify()">
-                            <td>
+                            <td class="text-left" width="20%">
                                 <span>{{history.user}}</span>
-
                             </td>
-                            <td>
+                            <td class="text-left" width="15%">
                                 <span>{{ formatDate_(new Date(history.dateAdded * 1000)) }}</span>
 
                             </td>
-                            <td>
-                                <span>{{ history.action  }}</span>
+                            <td class="text-left" width="10%">
+                                <span v-for="historyDetails in JSON.parse(history.logs)">
+                                    <div><span>{{historyDetails.field}}</span></div>
+                                </span>
+                            </td>
+                            <td class="text-left" width="10%">
+                                <span>{{ history.action }}</span>
 
                             </td>
-                            <td>
+                            <td class="text-left" width="45%">
                                 <span v-for="historyDetails in JSON.parse(history.logs)">
-                                    <div> field:  <span>{{historyDetails.field}} </span> </div>
-                                    <div> newValue: <span>{{historyDetails.newValue}}</span></div>
-                                    <div> oldValue: <span>{{historyDetails.oldValue}}</span></div>
+                                    <div>
+                                        <span class="oldValue">{{historyDetails.oldValue}}</span>
+                                        <i class="far fa-long-arrow-alt-right" data-fa-transform="shrink-1"></i>
+                                        <span class="newValue">{{historyDetails.newValue}}</span>
+                                    </div>
                                 </span>
                             </td>
                         </tr>
@@ -1226,9 +1233,9 @@
 
         .tabs
             .tab-content
-                min-width: 52vw
-                border: 1px solid #E3EEF4
-                border-radius: 4px
+                width: 65vw
+                // border: 1px solid #E3EEF4
+                // border-radius: 4px
 
             .mt-3, .my-3
                 margin-top: 0rem !important
@@ -1326,4 +1333,12 @@
                 top: 32px
                 left: 15px
                 z-index: 1
+
+            span.oldValue
+                color: #ACC3CF
+                // font-weight: 400
+                // text-decoration: line-through
+
+            span.newValue
+                font-weight: 700
 </style>
