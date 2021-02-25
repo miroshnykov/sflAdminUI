@@ -311,11 +311,13 @@
                                 </div>
 
                                 <!-- <label>Default LP {{getLPValue()}}</label> -->
-                                <span>Default LP
+                                <span class="label">Default LP
                                     <span class="question"
-                                          v-b-tooltip.hover.right.html="'Add or select a landing page is mandatory'">
+                                          v-b-tooltip.hover.right.html="'Add a new LP and make sure it\'s selected'">
                                         <i class="fad fa-question-circle"></i>
                                     </span>
+                                </span>
+                                <span>
                                     <b-button variant="light" class="btn-add-line pull-right" v-b-modal.modal-scrollable
                                             @click="showCustomLPModal(id)"
                                     >
@@ -339,31 +341,16 @@
                                 </model-select>
                             </div>
                         </b-col>
-                        <!-- <b-col cols="2">
-                            <div class="condition__controls">
-                                <label>&nbsp;</label>
-                                <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal-scrollable
-                                          @click="showCustomLPModal(id)"
-                                >
-                                    <i class="far fa-cog"></i> Add LP/Customize
-                                </b-button>
-
-                                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
-                                          :customLPId="id"
-                                          :defaultLp="getLpDefault"
-                                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
-                                </CustomLP>
-                            </div>
-                        </b-col> -->
                         <b-col cols="2">
                             <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
-                                <button class="btn btn-link pull-left" @click="copyText(defaultLp)"
-                                        v-b-tooltip.hover.bottom="'Copy URL to Clipboard'">
+                                <!-- TODO: Add copy and open URL backend support -->
+                                <button class="btn btn-link pull-left" @click="copyText()"
+                                        v-b-tooltip.hover.bottom="'Copy URL'">
                                     <i class="far fa-copy"></i>
                                 </button>
-                                <button class="btn btn-link pull-left" @click="openURL(props.row.landingPage)"
-                                        v-b-tooltip.hover.bottom="'Open URL in a new page'">
+                                <button class="btn btn-link pull-left" @click="openURL()"
+                                        v-b-tooltip.hover.bottom="'Open URL in a new tab'">
                                     <i class="far fa-external-link-alt"></i>
                                 </button>
                             </div>
@@ -413,8 +400,8 @@
                         <b-col cols="1">
                             <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
-                                <button class="btn btn-link pull-left" @click="copyText(props.row.landingPage)"
-                                        v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                                <button class="btn btn-link pull-left" @click="copyText()"
+                                        v-b-tooltip.hover.right="'Copy URL'">
                                     <i class="far fa-copy"></i>
                                 </button>
                             </div>
@@ -788,6 +775,28 @@
                 // return this.getOffer.length !== 0 && `Allow all countries`
                 // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
             },
+            async copyText() {
+                try {
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    await navigator.clipboard.writeText(obj[0].url);
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Copied URL to clipboard`,
+                        text: `${obj[0].url}`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            },
+            openURL() {
+                    // TODO: Needs adjustments to show proper external page
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    let route = this.$router.resolve({path: `${obj[0].url}`});
+                    window.open(route.href, '_blank');
+            },
             getLpURL() {
                 if (this.getOffer.length !== 0) {
 
@@ -1135,6 +1144,17 @@
                 margin-top: 5px
                 border-radius: 7px
                 float: left
+
+        span.label
+            font-size: 14px
+            display: inline-block
+            text-align: left
+            color: #7F98A5
+            font-weight: 500
+            letter-spacing: 0.3px
+            margin-top: 5px
+            margin-bottom: 5px
+            border-radius: 7px
 
         .row.text-center.title .col-2
             -ms-flex: 0 0 18%

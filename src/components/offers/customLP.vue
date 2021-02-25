@@ -5,6 +5,13 @@
 
             <h1>List of landing pages</h1>
 
+            <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
+                Enter a name for the landing page.
+            </b-form-invalid-feedback>
+            <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
+                Enter a valid website URL.
+            </b-form-invalid-feedback>
+
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
@@ -49,15 +56,29 @@
                                         }
                                     "
                         >
-
-                        <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
-                            Enter a name for the landing page.
-                        </b-form-invalid-feedback>
-
-
                     </td>
                     <td width="60%">
-                        <input type="text"
+                        <!-- <input type="text"
+                               class="condition__matches custom-input text-center offerLpUrl"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="500"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('.offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        > -->
+                        <textarea type="text"
                                class="condition__matches custom-input text-center offerLpUrl"
                                :id="defineId(`defaultLpUrl`, lp.id)"
                                :value="lp.url"
@@ -77,54 +98,7 @@
                                         }
                                     "
                         >
-                        <!-- <textarea type="text"
-                               class="condition__matches custom-input text-center"
-                               :id="defineId(`defaultLpUrl`, lp.id)"
-                               :value="lp.url"
-                               @change="updateLP($event,`url`, lp.id)"
-                               maxlength="500"
-                               onblur="
-                                        if(this.value === ''){
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
-                                            document.querySelector('.btn-savebucket').style.display = 'none'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
-                                            return false
-                                        } else {
-                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
-                                            document.querySelector('#offerLpUrl').style.background = 'white'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
-                                        }
-                                    "
-                        >
-                        </textarea> -->
-
-                            <!-- <b-form-textarea
-                               class="condition__matches custom-input text-center"
-                               :id="defineId(`defaultLpUrl`, lp.id)"
-                               :value="lp.url"
-                               @change="updateLP($event,`url`, lp.id)"
-                               maxlength="500"
-                               onblur="
-                                        if(this.value === ''){
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
-                                            document.querySelector('.btn-savebucket').style.display = 'none'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
-                                            return false
-                                        } else {
-                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
-                                            document.querySelector('#offerLpUrl').style.background = 'white'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
-                                        }
-                                    "
-                            ></b-form-textarea> -->
-
-                        <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
-                            Enter a valid website URL.
-                        </b-form-invalid-feedback>
-
-
+                        </textarea>
                     </td>
                     <td width="10%">
                         <b-button variant="light" @click="delLpOfferAction(lp.id)"
@@ -136,13 +110,9 @@
                     </td>
                 </tr>
 
-                <tr scope="row">
-                    <td>
-                        <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
-                            <i class="far fa-plus"></i> Add LP
-                        </b-button>
-                    </td>
-                </tr>
+                <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
+                    <i class="far fa-plus"></i> Add LP
+                </b-button>
             </table>
 
             <h1 style="margin-top:30px">Custom landing pages per GEO</h1>
@@ -196,13 +166,9 @@
                     </td>
                 </tr>
 
-                <tr scope="row">
-                    <td>
-                        <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
-                            <i class="far fa-plus"></i> Add GEO
-                        </b-button>
-                    </td>
-                </tr>
+                <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
+                    <i class="far fa-plus"></i> Add GEO
+                </b-button>
             </table>
 
             <b-row class="text-center">
@@ -450,9 +416,12 @@
             font-size: 16px
             font-weight: 600
             letter-spacing: 0.3px
-            padding: 1rem 1rem
+            padding: 0.8rem 1rem 0.5rem 0rem
             vertical-align: middle
             border-top: 0px
+
+        tr:nth-child(even), .table-striped tbody tr:nth-of-type(even)
+            background: rgba(227, 238, 244, 0)
 
         label.conversionType.btn.btn-secondary-, label.lpID.btn.btn-secondary-
             margin-bottom: 0
