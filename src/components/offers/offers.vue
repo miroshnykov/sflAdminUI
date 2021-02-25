@@ -57,31 +57,16 @@
                     </b-form-text>
                 </div>
 
-                    <!-- <div slot="landingPage" slot-scope="props">
-                    <span class="landing-page-box">
-                        <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
-                            {{ props.row.landingPage }}
-                        </span>
-                        <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
-                            {{ props.row.landingPage.substring(0,15)+"..." }}
-                        </span>
-                    </span>
-                        <button class="btn btn-link" @click="copyText(props.row.landingPage)"
-                                v-b-tooltip.hover.right="'Copy URL to Clipboard'">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div> -->
-
                 <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box">
                     <span class="landing-page-name">
-                        {{props.row.nameLandingPage}}
+                        {{props.row.urlLandingPage}}
                     </span>
                 </span>
                     <button
-                            @click="copyText(props.row.urlLandingPage)"
+                            @click="copyText(landingPage)"
                             class="btn btn-link"
-                            v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                            v-b-tooltip.hover.right="'Copy URL'">
                         <i class="far fa-copy"></i>
                     </button>
                 </div>
@@ -188,13 +173,14 @@
                 }
             },
             async copyText(landingPage) {
-
                 try {
+                    // TODO: Needs adjustment to copy url properly
                     await navigator.clipboard.writeText(landingPage);
                     this.$swal.fire({
                         type: 'success',
                         position: 'top-end',
-                        title: `Copied URL: \n ${landingPage} \n   to clipboard `,
+                        title: `Copied URL to clipboard`,
+                        text: `${landingPage}`,
                         showConfirmButton: false,
                         timer: 2000
                     })
