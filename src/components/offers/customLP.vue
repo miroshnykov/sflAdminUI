@@ -3,8 +3,119 @@
 
         <div class="modal-container">
 
+            <h1>List of landing pages</h1>
 
-            <h1>Custom Default LPs per GEO</h1>
+            <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
+                Enter a name for the landing page.
+            </b-form-invalid-feedback>
+            <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
+                Enter a valid website URL.
+            </b-form-invalid-feedback>
+
+            <table class="table table-striped child-row tableFixHead lp-table">
+                <thead>
+                <tr scope="row">
+                    <!-- <th scope="col">ID</th> -->
+                    <th scope="col">Landing Page Name</th>
+                    <th scope="col">Landing Page URL</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
+                    <!-- <td>
+                        <label class="lpID btn btn-secondary-">{{lp.id}}
+                            <input
+                                    type="checkbox"
+                                    :checked="checkDefault(lp.id)"
+                                    name="radio"
+                                    @change="setDefaultLp(lp.id)"
+                            >
+                            <span class="conversionTypeCheckMark"></span>
+                        </label>
+                    </td> -->
+                    <td width="30%">
+                        <!-- <span >{{ JSON.stringify(lp) }}</span>-->
+                        <input type="text"
+                               placeholder="ex: Movies Signup LP"
+                               class="condition__matches custom-input text-center offerLpName"
+                               :id="defineId(`defaultLpName`, lp.id)"
+                               :value="lp.name"
+                               @change="updateLP($event,`name`, lp.id)"
+                               maxlength="30"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('.offerLpName').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('.offerLpName').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-name').style.display = 'none'
+                                            document.querySelector('.offerLpName').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        >
+                    </td>
+                    <td width="60%">
+                        <!-- <input type="text"
+                               class="condition__matches custom-input text-center offerLpUrl"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="500"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('.offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        > -->
+                        <textarea type="text"
+                               class="condition__matches custom-input text-center offerLpUrl"
+                               :id="defineId(`defaultLpUrl`, lp.id)"
+                               :value="lp.url"
+                               @change="updateLP($event,`url`, lp.id)"
+                               maxlength="500"
+                               onblur="
+                                        if(this.value === ''){
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #f38282'
+                                            document.querySelector('.btn-savebucket').style.display = 'none'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
+                                            return false
+                                        } else {
+                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
+                                            document.querySelector('.offerLpUrl').style.background = 'white'
+                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
+                                            document.querySelector('.offerLpUrl').style.border = '2px solid #e3eef4'
+                                        }
+                                    "
+                        >
+                        </textarea>
+                    </td>
+                    <td width="10%">
+                        <b-button variant="light" @click="delLpOfferAction(lp.id)"
+                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
+                                  style="z-index:2">
+                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
+                        </b-button>
+
+                    </td>
+                </tr>
+
+                <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
+                    <i class="far fa-plus"></i> Add LP
+                </b-button>
+            </table>
+
+            <h1 style="margin-top:30px">Custom landing pages per GEO</h1>
             <table class="table table-striped child-row tableFixHead lp-table">
                 <thead>
                 <tr scope="row">
@@ -14,7 +125,7 @@
                 </tr>
                 </thead>
                 <tr scope="row" :id="defineId(`customLpRowId`,rules.pos)" v-for="rules in getCustomLPRules_()">
-                    <td>
+                    <td width="30%">
                         <span class="hidden">{{ JSON.stringify(rules) }}</span>
                         <div class="condition-line1">
                             <model-select
@@ -30,7 +141,7 @@
                         </div>
 
                     </td>
-                    <td>
+                    <td width="60%">
                         <div class="condition-line1">
                             <model-select
                                     :options="getLpModify()"
@@ -45,7 +156,7 @@
                         </div>
 
                     </td>
-                    <td>
+                    <td width="10%">
                         <b-button variant="light" @click="delCustomLpAction(rules.pos)"
                                   v-b-tooltip.hover.top="'Delete Custom LPs'"
                                   style="z-index:2">
@@ -55,114 +166,10 @@
                     </td>
                 </tr>
 
-                <tr scope="row">
-                    <td>
-                        <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
-                            <i class="far fa-plus"></i> Add GEO
-                        </b-button>
-                    </td>
-                </tr>
+                <b-button variant="light" class="btn-add-line pull-left" @click="addCustomLpAction">
+                    <i class="far fa-plus"></i> Add GEO
+                </b-button>
             </table>
-
-
-            <table class="table table-striped child-row tableFixHead lp-table">
-                <thead>
-                <tr scope="row">
-                    <th scope="col">ID</th>
-                    <th scope="col">Landing Page Name</th>
-                    <th scope="col">Landing Page URL</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tr scope="row" :id="defineId(`defaultLpRowId`,lp.id)" v-for="lp in getLpOffers">
-                    <td>
-                        <label class="lpID btn btn-secondary-">{{lp.id}}
-                            <input
-                                    type="checkbox"
-                                    :checked="checkDefault(lp.id)"
-                                    name="radio"
-                                    @change="setDefaultLp(lp.id)"
-                            >
-                            <!-- <span class="conversionTypeCheckMark"></span> -->
-                        </label>
-                    </td>
-                    <td>
-                        <!--                        <span >{{ JSON.stringify(lp) }}</span>-->
-                        <input type="text"
-                               placeholder="ex: Movies Signup LP"
-                               class="condition__matches custom-input text-center"
-                               :id="defineId(`defaultLpName`, lp.id)"
-                               :value="lp.name"
-                               @change="updateLP($event,`name`, lp.id)"
-                               maxlength="50"
-                               onblur="
-                                        if(this.value === ''){
-                                            document.querySelector('#offerLpName').style.border = '2px solid #f38282'
-                                            document.querySelector('.btn-savebucket').style.display = 'none'
-                                            document.querySelector('#input-live-feedback-name').style.display = 'block'
-                                            return false
-                                        } else {
-                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
-                                            document.querySelector('#offerLpName').style.background = 'white'
-                                            document.querySelector('#input-live-feedback-name').style.display = 'none'
-                                            document.querySelector('#offerLpName').style.border = '2px solid #e3eef4'
-                                        }
-                                    "
-                        >
-
-                        <b-form-invalid-feedback id="input-live-feedback-name" style="display:none">
-                            Enter a name for the landing page.
-                        </b-form-invalid-feedback>
-
-
-                    </td>
-                    <td>
-                        <input type="text"
-                               class="condition__matches custom-input text-center"
-                               :id="defineId(`defaultLpUrl`, lp.id)"
-                               :value="lp.url"
-                               @change="updateLP($event,`url`, lp.id)"
-                               maxlength="500"
-                               onblur="
-                                        if(this.value === ''){
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #f38282'
-                                            document.querySelector('.btn-savebucket').style.display = 'none'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'block'
-                                            return false
-                                        } else {
-                                            document.querySelector('.btn-savebucket').style.display = 'inline-block'
-                                            document.querySelector('#offerLpUrl').style.background = 'white'
-                                            document.querySelector('#input-live-feedback-url').style.display = 'none'
-                                            document.querySelector('#offerLpUrl').style.border = '2px solid #e3eef4'
-                                        }
-                                    "
-                        >
-
-                        <b-form-invalid-feedback id="input-live-feedback-url" style="display:none">
-                            Enter a website URL.
-                        </b-form-invalid-feedback>
-
-
-                    </td>
-                    <td>
-                        <b-button variant="light" @click="delLpOfferAction(lp.id)"
-                                  v-b-tooltip.hover.top="'Delete Custom LPs'"
-                                  style="z-index:2">
-                            <i class="far fa-trash" data-fa-transform="shrink-1"></i>
-                        </b-button>
-
-                    </td>
-                </tr>
-
-                <tr scope="row">
-                    <td>
-                        <b-button variant="light" class="btn-add-line pull-left" @click="addLpOfferAction">
-                            <i class="far fa-plus"></i> Add LP
-                        </b-button>
-                    </td>
-                </tr>
-            </table>
-
 
             <b-row class="text-center">
                 <b-col cols="12">
@@ -409,11 +416,13 @@
             font-size: 16px
             font-weight: 600
             letter-spacing: 0.3px
-            padding: 1rem 1rem
+            padding: 0.8rem 1rem 0.5rem 0rem
             vertical-align: middle
             border-top: 0px
 
+        tr:nth-child(even), .table-striped tbody tr:nth-of-type(even)
+            background: rgba(227, 238, 244, 0)
+
         label.conversionType.btn.btn-secondary-, label.lpID.btn.btn-secondary-
             margin-bottom: 0
-
 </style>

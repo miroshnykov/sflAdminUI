@@ -26,7 +26,6 @@
                     </span>
                     <b-form-text id="spent-values">
                         Updated {{timeSince_(row.dateUpdated)}} ago
-                        <!-- TODO: Currently doesn't work, says NAN instead of the number value -->
                     </b-form-text>
                 </div>
                 
@@ -39,9 +38,9 @@
                     </b-form-text>
                 </div>
 
-                <div slot="advertiser" slot-scope="props">
+                <!-- <div slot="advertiser" slot-scope="props">
                     <span class="segment-name">{{props.row.advertiser}}</span>
-                </div>
+                </div> -->
 
                 <div slot="payIn" slot-scope="props">
                     <span class="budget-daily">${{props.row.payIn}}</span>
@@ -57,23 +56,8 @@
                     </b-form-text>
                 </div>
 
-                    <!-- <div slot="landingPage" slot-scope="props">
-                    <span class="landing-page-box">
-                        <span class="landing-page-name" v-if="props.row.landingPage.length<=14" @click="copyText(props.row.landingPage)">
-                            {{ props.row.landingPage }}
-                        </span>
-                        <span class="landing-page-name" v-if="props.row.landingPage.length>=15" @click="copyText(props.row.landingPage)" v-b-tooltip.hover.html.right="props.row.landingPage">
-                            {{ props.row.landingPage.substring(0,15)+"..." }}
-                        </span>
-                    </span>
-                        <button class="btn btn-link" @click="copyText(props.row.landingPage)"
-                                v-b-tooltip.hover.right="'Copy URL to Clipboard'">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div> -->
-
                 <div slot="landingPage" slot-scope="props">
-                <span class="landing-page-box">
+                <span class="landing-page-box" v-b-tooltip.hover.bottom="props.row.urlLandingPage">
                     <span class="landing-page-name">
                         {{props.row.nameLandingPage}}
                     </span>
@@ -81,14 +65,14 @@
                     <button
                             @click="copyText(props.row.urlLandingPage)"
                             class="btn btn-link"
-                            v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                            v-b-tooltip.hover.right="'Copy URL'">
                         <i class="far fa-copy"></i>
                     </button>
                 </div>
 
-                <div slot="verticals" slot-scope="props">
+                <!-- <div slot="verticals" slot-scope="props">
                     <span class="segment-name">{{props.row.verticals}}</span>
-                </div>
+                </div> -->
 
                 <div slot="status" slot-scope="props">
                     <div v-if="props.row.status === 'inactive'">
@@ -108,18 +92,18 @@
                 <div slot="actions" slot-scope="props">
                     <button
                             class="btn btn-link"
-                            v-b-tooltip.hover.top="'Edit Offer'"
+                            v-b-tooltip.hover.bottom="'Edit Offer'"
                             @click="edit(props.row)"
                     >
-                        <i class="fas fa-pencil"></i>
+                        <i class="far fa-pencil"></i>
                     </button>
                     <button
                             :disabled="props.row.countOfCampaigns !== 0"
                             class="btn btn-link"
-                            v-b-tooltip.hover.top="'Delete Offer'"
+                            v-b-tooltip.hover.bottom="'Delete Offer'"
                             @click="deleteOffer(props.row)"
                     >
-                        <i class="fas fa-trash"></i>
+                        <i class="far fa-trash"></i>
                     </button>
                 </div>
 
@@ -152,8 +136,8 @@
         'payOut',
         'landingPage',
         'verticals',
-        'status',
         'countOfCampaigns',
+        'status',
         'actions',
     ]
 
@@ -187,14 +171,14 @@
                     })
                 }
             },
-            async copyText(landingPage) {
-
+            async copyText(urlLandingPage) {
                 try {
-                    await navigator.clipboard.writeText(landingPage);
+                    await navigator.clipboard.writeText(urlLandingPage);
                     this.$swal.fire({
                         type: 'success',
                         position: 'top-end',
-                        title: `Copied URL: \n ${landingPage} \n   to clipboard `,
+                        title: `Copied URL to clipboard`,
+                        text: `${urlLandingPage}`,
                         showConfirmButton: false,
                         timer: 2000
                     })

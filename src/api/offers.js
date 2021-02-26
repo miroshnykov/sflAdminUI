@@ -20,6 +20,7 @@ const getOffers = async () => {
                                 verticals
                                 advertiser
                                 isCpmOptionEnabled
+                                descriptions
                                 payoutPercent
                                 defaultLandingPageId
                                 nameLandingPage 

@@ -76,9 +76,11 @@
                                 <label>Description</label>
                                 <b-form-textarea
                                         id="textarea"
-                                        placeholder="Media offers for everyone in EU region with some limitations..."
-                                        rows="4"
-                                        max-rows="6"
+                                        placeholder="Description or notes about this offer..."
+                                        rows="3"
+                                        max-rows="4"
+                                        :value="getOffer.length !==0 && getOffer[0].descriptions"
+                                        @change="updValue($event, `descriptions`)"
                                 ></b-form-textarea>
                             </div>
                         </b-col>
@@ -311,12 +313,25 @@
                                 </div>
 
                                 <!-- <label>Default LP {{getLPValue()}}</label> -->
-                                <label>Default LP
+                                <span class="label">Default LP
                                     <span class="question"
-                                          v-b-tooltip.hover.right.html="'Add or select a landing page is mandatory'">
+                                          v-b-tooltip.hover.right.html="'Add a new LP and make sure it\'s selected'">
                                         <i class="fad fa-question-circle"></i>
                                     </span>
-                                </label>
+                                </span>
+                                <span>
+                                    <b-button variant="light" class="btn-add-line pull-right" v-b-modal.modal-scrollable
+                                              @click="showCustomLPModal(id)"
+                                    >
+                                        <i class="far fa-cog"></i> Add LP/Customize
+                                    </b-button>
+
+                                    <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
+                                              :customLPId="id"
+                                              :defaultLp="getLpDefault"
+                                              :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
+                                    </CustomLP>
+                                </span>
                                 <model-select
                                         :options="getLpModify()"
                                         :id="defineId(`lpsId`,id)"
@@ -329,19 +344,17 @@
                             </div>
                         </b-col>
                         <b-col cols="2">
-                            <div class="condition__controls">
+                            <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
-                                <b-button variant="light" class="btn-add-line pull-left" v-b-modal.modal-scrollable
-                                          @click="showCustomLPModal(id)"
-                                >
-                                    <i class="far fa-cog"></i> Add LP/Customize
-                                </b-button>
-
-                                <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
-                                          :customLPId="id"
-                                          :defaultLp="getLpDefault"
-                                          :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
-                                </CustomLP>
+                                <!-- TODO: Add copy and open URL backend support -->
+                                <button class="btn btn-link pull-left" @click="copyText()"
+                                        v-b-tooltip.hover.bottom="'Copy URL'">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                                <button class="btn btn-link pull-left" @click="openURL()"
+                                        v-b-tooltip.hover.bottom="'Open URL in a new tab'">
+                                    <i class="far fa-external-link-alt"></i>
+                                </button>
                             </div>
                         </b-col>
                         <b-col cols="4">
@@ -387,10 +400,10 @@
                             </div>
                         </b-col>
                         <b-col cols="1">
-                            <div class="condition__controls" style="margin-top: 10px; margin-left: -10px;">
+                            <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
-                                <button class="btn btn-link pull-left" @click="copyText(props.row.landingPage)"
-                                        v-b-tooltip.hover.right="'Copy URL to Clipboard'">
+                                <button class="btn btn-link pull-left" @click="copyText()"
+                                        v-b-tooltip.hover.right="'Copy URL'">
                                     <i class="far fa-copy"></i>
                                 </button>
                             </div>
@@ -557,8 +570,8 @@
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <!-- Add tooltip for showing Caps -->
-                                <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
+                                <!-- TODO: Add Caps details in tooltip -->
+                                <div v-b-tooltip.hover.v-info.bottom.html="'Caps details here (coming soon)'">
                                     <input type="text"
                                            class="condition__matches campaign custom-input"
                                            :value="getCapsStatus(getOfferCap)"
@@ -593,29 +606,30 @@
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    Start Date
+                                    Offer start date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="startDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
+                            
+                            </div>
+                            <div class="condition__controls" style="margin-top: 20px">
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    End Date
+                                    Offer end date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="endDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
                             </div>
                         </b-col>
                         <b-col cols="7">
@@ -625,30 +639,40 @@
 
                 <b-tab title="History">
 
-                    <table class="table table-striped child-row tableFixHead lp-table">
+                    <table class="table table-striped child-row tableFixHead lp-table no-border">
                         <thead>
                         <tr scope="row">
-                            <th scope="col">User</th>
+                            <th scope="col">User (E-mail)</th>
                             <th scope="col">Date/Time</th>
+                            <th scope="col">Field</th>
+                            <th scope="col">Action</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
                         <tr scope="row" v-for="history in getOfferHistoryModify()">
-                            <td>
+                            <td class="text-left" width="20%">
                                 <span>{{history.user}}</span>
-
                             </td>
-                            <td>
+                            <td class="text-left" width="15%">
                                 <span>{{ formatDate_(new Date(history.dateAdded * 1000)) }}</span>
 
                             </td>
-                            <td>
-                                <span>{{ history.action  }}</span>
+                            <td class="text-left" width="10%">
+                                <span v-for="historyDetails in JSON.parse(history.logs)">
+                                    <div><span>{{historyDetails.field}}</span></div>
+                                </span>
+                            </td>
+                            <td class="text-left" width="10%">
+                                <span>{{ history.action }}</span>
 
                             </td>
-                            <td>
+                            <td class="text-left" width="45%">
                                 <span v-for="historyDetails in JSON.parse(history.logs)">
-                                     {{historyDetails}}
+                                    <div>
+                                        <span class="oldValue">{{historyDetails.oldValue}}</span>
+                                        <i class="far fa-long-arrow-alt-right" data-fa-transform="shrink-1"></i>
+                                        <span class="newValue">{{historyDetails.newValue}}</span>
+                                    </div>
                                 </span>
                             </td>
                         </tr>
@@ -764,11 +788,39 @@
                 // return this.getOffer.length !== 0 && `Allow all countries`
                 // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
             },
+            async copyText() {
+                try {
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    await navigator.clipboard.writeText(obj[0].url);
+                    this.$swal.fire({
+                        type: 'success',
+                        position: 'top-end',
+                        title: `Copied URL to clipboard`,
+                        text: `${obj[0].url}`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            },
+            openURL() {
+                let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                let url = obj[0].url
+
+                let prefix = 'http'
+
+                if (url.substr(0, prefix.length) !== prefix) {
+                    url = prefix + '://' + url
+                }
+
+                window.open(url, '_blank');
+            },
             getLpURL() {
                 if (this.getOffer.length !== 0) {
 
                     let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
-                    return obj.length !== 0 && obj[0].url
+                    return obj.length !== 0 && 'Name: ' + obj[0].name + '<br>(ID:' + obj[0].id + ')'
                 }
             },
             getLpDefault() {
@@ -780,7 +832,7 @@
                 let lpModify = cloneObjectArray(this.getLpOffers)
                 return lpModify.map(item => {
                     item.value = item.id
-                    item.text = `${item.name} (LP ID: ${item.id})`
+                    item.text = `${item.url}`
                     return item
                 })
             },
@@ -813,6 +865,7 @@
                 if (
                     name === 'conversionType'
                     || name === 'defaultLp'
+                    || name === 'descriptions'
                     || name === 'offerIdRedirect'
                 ) {
                     obj.fieldName = name
@@ -839,7 +892,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps.length !== 0 && `Enabled` || `Disabled`
+                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
             },
             async cancelEdit() {
                 this.$swal.fire({
@@ -1112,6 +1165,17 @@
                 border-radius: 7px
                 float: left
 
+        span.label
+            font-size: 14px
+            display: inline-block
+            text-align: left
+            color: #7F98A5
+            font-weight: 500
+            letter-spacing: 0.3px
+            margin-top: 5px
+            margin-bottom: 5px
+            border-radius: 7px
+
         .row.text-center.title .col-2
             -ms-flex: 0 0 18%
             flex: 0 0 18%
@@ -1170,9 +1234,9 @@
 
         .tabs
             .tab-content
-                min-width: 52vw
-                border: 1px solid #E3EEF4
-                border-radius: 4px
+                width: 65vw
+                // border: 1px solid #E3EEF4
+                // border-radius: 4px
 
             .mt-3, .my-3
                 margin-top: 0rem !important
@@ -1208,6 +1272,7 @@
                 background: #fff
                 border-radius: 7px
                 min-width: 250px
+                min-height: 45px
                 max-height: 300px
                 resize: vertical !important
                 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
@@ -1269,4 +1334,12 @@
                 top: 32px
                 left: 15px
                 z-index: 1
+
+            span.oldValue
+                color: #ACC3CF
+                // font-weight: 400
+                // text-decoration: line-through
+
+            span.newValue
+                font-weight: 700
 </style>

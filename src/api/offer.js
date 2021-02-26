@@ -18,6 +18,7 @@ const getOffer = async (id) => {
                                 payIn
                                 payOut
                                 isCpmOptionEnabled
+                                descriptions
                                 payoutPercent
                                 dateAdded
                                 geoRules
@@ -114,6 +115,7 @@ const saveOffer = async (data) => {
         geoRules,
         payoutPercent,
         isCpmOptionEnabled,
+        descriptions,
         customLPRules,
         id,
         name,
@@ -166,6 +168,7 @@ const saveOffer = async (data) => {
                                 verticals:"${verticals}"
                                 payoutPercent:${payoutPercent}
                                 isCpmOptionEnabled:${isCpmOptionEnabled}
+                                descriptions:"${descriptions}"
                                 conversionType:"${conversionType}"
                                 geoRules:"${geoRulesReFormat}"
                                 customLPRules:"${customLPRulesReFormat}"

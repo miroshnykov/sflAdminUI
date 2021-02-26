@@ -102,11 +102,11 @@
 
                 <span class="landing-page">
                     <span class="landing-page-name" v-if="lp.name.length<=29"
-                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+lp.id + ' Weight:'+lp.weight">
+                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' +lp.id + ' Weight:' + lp.weight">
                          {{ lp.lpId }} {{ lp.name }}
                     </span>
                     <span class="landing-page-name" v-if="lp.name.length>=30"
-                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:'+ lp.id + ' Weight:'+lp.weight">
+                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' + lp.id + ' Weight:' + lp.weight">
                         {{ lp.name.substring(0,30)+"..." }}
                     </span>
                     <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
