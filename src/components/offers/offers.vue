@@ -63,7 +63,7 @@
                     </span>
                 </span>
                     <button
-                            @click="copyText(landingPage)"
+                            @click="copyText(props.row.urlLandingPage)"
                             class="btn btn-link"
                             v-b-tooltip.hover.right="'Copy URL'">
                         <i class="far fa-copy"></i>
@@ -171,15 +171,14 @@
                     })
                 }
             },
-            async copyText(landingPage) {
+            async copyText(urlLandingPage) {
                 try {
-                    // TODO: Needs adjustment to copy url properly
-                    await navigator.clipboard.writeText(landingPage);
+                    await navigator.clipboard.writeText(urlLandingPage);
                     this.$swal.fire({
                         type: 'success',
                         position: 'top-end',
                         title: `Copied URL to clipboard`,
-                        text: `${landingPage}`,
+                        text: `${urlLandingPage}`,
                         showConfirmButton: false,
                         timer: 2000
                     })

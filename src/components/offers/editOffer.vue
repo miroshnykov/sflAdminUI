@@ -76,9 +76,9 @@
                                 <label>Description</label>
                                 <b-form-textarea
                                         id="textarea"
-                                        placeholder="Media offers for everyone in EU region with some limitations..."
-                                        rows="4"
-                                        max-rows="6"
+                                        placeholder="Description or notes about this offer..."
+                                        rows="3"
+                                        max-rows="4"
                                         :value="getOffer.length !==0 && getOffer[0].descriptions"
                                         @change="updValue($event, `descriptions`)"
                                 ></b-form-textarea>
@@ -570,8 +570,8 @@
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <!-- Add tooltip for showing Caps -->
-                                <div v-b-popover.hover.v-info.bottom.html="getCapsStatus(getOfferCap)" title="Caps">
+                                <!-- TODO: Add Caps details in tooltip -->
+                                <div v-b-tooltip.hover.v-info.bottom.html="'Caps details here (coming soon)'">
                                     <input type="text"
                                            class="condition__matches campaign custom-input"
                                            :value="getCapsStatus(getOfferCap)"
@@ -606,29 +606,30 @@
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    Start Date
+                                    Offer start date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="startDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
+                            
+                            </div>
+                            <div class="condition__controls" style="margin-top: 20px">
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
-                                        class="condition__matches campaign"
+                                        class="condition__matches campaign pull-left"
                                 >
-                                    End Date
+                                    Offer end date
                                 </b-form-checkbox>
 
-                                <span class="datepicker">
+                                <span class="datepicker pull-right">
                                     <date-picker class="custom-input date-picker" name="date" v-model="endDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-
                             </div>
                         </b-col>
                         <b-col cols="7">
@@ -638,33 +639,40 @@
 
                 <b-tab title="History">
 
-                    <table class="table table-striped child-row tableFixHead lp-table">
+                    <table class="table table-striped child-row tableFixHead lp-table no-border">
                         <thead>
                         <tr scope="row">
-                            <th scope="col">User</th>
+                            <th scope="col">User (E-mail)</th>
                             <th scope="col">Date/Time</th>
+                            <th scope="col">Field</th>
                             <th scope="col">Action</th>
                             <th scope="col">Changes</th>
                         </tr>
                         </thead>
                         <tr scope="row" v-for="history in getOfferHistoryModify()">
-                            <td>
+                            <td class="text-left" width="20%">
                                 <span>{{history.user}}</span>
-
                             </td>
-                            <td>
+                            <td class="text-left" width="15%">
                                 <span>{{ formatDate_(new Date(history.dateAdded * 1000)) }}</span>
 
                             </td>
-                            <td>
-                                <span>{{ history.action  }}</span>
+                            <td class="text-left" width="10%">
+                                <span v-for="historyDetails in JSON.parse(history.logs)">
+                                    <div><span>{{historyDetails.field}}</span></div>
+                                </span>
+                            </td>
+                            <td class="text-left" width="10%">
+                                <span>{{ history.action }}</span>
 
                             </td>
-                            <td>
+                            <td class="text-left" width="45%">
                                 <span v-for="historyDetails in JSON.parse(history.logs)">
-                                    <div> field:  <span>{{historyDetails.field}} </span> </div>
-                                    <div> newValue: <span>{{historyDetails.newValue}}</span></div>
-                                    <div> oldValue: <span>{{historyDetails.oldValue}}</span></div>
+                                    <div>
+                                        <span class="oldValue">{{historyDetails.oldValue}}</span>
+                                        <i class="far fa-long-arrow-alt-right" data-fa-transform="shrink-1"></i>
+                                        <span class="newValue">{{historyDetails.newValue}}</span>
+                                    </div>
                                 </span>
                             </td>
                         </tr>
@@ -884,7 +892,7 @@
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
-                return caps.length !== 0 && `Enabled` || `Disabled`
+                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
             },
             async cancelEdit() {
                 this.$swal.fire({
@@ -1227,9 +1235,9 @@
 
         .tabs
             .tab-content
-                min-width: 52vw
-                border: 1px solid #E3EEF4
-                border-radius: 4px
+                width: 65vw
+                // border: 1px solid #E3EEF4
+                // border-radius: 4px
 
             .mt-3, .my-3
                 margin-top: 0rem !important
@@ -1327,4 +1335,12 @@
                 top: 32px
                 left: 15px
                 z-index: 1
+
+            span.oldValue
+                color: #ACC3CF
+                // font-weight: 400
+                // text-decoration: line-through
+
+            span.newValue
+                font-weight: 700
 </style>
