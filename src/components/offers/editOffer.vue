@@ -346,7 +346,6 @@
                         <b-col cols="2">
                             <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
-                                <!-- TODO: Add copy and open URL backend support -->
                                 <button class="btn btn-link pull-left" @click="copyText()"
                                         v-b-tooltip.hover.bottom="'Copy URL'">
                                     <i class="far fa-copy"></i>
