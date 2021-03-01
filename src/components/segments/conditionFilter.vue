@@ -123,6 +123,27 @@
                                 </label>
                             </div>
 
+
+                            <div class="condition-line">
+                                <select
+                                        :id="defineId(`os`,item.position)"
+                                        :ref="defineId(`os`,item.position)"
+                                        class="condition__campaign condition__matches custom-select"
+                                        @change="handleChangeOS($event, item)"
+                                        v-show="checkOS(item)"
+                                >
+                                    <option :value="null">-- Select OS --</option>
+                                    <option
+                                            v-for="{id, name} in getOSList()"
+                                            :value="id"
+                                            :selected="id === Number(item.value)"
+                                            :key="id"
+                                    >{{name}}</option>
+                                </select>
+                                <label v-show="checkOS(item)" for="label-os">OS
+                                </label>
+                            </div>
+
                             <div class="condition-line">
 
                                 <model-select
@@ -555,6 +576,17 @@
 
                 ]
             },
+            getOSList() {
+                return [
+                    {id: 0, name: 'Android'},
+                    {id: 1, name: 'Ios'},
+                    {id: 2, name: 'Linux'},
+                    {id: 3, name: 'Mac'},
+                    {id: 4, name: 'Windows'},
+                    {id: 5, name: 'WindowsMobile'}
+
+                ]
+            },
             getFilterList() {
                 return [
                     {id: 0, name: 'Include'},
@@ -596,6 +628,9 @@
             },
             checkAffiliateType(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_type`)
+            },
+            checkOS(item) {
+                return item.dimensionId === this.getDimensionId(this.getDimensions, `os`)
             },
             checkProd(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `prod`)
@@ -641,6 +676,7 @@
                 let websiteRef = `website-${item.position}`
                 let affiliateStatusRef = `affiliate-status-${item.position}`
                 let affiliateTypeRef = `affiliate-type-${item.position}`
+                let osRef = `os-${item.position}`
 
                 let countryEl = document.querySelector(`#${refCountry}`).parentNode || null
                 let campaignEl = this.$refs[refCampaign][0] || null
@@ -652,6 +688,7 @@
                 let websiteEl = document.querySelector(`#${websiteRef}`).parentNode || null
                 let affiliateStatusEl = document.querySelector(`#${affiliateStatusRef}`).parentNode || null
                 let affiliateTypeEl = document.querySelector(`#${affiliateTypeRef}`).parentNode || null
+                let osEl = document.querySelector(`#${osRef}`).parentNode || null
 
                 countryEl.classList.add("disabled")
                 let conditionEl = document.querySelector(`#${refCondition}`)
@@ -801,6 +838,29 @@
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-affiliate-type]`)
+                        )
+                        break
+                    case `os`:
+                        osEl ? osEl.style.display = 'block' : ''
+                        affiliateTypeEl ? affiliateTypeEl.style.display = 'none' : ''
+                        affiliateStatusEl ? affiliateStatusEl.style.display = 'none' : ''
+                        websiteEl ? websiteEl.style.display = 'none' : ''
+                        prodEl ? prodEl.style.display = 'none' : ''
+                        affiliateEl ? affiliateEl.style.display = 'none' : ''
+                        campaignEl ? campaignEl.style.display = 'none' : ''
+                        countryEl ? countryEl.style.display = 'none' : ''
+                        // countryEl.style.display = 'block'
+                        // countryEl.disabled = true
+                        // countryEl.classList.remove("disabled")
+                        item.value = ''
+                        item.dimensionId = 9
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                        this.hideLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-country]`)
+                        )
+                        this.showLabels(
+                            conditionEl.querySelectorAll(`label[for=label-os]`)
                         )
                         break
                     // case `affiliate_sub_campaign`:
@@ -1267,6 +1327,39 @@
                 item.value = event.target.value
                 item.dimensionName = `affiliate_type`
                 item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_type`)
+
+            },
+            handleChangeOS(event, item) {
+                let dimensionRef = `dimension-${item.position}`
+                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let filterTypeRef = `filtertype-${item.position}`
+                let matchTypeRef = `matchtype-${item.position}`
+
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+
+                if (recCheck.length > 0) {
+                    this.$swal.fire({
+                        type: `warning`,
+                        title: `record exists: ${recCheck[0].value}  `,
+                        text: ` dimension: ${recCheck[0].dimensionName}`,
+                        footer: ``
+                    })
+
+                    let refCampaign = `campaign-${item.position}`
+                    let dimensionRef = `dimension-${item.position}`
+                    this.$refs[refCampaign][0].value = ``
+                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    return
+                }
+                let refCondition = `condition-${item.position}`
+                this.$refs[refCondition][0].style.background = null
+                item.user = this.verifyTokenEmail
+                item.dateAdded = this.getCurrentDate()
+                item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
+                item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
+                item.value = event.target.value
+                item.dimensionName = `os`
+                item.dimensionId = this.getDimensionId(this.getDimensions, `os`)
 
             },
             handleChangeSubCampaign(event, item) {
