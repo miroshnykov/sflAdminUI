@@ -104,6 +104,26 @@
                             </div>
 
                             <div class="condition-line">
+                                <select
+                                        :id="defineId(`affiliate-type`,item.position)"
+                                        :ref="defineId(`affiliate-type`,item.position)"
+                                        class="condition__campaign condition__matches custom-select"
+                                        @change="handleChangeAffiliateType($event, item)"
+                                        v-show="checkAffiliateType(item)"
+                                >
+                                    <option :value="null">-- Select Affiliate Type --</option>
+                                    <option
+                                            v-for="{id, name} in getAffiliateTypesList()"
+                                            :value="id"
+                                            :selected="id === Number(item.value)"
+                                            :key="id"
+                                    >{{name}}</option>
+                                </select>
+                                <label v-show="checkAffiliateType(item)" for="label-affiliate-type">Affiliate type
+                                </label>
+                            </div>
+
+                            <div class="condition-line">
 
                                 <model-select
                                         :options="getProdsModify(item)"
@@ -523,6 +543,18 @@
                     {id: 8, name: 'UnderReview'},
                 ]
             },
+            getAffiliateTypesList() {
+                return [
+                    {id: 0, name: 'Publisher'},
+                    {id: 1, name: 'Internal'},
+                    {id: 2, name: 'Marketer'},
+                    {id: 3, name: 'MediaBuy'},
+                    {id: 4, name: 'Network'},
+                    {id: 5, name: 'TraineeAE'},
+                    {id: 6, name: 'TraineeAssistant'}
+
+                ]
+            },
             getFilterList() {
                 return [
                     {id: 0, name: 'Include'},
@@ -561,6 +593,9 @@
             },
             checkAffiliateStatus(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_status`)
+            },
+            checkAffiliateType(item) {
+                return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_type`)
             },
             checkProd(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `prod`)
@@ -605,6 +640,7 @@
                 let matchTypeRef = `matchtype-${item.position}`
                 let websiteRef = `website-${item.position}`
                 let affiliateStatusRef = `affiliate-status-${item.position}`
+                let affiliateTypeRef = `affiliate-type-${item.position}`
 
                 let countryEl = document.querySelector(`#${refCountry}`).parentNode || null
                 let campaignEl = this.$refs[refCampaign][0] || null
@@ -615,6 +651,7 @@
 
                 let websiteEl = document.querySelector(`#${websiteRef}`).parentNode || null
                 let affiliateStatusEl = document.querySelector(`#${affiliateStatusRef}`).parentNode || null
+                let affiliateTypeEl = document.querySelector(`#${affiliateTypeRef}`).parentNode || null
 
                 countryEl.classList.add("disabled")
                 let conditionEl = document.querySelector(`#${refCondition}`)
@@ -742,6 +779,28 @@
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-affiliate-status]`)
+                        )
+                        break
+                    case `affiliate_type`:
+                        affiliateTypeEl ? affiliateTypeEl.style.display = 'block' : ''
+                        affiliateStatusEl ? affiliateStatusEl.style.display = 'none' : ''
+                        websiteEl ? websiteEl.style.display = 'none' : ''
+                        prodEl ? prodEl.style.display = 'none' : ''
+                        affiliateEl ? affiliateEl.style.display = 'none' : ''
+                        campaignEl ? campaignEl.style.display = 'none' : ''
+                        countryEl ? countryEl.style.display = 'none' : ''
+                        // countryEl.style.display = 'block'
+                        // countryEl.disabled = true
+                        // countryEl.classList.remove("disabled")
+                        item.value = ''
+                        item.dimensionId = 8
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                        this.hideLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-country]`)
+                        )
+                        this.showLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate-type]`)
                         )
                         break
                     // case `affiliate_sub_campaign`:
@@ -1175,6 +1234,39 @@
                 item.value = event.target.value
                 item.dimensionName = `affiliate_status`
                 item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_status`)
+
+            },
+            handleChangeAffiliateType(event, item) {
+                let dimensionRef = `dimension-${item.position}`
+                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let filterTypeRef = `filtertype-${item.position}`
+                let matchTypeRef = `matchtype-${item.position}`
+
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+
+                if (recCheck.length > 0) {
+                    this.$swal.fire({
+                        type: `warning`,
+                        title: `record exists: ${recCheck[0].value}  `,
+                        text: ` dimension: ${recCheck[0].dimensionName}`,
+                        footer: ``
+                    })
+
+                    let refCampaign = `campaign-${item.position}`
+                    let dimensionRef = `dimension-${item.position}`
+                    this.$refs[refCampaign][0].value = ``
+                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    return
+                }
+                let refCondition = `condition-${item.position}`
+                this.$refs[refCondition][0].style.background = null
+                item.user = this.verifyTokenEmail
+                item.dateAdded = this.getCurrentDate()
+                item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
+                item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
+                item.value = event.target.value
+                item.dimensionName = `affiliate_type`
+                item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_type`)
 
             },
             handleChangeSubCampaign(event, item) {
