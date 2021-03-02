@@ -3,119 +3,13 @@
 
         <div class="modal-container">
 
-            <h1>Caps</h1>
+            <h1>Caps
+                <!-- <b-badge variant="light" class="capStatus">
+                <i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> {{JSON.stringify(offerCap)}}
+                </b-badge> -->
+            </h1>
 
-            <h3 class="line">Clicks</h3>
-
-            <p class="hidden">CAP {{JSON.stringify(offerCap)}}</p>
-
-            <b-row class="clicks-amount text-center">
-                <b-col cols="3">
-                    <div class="condition__controls">
-                        <label>Amount (Day)</label>
-                        <input type="number"
-                               step=1
-                               placeholder="1000"
-                               min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickDay || 0"
-                               @change="updateCap($event, `clickDay`)"
-                               class="condition__matches budgetTotal custom-input"
-                               pattern="^\d+(?:\.\d{1,2})?$"
-                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                                    ">
-                    </div>
-                </b-col>
-                <b-col cols="3">
-                    <div class="condition__controls">
-                        <label>Amount (Week)</label>
-                        <input type="number"
-                               step=1
-                               placeholder="1000"
-                               min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickWeek || 0"
-                               @change="updateCap($event, `clickWeek`)"
-                               class="condition__matches budgetTotal custom-input"
-                               pattern="^\d+(?:\.\d{1,2})?$"
-                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                                    ">
-                    </div>
-                </b-col>
-
-                <b-col cols="3">
-                    <div class="condition__controls">
-                        <label>Amount (Month)</label>
-                        <input type="number"
-                               step=1
-                               placeholder="1000"
-                               min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickMonth || 0"
-                               @change="updateCap($event, `clickMonth`)"
-                               class="condition__matches budgetTotal custom-input"
-                               pattern="^\d+(?:\.\d{1,2})?$"
-                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
-                                    ">
-
-                    </div>
-                </b-col>
-
-                <!-- TODO: Future implementation to eventually have selectable Custom Day/Week/Month values, like the mock -->
-                <!-- <b-col cols="3">
-                    <div class="condition__controls">
-                        <label>&nbsp;</label>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary-">
-                                <input
-                                        type="checkbox"
-                                        autocomplete="off"
-                                > Custom
-                            </label>
-                            <label class="btn btn-secondary-">
-                                <input
-                                        type="checkbox"
-                                        autocomplete="off"
-                                > 10
-                            </label>
-                        </div>
-                    </div>
-                </b-col> -->
-            </b-row>
-
-            <b-row class="clicks-redirect text-center" style="margin-top: -20px">
-                <!-- Hide for now -->
-                <!-- <b-col cols="3">
-                    <div class="condition__controls">
-                        <label for="label-period">Redirect</label>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary-">
-                                <input
-                                        type="checkbox"
-                                        autocomplete="off"
-                                > Default
-                            </label>
-                            <label class="btn btn-secondary-">
-                                <input
-                                        type="checkbox"
-                                        autocomplete="off"
-                                > Custom
-                            </label>
-                        </div>
-                    </div>
-                </b-col> -->
-                <b-col cols="6">
-                    <div class="condition__controls">
-                        <label>Redirects to</label>
-                        <model-select
-                                :options="getOffersList()"
-                                placeholder="Search or select landing page..."
-                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
-                                @input="updateCap($event,`clicksRedirectOfferId`)"
-                        >
-                        </model-select>
-                    </div>
-                </b-col>
-            </b-row>
-            
-            <h3 class="line">Sales</h3>
+            <h3 class="line">Conversions cap</h3>
 
             <b-row class="clicks-amount text-center">
 
@@ -190,7 +84,7 @@
                 </b-col> -->
             </b-row>
 
-            <b-row class="clicks-redirect text-center" style="margin-top: -20px">
+            <b-row class="clicks-redirect" style="margin-top: -20px; margin-bottom: 40px">
                 <!-- Hide for now -->
                 <!-- <b-col cols="3">
                     <div class="condition__controls">
@@ -211,22 +105,136 @@
                         </div>
                     </div>
                 </b-col> -->
+                <!-- TODO: Add backend for checkbox -->
+                <b-col class="text-center" cols="3">
+                    <div class="condition__controls">
+                        <b-form-checkbox
+                                size="lg"
+                                type="checkbox"
+                                class="condition__matches campaign"
+                                v-model="checkedConversions"
+                        >
+                            Use default offer redirect
+                        </b-form-checkbox>
+                    </div>
+                </b-col>
                 <b-col cols="6">
                     <div class="condition__controls">
-                        <label>Redirects to</label>
                         <model-select
-                                :options="offers"
-                                placeholder="Search or select landing page..."
-                                :value="offerCap && offerCap[0].salesRedirectOfferId|| 0"
-                                @input="updateCap($event,`salesRedirectOfferId`)"
+                                :options="getOffersList()"
+                                placeholder="... or select an offer to redirect traffic beyond the caps"
+                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                @input="updateCap($event,`clicksRedirectOfferId`)"
+                                v-show="checkedConversions"
                         >
                         </model-select>
-
                     </div>
                 </b-col>
             </b-row>
 
-            <b-form-text>* Default redirect LP will be used for banned countries</b-form-text>
+            <h3 class="line">Clicks cap</h3>
+
+            <b-row class="clicks-amount text-center">
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>Amount (Day)</label>
+                        <input type="number"
+                               step=1
+                               placeholder="1000"
+                               min="1" max="99999"
+                               :value="offerCap && offerCap[0].clickDay || 0"
+                               @change="updateCap($event, `clickDay`)"
+                               class="condition__matches budgetTotal custom-input"
+                               pattern="^\d+(?:\.\d{1,2})?$"
+                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                                    ">
+                    </div>
+                </b-col>
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>Amount (Week)</label>
+                        <input type="number"
+                               step=1
+                               placeholder="1000"
+                               min="1" max="99999"
+                               :value="offerCap && offerCap[0].clickWeek || 0"
+                               @change="updateCap($event, `clickWeek`)"
+                               class="condition__matches budgetTotal custom-input"
+                               pattern="^\d+(?:\.\d{1,2})?$"
+                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                                    ">
+                    </div>
+                </b-col>
+
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>Amount (Month)</label>
+                        <input type="number"
+                               step=1
+                               placeholder="1000"
+                               min="1" max="99999"
+                               :value="offerCap && offerCap[0].clickMonth || 0"
+                               @change="updateCap($event, `clickMonth`)"
+                               class="condition__matches budgetTotal custom-input"
+                               pattern="^\d+(?:\.\d{1,2})?$"
+                               onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'
+                                    ">
+
+                    </div>
+                </b-col>
+
+                <!-- TODO: Future implementation to eventually have selectable Custom Day/Week/Month values, like the mock -->
+                <!-- <b-col cols="3">
+                    <div class="condition__controls">
+                        <label>&nbsp;</label>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary-">
+                                <input
+                                        type="checkbox"
+                                        autocomplete="off"
+                                > Custom
+                            </label>
+                            <label class="btn btn-secondary-">
+                                <input
+                                        type="checkbox"
+                                        autocomplete="off"
+                                > 10
+                            </label>
+                        </div>
+                    </div>
+                </b-col> -->
+            </b-row>
+
+            <b-row class="clicks-redirect" style="margin-top: -20px">
+                <!-- TODO: Add backend for checkbox -->
+                <b-col cols="3">
+                    <div class="condition__controls">
+                        <b-form-checkbox
+                                size="lg"
+                                type="checkbox"
+                                class="condition__matches campaign"
+                                v-model="checkedClicks"
+                        >
+                            Use default offer redirect
+
+                        </b-form-checkbox>
+                    </div>
+                </b-col>
+                <b-col cols="6">
+                    <div class="condition__controls">
+                        <model-select
+                                :options="getOffersList()"
+                                placeholder="... or select an offer to redirect traffic beyond the caps"
+                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                @input="updateCap($event,`clicksRedirectOfferId`)"
+                                v-show="checkedClicks"
+                        >
+                        </model-select>
+                    </div>
+                </b-col>
+            </b-row>
+        
+            <!-- <b-form-text>* Default redirect LP will be used for banned countries</b-form-text> -->
 
             <b-row class="text-center modal-footer-1">
                 <b-col cols="12">
@@ -258,6 +266,8 @@
                 weight: 0,
                 lpId: 0,
                 id: 0,
+                checkedConversions: true,
+                checkedClicks: true,
             }
         },
         props: ['offerId', 'offerCap','offers'],
@@ -404,5 +414,4 @@
         .modal-enter .modal-container,
         .modal-leave .modal-container
             transform: scale(1.1)
-
 </style>

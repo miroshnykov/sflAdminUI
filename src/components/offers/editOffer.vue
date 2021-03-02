@@ -600,17 +600,18 @@
                         <b-col cols="5">
                         </b-col>
                         <b-col cols="5">
-                            <div class="condition__controls">
+                            <div class="condition__controls" style="margin-top:-20px">
                                 <label>&nbsp;</label>
                                 <b-form-checkbox
                                         size="lg"
                                         type="checkbox"
                                         class="condition__matches campaign pull-left"
+                                        v-model="checkedStartDate"
                                 >
                                     Offer start date
                                 </b-form-checkbox>
 
-                                <span class="datepicker pull-right">
+                                <span class="datepicker pull-right" v-show="checkedStartDate">
                                     <date-picker class="custom-input date-picker" name="date" v-model="startDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
@@ -621,11 +622,12 @@
                                         size="lg"
                                         type="checkbox"
                                         class="condition__matches campaign pull-left"
+                                        v-model="checkedEndDate"
                                 >
                                     Offer end date
                                 </b-form-checkbox>
 
-                                <span class="datepicker pull-right">
+                                <span class="datepicker pull-right" v-show="checkedEndDate">
                                     <date-picker class="custom-input date-picker" name="date" v-model="endDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
@@ -1069,6 +1071,8 @@
                         close: 'far fa-times-circle'
                     },
                 },
+                checkedStartDate: false,
+                checkedEndDate: false,
             };
         }
     };
