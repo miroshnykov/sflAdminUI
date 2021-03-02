@@ -21,7 +21,7 @@
                         <b-col cols="6" style="float: left" v-for="(country, index) in getCountries"
                                :key="index"
                         >
-                            <p>
+                            <p class="countrycheckbox">
                                 <input
                                         :id="defineId(`countryCheckbox`,index)"
                                         type="checkbox"
@@ -280,46 +280,6 @@
             float: left
             margin-top: 10px
 
-        /*** custom checkboxes ***/
-
-
-        input[type=checkbox]
-            display:none !important
-        /* to hide the checkbox itself */
-
-
-        input[type=checkbox] + label:before
-            display: inline-block
-            font-family: "Font Awesome 5 Free"
-            font-size: 16px
-        // position: relative
-        // top: 5px
-        // left: 5px
-
-        input[type=checkbox] + label:before
-            content: '\f058'
-            color: #2ED47A
-            font-weight: 400
-        /* allow icon */
-
-
-        input[type=checkbox] + label:before
-            letter-spacing: 20px
-        /* space between checkbox and label */
-
-
-        input[type=checkbox]:checked + label:before
-            content: "\f05e"
-            color: #EB5757
-            font-weight: 900
-        /* ban icon */
-
-
-        input[type=checkbox]:checked + label:before
-            letter-spacing: 20px
-        /* allow space for check mark */
-
-
         input.search-box:before
             content: '\F11C'
             font-family: "Font Awesome 5 Free"
@@ -330,4 +290,34 @@
             margin-top: 2px
             margin-right: -20px
 
+        /*** custom checkboxes ***/
+
+        .countrycheckbox
+            input[type=checkbox]
+                display:none !important
+
+            input[type=checkbox] + label:before
+                display: inline-block
+                font-family: "Font Awesome 5 Free"
+                font-size: 16px
+            // position: relative
+            // top: 5px
+            // left: 5px
+
+            input[type=checkbox] + label:before
+                content: '\f058'
+                color: #2ED47A
+                font-weight: 400
+
+
+            input[type=checkbox] + label:before
+                letter-spacing: 20px
+
+            input[type=checkbox]:checked + label:before
+                content: "\f05e"
+                color: #EB5757
+                font-weight: 900
+
+            input[type=checkbox]:checked + label:before
+                letter-spacing: 20px
 </style>
