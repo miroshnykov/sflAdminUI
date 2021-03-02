@@ -199,6 +199,21 @@
 
                             </div>
 
+                            <div class="condition-line">
+
+                                <model-select
+                                        :options="getAdvertisersModify(item)"
+                                        @input="handleChangeAdvertisers($event, item)"
+                                        :id="defineId(`advertisers`,item.position)"
+                                        :ref="defineId(`advertisers`,item.position)"
+                                        class="condition__country condition__matches custom-select "
+                                        :value="getValue(item)"
+                                        v-show="checkAdvertisers(item)"
+                                >
+                                </model-select>
+                                <label v-show="checkAdvertisers(item)" for="label-advertisers">Advertisers</label>
+
+                            </div>
 
                             <div class="condition-line">
                                 <select
@@ -314,6 +329,13 @@
         name: "condition-filter",
         props: ["filter", "indexFilters"],
         methods: {
+            getAdvertisersModify(item) {
+                return this.getAdvertisers.map(item => {
+                    item.value = item.id.toString()
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
+            },
             getCountriesModify(item) {
 
                 // console.log(`Country:${JSON.stringify(item)}`)
@@ -639,6 +661,9 @@
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `country`)
                     || item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_country`)
             },
+            checkAdvertisers(item) {
+                return item.dimensionId === this.getDimensionId(this.getDimensions, `advertisers`)
+            },
             checkCountryDisabled(item) {
                 return item.dimensionId === this.getDimensionId(this.getDimensions, `affiliate_country`)
             },
@@ -677,6 +702,7 @@
                 let affiliateStatusRef = `affiliate-status-${item.position}`
                 let affiliateTypeRef = `affiliate-type-${item.position}`
                 let osRef = `os-${item.position}`
+                let advertisersRef = `advertisers-${item.position}`
 
                 let countryEl = document.querySelector(`#${refCountry}`).parentNode || null
                 let campaignEl = this.$refs[refCampaign][0] || null
@@ -689,6 +715,7 @@
                 let affiliateStatusEl = document.querySelector(`#${affiliateStatusRef}`).parentNode || null
                 let affiliateTypeEl = document.querySelector(`#${affiliateTypeRef}`).parentNode || null
                 let osEl = document.querySelector(`#${osRef}`).parentNode || null
+                let advertisersEl = document.querySelector(`#${advertisersRef}`).parentNode || null
 
                 countryEl.classList.add("disabled")
                 let conditionEl = document.querySelector(`#${refCondition}`)
@@ -777,6 +804,7 @@
                             conditionEl.querySelectorAll(`label[for=label-prod]`)
                         )
                         break
+
                     case `website`:
                         websiteEl ? websiteEl.style.display = 'block' : ''
                         prodEl ? prodEl.style.display = 'none' : ''
@@ -861,6 +889,26 @@
                         )
                         this.showLabels(
                             conditionEl.querySelectorAll(`label[for=label-os]`)
+                        )
+                        break
+                    case `advertisers`:
+                        advertisersEl ? advertisersEl.style.display = 'block' : ''
+                        prodEl ? prodEl.style.display = 'none' : ''
+                        affiliateEl ? affiliateEl.style.display = 'none' : ''
+                        campaignEl ? campaignEl.style.display = 'none' : ''
+                        countryEl ? countryEl.style.display = 'none' : ''
+                        // countryEl.style.display = 'block'
+                        // countryEl.disabled = true
+                        // countryEl.classList.remove("disabled")
+                        item.value = ''
+                        item.dimensionId = 10
+                        subCampaignEl ? subCampaignEl.style.display = 'none' : ''
+                        matchTypeEl ? matchTypeEl.style.display = 'none' : ''
+                        this.hideLabels(
+                            conditionEl.querySelectorAll(`label[for=label-affiliate], label[for=label-campaign], label[for=label-country]`)
+                        )
+                        this.showLabels(
+                            conditionEl.querySelectorAll(`label[for=label-advertisers]`)
                         )
                         break
                     // case `affiliate_sub_campaign`:
@@ -1143,6 +1191,42 @@
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.dimensionName = `prod`
                 item.dimensionId = this.getDimensionId(this.getDimensions, `prod`)
+            },
+            handleChangeAdvertisers(event, item) {
+
+                let dimensionRef = `dimension-${item.position}`
+                let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
+                let refCondition = `condition-${item.position}`
+                let refAdvertisers = `advertisers-${item.position}`
+                let filterTypeRef = `filtertype-${item.position}`
+                let matchTypeRef = `matchtype-${item.position}`
+
+                let recCheck = this.validateValue(this.segmentFilter, event)
+                if (recCheck.length > 0) {
+                    this.$swal.fire({
+                        type: `warning`,
+                        title: `record exists: ${recCheck[0].value}  `,
+                        text: ` dimension: ${recCheck[0].dimensionName}`,
+                        footer: ``
+                    })
+
+                    this.$refs[refAdvertisers][0].value = ``
+                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+
+                    item.value = ``
+                    item.dimensionName = ``
+                    item.dimensionId = null
+                    return
+                }
+
+                this.$refs[refCondition][0].style.background = null
+                item.user = this.verifyTokenEmail
+                item.dateAdded = this.getCurrentDate()
+                item.value = event
+                item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
+                item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
+                item.dimensionName = `advertisers`
+                item.dimensionId = this.getDimensionId(this.getDimensions, `advertisers`)
             },
             handleChangeCountry(event, item) {
 
@@ -1451,6 +1535,7 @@
             ...mapGetters('countries', ['getCountries']),
             // ...mapGetters('affiliateWebsites', ['getAffiliateWebsites']),
             ...mapGetters('affiliates', ['getAffiliates']),
+            ...mapGetters('advertisers', ['getAdvertisers']),
             ...mapGetters('prods', ['getProds']),
             ...mapGetters('dimensions', ['getDimensions']),
             ...mapGetters('campaigns', ['getAffiliateCampaigns']),
