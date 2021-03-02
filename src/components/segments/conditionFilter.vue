@@ -95,7 +95,7 @@
                                     <option
                                             v-for="{id, name} in getAffiliateStatusList()"
                                             :value="id"
-                                            :selected="id === Number(item.value)"
+                                            :selected="id === item.value"
                                             :key="id"
                                     >{{name}}</option>
                                 </select>
@@ -115,7 +115,7 @@
                                     <option
                                             v-for="{id, name} in getAffiliateTypesList()"
                                             :value="id"
-                                            :selected="id === Number(item.value)"
+                                            :selected="id === item.value"
                                             :key="id"
                                     >{{name}}</option>
                                 </select>
@@ -136,7 +136,7 @@
                                     <option
                                             v-for="{id, name} in getOSList()"
                                             :value="id"
-                                            :selected="id === Number(item.value)"
+                                            :selected="id === item.value"
                                             :key="id"
                                     >{{name}}</option>
                                 </select>
@@ -553,37 +553,37 @@
             },
             getAffiliateStatusList() {
                 return [
-                    {id: 0, name: 'Active'},
-                    {id: 1, name: 'Blacklisted'},
-                    {id: 2, name: 'Deleted'},
-                    {id: 3, name: 'Inactive'},
-                    {id: 4, name: 'Pending'},
-                    {id: 5, name: 'Rejected'},
-                    {id: 6, name: 'Suspended'},
-                    {id: 7, name: 'Blocked'},
-                    {id: 8, name: 'UnderReview'},
+                    {id: "0", name: 'Active'},
+                    {id: "1", name: 'Blacklisted'},
+                    {id: "2", name: 'Deleted'},
+                    {id: "3", name: 'Inactive'},
+                    {id: "4", name: 'Pending'},
+                    {id: "5", name: 'Rejected'},
+                    {id: "6", name: 'Suspended'},
+                    {id: "7", name: 'Blocked'},
+                    {id: "8", name: 'UnderReview'},
                 ]
             },
             getAffiliateTypesList() {
                 return [
-                    {id: 0, name: 'Publisher'},
-                    {id: 1, name: 'Internal'},
-                    {id: 2, name: 'Marketer'},
-                    {id: 3, name: 'MediaBuy'},
-                    {id: 4, name: 'Network'},
-                    {id: 5, name: 'TraineeAE'},
-                    {id: 6, name: 'TraineeAssistant'}
+                    {id: "0", name: 'Publisher'},
+                    {id: "1", name: 'Internal'},
+                    {id: "2", name: 'Marketer'},
+                    {id: "3", name: 'MediaBuy'},
+                    {id: "4", name: 'Network'},
+                    {id: "5", name: 'TraineeAE'},
+                    {id: "6", name: 'TraineeAssistant'}
 
                 ]
             },
             getOSList() {
                 return [
-                    {id: 0, name: 'Android'},
-                    {id: 1, name: 'Ios'},
-                    {id: 2, name: 'Linux'},
-                    {id: 3, name: 'Mac'},
-                    {id: 4, name: 'Windows'},
-                    {id: 5, name: 'WindowsMobile'}
+                    {id: "0", name: 'Android'},
+                    {id: "1", name: 'Ios'},
+                    {id: "2", name: 'Linux'},
+                    {id: "3", name: 'Mac'},
+                    {id: "4", name: 'Windows'},
+                    {id: "5", name: 'WindowsMobile'}
 
                 ]
             },
