@@ -346,6 +346,10 @@
                         <b-col cols="2">
                             <div class="condition__controls" style="margin-top: 12px; margin-left: -10px;">
                                 <label>&nbsp;</label>
+                                <button v-show="this.fastLpAdd" class="btn btn-link pull-left" @click="fastAddLp(id)"
+                                        v-b-tooltip.hover.bottom="'ADD'">
+                                    <i class="far fa-plus"></i>
+                                </button>
                                 <button class="btn btn-link pull-left" @click="copyText()"
                                         v-b-tooltip.hover.bottom="'Copy URL'">
                                     <i class="far fa-copy"></i>
@@ -615,7 +619,7 @@
                                     <date-picker class="custom-input date-picker" name="date" v-model="startDate"
                                                  :config="options" placeholder="Choose date and time..."></date-picker>
                                 </span>
-                            
+
                             </div>
                             <div class="condition__controls" style="margin-top: 20px">
                                 <b-form-checkbox
@@ -743,19 +747,26 @@
             // await store.dispatch('campaigns/saveCampaignsStore')
             await this.$store.dispatch('lp/saveLPStore')
 
-            // menuOffersId  disabled
-            // let el = document.querySelector(`#menuOffersId`)
-            // el.setAttribute("disabled","disabled")
-            // el.addClass("disabled")
-            // el.classList.add("disabled")
-            // el.disabled=""
-            // debugger
+            let lp = cloneObjectArray(this.getLpOffers)
+            this.lp = lp
+            let self = this
+            document.querySelector(`#lpsId-${self.id}`).addEventListener('keyup', (e) => {
+                let defaultLpNew = document.querySelector(`#lpsId-${self.id}`).value
+                let checkLp = self.lp.filter(item => (item.name.includes(defaultLpNew)))
+                if (checkLp.length === 0) {
+                    self.fastLpAdd = true
+                    self.fastLpValue = defaultLpNew
+                } else {
+                    self.fastLpAdd = false
+                }
+                if (e.key === 'Enter') {
 
-            // await store.dispatch('prods/saveProdsStore')
-            // await store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+                }
+            })
         },
         methods: {
             ...mapMutations('offer', ['updOffer']),
+            ...mapMutations('lpOffers', ['fastAddLpOffers']),
             checkEditMode() {
                 if (JSON.stringify(this.getOfferOrigin) !== JSON.stringify(this.getOffer)
                     || JSON.stringify(this.getOfferCapOrigin) !== JSON.stringify(this.getOfferCap)
@@ -788,6 +799,30 @@
                 }
                 // return this.getOffer.length !== 0 && `Allow all countries`
                 // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
+            },
+            fastAddLp(id) {
+                let newLp = this.fastLpValue
+                let obj = {}
+                obj.url = newLp
+                obj.offerId = id
+                this.fastAddLpOffers(obj)
+
+                const getLastId = (sf) => {
+                    let loadMin = null
+                    for (const item of sf) {
+                        if (!loadMin || item.id > loadMin.id) {
+                            loadMin = item
+                        }
+                    }
+                    return loadMin.id
+                }
+
+                let lastId = getLastId(this.getLpOffers) || 0
+                let obj2 = {}
+                obj2.fieldName = 'defaultLp'
+                obj2.value = lastId
+                this.updOffer(obj2)
+
             },
             async copyText() {
                 try {
@@ -888,8 +923,7 @@
                         obj.value = event.target.value
                     }
                 }
-
-                debugger
+                this.fastLpAdd = false
                 this.updOffer(obj)
             },
             getCapsStatus(caps) {
@@ -1047,6 +1081,8 @@
         },
         data() {
             return {
+                fastLpAdd: false,
+                fastLpValue: '',
                 id: Number(this.$route.params.id),
                 selected: true,
                 payoutType: '1',
@@ -1239,8 +1275,8 @@
         .tabs
             .tab-content
                 width: 65vw
-                // border: 1px solid #E3EEF4
-                // border-radius: 4px
+            // border: 1px solid #E3EEF4
+            // border-radius: 4px
 
             .mt-3, .my-3
                 margin-top: 0rem !important
@@ -1341,8 +1377,8 @@
 
             span.oldValue
                 color: #ACC3CF
-                // font-weight: 400
-                // text-decoration: line-through
+            // font-weight: 400
+            // text-decoration: line-through
 
             span.newValue
                 font-weight: 700
