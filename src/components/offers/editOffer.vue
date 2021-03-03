@@ -823,6 +823,14 @@
                 obj2.value = lastId
                 this.updOffer(obj2)
 
+                this.$swal.fire({
+                    type: 'success',
+                    position: 'top-end',
+                    title: `Site ${newLp} added`,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+
             },
             async copyText() {
                 try {
