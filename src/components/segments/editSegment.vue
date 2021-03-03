@@ -122,6 +122,7 @@
             // await this.$store.dispatch('lp/saveLPStore')
             await this.$store.dispatch('prods/saveProdsStore')
             await this.$store.dispatch('affiliateWebsites/saveAffiliateWebsitesStore')
+            await this.$store.dispatch('advertisers/saveAdvertisersStore')
         },
         methods: {
             ...mapMutations('segment', ['updateField','overrideProduct']),
