@@ -429,12 +429,10 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0 && getOffer[0].payIn"
                                        @change="updValue($event, `payIn`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payIn custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
@@ -443,8 +441,20 @@
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
-                                       onKeyPress="if(this.value.length==3) return false;"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payIn').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payin').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payin').style.display = 'none'
+                                                document.querySelector('.payIn').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
                                 >
+                            <b-form-invalid-feedback id="input-live-payin" style="display:none">
+                                Please enter a value.
+                            </b-form-invalid-feedback>
                             </div>
                         </b-col>
                         <b-col cols="10">
@@ -475,12 +485,10 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0  && getOffer[0].payOut"
                                        @change="updValue($event, `payOut`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payOut custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
@@ -490,7 +498,20 @@
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
                                        onKeyPress="if(this.value.length==3) return false;"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOut').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payout').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payout').style.display = 'none'
+                                                document.querySelector('.payOut').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
                                 >
+                            <b-form-invalid-feedback id="input-live-payout" style="display:none">
+                                Please enter a value.
+                            </b-form-invalid-feedback>
                             </div>
 
                             <div class="condition__controls percentage" v-show="this.payoutType === '2'">
@@ -499,22 +520,31 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0  && getOffer[0].payOut"
                                        @change="updValue($event, `payOut`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payOutPercent custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
-                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
-                                            if(this.value.length==3) return false;"
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                        onpaste="return false"
-                                       onKeyPress="if(this.value.length==3) return false;"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'none'
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
                                 >
+                            <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
+                                Please enter a value between 1 and 100.
+                            </b-form-invalid-feedback>
                             </div>
                         </b-col>
                         <b-col cols="2" style="margin-top: 60px">
@@ -991,7 +1021,7 @@
                 if (emptyKey.length !== 0) {
                     this.$swal.fire({
                         title: 'Validation Error',
-                        text: `Fields: ${JSON.stringify(emptyKey)} is empty `,
+                        text: `${JSON.stringify(emptyKey)} is empty`,
                     })
                     return
                 }
