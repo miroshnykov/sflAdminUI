@@ -830,6 +830,7 @@
                     showConfirmButton: false,
                     timer: 1000
                 })
+                this.fastLpAdd = false
 
             },
             async copyText() {
