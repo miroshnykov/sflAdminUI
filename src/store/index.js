@@ -15,6 +15,7 @@ import offers from './offers'
 import offer from './offer'
 import offerHistory from './offerHistory'
 import affiliateWebsites from './affiliateWebsites'
+import advertisers from './advertisers'
 
 import { getUserStore } from 'am-components-front'
 const user = getUserStore(
@@ -45,6 +46,7 @@ export default new Vuex.Store({
         offer,
         offerHistory,
         offers,
-        affiliateWebsites
+        affiliateWebsites,
+        advertisers
     }
 })

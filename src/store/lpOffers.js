@@ -34,6 +34,28 @@ export default {
 
             state.lpOffers.push(lp)
         },
+        fastAddLpOffers(state, data) {
+
+            const getLastId = (sf) => {
+                let loadMin = null
+                for (const item of sf) {
+                    if (!loadMin || item.id > loadMin.id) {
+                        loadMin = item
+                    }
+                }
+                return loadMin.id
+            }
+
+            let lastId = state.lpOffers.length !== 0 && getLastId(state.lpOffers) || 0
+
+            let lp = {}
+            lp.name = data.url || ''
+            lp.url = data.url || ''
+            lp.offerId = data.offerId
+            lp.id = lastId + 1
+
+            state.lpOffers.push(lp)
+        },
         async updLpOffers(state, data) {
             let lps = state.lpOffers.map(item => {
                 if (item.id === data.id) {
