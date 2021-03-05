@@ -105,7 +105,7 @@
                         </div>
                     </div>
                 </b-col> -->
-                <!-- TODO: Add backend for checkbox -->
+                <!-- TODO: Add conditional logic for checkbox to interact with model-select input, see below -->
                 <b-col class="text-center" cols="3">
                     <div class="condition__controls">
                         <b-form-checkbox
@@ -121,6 +121,7 @@
                 </b-col>
                 <b-col cols="6">
                     <div class="condition__controls">
+                        <!-- TODO: When checkbox is checked, this should be disabled -->
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
@@ -129,15 +130,16 @@
                                 class="offerCapInput"
                         >
                         </model-select>
-                        <model-select
+                        <!-- <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                                 v-show="checkedConversions"
                                 class="disabled offerCapInput-disabled"
+                                :id="defineId(`offerCap`,offerCap[0].clicksRedirectOfferId)"
                         >
-                        </model-select>
+                        </model-select> -->
                     </div>
                 </b-col>
             </b-row>
