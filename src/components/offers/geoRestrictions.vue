@@ -43,8 +43,8 @@
                 <b-col cols="12">
                     <div class="allow-ban-all text-left">
                         <b-form-text><b>Banned GEOs selected:</b>
-                        <br>
-                        {{ listOfBannedCountries(geoRules) }}
+                            <br>
+                            {{ listOfBannedCountries(geoRules) }}
                         </b-form-text>
                     </div>
                 </b-col>
@@ -137,10 +137,13 @@
             banAllEvent() {
                 this.banAll(this.getCountries)
             },
-            listOfBannedCountries(geoRules){
+            listOfBannedCountries(geoRules) {
+                if (!geoRules) return ''
+
                 let geoR = JSON.parse(geoRules)
                 let geoCountry = geoR.geo.map(item => item.country)
                 return geoCountry.join(', ')
+
             },
             // getBannedCountries() {
             //     if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
@@ -291,6 +294,7 @@
             margin-right: -20px
 
         /*** custom checkboxes ***/
+
 
         .countrycheckbox
             input[type=checkbox]

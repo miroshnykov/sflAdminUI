@@ -2,6 +2,7 @@
     <div class="menu-nav">
         <b-nav vertical class="w-25">
             <a class="logo"></a>
+<!--            <a href="http://localhost:8084/offer?prod=8&ref=5066372" class="logo animated fadeIn"> URL  </a>-->
             <span class="nav-active">
                 <b-nav-item active class="nav-blockedSegments"><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
                 <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
