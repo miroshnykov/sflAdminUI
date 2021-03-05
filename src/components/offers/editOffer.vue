@@ -423,18 +423,35 @@
                         </b-col> -->
 
                         <b-col cols="3">
+                            <div class="condition__controls">
+                                <label>Offer Currency
+                                    <span class="question"
+                                          v-b-tooltip.hover.right.html="'No other currencies are supported for now'">
+                                        <i class="fad fa-question-circle"></i>
+                                    </span>
+                                </label>
+                                <input type="text"
+                                       value="USD"
+                                       class="condition__matches offerCurrency custom-input"
+                                        disabled
+                                >
+                            </div>
+                        </b-col>
+
+                        <b-col cols="9">
+                        </b-col>
+
+                        <b-col cols="3">
                             <div class="condition__controls dollar">
                                 <label>Pay In</label>
                                 <input type="number"
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0 && getOffer[0].payIn"
                                        @change="updValue($event, `payIn`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payIn custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
@@ -443,8 +460,20 @@
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
-                                       onKeyPress="if(this.value.length==3) return false;"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payIn').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payin').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payin').style.display = 'none'
+                                                document.querySelector('.payIn').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
                                 >
+                            <b-form-invalid-feedback id="input-live-payin" style="display:none">
+                                Please enter a value.
+                            </b-form-invalid-feedback>
                             </div>
                         </b-col>
                         <b-col cols="10">
@@ -475,12 +504,10 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0  && getOffer[0].payOut"
                                        @change="updValue($event, `payOut`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payOut custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
@@ -490,21 +517,71 @@
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
                                        onKeyPress="if(this.value.length==3) return false;"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOut').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payout').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payout').style.display = 'none'
+                                                document.querySelector('.payOut').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
                                 >
+                                <b-form-invalid-feedback id="input-live-payout" style="display:none">
+                                    Please enter a value.
+                                </b-form-invalid-feedback>
                             </div>
 
                             <div class="condition__controls percentage" v-show="this.payoutType === '2'">
+                                <label>Value</label>
+                                <input type="number"
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.length !==0  && getOffer[0].payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOutPercent custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                       onpaste="return false"
+                                        onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'none'
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
+                                >
+                                <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
+                                    Please enter a value between 1 and 100.
+                                </b-form-invalid-feedback>
+                            </div>
+                        </b-col>
+                        <b-col cols="1" style="margin-top: 65px; max-width: 4%;" v-show="this.payoutType === '2'">
+                                <span class="equalsign" style="color:#ACC3CF">
+                                    <i class="fas fa-equals"></i>
+                                </span>
+                        </b-col>
+                        <b-col cols="3">
+                            <div class="condition__controls dollar" v-show="this.payoutType === '2'">
                                 <label>Pay Out</label>
                                 <input type="number"
                                        step=1
                                        min="0"
                                        max="999"
-                                       placeholder="10"
                                        :value="getOffer.length !==0  && getOffer[0].payOut"
                                        @change="updValue($event, `payOut`)"
-                                       class="condition__matches budgetTotal custom-input"
+                                       class="condition__matches payOut custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
-                                       onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'transparent'"
                                        onkeypress="
                                             return (
                                                 event.charCode == 8
@@ -513,15 +590,21 @@
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
-                                       onKeyPress="if(this.value.length==3) return false;"
+                                       disabled
                                 >
                             </div>
                         </b-col>
-                        <b-col cols="2" style="margin-top: 60px">
+                        <!-- <b-col cols="2">
                             <b-button variant="light" class="btn-add-line btn-grey pull-left"
                                       v-b-tooltip.hover.bottom.html="'Coming Soon'">
                                 <i class="far fa-cog"></i> Customize
                             </b-button>
+                        </b-col> -->
+                        <b-col cols="12" style="margin-top: 20px; max-width: 935px">
+                            <h3 class="line">Custom payout per GEO</h3>
+                                <b-button variant="light" class="btn-add-line pull-left">
+                                    <i class="far fa-plus"></i> Add custom payout per GEO
+                                </b-button>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -991,7 +1074,7 @@
                 if (emptyKey.length !== 0) {
                     this.$swal.fire({
                         title: 'Validation Error',
-                        text: `Fields: ${JSON.stringify(emptyKey)} is empty `,
+                        text: `${JSON.stringify(emptyKey)} is empty`,
                     })
                     return
                 }
@@ -1349,11 +1432,14 @@
                 font-size: 18px
                 color: #ACC3CF
                 opacity: 0.7
-                float: right
+                float: left
                 position: relative
                 top: 43px
-                right: 15px
+                left: 15px
                 z-index: 1
+
+            input.condition__matches.payIn, input.condition__matches.payOut
+                padding-left: 40px
 
             input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button
