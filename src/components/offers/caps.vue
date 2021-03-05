@@ -111,8 +111,9 @@
                         <b-form-checkbox
                                 size="lg"
                                 type="checkbox"
-                                class="condition__matches campaign"
+                                class="condition__matches campaign offerCapCheckbox"
                                 v-model="checkedConversions"
+                                @change="useDefaultOfferRedirect()"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
@@ -125,7 +126,16 @@
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
+                                class="offerCapInput"
+                        >
+                        </model-select>
+                        <model-select
+                                :options="getOffersList()"
+                                placeholder="... or select an offer to redirect traffic beyond the caps"
+                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                @input="updateCap($event,`clicksRedirectOfferId`)"
                                 v-show="checkedConversions"
+                                class="disabled offerCapInput-disabled"
                         >
                         </model-select>
                     </div>
@@ -213,10 +223,8 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign"
-                                v-model="checkedClicks"
                         >
                             Use default offer redirect
-
                         </b-form-checkbox>
                     </div>
                 </b-col>
@@ -227,7 +235,7 @@
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
-                                v-show="checkedClicks"
+                                class="offerCapInput"
                         >
                         </model-select>
                     </div>
@@ -266,8 +274,8 @@
                 weight: 0,
                 lpId: 0,
                 id: 0,
-                checkedConversions: true,
-                checkedClicks: true,
+                checkedConversions: false,
+                checkedClicks: false,
             }
         },
         props: ['offerId', 'offerCap','offers'],
@@ -291,6 +299,19 @@
                 'cancelCap'
             ]),
             ...mapMutations('countries', ['filterCountry']),
+            // changeColor() {
+            //     this.isInactive = !this.isInactive
+            // },
+            useDefaultOfferRedirect() {
+                if(this.checkedConversions.checked == true) {
+                    document.querySelector('.offerCapInput').style.display = 'none'
+                    document.querySelector('.offerCapInput-disabled').style.display = 'block'
+                    // return true
+                    return disabled
+                }
+                // let addClass = checkedConversions === true ? false : 'disabled'
+                // return `${addClass} disabled`
+            },
             allowAllEvent() {
                 this.allowAll()
             },

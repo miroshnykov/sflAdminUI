@@ -45,14 +45,14 @@
                 <div slot="payIn" slot-scope="props">
                     <span class="budget-daily">${{props.row.payIn}}</span>
                     <b-form-text id="currency">
-                        CAD
+                        USD
                     </b-form-text>
                 </div>
 
                 <div slot="payOut" slot-scope="props">
                     <span class="budget-daily">${{props.row.payOut}}</span>
                     <b-form-text id="currency">
-                        CAD
+                        USD
                     </b-form-text>
                 </div>
 

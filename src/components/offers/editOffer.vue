@@ -423,6 +423,25 @@
                         </b-col> -->
 
                         <b-col cols="3">
+                            <div class="condition__controls">
+                                <label>Offer Currency
+                                    <span class="question"
+                                          v-b-tooltip.hover.right.html="'No other currencies are supported for now'">
+                                        <i class="fad fa-question-circle"></i>
+                                    </span>
+                                </label>
+                                <input type="text"
+                                       value="USD"
+                                       class="condition__matches offerCurrency custom-input"
+                                        disabled
+                                >
+                            </div>
+                        </b-col>
+
+                        <b-col cols="9">
+                        </b-col>
+
+                        <b-col cols="3">
                             <div class="condition__controls dollar">
                                 <label>Pay In</label>
                                 <input type="number"
@@ -509,13 +528,13 @@
                                             }
                                         "
                                 >
-                            <b-form-invalid-feedback id="input-live-payout" style="display:none">
-                                Please enter a value.
-                            </b-form-invalid-feedback>
+                                <b-form-invalid-feedback id="input-live-payout" style="display:none">
+                                    Please enter a value.
+                                </b-form-invalid-feedback>
                             </div>
 
                             <div class="condition__controls percentage" v-show="this.payoutType === '2'">
-                                <label>Pay Out</label>
+                                <label>Value</label>
                                 <input type="number"
                                        step=1
                                        min="0"
@@ -542,16 +561,50 @@
                                             }
                                         "
                                 >
-                            <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
-                                Please enter a value between 1 and 100.
-                            </b-form-invalid-feedback>
+                                <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
+                                    Please enter a value between 1 and 100.
+                                </b-form-invalid-feedback>
                             </div>
                         </b-col>
-                        <b-col cols="2" style="margin-top: 60px">
+                        <b-col cols="1" style="margin-top: 65px; max-width: 4%;" v-show="this.payoutType === '2'">
+                                <span class="equalsign" style="color:#ACC3CF">
+                                    <i class="fas fa-equals"></i>
+                                </span>
+                        </b-col>
+                        <b-col cols="3">
+                            <div class="condition__controls dollar" v-show="this.payoutType === '2'">
+                                <label>Pay Out</label>
+                                <input type="number"
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.length !==0  && getOffer[0].payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOut custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
+                                       onpaste="return false"
+                                       disabled
+                                >
+                            </div>
+                        </b-col>
+                        <!-- <b-col cols="2">
                             <b-button variant="light" class="btn-add-line btn-grey pull-left"
                                       v-b-tooltip.hover.bottom.html="'Coming Soon'">
                                 <i class="far fa-cog"></i> Customize
                             </b-button>
+                        </b-col> -->
+                        <b-col cols="12" style="margin-top: 20px; max-width: 935px">
+                            <h3 class="line">Custom payout per GEO</h3>
+                                <b-button variant="light" class="btn-add-line pull-left">
+                                    <i class="far fa-plus"></i> Add custom payout per GEO
+                                </b-button>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -1379,11 +1432,14 @@
                 font-size: 18px
                 color: #ACC3CF
                 opacity: 0.7
-                float: right
+                float: left
                 position: relative
                 top: 43px
-                right: 15px
+                left: 15px
                 z-index: 1
+
+            input.condition__matches.payIn, input.condition__matches.payOut
+                padding-left: 40px
 
             input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button
