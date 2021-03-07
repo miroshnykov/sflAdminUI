@@ -56,11 +56,13 @@ const getOfferCap = async (offerId) => {
                                 clickMonth
                                 clicksRedirectStatus
                                 clicksRedirectOfferId
+                                clicksRedirectOfferUseDefault
                                 salesDay
                                 salesWeek
                                 salesMonth
                                 salesRedirectStatus
                                 salesRedirectOfferId
+                                salesRedirectOfferUseDefault
                           }
                     }
 

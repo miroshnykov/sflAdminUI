@@ -19,11 +19,13 @@ const newCap = () => {
     cap.clickMonth = 0
     cap.clickWeek = 0
     cap.clicksRedirectOfferId = 0
+    cap.clicksRedirectOfferUseDefault = 0
     cap.clicksRedirectStatus = 0
     cap.offerId = 0
     cap.salesDay = 0
     cap.salesMonth = 0
     cap.salesRedirectOfferId = 0
+    cap.salesRedirectOfferUseDefault = 0
     cap.salesRedirectStatus = 0
     cap.salesWeek = 0
     return cap

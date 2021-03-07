@@ -112,8 +112,8 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                v-model="checkedConversions"
-                                @change="useDefaultOfferRedirect()"
+                                :checked="offerCap && !!offerCap[0].salesRedirectOfferUseDefault|| 0"
+                                @change="updateCap($event,`salesRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
@@ -127,6 +127,7 @@
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
+                                :class="getClassDisabled(offerCap && !!offerCap[0].salesRedirectOfferUseDefault|| 0)"
                                 class="offerCapInput"
                         >
                         </model-select>
@@ -224,7 +225,9 @@
                         <b-form-checkbox
                                 size="lg"
                                 type="checkbox"
-                                class="condition__matches campaign"
+                                class="condition__matches campaign offerCapCheckbox"
+                                :checked="offerCap && !!offerCap[0].clicksRedirectOfferUseDefault|| 0"
+                                @change="updateCap($event,`clicksRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
@@ -238,12 +241,13 @@
                                 :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                                 class="offerCapInput"
+                                :class="getClassDisabled(offerCap && !!offerCap[0].clicksRedirectOfferUseDefault|| 0)"
                         >
                         </model-select>
                     </div>
                 </b-col>
             </b-row>
-        
+
             <!-- <b-form-text>* Default redirect LP will be used for banned countries</b-form-text> -->
 
             <b-row class="text-center modal-footer-1">
@@ -280,7 +284,7 @@
                 checkedClicks: false,
             }
         },
-        props: ['offerId', 'offerCap','offers'],
+        props: ['offerId', 'offerCap', 'offers'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -305,26 +309,42 @@
             //     this.isInactive = !this.isInactive
             // },
             useDefaultOfferRedirect() {
-                if(this.checkedConversions.checked == true) {
-                    document.querySelector('.offerCapInput').style.display = 'none'
-                    document.querySelector('.offerCapInput-disabled').style.display = 'block'
-                    // return true
-                    return disabled
-                }
+
+                // if(this.checkedConversions.checked == true) {
+                //     document.querySelector('.offerCapInput').style.display = 'none'
+                //     document.querySelector('.offerCapInput-disabled').style.display = 'block'
+                //     // return true
+                //     return disabled
+                // }
                 // let addClass = checkedConversions === true ? false : 'disabled'
                 // return `${addClass} disabled`
             },
             allowAllEvent() {
                 this.allowAll()
             },
-            getOffersList(){
+            getOffersList() {
                 return this.offers
             },
-            updateCap(event, field){
-                let obj={}
+            getClassDisabled(flag) {
+                if (flag) {
+                    return 'disabled'
+                }
+            },
+            updateCap(event, field) {
+                let obj = {}
                 obj.fieldName = field
-                if (field === `salesRedirectOfferId` || field === `clicksRedirectOfferId`){
-                    obj.value = event
+                if (field === `salesRedirectOfferId`
+                    || field === `clicksRedirectOfferId`
+                    || field === `clicksRedirectOfferUseDefault`
+                    || field === `salesRedirectOfferUseDefault`
+                ) {
+                    if (field === 'clicksRedirectOfferUseDefault'
+                        || field === 'salesRedirectOfferUseDefault') {
+                        obj.value = !!event
+                    } else {
+
+                        obj.value = event
+                    }
                 } else {
                     obj.value = event.target.value
                 }
