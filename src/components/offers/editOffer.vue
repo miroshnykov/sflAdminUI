@@ -5,7 +5,7 @@
 
         <!-- <h2 class="title">
             <span class="editingMode">Editing <i class="far fa-pencil" data-fa-transform="shrink-2"></i></span>
-            {{getOffer.length !==0 && getOffer[0].name}}
+            {{getOffer.length !==0 && getOffer.name}}
         </h2> -->
 
         <b-row class="text-center title">
@@ -24,7 +24,7 @@
                     <label>Name</label>
                     <input type="text"
                            placeholder="ex: iPhone 11"
-                           :value="getOffer.length !==0 && getOffer[0].name"
+                           :value="getOffer.name"
                            class="condition__matches campaign custom-input offer-name"
                            :id="defineId(`offerName`,id)"
                            @change="updValue($event, `name`)"
@@ -79,7 +79,7 @@
                                         placeholder="Description or notes about this offer..."
                                         rows="3"
                                         max-rows="4"
-                                        :value="getOffer.length !==0 && getOffer[0].descriptions"
+                                        :value="getOffer.descriptions"
                                         @change="updValue($event, `descriptions`)"
                                 ></b-form-textarea>
                             </div>
@@ -99,7 +99,7 @@
                                     <option :value="null">-- Select advertiser --</option>
                                     <option
                                             v-for="{id, name} in getAdveritserList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].advertiser || '')"
+                                            :selected="formatStr(name) === formatStr(getOffer.advertiser || '')"
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -119,7 +119,7 @@
                                     <option :value="null">-- Select verticals --</option>
                                     <option
                                             v-for="{id, name} in getVerticalsList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].verticals || '')"
+                                            :selected="formatStr(name) === formatStr(getOffer.verticals || '')"
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -141,7 +141,7 @@
                                     <option
                                             id="filterType"
                                             v-for="{id, name} in getStatusList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.length !==0 && getOffer[0].status || '')"
+                                            :selected="formatStr(name) === formatStr(getOffer.status || '')"
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -247,7 +247,7 @@
                                 <label>RevShare Payout</label>
                                 <input type="number"
                                        class="condition__matches campaign custom-input payoutPercent"
-                                       :value="getOffer.length !==0 && getOffer[0].payoutPercent"
+                                       :value="getOffer.payoutPercent"
                                        @change="updValue($event, `payoutPercent`)"
                                        v-show="checkConversionType(`revShare`)"
                                        step=1
@@ -270,8 +270,8 @@
                                 <!-- <label>Enable CPM Option</label>
                                 <input type="checkbox"
                                     class="condition__matches campaign custom-input"
-                                    :value="getOffer.length !==0 && getOffer[0].isCpmOptionEnabled"
-                                    :checked="getOffer[0].isCpmOptionEnabled"
+                                    :value="getOffer.length !==0 && getOffer.isCpmOptionEnabled"
+                                    :checked="getOffer.isCpmOptionEnabled"
                                     @change="updValue($event, `isCpmOptionEnabled`)"
                                     v-show="checkConversionType(`hybrid/multistep`)"
                                 > -->
@@ -329,7 +329,7 @@
                                     <CustomLP :id="'modal_lp' + id" :ref="'modal_lp' + id"
                                               :customLPId="id"
                                               :defaultLp="getLpDefault"
-                                              :customLPRules="getOffer.length !==0  && getOffer[0].customLPRules && JSON.parse(getOffer[0].customLPRules)">
+                                              :customLPRules="getOffer.customLPRules && JSON.parse(getOffer.customLPRules)">
                                     </CustomLP>
                                 </span>
                                 <model-select
@@ -375,7 +375,7 @@
                                         :options="getOffersModify()"
                                         :id="defineId(`offerIdRedirect`,id)"
                                         placeholder="Search landing page..."
-                                        :value="getOffer.length !==0  && getOffer[0].offerIdRedirect"
+                                        :value="getOffer.offerIdRedirect"
                                         @input="updValue($event,`offerIdRedirect`)"
                                 >
                                 </model-select>
@@ -391,7 +391,7 @@
                                         :options="getOffersModify()"
                                         :id="defineId(`offerIdRedirect`,id)"
                                         placeholder="Search landing page..."
-                                        :value="getOffer.length !==0  && getOffer[0].offerIdRedirect"
+                                        :value="getOffer.length !==0  &&getOffer.offerIdRedirect"
                                         @input="updValue($event,`offerIdRedirect`)"
                                 >
                                 </model-select> -->
@@ -433,7 +433,7 @@
                                 <input type="text"
                                        value="USD"
                                        class="condition__matches offerCurrency custom-input"
-                                        disabled
+                                       disabled
                                 >
                             </div>
                         </b-col>
@@ -448,7 +448,7 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       :value="getOffer.length !==0 && getOffer[0].payIn"
+                                       :value="getOffer.payIn"
                                        @change="updValue($event, `payIn`)"
                                        class="condition__matches payIn custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
@@ -460,7 +460,7 @@
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payIn').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payin').style.display = 'block'
@@ -471,9 +471,9 @@
                                             }
                                         "
                                 >
-                            <b-form-invalid-feedback id="input-live-payin" style="display:none">
-                                Please enter a value.
-                            </b-form-invalid-feedback>
+                                <b-form-invalid-feedback id="input-live-payin" style="display:none">
+                                    Please enter a value.
+                                </b-form-invalid-feedback>
                             </div>
                         </b-col>
                         <b-col cols="10">
@@ -504,7 +504,7 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       :value="getOffer.length !==0  && getOffer[0].payOut"
+                                       :value="getOffer.payOut"
                                        @change="updValue($event, `payOut`)"
                                        class="condition__matches payOut custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
@@ -517,7 +517,7 @@
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
                                        onKeyPress="if(this.value.length==3) return false;"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOut').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payout').style.display = 'block'
@@ -539,7 +539,7 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       :value="getOffer.length !==0  && getOffer[0].payOut"
+                                       :value="getOffer.payOut"
                                        @change="updValue($event, `payOut`)"
                                        class="condition__matches payOutPercent custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
@@ -550,7 +550,7 @@
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                        onpaste="return false"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payoutpercentage').style.display = 'block'
@@ -578,7 +578,7 @@
                                        step=1
                                        min="0"
                                        max="999"
-                                       :value="getOffer.length !==0  && getOffer[0].payOut"
+                                       :value="getOffer.payOut"
                                        @change="updValue($event, `payOut`)"
                                        class="condition__matches payOut custom-input"
                                        pattern="^\d+(?:\.\d{1,2})?$"
@@ -602,9 +602,9 @@
                         </b-col> -->
                         <b-col cols="12" style="margin-top: 20px; max-width: 935px">
                             <h3 class="line">Custom payout per GEO</h3>
-                                <b-button variant="light" class="btn-add-line pull-left">
-                                    <i class="far fa-plus"></i> Add custom payout per GEO
-                                </b-button>
+                            <b-button variant="light" class="btn-add-line pull-left">
+                                <i class="far fa-plus"></i> Add custom payout per GEO
+                            </b-button>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -645,8 +645,8 @@
 
                                 <GeoRestrictions :id="'modal_' + id" :ref="'modal_' + id"
                                                  :geoId="id"
-                                                 :geoRules="getOffer.length !==0  && getOffer[0].geoRules && getOffer[0].geoRules"
-                                                 :offerDefaultLPInfo="getDefaultLPInfo(getOffer.length !==0 && getOffer[0].defaultLp)"
+                                                 :geoRules="getOffer.geoRules && getOffer.geoRules"
+                                                 :offerDefaultLPInfo="getDefaultLPInfo(getOffer.defaultLp)"
                                 >
                                 </GeoRestrictions>
                             </div>
@@ -656,8 +656,7 @@
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <!-- TODO: Add Caps details in tooltip -->
-                                <div v-b-tooltip.hover.v-info.bottom.html="'Caps details here (coming soon)'">
+                                <div v-b-tooltip.hover.v-info.bottom.html="getCapsDetails()">
                                     <input type="text"
                                            class="condition__matches campaign custom-input"
                                            :value="getCapsStatus(getOfferCap)"
@@ -678,7 +677,7 @@
 
                                 <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
                                       :offerId="id"
-                                      :offerCap="getOfferCap.length !==0 && getOfferCap"
+                                      :offerCap="getOfferCap"
                                       :offers="getOffersModify()"
                                 >
                                 </Caps>
@@ -866,15 +865,19 @@
                 return this.getOfferHistory.length !== 0 && this.getOfferHistory
             },
             getBannedCountries() {
-                if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
-                    let geoR = JSON.parse(this.getOffer[0].geoRules)
+                if (this.getOffer.geoRules) {
+                    let geoR = JSON.parse(this.getOffer.geoRules)
                     let geoCountry = geoR.geo.map(item => item.country)
                     return geoCountry.join(', ')
                 }
             },
+            getCapsDetails() {
+                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
+                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
+            },
             getBannedCountriesStatus() {
-                if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
-                    let geoR = JSON.parse(this.getOffer[0].geoRules)
+                if (this.getOffer.geoRules) {
+                    let geoR = JSON.parse(this.getOffer.geoRules)
                     let geoCountry = geoR.geo.map(item => item.country)
                     return `Custom (Hover for banned countries)`
                 } else {
@@ -918,7 +921,7 @@
             },
             async copyText() {
                 try {
-                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer.defaultLp))
                     await navigator.clipboard.writeText(obj[0].url);
                     this.$swal.fire({
                         type: 'success',
@@ -933,7 +936,7 @@
                 }
             },
             openURL() {
-                let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                let obj = this.getLpOffers.filter(item => (item.id === this.getOffer.defaultLp))
                 let url = obj[0].url
 
                 let prefix = 'http'
@@ -947,13 +950,13 @@
             getLpURL() {
                 if (this.getOffer.length !== 0) {
 
-                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer[0].defaultLp))
+                    let obj = this.getLpOffers.filter(item => (item.id === this.getOffer.defaultLp))
                     return obj.length !== 0 && 'Name: ' + obj[0].name + '<br>(ID:' + obj[0].id + ')'
                 }
             },
             getLpDefault() {
                 if (this.getOffer.length !== 0) {
-                    return this.getOffer[0].defaultLp
+                    return this.getOffer.defaultLp
                 }
             },
             getLpModify() {
@@ -979,12 +982,12 @@
             },
             getLPValue() {
                 if (this.getOffer.length !== 0) {
-                    return this.getOffer[0].defaultLp
+                    return this.getOffer.defaultLp
                 }
             },
             getOfferField(name) {
                 if (this.getOffer.length !== 0) {
-                    return this.getOffer[0][name]
+                    return this.getOffer[name]
                 }
             },
             updValue(event, name) {
@@ -1042,29 +1045,27 @@
             async saveOffer() {
                 let offerData = this.getOffer
                 let emptyKey = []
-                offerData.forEach(item => {
-                    let keys = Object.keys(item)
-                    keys.forEach(key => {
-                        if (
-                            key === 'geoRules' ||
-                            key === 'customLPRules' ||
-                            key === 'payoutPercent' ||
-                            key === 'descriptions' ||
-                            key === 'caps' ||
-                            key === 'isCpmOptionEnabled' ||
-                            key === 'offerIdRedirect'
-                        ) {
-                            return
-                        }
-                        if (Number(item[key]) === 0) {
-                            emptyKey.push(key)
-                        }
-                    })
+                let keys = Object.keys(offerData)
+                keys.forEach(key => {
+                    if (
+                        key === 'geoRules' ||
+                        key === 'customLPRules' ||
+                        key === 'payoutPercent' ||
+                        key === 'descriptions' ||
+                        key === 'caps' ||
+                        key === 'isCpmOptionEnabled' ||
+                        key === 'offerIdRedirect'
+                    ) {
+                        return
+                    }
+                    if (Number(offerData[key]) === 0) {
+                        emptyKey.push(key)
+                    }
                 })
 
                 let offerId
                 if (offerData.length !== 0) {
-                    offerId = offerData[0].id
+                    offerId = offerData.id
                 }
                 let el = document.querySelector(`#lpsId-${offerId}`)
                 if (el.nextElementSibling.textContent.indexOf('Search landing page') === 0) {
@@ -1079,7 +1080,12 @@
                     return
                 }
 
-                const {id} = await this.$store.dispatch('offer/saveOfferDb')
+                let defaultSiteName = el.nextElementSibling.textContent
+                if (defaultSiteName){
+                    defaultSiteName = defaultSiteName.replace(/\s/g, '')
+                }
+
+                const {id} = await this.$store.dispatch('offer/saveOfferDb',defaultSiteName )
                 if (id) {
                     this.$swal.fire({
                         type: 'success',
@@ -1130,7 +1136,7 @@
             checkConversionType(str) {
                 let offer = this.getOffer
                 // debugger
-                if (offer.length !== 0 && offer[0].conversionType === str) {
+                if (offer.length !== 0 && offer.conversionType === str) {
                     return `checked`
                 }
 

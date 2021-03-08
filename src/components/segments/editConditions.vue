@@ -320,7 +320,6 @@
                 }
             },
             getLpModify() {
-                debugger
                 return this.getLandingPages.map(item => {
                     item.value = item.id
                     item.text = item.name + ' (' + item.id + ') '
@@ -827,7 +826,6 @@
 
             },
             handleChangeDimension(event, item) {
-                debugger
                 let dimensionRef = `dimension-${item.position}`
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 console.log(`dimensionName:${dimensionName}`)
@@ -850,7 +848,6 @@
             },
             handleDimAff(event, item, self) {
 
-                debugger
                 let affRef = `aff-${item.position}`
                 let dimensionRef = `dimension-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
@@ -872,7 +869,6 @@
                     return
                 }
                 let refCondition = `condition-${item.position}`
-                debugger
                 // if (refCondition){
                 //     self.$refs[refCondition][0].style.background = null
                 // }
@@ -1031,7 +1027,6 @@
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_sub_campaign`)
             },
             handleChangeAff(event, item) {
-                debugger
                 let dimensionRef = `dimension-${item.position}`
 
                 // let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])

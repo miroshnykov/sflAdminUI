@@ -74,7 +74,7 @@
                         <label>Default LP for banned GEOs *</label>
                         <input
                                 type="text"
-                                :value="offerDefaultLPInfo && offerDefaultLPInfo[0].text"
+                                :value="getOfferDefaultLPInfo()"
                                 class="condition__matches campaign custom-input"
                                 disabled
                         >
@@ -131,6 +131,9 @@
                 'cancelGeo'
             ]),
             ...mapMutations('countries', ['filterCountry']),
+            getOfferDefaultLPInfo() {
+                return this.offerDefaultLPInfo && this.offerDefaultLPInfo.length !== 0 ? this.offerDefaultLPInfo[0].text : ''
+            },
             allowAllEvent() {
                 this.allowAll()
             },
@@ -146,8 +149,8 @@
 
             },
             // getBannedCountries() {
-            //     if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
-            //         let geoR = JSON.parse(this.getOffer[0].geoRules)
+            //     if (this.getOffer.length !== 0 && this.getOffer.geoRules) {
+            //         let geoR = JSON.parse(this.getOffer.geoRules)
             //         let geoCountry = geoR.geo.map(item => item.country)
             //         return geoCountry.join(', ')
             //     }
@@ -294,6 +297,8 @@
             margin-right: -20px
 
         /*** custom checkboxes ***/
+
+
 
 
         .countrycheckbox

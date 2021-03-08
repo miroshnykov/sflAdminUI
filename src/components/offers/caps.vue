@@ -20,7 +20,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesDay || 0"
+                               :value="offerCap.salesDay || 0"
                                @change="updateCap($event, `salesDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -35,7 +35,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesWeek||0"
+                               :value="offerCap.salesWeek||0"
                                @change="updateCap($event, `salesWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -52,7 +52,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesMonth|| 0"
+                               :value="offerCap.salesMonth|| 0"
                                @change="updateCap($event, `salesMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -112,8 +112,8 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                v-model="checkedConversions"
-                                @change="useDefaultOfferRedirect()"
+                                :checked="offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0"
+                                @change="updateCap($event,`salesRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
@@ -125,8 +125,9 @@
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
-                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
-                                @input="updateCap($event,`clicksRedirectOfferId`)"
+                                :value="offerCap && offerCap.salesRedirectOfferId|| 0"
+                                @input="updateCap($event,`salesRedirectOfferId`)"
+                                :class="getClassDisabled(offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0)"
                                 class="offerCapInput"
                         >
                         </model-select>
@@ -154,7 +155,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickDay || 0"
+                               :value="offerCap && offerCap.clickDay || 0"
                                @change="updateCap($event, `clickDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -169,7 +170,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickWeek || 0"
+                               :value="offerCap && offerCap.clickWeek || 0"
                                @change="updateCap($event, `clickWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -185,7 +186,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickMonth || 0"
+                               :value="offerCap && offerCap.clickMonth || 0"
                                @change="updateCap($event, `clickMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -224,7 +225,9 @@
                         <b-form-checkbox
                                 size="lg"
                                 type="checkbox"
-                                class="condition__matches campaign"
+                                class="condition__matches campaign offerCapCheckbox"
+                                :checked="offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0"
+                                @change="updateCap($event,`clicksRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
@@ -235,15 +238,16 @@
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
-                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                :value="offerCap && offerCap.clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                                 class="offerCapInput"
+                                :class="getClassDisabled(offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0)"
                         >
                         </model-select>
                     </div>
                 </b-col>
             </b-row>
-        
+
             <!-- <b-form-text>* Default redirect LP will be used for banned countries</b-form-text> -->
 
             <b-row class="text-center modal-footer-1">
@@ -280,7 +284,7 @@
                 checkedClicks: false,
             }
         },
-        props: ['offerId', 'offerCap','offers'],
+        props: ['offerId', 'offerCap', 'offers'],
         components: {ModelSelect},
         computed: {
             ...mapGetters('lp', ['getLandingPages']),
@@ -305,26 +309,42 @@
             //     this.isInactive = !this.isInactive
             // },
             useDefaultOfferRedirect() {
-                if(this.checkedConversions.checked == true) {
-                    document.querySelector('.offerCapInput').style.display = 'none'
-                    document.querySelector('.offerCapInput-disabled').style.display = 'block'
-                    // return true
-                    return disabled
-                }
+
+                // if(this.checkedConversions.checked == true) {
+                //     document.querySelector('.offerCapInput').style.display = 'none'
+                //     document.querySelector('.offerCapInput-disabled').style.display = 'block'
+                //     // return true
+                //     return disabled
+                // }
                 // let addClass = checkedConversions === true ? false : 'disabled'
                 // return `${addClass} disabled`
             },
             allowAllEvent() {
                 this.allowAll()
             },
-            getOffersList(){
+            getOffersList() {
                 return this.offers
             },
-            updateCap(event, field){
-                let obj={}
+            getClassDisabled(flag) {
+                if (flag) {
+                    return 'disabled'
+                }
+            },
+            updateCap(event, field) {
+                let obj = {}
                 obj.fieldName = field
-                if (field === `salesRedirectOfferId` || field === `clicksRedirectOfferId`){
-                    obj.value = event
+                if (field === `salesRedirectOfferId`
+                    || field === `clicksRedirectOfferId`
+                    || field === `clicksRedirectOfferUseDefault`
+                    || field === `salesRedirectOfferUseDefault`
+                ) {
+                    if (field === 'clicksRedirectOfferUseDefault'
+                        || field === 'salesRedirectOfferUseDefault') {
+                        obj.value = !!event
+                    } else {
+
+                        obj.value = event
+                    }
                 } else {
                     obj.value = event.target.value
                 }
