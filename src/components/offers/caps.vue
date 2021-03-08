@@ -112,7 +112,7 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                :checked="offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0"
+                                :checked="!!(offerCap.salesRedirectOfferUseDefault === null ? 1 : offerCap.salesRedirectOfferUseDefault)"
                                 @change="updateCap($event,`salesRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
@@ -127,7 +127,7 @@
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
                                 :value="offerCap && offerCap.salesRedirectOfferId|| 0"
                                 @input="updateCap($event,`salesRedirectOfferId`)"
-                                :class="getClassDisabled(offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0)"
+                                v-show="!!!(offerCap.salesRedirectOfferUseDefault === null ? 1 : offerCap.salesRedirectOfferUseDefault)"
                                 class="offerCapInput"
                         >
                         </model-select>
@@ -217,7 +217,6 @@
                     </div>
                 </b-col> -->
             </b-row>
-
             <b-row class="clicks-redirect" style="margin-top: -20px">
                 <!-- TODO: Add backend for checkbox -->
                 <b-col cols="3">
@@ -226,22 +225,23 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                :checked="offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0"
+                                :checked="!!(offerCap.clicksRedirectOfferUseDefault === null ? 1 : offerCap.clicksRedirectOfferUseDefault)"
                                 @change="updateCap($event,`clicksRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
                         </b-form-checkbox>
                     </div>
                 </b-col>
+
                 <b-col cols="6">
                     <div class="condition__controls">
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
-                                :value="offerCap && offerCap.clicksRedirectOfferId|| 0"
+                                :value="offerCap.clicksRedirectOfferId"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                                 class="offerCapInput"
-                                :class="getClassDisabled(offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0)"
+                                v-show="!!!(offerCap.clicksRedirectOfferUseDefault === null ? 1 : offerCap.clicksRedirectOfferUseDefault)"
                         >
                         </model-select>
                     </div>
@@ -340,7 +340,7 @@
                 ) {
                     if (field === 'clicksRedirectOfferUseDefault'
                         || field === 'salesRedirectOfferUseDefault') {
-                        obj.value = !!event
+                        obj.value = Number(event)
                     } else {
 
                         obj.value = event
