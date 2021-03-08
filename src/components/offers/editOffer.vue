@@ -974,7 +974,7 @@
                 })
             },
             getOffersModify() {
-                return this.getOffers.map(item => {
+                return this.getOffers.filter(i => i.id !== this.id).map(item => {
                     item.value = item.id
                     item.text = `${item.name} (Offer ID: ${item.id})`
                     return item
@@ -1081,11 +1081,11 @@
                 }
 
                 let defaultSiteName = el.nextElementSibling.textContent
-                if (defaultSiteName){
+                if (defaultSiteName) {
                     defaultSiteName = defaultSiteName.replace(/\s/g, '')
                 }
 
-                const {id} = await this.$store.dispatch('offer/saveOfferDb',defaultSiteName )
+                const {id} = await this.$store.dispatch('offer/saveOfferDb', defaultSiteName)
                 if (id) {
                     this.$swal.fire({
                         type: 'success',
