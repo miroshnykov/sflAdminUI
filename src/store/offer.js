@@ -35,8 +35,8 @@ export default {
     state: {
         offer: [],
         offerOrigin: [],
-        offerCap: [],
-        offerCapOrigin: [],
+        offerCap: {},
+        offerCapOrigin: {},
         geo: [],
         geoOrigin: [],
         customLPRules: [],
@@ -59,8 +59,8 @@ export default {
             }
         },
         async saveOfferCap(state, offerCap) {
-            state.offerCap = offerCap
-            state.offerCapOrigin = cloneObjectArray(offerCap)
+            state.offerCap = Object.assign({}, offerCap)
+            state.offerCapOrigin = Object.assign({}, offerCap)
         },
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
@@ -108,18 +108,20 @@ export default {
         updOfferCap(state, data) {
 
             if (state.offerCap.length !== 0) {
-                state.offerCap[0][data.fieldName] = data.value
+                state.offerCap[data.fieldName] = data.value
             } else {
                 let newEmptyCap = newCap()
                 newEmptyCap[data.fieldName] = data.value
-                state.offerCap.push(newEmptyCap)
+                state.offerCap = Object.assign({}, newEmptyCap)
             }
         },
         preSaveCap(state) {
-            state.offerCapOrigin = cloneObjectArray(state.offerCap)
+            state.offerCapOrigin = Object.assign({}, state.offerCap)
+            // state.offerCapOrigin = cloneObjectArray(state.offerCap)
         },
         cancelCap(state) {
-            state.offerCap = cloneObjectArray(state.offerCapOrigin)
+            //state.offerCap = cloneObjectArray(state.offerCapOrigin)
+            state.offerCap = Object.assign({}, state.offerCapOrigin)
         },
         allowAll(state) {
             state.geo = []
@@ -168,7 +170,7 @@ export default {
     actions: {
         async saveOfferDb({commit}) {
             let data = this.getters['offer/getOffer'][0]
-            data.caps = this.getters['offer/getOfferCap'][0] || ''
+            data.caps = this.getters['offer/getOfferCap'] || ''
             data.lp = this.getters['lpOffers/getLpOffers'] || ''
             if (data.lp.length === 0) {
                 alert(`Landing page is empty`)

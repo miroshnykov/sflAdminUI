@@ -773,7 +773,6 @@
 
             },
             handleChangeDimension(event, item) {
-                debugger
                 let dimensionRef = `dimension-${item.position}`
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 console.log(`dimensionName:${dimensionName}`)
@@ -796,7 +795,6 @@
             },
             handleDimAff(event, item, self) {
 
-                debugger
                 let affRef = `aff-${item.position}`
                 let dimensionRef = `dimension-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
@@ -977,7 +975,6 @@
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_sub_campaign`)
             },
             handleChangeAff(event, item) {
-                debugger
                 let dimensionRef = `dimension-${item.position}`
 
                 // let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])

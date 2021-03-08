@@ -20,7 +20,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesDay || 0"
+                               :value="offerCap.salesDay || 0"
                                @change="updateCap($event, `salesDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -35,7 +35,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesWeek||0"
+                               :value="offerCap.salesWeek||0"
                                @change="updateCap($event, `salesWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -52,7 +52,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].salesMonth|| 0"
+                               :value="offerCap.salesMonth|| 0"
                                @change="updateCap($event, `salesMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -112,7 +112,7 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                :checked="offerCap && !!offerCap[0].salesRedirectOfferUseDefault|| 0"
+                                :checked="offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0"
                                 @change="updateCap($event,`salesRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
@@ -125,9 +125,9 @@
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
-                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
-                                @input="updateCap($event,`clicksRedirectOfferId`)"
-                                :class="getClassDisabled(offerCap && !!offerCap[0].salesRedirectOfferUseDefault|| 0)"
+                                :value="offerCap && offerCap.salesRedirectOfferId|| 0"
+                                @input="updateCap($event,`salesRedirectOfferId`)"
+                                :class="getClassDisabled(offerCap && !!offerCap.salesRedirectOfferUseDefault|| 0)"
                                 class="offerCapInput"
                         >
                         </model-select>
@@ -155,7 +155,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickDay || 0"
+                               :value="offerCap && offerCap.clickDay || 0"
                                @change="updateCap($event, `clickDay`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -170,7 +170,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickWeek || 0"
+                               :value="offerCap && offerCap.clickWeek || 0"
                                @change="updateCap($event, `clickWeek`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -186,7 +186,7 @@
                                step=1
                                placeholder="1000"
                                min="1" max="99999"
-                               :value="offerCap && offerCap[0].clickMonth || 0"
+                               :value="offerCap && offerCap.clickMonth || 0"
                                @change="updateCap($event, `clickMonth`)"
                                class="condition__matches budgetTotal custom-input"
                                pattern="^\d+(?:\.\d{1,2})?$"
@@ -226,7 +226,7 @@
                                 size="lg"
                                 type="checkbox"
                                 class="condition__matches campaign offerCapCheckbox"
-                                :checked="offerCap && !!offerCap[0].clicksRedirectOfferUseDefault|| 0"
+                                :checked="offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0"
                                 @change="updateCap($event,`clicksRedirectOfferUseDefault`)"
                         >
                             Use default offer redirect
@@ -238,10 +238,10 @@
                         <model-select
                                 :options="getOffersList()"
                                 placeholder="... or select an offer to redirect traffic beyond the caps"
-                                :value="offerCap && offerCap[0].clicksRedirectOfferId|| 0"
+                                :value="offerCap && offerCap.clicksRedirectOfferId|| 0"
                                 @input="updateCap($event,`clicksRedirectOfferId`)"
                                 class="offerCapInput"
-                                :class="getClassDisabled(offerCap && !!offerCap[0].clicksRedirectOfferUseDefault|| 0)"
+                                :class="getClassDisabled(offerCap && !!offerCap.clicksRedirectOfferUseDefault|| 0)"
                         >
                         </model-select>
                     </div>

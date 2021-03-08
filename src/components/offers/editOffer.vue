@@ -433,7 +433,7 @@
                                 <input type="text"
                                        value="USD"
                                        class="condition__matches offerCurrency custom-input"
-                                        disabled
+                                       disabled
                                 >
                             </div>
                         </b-col>
@@ -460,7 +460,7 @@
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payIn').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payin').style.display = 'block'
@@ -471,9 +471,9 @@
                                             }
                                         "
                                 >
-                            <b-form-invalid-feedback id="input-live-payin" style="display:none">
-                                Please enter a value.
-                            </b-form-invalid-feedback>
+                                <b-form-invalid-feedback id="input-live-payin" style="display:none">
+                                    Please enter a value.
+                                </b-form-invalid-feedback>
                             </div>
                         </b-col>
                         <b-col cols="10">
@@ -517,7 +517,7 @@
                                             if(this.value.length==3) return false;"
                                        onpaste="return false"
                                        onKeyPress="if(this.value.length==3) return false;"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOut').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payout').style.display = 'block'
@@ -550,7 +550,7 @@
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57"
                                        onpaste="return false"
-                                        onblur="
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payoutpercentage').style.display = 'block'
@@ -602,9 +602,9 @@
                         </b-col> -->
                         <b-col cols="12" style="margin-top: 20px; max-width: 935px">
                             <h3 class="line">Custom payout per GEO</h3>
-                                <b-button variant="light" class="btn-add-line pull-left">
-                                    <i class="far fa-plus"></i> Add custom payout per GEO
-                                </b-button>
+                            <b-button variant="light" class="btn-add-line pull-left">
+                                <i class="far fa-plus"></i> Add custom payout per GEO
+                            </b-button>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -656,8 +656,7 @@
                         <b-col cols="5">
                             <div class="condition__controls">
                                 <label class="pull-left">Caps</label>
-                                <!-- TODO: Add Caps details in tooltip -->
-                                <div v-b-tooltip.hover.v-info.bottom.html="'Caps details here (coming soon)'">
+                                <div v-b-tooltip.hover.v-info.bottom.html="getCapsDetails()">
                                     <input type="text"
                                            class="condition__matches campaign custom-input"
                                            :value="getCapsStatus(getOfferCap)"
@@ -678,7 +677,7 @@
 
                                 <Caps :id="'modal_caps' + id" :ref="'modal_caps' + id"
                                       :offerId="id"
-                                      :offerCap="getOfferCap.length !==0 && getOfferCap"
+                                      :offerCap="getOfferCap"
                                       :offers="getOffersModify()"
                                 >
                                 </Caps>
@@ -871,6 +870,10 @@
                     let geoCountry = geoR.geo.map(item => item.country)
                     return geoCountry.join(', ')
                 }
+            },
+            getCapsDetails() {
+                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
+                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
             },
             getBannedCountriesStatus() {
                 if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
