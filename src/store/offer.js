@@ -33,8 +33,8 @@ const newCap = () => {
 
 export default {
     state: {
-        offer: [],
-        offerOrigin: [],
+        offer: {},
+        offerOrigin: {},
         offerCap: {},
         offerCapOrigin: {},
         geo: [],
@@ -45,15 +45,16 @@ export default {
     namespaced: true,
     mutations: {
         async saveOffer(state, offer) {
-            state.offer = offer
-            state.offerOrigin = cloneObjectArray(offer)
-            if (offer[0].geoRules) {
-                let geoRules = JSON.parse(offer[0].geoRules)
+            state.offer = Object.assign({}, offer)
+            state.offerOrigin = Object.assign({}, offer)
+            // state.offerOrigin = cloneObjectArray(offer)
+            if (offer.geoRules) {
+                let geoRules = JSON.parse(offer.geoRules)
                 state.geo = geoRules.geo
                 state.geoOrigin = cloneObjectArray(geoRules.geo)
             }
-            if (offer[0].customLPRules) {
-                let customLPRules = JSON.parse(offer[0].customLPRules)
+            if (offer.customLPRules) {
+                let customLPRules = JSON.parse(offer.customLPRules)
                 state.customLPRules = customLPRules.customLPRules
                 state.customLPRulesOrigin = cloneObjectArray(customLPRules.customLPRules)
             }
@@ -65,7 +66,7 @@ export default {
         addCustomLP(state) {
             let position = state.customLPRules.length !== 0 && state.customLPRules.length || 0
             state.customLPRules.push({id: 0, pos: position, country: '', lpName: '', lpUrl: ''})
-            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+            state.offer.customLPRules = customLPRulesFormat(state.customLPRules)
         },
         updateCustomLP(state, data) {
 
@@ -75,18 +76,18 @@ export default {
                 }
                 return item
             })
-            state.offer[0].customLPRules = customLPRulesFormat(customLpRulesMap)
+            state.offer.customLPRules = customLPRulesFormat(customLpRulesMap)
 
         },
         preSaveCustomLP(state) {
 
-            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+            state.offer.customLPRules = customLPRulesFormat(state.customLPRules)
             state.customLPRulesOrigin = cloneObjectArray(state.customLPRules)
             // console.table(reFormatJSON(state.customLPRulesOrigin))
         },
         cancelCustomLP(state) {
 
-            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRulesOrigin)
+            state.offer.customLPRules = customLPRulesFormat(state.customLPRulesOrigin)
             state.customLPRules = cloneObjectArray(state.customLPRulesOrigin)
             // console.table(reFormatJSON(state.customLPRulesOrigin))
         },
@@ -99,11 +100,11 @@ export default {
                     return item
                 })
 
-            state.offer[0].customLPRules = customLPRulesFormat(state.customLPRules)
+            state.offer.customLPRules = customLPRulesFormat(state.customLPRules)
 
         },
         async updOffer(state, data) {
-            state.offer[0][data.fieldName] = data.value
+            state.offer[data.fieldName] = data.value
         },
         updOfferCap(state, data) {
 
@@ -125,7 +126,7 @@ export default {
         },
         allowAll(state) {
             state.geo = []
-            state.offer[0].geoRules = geoRulesFormat(state.geo)
+            state.offer.geoRules = geoRulesFormat(state.geo)
         },
         banAll(state, countries) {
             countries.forEach(item => {
@@ -134,7 +135,7 @@ export default {
                     state.geo.push({country: item.code, include: true})
                 }
             })
-            state.offer[0].geoRules = geoRulesFormat(state.geo)
+            state.offer.geoRules = geoRulesFormat(state.geo)
 
         },
         changeGeo(state, geo) {
@@ -146,7 +147,7 @@ export default {
                 })
             }
 
-            state.offer[0].geoRules = geoRulesFormat(state.geo)
+            state.offer.geoRules = geoRulesFormat(state.geo)
 
             // let offerRules = {}
             // offerRules.geo = state.geo
@@ -156,22 +157,24 @@ export default {
         },
         preSaveGeo(state) {
 
-            state.offer[0].geoRules = geoRulesFormat(state.geo)
+            state.offer.geoRules = geoRulesFormat(state.geo)
             state.geoOrigin = cloneObjectArray(state.geo)
             // console.table(reFormatJSON(state.customLPRulesOrigin))
         },
         cancelGeo(state) {
 
-            state.offer[0].geoRules = geoRulesFormat(state.geoOrigin)
+            state.offer.geoRules = geoRulesFormat(state.geoOrigin)
             state.geoOrigin = cloneObjectArray(state.geoOrigin)
             // console.table(reFormatJSON(state.customLPRulesOrigin))
         },
     },
     actions: {
-        async saveOfferDb({commit}) {
-            let data = this.getters['offer/getOffer'][0]
+        async saveOfferDb({commit}, defaultSiteName) {
+
+            let data = this.getters['offer/getOffer']
             data.caps = this.getters['offer/getOfferCap'] || ''
             data.lp = this.getters['lpOffers/getLpOffers'] || ''
+            data.defaultSiteName = defaultSiteName
             if (data.lp.length === 0) {
                 alert(`Landing page is empty`)
                 return

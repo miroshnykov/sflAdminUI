@@ -149,8 +149,8 @@
 
             },
             // getBannedCountries() {
-            //     if (this.getOffer.length !== 0 && this.getOffer[0].geoRules) {
-            //         let geoR = JSON.parse(this.getOffer[0].geoRules)
+            //     if (this.getOffer.length !== 0 && this.getOffer.geoRules) {
+            //         let geoR = JSON.parse(this.getOffer.geoRules)
             //         let geoCountry = geoR.geo.map(item => item.country)
             //         return geoCountry.join(', ')
             //     }

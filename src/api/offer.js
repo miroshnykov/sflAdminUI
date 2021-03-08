@@ -125,6 +125,7 @@ const saveOffer = async (data) => {
         payOut,
         status,
         defaultLp,
+        defaultSiteName,
         caps,
         lp,
         offerIdRedirect
@@ -176,6 +177,7 @@ const saveOffer = async (data) => {
                                 customLPRules:"${customLPRulesReFormat}"
                                 payIn:${payIn}
                                 defaultLp:${defaultLp}
+                                defaultSiteName:"${defaultSiteName}"
                                 offerIdRedirect:${offerIdRedirect}
                                 caps:"${capsFormat}"
                                 lp:"${lpFormat}"
