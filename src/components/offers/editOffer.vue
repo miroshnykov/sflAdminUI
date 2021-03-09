@@ -520,15 +520,15 @@
                                        onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOut').style.border = '2px solid #f38282'
-                                                document.querySelector('#input-live-payout').style.display = 'block'
+                                                document.querySelector('#input-live-payout-geo').style.display = 'block'
                                                 return false
                                             } else {
-                                                document.querySelector('#input-live-payout').style.display = 'none'
+                                                document.querySelector('#input-live-payout-geo').style.display = 'none'
                                                 document.querySelector('.payOut').style.border = '2px solid #e3eef4'
                                             }
                                         "
                                 >
-                                <b-form-invalid-feedback id="input-live-payout" style="display:none">
+                                <b-form-invalid-feedback id="input-live-payout-geo" style="display:none">
                                     Please enter a value.
                                 </b-form-invalid-feedback>
                             </div>
@@ -553,15 +553,15 @@
                                        onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
-                                                document.querySelector('#input-live-payoutpercentage').style.display = 'block'
+                                                document.querySelector('#input-live-payoutpercentage-geo').style.display = 'block'
                                                 return false
                                             } else {
-                                                document.querySelector('#input-live-payoutpercentage').style.display = 'none'
+                                                document.querySelector('#input-live-payoutpercentage-geo').style.display = 'none'
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #e3eef4'
                                             }
                                         "
                                 >
-                                <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
+                                <b-form-invalid-feedback id="input-live-payoutpercentage-geo" style="display:none">
                                     Please enter a value between 1 and 100.
                                 </b-form-invalid-feedback>
                             </div>
@@ -594,14 +594,140 @@
                                 >
                             </div>
                         </b-col>
-                        <!-- <b-col cols="2">
-                            <b-button variant="light" class="btn-add-line btn-grey pull-left"
-                                      v-b-tooltip.hover.bottom.html="'Coming Soon'">
-                                <i class="far fa-cog"></i> Customize
-                            </b-button>
-                        </b-col> -->
-                        <b-col cols="12" style="margin-top: 20px; max-width: 935px">
+
+                        <!-- TODO: Need backend support for country dropdown, adding new line, saving changes -->
+                        <b-col cols="12" class="text-center custom_payout_per_geo" style="margin-top: 20px;max-width: 935px">
                             <h3 class="line">Custom payout per GEO</h3>
+                        </b-col>
+                        <b-col cols="3">
+                            <div class="condition__controls">
+                            <model-select
+                                    :options="getCountriesModify()"
+                                    placeholder="Country"
+                                    class="condition__country condition__matches custom-select "
+                            >
+                            </model-select>
+                            </div>
+                        </b-col>
+                        <b-col cols="3">
+                            <div class="condition__controls">
+                                <select
+                                        class="condition__dimension-name condition__matches custom-select"
+                                        v-model="payoutTypeGEO"
+                                        @change="changePayoutTypeGEO()"
+                                >
+                                    <!-- <option :value="null">-- Select --</option> -->
+                                    <option value="1">
+                                        Fixed Payout
+                                    </option>
+                                    <option value="2">
+                                        Percentage
+                                    </option>
+
+                                </select>
+                            </div>
+                        </b-col>
+                        <b-col cols="2" style="margin-top: -27px;">
+                            <div class="condition__controls dollar" v-show="this.payoutTypeGEO === '1'">
+                                <input type="number"
+                                    step=1
+                                    min="0"
+                                    max="999"
+                                    :value="getOffer.payOut"
+                                    @change="updValue($event, `payOut`)"
+                                    class="condition__matches payOut custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
+                                    onpaste="return false"
+                                    onKeyPress="if(this.value.length==3) return false;"
+                                    onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOut').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payout').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payout').style.display = 'none'
+                                                document.querySelector('.payOut').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
+                                >
+                                <b-form-invalid-feedback id="input-live-payout" style="display:none">
+                                    Please enter a value.
+                                </b-form-invalid-feedback>
+                            </div>
+
+                            <div class="condition__controls percentage" v-show="this.payoutTypeGEO === '2'">
+                                <input type="number"
+                                    step=1
+                                    min="0"
+                                    max="999"
+                                    :value="getOffer.payOut"
+                                    @change="updValue($event, `payOut`)"
+                                    class="condition__matches payOutPercent custom-input"
+                                    pattern="^\d+(?:\.\d{1,2})?$"
+                                    onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    onpaste="return false"
+                                    onblur="
+                                            if(this.value === ''){
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'block'
+                                                return false
+                                            } else {
+                                                document.querySelector('#input-live-payoutpercentage').style.display = 'none'
+                                                document.querySelector('.payOutPercent').style.border = '2px solid #e3eef4'
+                                            }
+                                        "
+                                >
+                                <b-form-invalid-feedback id="input-live-payoutpercentage" style="display:none">
+                                    Please enter a value between 1 and 100.
+                                </b-form-invalid-feedback>
+                            </div>
+                        </b-col>
+                        <b-col cols="1" style="margin-top: 37px; max-width: 4%;" v-show="this.payoutTypeGEO === '2'">
+                                <span class="equalsign" style="color:#ACC3CF">
+                                    <i class="fas fa-equals"></i>
+                                </span>
+                        </b-col>
+                        <b-col cols="2" style="margin-top: -27px;">
+                            <div class="condition__controls dollar" v-show="this.payoutTypeGEO === '2'">
+                                <input type="number"
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOut custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
+                                            return (
+                                                event.charCode == 8
+                                                || event.charCode == 0
+                                                || event.charCode == 13
+                                            ) ? null : event.charCode >= 48 && event.charCode <= 57
+                                            if(this.value.length==3) return false;"
+                                       onpaste="return false"
+                                       disabled
+                                >
+                            </div>
+                        </b-col>
+                        <b-col cols="1" style="margin-top: 37px; max-width: 3%;">
+                                <span class="equalsign" style="color:#ACC3CF">
+                                    <i class="far fa-trash"></i>
+                                </span>
+                        </b-col>
+
+                        <b-col cols="12">
                             <b-button variant="light" class="btn-add-line pull-left">
                                 <i class="far fa-plus"></i> Add custom payout per GEO
                             </b-button>
@@ -814,7 +940,8 @@
             ]),
             ...mapGetters('offers', ['getOffers']),
             ...mapGetters('offerHistory', ['getOfferHistory']),
-            ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer'])
+            ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer']),
+            ...mapGetters('countries', ['getCountries']),
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
@@ -849,6 +976,15 @@
         methods: {
             ...mapMutations('offer', ['updOffer']),
             ...mapMutations('lpOffers', ['fastAddLpOffers']),
+            ...mapMutations('countries', ['filterCountry']),
+            
+            getCountriesModify() {
+                return this.getCountries.map(item => {
+                    item.value = item.code
+                    item.text = item.name + ' (' + item.code + ') '
+                    return item
+                })
+            },
             checkEditMode() {
                 if (JSON.stringify(this.getOfferOrigin) !== JSON.stringify(this.getOffer)
                     || JSON.stringify(this.getOfferCapOrigin) !== JSON.stringify(this.getOfferCap)
@@ -974,7 +1110,7 @@
                 })
             },
             getOffersModify() {
-                return this.getOffers.map(item => {
+                return this.getOffers.filter(i => i.id !== this.id).map(item => {
                     item.value = item.id
                     item.text = `${item.name} (Offer ID: ${item.id})`
                     return item
@@ -1081,11 +1217,11 @@
                 }
 
                 let defaultSiteName = el.nextElementSibling.textContent
-                if (defaultSiteName){
+                if (defaultSiteName) {
                     defaultSiteName = defaultSiteName.replace(/\s/g, '')
                 }
 
-                const {id} = await this.$store.dispatch('offer/saveOfferDb',defaultSiteName )
+                const {id} = await this.$store.dispatch('offer/saveOfferDb', defaultSiteName)
                 if (id) {
                     this.$swal.fire({
                         type: 'success',
@@ -1176,6 +1312,9 @@
                 this.payoutType
                 // this.payoutType = !this.payoutType;
             },
+            changePayoutTypeGEO() {
+                this.payoutTypeGEO
+            },
         },
         data() {
             return {
@@ -1184,6 +1323,7 @@
                 id: Number(this.$route.params.id),
                 selected: true,
                 payoutType: '1',
+                payoutTypeGEO: '1',
                 startDate: null,
                 endDate: null,
                 options: {
