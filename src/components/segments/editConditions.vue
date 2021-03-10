@@ -459,7 +459,7 @@
                 let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
                 if (value === '' || Number(value) === 0) {
 
-                    console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
+                    // console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
 
                     if (affiliateEl) {
                         let listMenu = affiliateEl.querySelector('.menu')

@@ -19,7 +19,7 @@ const affiliates = async () => {
         )
 
         let response = res.data.data.affiliates
-        console.log('\naffiliates from DB response count:', response.length)
+        console.log(` *** Affiliates from DB response count:${response.length}`)
         console.timeEnd(`affiliates`)
         return response
     } catch (e) {

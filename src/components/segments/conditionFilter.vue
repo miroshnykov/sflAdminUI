@@ -429,7 +429,7 @@
                 let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
                 if (value === '' || Number(value) === 0) {
 
-                    console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
+                    // console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
 
                     if (affiliateEl) {
                         let listMenu = affiliateEl.querySelector('.menu')
@@ -1042,7 +1042,7 @@
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_country`)
 
             },
-            handleDimAffCampaign(event, item, self) {
+            async handleDimAffCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
                 let recCheck = self.validateValue(self.segmentFilter, event)
@@ -1080,7 +1080,7 @@
                 item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                 item.dimensionName = `affiliate_campaign`
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_campaign`)
-
+                await this.$store.dispatch('campaigns/getCampaignsByAffIdStore', event)
                 // this.$store.dispatch('campaigns/saveCampaignsAffiliateStore', event).then(res => {
                 //     item.user = this.verifyTokenEmail
                 //     item.dateAdded = this.getCurrentDate()

@@ -313,12 +313,12 @@ export default {
                 item.orAndDisabled = (item.count <= 1 || item.position === item.maxPosition)
             })
 
-            console.log('>>> saveSegmentConditionsStore:')
-            console.table(reFormatJSON(sortedByPostition))
+            //console.log('>>> saveSegmentConditionsStore:')
+            //console.table(reFormatJSON(sortedByPostition))
 
             let segmentsData = await segmentApi.segmentStatus(id)
-            console.log(`segmentStatus`)
-            console.table(reFormatJSON(segmentsData))
+            //console.log(`segmentStatus`)
+            //console.table(reFormatJSON(segmentsData))
 
             commit('setSegmentStore', {
                 segments: sortedByPostition,

@@ -26,8 +26,8 @@ const getSegmentConditions = async (id) => {
         )
 
         let response = res.data.data.segment
-        console.log(' >>>>> Segment  response:')
-        console.table(reFormatJSON(response))
+        // console.log(' >>>>> Segment  response:')
+        // console.table(reFormatJSON(response))
         return response
     } catch (e) {
         catchHandler(e)

@@ -4,16 +4,31 @@ import {reFormatJSON} from '../helpers'
 export default {
     state: {
         campaigns: [],
+        affCampaigns: [],
     },
     namespaced: true,
     mutations: {
         async saveCampaigns(state, campaigns) {
-            state.campaigns = campaigns
+            state.affCampaigns = campaigns
+        },
+        async saveAffCampaigns(state, campaigns) {
+            campaigns = campaigns.filter(i => (i.affiliateId !== 0))
+            let affCampaigns_ = []
+            campaigns.forEach(item => {
+                let checkExists = state.affCampaigns.filter(i => (i.id === item.id))
+                if (checkExists.length === 0) {
+                    affCampaigns_.push(item)
+                }
+            })
+            state.affCampaigns = state.affCampaigns.concat(affCampaigns_)
         }
     },
     actions: {
-        async saveCampaignsStore({commit}) {
-            commit('saveCampaigns', await campaigns.getCampaigns())
+        async saveCampaignsStore({commit}, segmentId) {
+            commit('saveCampaigns', await campaigns.getCampaigns(segmentId))
+        },
+        async getCampaignsByAffIdStore({commit}, affId) {
+            commit('saveAffCampaigns', await campaigns.getCampaign(Number(affId)))
         },
     },
     getters: {
@@ -27,9 +42,9 @@ export default {
             // console.table(reFormatJSON(data))
 
             let aff = affiliateId.substr(0, affiliateId.indexOf('/'))
-            let affiliateCampaigns = state.campaigns.filter(campaign => campaign.affiliateId === Number(aff))
-            console.log('affiliateCampaigns')
-            console.table(reFormatJSON(affiliateCampaigns))
+            let affiliateCampaigns = state.affCampaigns.filter(campaign => campaign.affiliateId === Number(aff))
+            // console.log('affiliateCampaigns')
+            // console.table(reFormatJSON(affiliateCampaigns))
 
             return affiliateCampaigns
         }

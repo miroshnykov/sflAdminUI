@@ -8,9 +8,10 @@ const getCampaign = async (affiliateId) => {
             '', {
                 query: `
                     {
-                          getCampaign: ${affiliateId}) {
+                          getCampaign(affiliateId:${affiliateId}) {
                                 id
                                 name
+                                affiliateId
                           }
                     }
 
@@ -28,7 +29,7 @@ const getCampaign = async (affiliateId) => {
 
 }
 
-const getCampaigns = async () => {
+const getCampaigns = async (segmentId) => {
 
     try {
         console.time(`allCampaigns`)
@@ -36,7 +37,7 @@ const getCampaigns = async () => {
             '', {
                 query: `
                     {
-                          getCampaigns {
+                          getCampaigns(segmentId:${segmentId}) {
                                 id
                                 name
                                 affiliateId
@@ -47,7 +48,7 @@ const getCampaigns = async () => {
         )
 
         let response = res.data.data.getCampaigns
-        console.log(`getCampaigns response count :`, response.length)
+        console.log(` *** Campaigns response count:${response.length}`)
         console.timeEnd(`allCampaigns`)
         return response
     } catch (e) {

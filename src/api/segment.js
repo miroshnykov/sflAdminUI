@@ -21,7 +21,7 @@ const segmentStatus = async (id) => {
         )
 
         let response = res.data.data.segmentStatus
-        console.log('\nsegments from DB response:', response)
+        // console.log('\nsegments from DB response:', response)
         return response
     } catch (e) {
         console.log(e)
