@@ -1,9 +1,11 @@
 import {api} from './request'
+
 import {reFormatJSON, catchHandler} from '../helpers'
 
 const segments = async (type) => {
 
     try {
+        console.time(`segments`)
         const res = await api.post(
             '', {
                 query: `
@@ -31,7 +33,8 @@ const segments = async (type) => {
         )
 
         let response = res.data.data.segments
-        console.log('\nsegments from DB response count:', response.length)
+        console.log('Segments from DB response count:', response.length)
+        console.timeEnd(`segments`)
         return response
     } catch (e) {
         console.log(e)

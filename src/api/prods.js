@@ -18,7 +18,7 @@ const prods = async () => {
         )
 
         let response = res.data.data.prods
-        console.log('\nprods from DB response count:', response.length)
+        console.log(` *** Prods from DB response count:${response.length}`)
         console.timeEnd(`prods`)
         return response
     } catch (e) {

@@ -18,7 +18,7 @@ const advertisers = async () => {
         )
 
         let response = res.data.data.getAdvertisers
-        console.log('\nadvertisers from DB response count:', response.length)
+        console.log(` *** Advertisers from DB response count:${response.length}` )
         console.timeEnd(`advertisers`)
         return response
     } catch (e) {

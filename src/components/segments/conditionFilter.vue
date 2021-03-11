@@ -328,6 +328,20 @@
     export default {
         name: "condition-filter",
         props: ["filter", "indexFilters"],
+        async mounted() {
+            let self = this
+            document.querySelector(`#aff-${this.indexFilters}`).addEventListener('keyup', (e) => {
+                let affValue = document.querySelector(`#aff-${self.indexFilters}`).value
+                if (affValue.length >= 3) {
+
+                    console.log('affValue:', affValue)
+                    let obj = {}
+                    obj.filter = affValue
+                    this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
+                }
+
+            })
+        },
         methods: {
             getAdvertisersModify(item) {
                 return this.getAdvertisers.map(item => {
@@ -410,75 +424,11 @@
 
             },
             getAffiliatesModify(item) {
-
-                // console.log(`Affiliates:${JSON.stringify(item)}`)
-                if (item.dimensionId === 0) {
-                    let obj = []
-                    obj.push({id: 0, name: '*** Add more items ***'})
-                    console.log('Empty affiliate')
-                    return obj
-                    //
-                    // return this.getAffiliates.map(item => {
-                    //     item.value = item.id.toString()
-                    //     item.text = item.name + ' (' + item.id + ') '
-                    //     return item
-                    // })
-                }
-                const value = this.getValue(item)
-                let refAffiliate = `aff-${item.position}`
-                let affiliateEl = document.querySelector(`#${refAffiliate}`) && document.querySelector(`#${refAffiliate}`).parentNode || null
-                if (value === '' || Number(value) === 0) {
-
-                    console.log(`Affiliates value:${value} :${JSON.stringify(item)}`)
-
-                    if (affiliateEl) {
-                        let listMenu = affiliateEl.querySelector('.menu')
-                        if (listMenu) {
-                            listMenu.style.display = 'block'
-                        }
-
-                    }
-
-                    let self = this
-                    self.affiliateEl = affiliateEl
-                    setTimeout(() => {
-                        if (self.affiliateEl) {
-                            let listMenu = self.affiliateEl.querySelector('.menu')
-                            if (listMenu) {
-                                listMenu.style.display = 'block'
-                            }
-                        }
-                    }, 200)
-
-                    return this.getAffiliates.map(item => {
-                        item.value = item.id.toString()
-                        item.text = item.name + ' (' + item.id + ') '
-                        return item
-                    })
-                } else {
-                    let obj = this.getAffiliates.filter(item => item.id === Number(value))
-                    obj.push({id: 0, name: '*** Add more items ***'})
-
-                    // console.log(`Affiliates value:${value}:${JSON.stringify(item)}`)
-                    let self = this
-                    self.affiliateEl = affiliateEl
-                    setTimeout(() => {
-                        if (self.affiliateEl) {
-                            let listMenu = self.affiliateEl.querySelector('.menu')
-                            if (listMenu) {
-                                listMenu.style.display = 'none'
-                            }
-
-                        }
-
-                    }, 200)
-
-                    return obj.map(item => {
-                        item.value = item.id.toString()
-                        item.text = item.name + ' (' + item.id + ') '
-                        return item
-                    })
-                }
+                return this.getAffiliates.map(item => {
+                    item.value = item.id.toString()
+                    item.text = item.name + ' (' + item.id + ') '
+                    return item
+                })
 
             },
             getProdsModify(item) {
@@ -1042,7 +992,7 @@
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_country`)
 
             },
-            handleDimAffCampaign(event, item, self) {
+            async handleDimAffCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
                 let recCheck = self.validateValue(self.segmentFilter, event)
@@ -1080,7 +1030,7 @@
                 item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                 item.dimensionName = `affiliate_campaign`
                 item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_campaign`)
-
+                await this.$store.dispatch('campaigns/getCampaignsByAffIdStore', event)
                 // this.$store.dispatch('campaigns/saveCampaignsAffiliateStore', event).then(res => {
                 //     item.user = this.verifyTokenEmail
                 //     item.dateAdded = this.getCurrentDate()
@@ -1522,6 +1472,18 @@
                             // }
                         })
                     }
+
+                    document.querySelector(`#aff-${newCondition[0].position}`).addEventListener('keyup', (e) => {
+                        let affValue = document.querySelector(`#aff-${newCondition[0].position}`).value
+                        if (affValue.length >= 3) {
+
+                            console.log(' OR affSearchValue:', affValue)
+                            let obj = {}
+                            obj.filter = affValue
+                            this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
+                        }
+
+                    })
                 }
             }
         },
