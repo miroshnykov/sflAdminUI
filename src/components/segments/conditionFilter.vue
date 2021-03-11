@@ -1472,6 +1472,18 @@
                             // }
                         })
                     }
+
+                    document.querySelector(`#aff-${newCondition[0].position}`).addEventListener('keyup', (e) => {
+                        let affValue = document.querySelector(`#aff-${newCondition[0].position}`).value
+                        if (affValue.length >= 3) {
+
+                            console.log(' OR affSearchValue:', affValue)
+                            let obj = {}
+                            obj.filter = affValue
+                            this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
+                        }
+
+                    })
                 }
             }
         },
