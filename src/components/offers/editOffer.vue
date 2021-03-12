@@ -1016,9 +1016,9 @@
                 let geoR = JSON.parse(this.getOffer.geoRules)
                 let geoCountry = geoR.geo.map(item => item.country)
                 if (geoCountry.length !== 0) {
-                    return `Custom (Hover for banned countries)`
-                } else {
                     return `Banned Countries (hover for list)`
+                } else {
+                    return `All Countries Allowed`
                 }
             },
             fastAddLp(id) {
