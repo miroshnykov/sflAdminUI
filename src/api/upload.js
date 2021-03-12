@@ -35,5 +35,4 @@ const uploadFile = async (dataFile) => {
 
 export default {
     uploadFile,
-    uploadManagers
 }
