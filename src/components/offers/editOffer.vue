@@ -1000,6 +1000,10 @@
             getOfferHistoryModify() {
                 return this.getOfferHistory.length !== 0 && this.getOfferHistory
             },
+            getCapsDetails() {
+                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
+                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
+            },
             getBannedCountries() {
                 if (this.getOffer.geoRules) {
                     let geoR = JSON.parse(this.getOffer.geoRules)
@@ -1007,19 +1011,16 @@
                     return geoCountry.join(', ')
                 }
             },
-            getCapsDetails() {
-                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
-                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
-            },
             getBannedCountriesStatus() {
                 if (this.getOffer.geoRules) {
                     let geoR = JSON.parse(this.getOffer.geoRules)
                     let geoCountry = geoR.geo.map(item => item.country)
-                    return `Custom (Hover for banned countries)`
-                } else {
                     return `Banned Countries (hover for list)`
+                } else {
+                    debugger
+                    return `All Countries allowed`
                 }
-                // return this.getOffer.length !== 0 && `Allow all countries`
+                // return this.getOffer.length !== 0 && `All Countries allowed`
                 // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
             },
             fastAddLp(id) {
