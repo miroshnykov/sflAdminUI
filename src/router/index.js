@@ -9,6 +9,7 @@ import editOffer from '../components/offers/editOffer'
 import editSegment from '../components/segments/editSegment.vue'
 import viewSegment from '../components/segments/viewSegment.vue'
 import editRules from '../components/segments/editRules.vue'
+import importData from '../components/import.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,10 @@ export default new Router({
         {
             path: '/offers',
             component: offers
+        },
+        {
+            path: '/import',
+            component: importData
         },
         {
             path: '/offer/:id',

@@ -596,17 +596,18 @@
                         </b-col>
 
                         <!-- TODO: Need backend support for country dropdown, adding new line, saving changes -->
-                        <b-col cols="12" class="text-center custom_payout_per_geo" style="margin-top: 20px;max-width: 935px">
+                        <b-col cols="12" class="text-center custom_payout_per_geo"
+                               style="margin-top: 20px;max-width: 935px">
                             <h3 class="line">Custom payout per GEO</h3>
                         </b-col>
                         <b-col cols="3">
                             <div class="condition__controls">
-                            <model-select
-                                    :options="getCountriesModify()"
-                                    placeholder="Country"
-                                    class="condition__country condition__matches custom-select "
-                            >
-                            </model-select>
+                                <model-select
+                                        :options="getCountriesModify()"
+                                        placeholder="Country"
+                                        class="condition__country condition__matches custom-select "
+                                >
+                                </model-select>
                             </div>
                         </b-col>
                         <b-col cols="3">
@@ -630,23 +631,23 @@
                         <b-col cols="2" style="margin-top: -27px;">
                             <div class="condition__controls dollar" v-show="this.payoutTypeGEO === '1'">
                                 <input type="number"
-                                    step=1
-                                    min="0"
-                                    max="999"
-                                    :value="getOffer.payOut"
-                                    @change="updValue($event, `payOut`)"
-                                    class="condition__matches payOut custom-input"
-                                    pattern="^\d+(?:\.\d{1,2})?$"
-                                    onkeypress="
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOut custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
                                             return (
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
-                                    onpaste="return false"
-                                    onKeyPress="if(this.value.length==3) return false;"
-                                    onblur="
+                                       onpaste="return false"
+                                       onKeyPress="if(this.value.length==3) return false;"
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOut').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payout').style.display = 'block'
@@ -664,21 +665,21 @@
 
                             <div class="condition__controls percentage" v-show="this.payoutTypeGEO === '2'">
                                 <input type="number"
-                                    step=1
-                                    min="0"
-                                    max="999"
-                                    :value="getOffer.payOut"
-                                    @change="updValue($event, `payOut`)"
-                                    class="condition__matches payOutPercent custom-input"
-                                    pattern="^\d+(?:\.\d{1,2})?$"
-                                    onkeypress="
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOutPercent custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
                                             return (
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                    onpaste="return false"
-                                    onblur="
+                                       onpaste="return false"
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payoutpercentage').style.display = 'block'
@@ -977,7 +978,7 @@
             ...mapMutations('offer', ['updOffer']),
             ...mapMutations('lpOffers', ['fastAddLpOffers']),
             ...mapMutations('countries', ['filterCountry']),
-            
+
             getCountriesModify() {
                 return this.getCountries.map(item => {
                     item.value = item.code
@@ -1012,15 +1013,13 @@
                 return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
             },
             getBannedCountriesStatus() {
-                if (this.getOffer.geoRules) {
-                    let geoR = JSON.parse(this.getOffer.geoRules)
-                    let geoCountry = geoR.geo.map(item => item.country)
+                let geoR = JSON.parse(this.getOffer.geoRules)
+                let geoCountry = geoR.geo.map(item => item.country)
+                if (geoCountry.length !== 0) {
                     return `Custom (Hover for banned countries)`
                 } else {
                     return `Banned Countries (hover for list)`
                 }
-                // return this.getOffer.length !== 0 && `Allow all countries`
-                // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
             },
             fastAddLp(id) {
                 let newLp = this.fastLpValue

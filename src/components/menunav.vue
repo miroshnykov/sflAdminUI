@@ -7,6 +7,7 @@
                 <b-nav-item active class="nav-blockedSegments"><a @click="this.blockSegmentsPage"><i class="far fa-ban"></i> Blocked Segments</a></b-nav-item>
                 <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
                 <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
+                <b-nav-item active class="nav-customOffers"><a @click="this.importPage"><i class="far fa-bullhorn"></i> Import data</a></b-nav-item>
             </span>
 
             <span class="nav-disabled" style="display: none;cursor: not-allowed;">
@@ -60,6 +61,10 @@
             },
             offersPage() {
                 this.$router.push('/offers')
+                location.reload()
+            },
+            importPage() {
+                this.$router.push('/import')
                 location.reload()
             },
             standardSegmentsPage() {
