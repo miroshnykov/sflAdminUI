@@ -330,17 +330,21 @@
         props: ["filter", "indexFilters"],
         async mounted() {
             let self = this
-            document.querySelector(`#aff-${this.indexFilters}`).addEventListener('keyup', (e) => {
-                let affValue = document.querySelector(`#aff-${self.indexFilters}`).value
-                if (affValue.length >= 3) {
+            let affEl = document.querySelector(`#aff-${this.indexFilters}`)
+            if (affEl) {
+                document.querySelector(`#aff-${this.indexFilters}`).addEventListener('keyup', (e) => {
+                    let affValue = document.querySelector(`#aff-${self.indexFilters}`).value
+                    if (affValue.length >= 3) {
 
-                    console.log('affValue:', affValue)
-                    let obj = {}
-                    obj.filter = affValue
-                    this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
-                }
+                        console.log('affValue:', affValue)
+                        let obj = {}
+                        obj.filter = affValue
+                        this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
+                    }
 
-            })
+                })
+            }
+
         },
         methods: {
             getAdvertisersModify(item) {
@@ -1472,18 +1476,19 @@
                             // }
                         })
                     }
+                    let affEl = document.querySelector(`#aff-${newCondition[0].position}`)
+                    if (affEl)
+                        document.querySelector(`#aff-${newCondition[0].position}`).addEventListener('keyup', (e) => {
+                            let affValue = document.querySelector(`#aff-${newCondition[0].position}`).value
+                            if (affValue.length >= 3) {
 
-                    document.querySelector(`#aff-${newCondition[0].position}`).addEventListener('keyup', (e) => {
-                        let affValue = document.querySelector(`#aff-${newCondition[0].position}`).value
-                        if (affValue.length >= 3) {
+                                console.log(' OR affSearchValue:', affValue)
+                                let obj = {}
+                                obj.filter = affValue
+                                this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
+                            }
 
-                            console.log(' OR affSearchValue:', affValue)
-                            let obj = {}
-                            obj.filter = affValue
-                            this.$store.dispatch('affiliates/saveAffiliatesStore', obj)
-                        }
-
-                    })
+                        })
                 }
             }
         },

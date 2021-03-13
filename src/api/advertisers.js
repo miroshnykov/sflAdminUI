@@ -27,6 +27,34 @@ const advertisers = async () => {
 
 }
 
+const sflAdvertisers = async () => {
+
+    try {
+        console.time(`sflAdvertisers`)
+        const res = await api.post(
+            '', {
+                query: `
+                {
+                    getSflAdvertisers{
+                        id    
+                        name
+                    } 
+                }
+            `,
+            }
+        )
+
+        let response = res.data.data.getSflAdvertisers
+        console.log(` *** getSflAdvertisers from DB response count:${response.length}` )
+        console.timeEnd(`sflAdvertisers`)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 export default {
-    advertisers
+    advertisers,
+    sflAdvertisers
 }

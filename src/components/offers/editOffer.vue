@@ -94,12 +94,12 @@
                                 <select
                                         :id="defineId(`advertiser`,id)"
                                         class="condition__dimension-name condition__matches custom-select"
-                                        @change="updValue($event, `advertiser`)"
+                                        @change="updValue($event, `advertiserId`)"
                                 >
                                     <option :value="null">-- Select advertiser --</option>
                                     <option
-                                            v-for="{id, name} in getAdveritserList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.advertiser || '')"
+                                            v-for="{id, name} in getSflAdvertisers"
+                                            :selected="id === getOffer.advertiserId "
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -943,12 +943,14 @@
             ...mapGetters('offerHistory', ['getOfferHistory']),
             ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer']),
             ...mapGetters('countries', ['getCountries']),
+            ...mapGetters('advertisers', ['getSflAdvertisers']),
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
             await this.$store.dispatch('offer/saveOfferCapStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore', this.id)
+            await this.$store.dispatch('advertisers/saveSflAdvertisersStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
             await this.$store.dispatch('countries/saveCountriesStore')
@@ -1013,6 +1015,7 @@
                 return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
             },
             getBannedCountriesStatus() {
+                if (!this.getOffer.geoRules) return
                 let geoR = JSON.parse(this.getOffer.geoRules)
                 let geoCountry = geoR.geo.map(item => item.country)
                 if (geoCountry.length !== 0) {
@@ -1128,6 +1131,7 @@
             updValue(event, name) {
                 let obj = {}
 
+                debugger
                 if (
                     name === 'conversionType'
                     || name === 'defaultLp'
@@ -1152,6 +1156,16 @@
                     } else {
                         obj.value = event.target.value
                     }
+                }
+                if (name === 'advertiserId') {
+                    let objAdv = {}
+                    objAdv.fieldName = `advertiserName`
+                    objAdv.value = event.target.value
+                    this.updOffer(objAdv)
+                    let advId = this.getSflAdvertisers.filter(i => (i.name === event.target.value))
+
+                    obj.value = advId[0].id
+                    debugger
                 }
                 this.fastLpAdd = false
                 this.updOffer(obj)
@@ -1291,12 +1305,6 @@
                     {id: 1, name: 'Private'},
                     {id: 2, name: 'Apply to Run'},
                     {id: 3, name: 'Inactive'},
-                ]
-            },
-            getAdveritserList() {
-                return [
-                    {id: 0, name: 'FFM-Online'},
-                    {id: 1, name: 'Milkbox'},
                 ]
             },
             getVerticalsList() {
