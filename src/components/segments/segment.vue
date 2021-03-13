@@ -397,29 +397,29 @@
 
     .segment {
         opacity: 1;
-        margin: 15px 20px 0px 0px;
+        margin: 3px 13px 0px 0px;
         min-height: auto;
         max-width: 352px;
         min-width: 352px;
-        padding: 1rem;
+        padding: 0.3rem;
         position: relative;
         border-radius: 10px;
-        border: 2px solid #2ED47A;
+        border: 1px solid #2ED47A;
         background: #fff;
         user-select: none;
     }
 
     .segmentInActive {
         opacity: 1;
-        margin: 15px 20px 0px 0px;
+        margin: 3px 13px 0px 0px;
         min-height: auto;
         min-width: 352px;
         max-width: 352px;
-        padding: 1rem;
+        padding: 0.3rem;
         position: relative;
         border-radius: 10px;
         // border: solid rgba(75, 133, 225, 0.15) 2px;
-        border: 2px solid #E3EEF4;
+        border: 1px solid #E3EEF4;
         background: #fff;
         user-select: none;
     }
@@ -464,10 +464,10 @@
 
     .segment__name {
         color: #3A3852;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 600;
         letter-spacing: 0.3px;
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.1rem 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

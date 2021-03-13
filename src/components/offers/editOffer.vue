@@ -1010,19 +1010,32 @@
                     return geoCountry.join(', ')
                 }
             },
-            getCapsDetails() {
-                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
-                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
-            },
             getBannedCountriesStatus() {
                 if (!this.getOffer.geoRules) return
                 let geoR = JSON.parse(this.getOffer.geoRules)
                 let geoCountry = geoR.geo.map(item => item.country)
                 if (geoCountry.length !== 0) {
-                    return `Custom (Hover for banned countries)`
-                } else {
                     return `Banned Countries (hover for list)`
+                } else {
+                    return `All Countries Allowed`
                 }
+            },
+            getCapsStatus(caps) {
+                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
+                // if (caps.length !== 0) {
+                //     debugger
+                //     return `Caps enabled`
+                // } else {
+                //     debugger
+                //     return `No caps are applied`
+                // }
+            },
+            getCapsDetails() {
+                const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
+                return `-Clicks-\n
+                Day: ${clickDay} Week: ${clickWeek} Month: ${clickMonth}\n
+                -Conversions-\n
+                Day: ${salesDay} Week: ${salesWeek} Month: ${salesMonth}`
             },
             fastAddLp(id) {
                 let newLp = this.fastLpValue
@@ -1169,9 +1182,6 @@
                 }
                 this.fastLpAdd = false
                 this.updOffer(obj)
-            },
-            getCapsStatus(caps) {
-                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
             },
             async cancelEdit() {
                 this.$swal.fire({
