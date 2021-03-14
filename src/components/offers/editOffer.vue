@@ -36,11 +36,16 @@
                 <div class="condition__controls">
                     <label>Offer Manager</label>
                     <select
+                            :id="defineId(`advertiserManagerId`,id)"
                             class="condition__dimension-name condition__matches custom-select"
+                            @change="updValue($event, `advertiserManagerId`)"
                     >
-                        <!-- <option :value="null">-- Select --</option> -->
-                        <option>
-                            Maxim Litvinchik
+                        <option :value="null">-- Select advertiser managers --</option>
+                        <option
+                                v-for="{id, firstName, lastName} in getSflAdvertisersManagers"
+                                :selected="id === getOffer.advertiserManagerId "
+                                :key="id"
+                        >{{firstName}} {{lastName}}
                         </option>
 
                     </select>
@@ -943,7 +948,7 @@
             ...mapGetters('offerHistory', ['getOfferHistory']),
             ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer']),
             ...mapGetters('countries', ['getCountries']),
-            ...mapGetters('advertisers', ['getSflAdvertisers']),
+            ...mapGetters('advertisers', ['getSflAdvertisers','getSflAdvertisersManagers']),
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
@@ -951,6 +956,7 @@
             await this.$store.dispatch('offer/saveOfferCapStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore', this.id)
             await this.$store.dispatch('advertisers/saveSflAdvertisersStore')
+            await this.$store.dispatch('advertisers/saveSflAdvertisersManagersStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
             await this.$store.dispatch('countries/saveCountriesStore')
@@ -1144,7 +1150,6 @@
             updValue(event, name) {
                 let obj = {}
 
-                debugger
                 if (
                     name === 'conversionType'
                     || name === 'defaultLp'
@@ -1178,8 +1183,22 @@
                     let advId = this.getSflAdvertisers.filter(i => (i.name === event.target.value))
 
                     obj.value = advId[0].id
-                    debugger
                 }
+
+                if (name === 'advertiserManagerId') {
+                    // let objAdv = {}
+                    // objAdv.fieldName = `advertiserName`
+                    // objAdv.value = event.target.value
+                    // this.updOffer(objAdv)
+                    let parseName  = event.target.value.split(" ")
+                    let firstName = parseName[0]
+                    let lastName = parseName[1]
+
+                    let advManagerId = this.getSflAdvertisersManagers.filter(i => (i.firstName === firstName && i.lastName === lastName))
+
+                    obj.value = advManagerId[0].id
+                }
+
                 this.fastLpAdd = false
                 this.updOffer(obj)
             },

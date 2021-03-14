@@ -5,6 +5,7 @@ export default {
     state: {
         advertisers:[],
         sflAdvertisers:[],
+        sflAdvertisersManagers:[],
     },
     namespaced: true,
     mutations: {
@@ -13,6 +14,9 @@ export default {
         },
         async saveSflAdvertisers(state, sflAdvertisers) {
             state.sflAdvertisers = sflAdvertisers
+        },
+        async saveSflAdvertisersManagers(state, sflAdvertisersManagers) {
+            state.sflAdvertisersManagers = sflAdvertisersManagers
         }
     },
     actions: {
@@ -22,10 +26,14 @@ export default {
         async saveSflAdvertisersStore ({ commit }) {
             commit('saveSflAdvertisers', await advertisers.sflAdvertisers())
         },
+        async saveSflAdvertisersManagersStore ({ commit }) {
+            commit('saveSflAdvertisersManagers', await advertisers.sflAdvertisersManagers())
+        },
     },
     getters: {
         getAdvertisers: state => state.advertisers,
         getSflAdvertisers: state => state.sflAdvertisers,
+        getSflAdvertisersManagers: state => state.sflAdvertisersManagers,
     },
 
 }

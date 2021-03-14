@@ -54,7 +54,37 @@ const sflAdvertisers = async () => {
 
 }
 
+const sflAdvertisersManagers = async () => {
+
+    try {
+        console.time(`getSflAdvertisersManagers`)
+        const res = await api.post(
+            '', {
+                query: `
+                {
+                    getSflAdvertisersManagers{
+                        id    
+                        firstName
+                        lastName
+                        role
+                    } 
+                }
+            `,
+            }
+        )
+
+        let response = res.data.data.getSflAdvertisersManagers
+        console.log(` *** getSflAdvertisersManagers from DB response count:${response.length}` )
+        console.timeEnd(`getSflAdvertisersManagers`)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 export default {
     advertisers,
-    sflAdvertisers
+    sflAdvertisers,
+    sflAdvertisersManagers
 }
