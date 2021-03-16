@@ -5,21 +5,21 @@
         <div id="settings">
 
             <b-row class="settings">
-                <b-col cols="10">
-                    <h1>Upload Affiliate Lists</h1>
-                </b-col>
-                <b-col cols="2">
+                <b-col cols="1">
                     <div class="action-buttons">
-                        <b-button variant="link"
-                                  v-b-tooltip.hover.right="'close'">
-                            <i class="far fa-times"></i>
+                        <b-button variant="link" @click="$router.go(-1)"
+                                  v-b-tooltip.hover.left="'Go back'">
+                            <i class="far fa-arrow-left"></i>
                         </b-button>
                     </div>
+                </b-col>
+                <b-col cols="10">
+                    <h1>Upload Affiliate Lists</h1>
                 </b-col>
 
                 <b-col cols="12">
                     <p>Upload your own file (CSV format).</p>
-                    <p>Account managers, advertisers, offers, affiliates, campaigns  .</p>
+                    <p>Account managers, advertisers, offers, affiliates, campaigns.</p>
                 </b-col>
 
                 <b-col cols="12">
@@ -40,12 +40,12 @@
 
             <transition name="expand-down">
 
-                <div class="filter__controls">
+                <div>
                     <span class="space"></span>
 
                     <b-row class="settings-actions">
                         <b-col cols="6">
-                            <b-button variant="secondary" class="btn-add-line" @click="clearFiles">
+                            <b-button variant="light" class="btn-add-line pull-left" @click="clearFiles">
                                 <i class="fas fa-undo" data-fa-transform="shrink-2"></i> Clear
                             </b-button>
                         </b-col>
@@ -53,7 +53,7 @@
 <!--                            <b-button variant="secondary" class="btn-save" @click="uploadFiles">-->
 <!--                                <i class="fas fa-undo" data-fa-transform="shrink-2"></i> Upload-->
 <!--                            </b-button>-->
-                            <b-button class="btn-add-line" @click="this.uploadFiles">
+                            <b-button class="btn-add-line pull-right" @click="this.uploadFiles">
                                 <i class="fas fa-plus" data-fa-transform="shrink-2"></i> Upload
                             </b-button>
                         </b-col>
@@ -79,14 +79,16 @@
             ...mapGetters('offers', ['getOffers'])
         },
         async mounted() {
-
-
         },
         methods: {
             ...mapMutations('offers', ['delOffer']),
             ...mapActions("offers", ["saveOffersStore"]),
             clearFiles() {
                 this.$refs['file-input'].reset()
+            },
+            mainPage() {
+                this.$router.push('/')
+                location.reload()
             },
             async parse(file) {
                 const reader = new FileReader();
