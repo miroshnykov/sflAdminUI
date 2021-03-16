@@ -131,7 +131,7 @@
     let tableColumnsLog = [
         'id',
         'name',
-        'advertiser',
+        'advertiserName',
         'payIn',
         'payOut',
         'landingPage',
@@ -332,7 +332,7 @@
                     headings: {
                         id: 'ID',
                         name: 'Offer Name',
-                        advertiser: 'Advertiser',
+                        advertiserName: 'advertiserName',
                         verticals: 'Vertical',
                         payIn: 'PayIn',
                         payOut: 'PayOut',
@@ -343,7 +343,7 @@
                     editableColumns: ['offerName'],
                     // sortable: tableColumnsLog,
                     // sortable: [''],
-                    sortable: ['id','name','advertiser','verticals','status'],
+                    sortable: ['id','name','advertiserName','verticals','status'],
                     sortIcon: {
                         base: 'fa fad',
                         up: 'fa-sort-up',

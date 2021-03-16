@@ -18,7 +18,7 @@ const getOffers = async () => {
                                 dateAdded
                                 dateUpdated
                                 verticals
-                                advertiser
+                                advertiserName
                                 isCpmOptionEnabled
                                 descriptions
                                 payoutPercent

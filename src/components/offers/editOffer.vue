@@ -36,11 +36,16 @@
                 <div class="condition__controls">
                     <label>Offer Manager</label>
                     <select
+                            :id="defineId(`advertiserManagerId`,id)"
                             class="condition__dimension-name condition__matches custom-select"
+                            @change="updValue($event, `advertiserManagerId`)"
                     >
-                        <!-- <option :value="null">-- Select --</option> -->
-                        <option>
-                            Maxim Litvinchik
+                        <option :value="null">-- Select advertiser managers --</option>
+                        <option
+                                v-for="{id, firstName, lastName} in getSflAdvertisersManagers"
+                                :selected="id === getOffer.advertiserManagerId "
+                                :key="id"
+                        >{{firstName}} {{lastName}}
                         </option>
 
                     </select>
@@ -94,12 +99,12 @@
                                 <select
                                         :id="defineId(`advertiser`,id)"
                                         class="condition__dimension-name condition__matches custom-select"
-                                        @change="updValue($event, `advertiser`)"
+                                        @change="updValue($event, `advertiserId`)"
                                 >
                                     <option :value="null">-- Select advertiser --</option>
                                     <option
-                                            v-for="{id, name} in getAdveritserList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.advertiser || '')"
+                                            v-for="{id, name} in getSflAdvertisers"
+                                            :selected="id === getOffer.advertiserId "
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -596,17 +601,18 @@
                         </b-col>
 
                         <!-- TODO: Need backend support for country dropdown, adding new line, saving changes -->
-                        <b-col cols="12" class="text-center custom_payout_per_geo" style="margin-top: 20px;max-width: 935px">
+                        <b-col cols="12" class="text-center custom_payout_per_geo"
+                               style="margin-top: 20px;max-width: 935px">
                             <h3 class="line">Custom payout per GEO</h3>
                         </b-col>
                         <b-col cols="3">
                             <div class="condition__controls">
-                            <model-select
-                                    :options="getCountriesModify()"
-                                    placeholder="Country"
-                                    class="condition__country condition__matches custom-select "
-                            >
-                            </model-select>
+                                <model-select
+                                        :options="getCountriesModify()"
+                                        placeholder="Country"
+                                        class="condition__country condition__matches custom-select "
+                                >
+                                </model-select>
                             </div>
                         </b-col>
                         <b-col cols="3">
@@ -630,23 +636,23 @@
                         <b-col cols="2" style="margin-top: -27px;">
                             <div class="condition__controls dollar" v-show="this.payoutTypeGEO === '1'">
                                 <input type="number"
-                                    step=1
-                                    min="0"
-                                    max="999"
-                                    :value="getOffer.payOut"
-                                    @change="updValue($event, `payOut`)"
-                                    class="condition__matches payOut custom-input"
-                                    pattern="^\d+(?:\.\d{1,2})?$"
-                                    onkeypress="
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOut custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
                                             return (
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57
                                             if(this.value.length==3) return false;"
-                                    onpaste="return false"
-                                    onKeyPress="if(this.value.length==3) return false;"
-                                    onblur="
+                                       onpaste="return false"
+                                       onKeyPress="if(this.value.length==3) return false;"
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOut').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payout').style.display = 'block'
@@ -664,21 +670,21 @@
 
                             <div class="condition__controls percentage" v-show="this.payoutTypeGEO === '2'">
                                 <input type="number"
-                                    step=1
-                                    min="0"
-                                    max="999"
-                                    :value="getOffer.payOut"
-                                    @change="updValue($event, `payOut`)"
-                                    class="condition__matches payOutPercent custom-input"
-                                    pattern="^\d+(?:\.\d{1,2})?$"
-                                    onkeypress="
+                                       step=1
+                                       min="0"
+                                       max="999"
+                                       :value="getOffer.payOut"
+                                       @change="updValue($event, `payOut`)"
+                                       class="condition__matches payOutPercent custom-input"
+                                       pattern="^\d+(?:\.\d{1,2})?$"
+                                       onkeypress="
                                             return (
                                                 event.charCode == 8
                                                 || event.charCode == 0
                                                 || event.charCode == 13
                                             ) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                    onpaste="return false"
-                                    onblur="
+                                       onpaste="return false"
+                                       onblur="
                                             if(this.value === ''){
                                                 document.querySelector('.payOutPercent').style.border = '2px solid #f38282'
                                                 document.querySelector('#input-live-payoutpercentage').style.display = 'block'
@@ -942,12 +948,15 @@
             ...mapGetters('offerHistory', ['getOfferHistory']),
             ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer']),
             ...mapGetters('countries', ['getCountries']),
+            ...mapGetters('advertisers', ['getSflAdvertisers','getSflAdvertisersManagers']),
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
             await this.$store.dispatch('offer/saveOfferStore', this.id)
             await this.$store.dispatch('offer/saveOfferCapStore', this.id)
             await this.$store.dispatch('lpOffers/saveLpOffersStore', this.id)
+            await this.$store.dispatch('advertisers/saveSflAdvertisersStore')
+            await this.$store.dispatch('advertisers/saveSflAdvertisersManagersStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
             await this.$store.dispatch('countries/saveCountriesStore')
@@ -977,7 +986,7 @@
             ...mapMutations('offer', ['updOffer']),
             ...mapMutations('lpOffers', ['fastAddLpOffers']),
             ...mapMutations('countries', ['filterCountry']),
-            
+
             getCountriesModify() {
                 return this.getCountries.map(item => {
                     item.value = item.code
@@ -1007,20 +1016,32 @@
                     return geoCountry.join(', ')
                 }
             },
+            getBannedCountriesStatus() {
+                if (!this.getOffer.geoRules) return
+                let geoR = JSON.parse(this.getOffer.geoRules)
+                let geoCountry = geoR.geo.map(item => item.country)
+                if (geoCountry.length !== 0) {
+                    return `Banned Countries (hover for list)`
+                } else {
+                    return `All Countries Allowed`
+                }
+            },
+            getCapsStatus(caps) {
+                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
+                // if (caps.length !== 0) {
+                //     debugger
+                //     return `Caps enabled`
+                // } else {
+                //     debugger
+                //     return `No caps are applied`
+                // }
+            },
             getCapsDetails() {
                 const {clickDay, clickWeek, clickMonth, salesDay, salesWeek, salesMonth} = this.getOfferCap
-                return `clickDay:${clickDay} clickWeek:${clickWeek} clickMonth:${clickMonth}\nsalesDay:${salesDay} salesWeek:${salesWeek} salesMonth:${salesMonth}`
-            },
-            getBannedCountriesStatus() {
-                if (this.getOffer.geoRules) {
-                    let geoR = JSON.parse(this.getOffer.geoRules)
-                    let geoCountry = geoR.geo.map(item => item.country)
-                    return `Custom (Hover for banned countries)`
-                } else {
-                    return `Banned Countries (hover for list)`
-                }
-                // return this.getOffer.length !== 0 && `Allow all countries`
-                // return this.getOffer.length !== 1 && `Banned Countries (hover for list)`
+                return `-Clicks-\n
+                Day: ${clickDay} Week: ${clickWeek} Month: ${clickMonth}\n
+                -Conversions-\n
+                Day: ${salesDay} Week: ${salesWeek} Month: ${salesMonth}`
             },
             fastAddLp(id) {
                 let newLp = this.fastLpValue
@@ -1154,11 +1175,32 @@
                         obj.value = event.target.value
                     }
                 }
+                if (name === 'advertiserId') {
+                    let objAdv = {}
+                    objAdv.fieldName = `advertiserName`
+                    objAdv.value = event.target.value
+                    this.updOffer(objAdv)
+                    let advId = this.getSflAdvertisers.filter(i => (i.name === event.target.value))
+
+                    obj.value = advId[0].id
+                }
+
+                if (name === 'advertiserManagerId') {
+                    // let objAdv = {}
+                    // objAdv.fieldName = `advertiserName`
+                    // objAdv.value = event.target.value
+                    // this.updOffer(objAdv)
+                    let parseName  = event.target.value.split(" ")
+                    let firstName = parseName[0]
+                    let lastName = parseName[1]
+
+                    let advManagerId = this.getSflAdvertisersManagers.filter(i => (i.firstName === firstName && i.lastName === lastName))
+
+                    obj.value = advManagerId[0].id
+                }
+
                 this.fastLpAdd = false
                 this.updOffer(obj)
-            },
-            getCapsStatus(caps) {
-                return caps.length !== 0 && `Caps enabled` || `No caps are applied`
             },
             async cancelEdit() {
                 this.$swal.fire({
@@ -1292,12 +1334,6 @@
                     {id: 1, name: 'Private'},
                     {id: 2, name: 'Apply to Run'},
                     {id: 3, name: 'Inactive'},
-                ]
-            },
-            getAdveritserList() {
-                return [
-                    {id: 0, name: 'FFM-Online'},
-                    {id: 1, name: 'Milkbox'},
                 ]
             },
             getVerticalsList() {

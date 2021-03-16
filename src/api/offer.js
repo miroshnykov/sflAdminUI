@@ -11,7 +11,9 @@ const getOffer = async (id) => {
                           getOffer(id:${id}) {
                                 id
                                 name
-                                advertiser
+                                advertiserId
+                                advertiserName
+                                advertiserManagerId
                                 verticals
                                 conversionType
                                 status
@@ -111,7 +113,9 @@ const createOffer = async (name) => {
 const saveOffer = async (data) => {
 
     const {
-        advertiser,
+        advertiserId,
+        advertiserName,
+        advertiserManagerId,
         verticals,
         conversionType,
         geoRules,
@@ -167,7 +171,9 @@ const saveOffer = async (data) => {
                           saveOffer(
                                 id:${id}
                                 name:"${name}"
-                                advertiser:"${advertiser}"
+                                advertiserId:${advertiserId}
+                                advertiserManagerId:${advertiserManagerId}
+                                advertiserName:"${advertiserName}"
                                 verticals:"${verticals}"
                                 payoutPercent:${payoutPercent}
                                 isCpmOptionEnabled:${isCpmOptionEnabled}
