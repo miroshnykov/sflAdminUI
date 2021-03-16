@@ -145,6 +145,7 @@
                                 html:
                                     `<div class="popup-confirm">
                            <p>${result.type} added: ${result.success && result.insertRecordsCount || 0}</p>
+                           <p>Added details: ${result.success && result.insertRecords || 0}</p>
                            <p>Total record: ${result.success && result.totalRecords || 0}</p>
                            <p>${result.errors && result.errors||''}</p>
                            </div>`,
