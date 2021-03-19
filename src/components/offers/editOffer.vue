@@ -117,14 +117,14 @@
                             <div class="condition__controls">
                                 <label>Vertical</label>
                                 <select
-                                        :id="defineId(`verticals`,id)"
+                                        :id="defineId(`verticalId`,id)"
                                         class="condition__dimension-name condition__matches custom-select"
-                                        @change="updValue($event, `verticals`)"
+                                        @change="updValue($event, `verticalId`)"
                                 >
                                     <option :value="null">-- Select verticals --</option>
                                     <option
-                                            v-for="{id, name} in getVerticalsList()"
-                                            :selected="formatStr(name) === formatStr(getOffer.verticals || '')"
+                                            v-for="{id, name} in getVerticals"
+                                            :selected="id === getOffer.verticalId"
                                             :key="id"
                                     >{{name}}
                                     </option>
@@ -948,7 +948,8 @@
             ...mapGetters('offerHistory', ['getOfferHistory']),
             ...mapGetters('lpOffers', ['getLpOffers', 'getCheckSumLpOffer']),
             ...mapGetters('countries', ['getCountries']),
-            ...mapGetters('advertisers', ['getSflAdvertisers','getSflAdvertisersManagers']),
+            ...mapGetters('advertisers', ['getSflAdvertisers', 'getSflAdvertisersManagers']),
+            ...mapGetters('verticals', ['getVerticals']),
         },
         async mounted() {
             await this.$store.dispatch('offers/saveOffersStore')
@@ -957,6 +958,7 @@
             await this.$store.dispatch('lpOffers/saveLpOffersStore', this.id)
             await this.$store.dispatch('advertisers/saveSflAdvertisersStore')
             await this.$store.dispatch('advertisers/saveSflAdvertisersManagersStore')
+            await this.$store.dispatch('verticals/saveVerticalsStore')
 
             // await store.dispatch('affiliates/saveAffiliatesStore')
             await this.$store.dispatch('countries/saveCountriesStore')
@@ -1185,16 +1187,27 @@
                     obj.value = advId[0].id
                 }
 
+                if (name === 'verticalId') {
+                    let objAdv = {}
+                    objAdv.fieldName = `verticalName`
+                    objAdv.value = event.target.value
+                    this.updOffer(objAdv)
+                    let advId = this.getVerticals.filter(i => (i.name === event.target.value))
+
+                    obj.value = advId[0].id
+                }
+
+
                 if (name === 'advertiserManagerId') {
                     // let objAdv = {}
                     // objAdv.fieldName = `advertiserName`
                     // objAdv.value = event.target.value
                     // this.updOffer(objAdv)
-                    let parseName  = event.target.value.split(" ")
-                    let firstName = parseName[0]
-                    let lastName = parseName[1]
+                    let parseName = event.target.value.split(" ")
+                    let lastName = parseName[0] || ''
+                    let firstName = parseName[1] || ''
 
-                    let advManagerId = this.getSflAdvertisersManagers.filter(i => (i.firstName === firstName && i.lastName === lastName))
+                    let advManagerId = this.getSflAdvertisersManagers.filter(i => (i.lastName === lastName))
 
                     obj.value = advManagerId[0].id
                 }
