@@ -580,14 +580,15 @@
             defineId(name, id) {
                 return `${name}-${id}`
             },
-            validateValue: (data, value) => {
-                return data.filter(item => {
-                    if (item.value.substr(item.value.indexOf('/') + 1, item.value.length - 1) === value
-                        || item.value === value
-                    ) {
-                        return item
-                    }
-                })
+            validateValue: (data, value, dimensionId) => {
+
+                // console.table(reFormatJSON(data))
+                return data
+                    .filter(i => (dimensionId && i.dimensionId === dimensionId))
+                    .filter(item => (
+                        item.value.substr(item.value.indexOf('/') + 1, item.value.length - 1) === value
+                        || item.value === value)
+                    )
             },
             getDimensionId: (data, dimensionName) => {
                 let dimension = data.filter(({name}) => (name === dimensionName))
@@ -918,8 +919,8 @@
                 let dimensionRef = `dimension-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
-
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let affiliateDimensionId = self.getDimensionId(self.getDimensions, `affiliate`)
+                let recCheck = self.validateValue(self.segmentFilter, event, affiliateDimensionId)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -928,7 +929,7 @@
                         footer: ``
                     })
                     self.$refs[affRef][0].value = ``
-                    self.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    self.$refs[dimensionRef][0].value = affiliateDimensionId
                     item.value = ``
                     item.dimensionName = ``
                     item.dimensionId = null
@@ -943,7 +944,7 @@
                 item.filterTypeId = Number(self.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                 item.dimensionName = `affiliate`
-                item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate`)
+                item.dimensionId = affiliateDimensionId
 
                 // self.$refs[dimensionRef][0].disabled = true
                 // console.log(' !!!!!!!!!!!!!1 dimensionRef ',self.$refs[dimensionRef])
@@ -999,7 +1000,8 @@
             async handleDimAffCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let affiliateCampaignDimensionId = self.getDimensionId(self.getDimensions, `affiliate_campaign`)
+                let recCheck = self.validateValue(self.segmentFilter, event, affiliateCampaignDimensionId)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -1009,7 +1011,7 @@
                     })
 
                     self.$refs[affRef][0].value = ``
-                    self.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    self.$refs[dimensionRef][0].value = affiliateCampaignDimensionId
 
                     item.value = ``
                     item.dimensionName = ``
@@ -1033,7 +1035,7 @@
                 item.filterTypeId = Number(self.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                 item.dimensionName = `affiliate_campaign`
-                item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_campaign`)
+                item.dimensionId = affiliateCampaignDimensionId
                 await this.$store.dispatch('campaigns/getCampaignsByAffIdStore', event)
                 // this.$store.dispatch('campaigns/saveCampaignsAffiliateStore', event).then(res => {
                 //     item.user = this.verifyTokenEmail
@@ -1049,7 +1051,8 @@
             handleDimAffSubCampaign(event, item, self) {
 
                 if (event === '' || event === '/') return
-                let recCheck = self.validateValue(self.segmentFilter, event)
+                let affiliateSubCampaignDimensionId = self.getDimensionId(self.getDimensions, `affiliate_sub_campaign`)
+                let recCheck = self.validateValue(self.segmentFilter, event, affiliateSubCampaignDimensionId)
                 if (recCheck.length > 0) {
                     self.$swal.fire({
                         type: `warning`,
@@ -1059,7 +1062,7 @@
                     })
 
                     self.$refs[affRef][0].value = ``
-                    self.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    self.$refs[dimensionRef][0].value = affiliateSubCampaignDimensionId
 
                     item.value = ``
                     item.dimensionName = ``
@@ -1083,7 +1086,7 @@
                 item.filterTypeId = Number(self.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                 item.dimensionName = `affiliate_sub_campaign`
-                item.dimensionId = self.getDimensionId(self.getDimensions, `affiliate_sub_campaign`)
+                item.dimensionId = affiliateSubCampaignDimensionId
             },
             handleChangeAff(event, item) {
                 let dimensionRef = `dimension-${item.position}`
@@ -1118,8 +1121,8 @@
                 let refCountry = `country-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
-
-                let recCheck = this.validateValue(this.segmentFilter, event)
+                let prodDimensionId = this.getDimensionId(this.getDimensions, `prod`)
+                let recCheck = this.validateValue(this.segmentFilter, event, prodDimensionId)
                 if (recCheck.length > 0) {
                     this.$swal.fire({
                         type: `warning`,
@@ -1129,7 +1132,7 @@
                     })
 
                     this.$refs[refCountry][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = prodDimensionId
 
                     item.value = ``
                     item.dimensionName = ``
@@ -1144,7 +1147,7 @@
                 item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.dimensionName = `prod`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `prod`)
+                item.dimensionId = prodDimensionId
             },
             handleChangeAdvertisers(event, item) {
 
@@ -1154,8 +1157,9 @@
                 let refAdvertisers = `advertisers-${item.position}`
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
+                let advertisersDimensionId = this.getDimensionId(this.getDimensions, `advertisers`)
 
-                let recCheck = this.validateValue(this.segmentFilter, event)
+                let recCheck = this.validateValue(this.segmentFilter, event, advertisersDimensionId)
                 if (recCheck.length > 0) {
                     this.$swal.fire({
                         type: `warning`,
@@ -1165,7 +1169,7 @@
                     })
 
                     this.$refs[refAdvertisers][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = advertisersDimensionId
 
                     item.value = ``
                     item.dimensionName = ``
@@ -1180,7 +1184,7 @@
                 item.filterTypeId = Number(this.$refs[filterTypeRef][0].value)
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.dimensionName = `advertisers`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `advertisers`)
+                item.dimensionId = advertisersDimensionId
             },
             handleChangeCountry(event, item) {
 
@@ -1194,7 +1198,8 @@
                 let self = this
                 switch (dimensionName) {
                     case `country`:
-                        let recCheck = this.validateValue(this.segmentFilter, event)
+                        let affiliateCountryDimensionId = this.getDimensionId(this.getDimensions, `country`)
+                        let recCheck = this.validateValue(this.segmentFilter, event, affiliateCountryDimensionId)
                         if (recCheck.length > 0) {
                             this.$swal.fire({
                                 type: `warning`,
@@ -1204,7 +1209,7 @@
                             })
 
                             this.$refs[refCountry][0].value = ``
-                            this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                            this.$refs[dimensionRef][0].value = affiliateCountryDimensionId
 
                             item.value = ``
                             item.dimensionName = ``
@@ -1219,7 +1224,7 @@
                         item.filterTypeId = Number(self.$refs[filterTypeRef][0].value)
                         item.matchTypeId = Number(self.$refs[matchTypeRef][0].value)
                         item.dimensionName = `country`
-                        item.dimensionId = this.getDimensionId(this.getDimensions, `country`)
+                        item.dimensionId = affiliateCountryDimensionId
                         break
                     case `affiliate_country`:
                         this.$refs[refCondition][0].style.background = null
@@ -1240,8 +1245,8 @@
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
-
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let affiliateCampaignDimensionId = this.getDimensionId(this.getDimensions, `affiliate_campaign`)
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value, affiliateCampaignDimensionId)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1254,7 +1259,7 @@
                     let refCampaign = `campaign-${item.position}`
                     let dimensionRef = `dimension-${item.position}`
                     this.$refs[refCampaign][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = affiliateCampaignDimensionId
                     return
                 }
                 let refCondition = `condition-${item.position}`
@@ -1265,7 +1270,7 @@
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.value = item.value.substr(0, item.value.indexOf('/') + 1) + event.target.value
                 item.dimensionName = `affiliate_campaign`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_campaign`)
+                item.dimensionId = affiliateCampaignDimensionId
 
             },
             handleChangeWebsite(event, item) {
@@ -1273,8 +1278,8 @@
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
-
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let websitesDimensionId = this.getDimensionId(this.getDimensions, `website`)
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value, websitesDimensionId)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1287,7 +1292,7 @@
                     let refCampaign = `campaign-${item.position}`
                     let dimensionRef = `dimension-${item.position}`
                     this.$refs[refCampaign][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = websitesDimensionId
                     return
                 }
                 let refCondition = `condition-${item.position}`
@@ -1307,7 +1312,9 @@
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let affiliateStatusDimensionId = this.getDimensionId(this.getDimensions, `affiliate_status`)
+
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value, affiliateStatusDimensionId)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1320,7 +1327,7 @@
                     let refCampaign = `campaign-${item.position}`
                     let dimensionRef = `dimension-${item.position}`
                     this.$refs[refCampaign][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = affiliateStatusDimensionId
                     return
                 }
                 let refCondition = `condition-${item.position}`
@@ -1331,7 +1338,7 @@
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.value = event.target.value
                 item.dimensionName = `affiliate_status`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_status`)
+                item.dimensionId = affiliateStatusDimensionId
 
             },
             handleChangeAffiliateType(event, item) {
@@ -1340,7 +1347,8 @@
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
 
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let affiliateTypeDimensionId = this.getDimensionId(this.getDimensions, `affiliate_type`)
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value, affiliateTypeDimensionId)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1353,7 +1361,7 @@
                     let refCampaign = `campaign-${item.position}`
                     let dimensionRef = `dimension-${item.position}`
                     this.$refs[refCampaign][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = affiliateTypeDimensionId
                     return
                 }
                 let refCondition = `condition-${item.position}`
@@ -1364,7 +1372,7 @@
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.value = event.target.value
                 item.dimensionName = `affiliate_type`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `affiliate_type`)
+                item.dimensionId = affiliateTypeDimensionId
 
             },
             handleChangeOS(event, item) {
@@ -1372,8 +1380,8 @@
                 let dimensionName = this.getDimensionName(this.$refs[dimensionRef][0])
                 let filterTypeRef = `filtertype-${item.position}`
                 let matchTypeRef = `matchtype-${item.position}`
-
-                let recCheck = this.validateValue(this.segmentFilter, event.target.value)
+                let osDimensionId = this.getDimensionId(this.getDimensions, `os`)
+                let recCheck = this.validateValue(this.segmentFilter, event.target.value, osDimensionId)
 
                 if (recCheck.length > 0) {
                     this.$swal.fire({
@@ -1386,7 +1394,7 @@
                     let refCampaign = `campaign-${item.position}`
                     let dimensionRef = `dimension-${item.position}`
                     this.$refs[refCampaign][0].value = ``
-                    this.$refs[dimensionRef][0].value = recCheck[0].dimensionId
+                    this.$refs[dimensionRef][0].value = osDimensionId
                     return
                 }
                 let refCondition = `condition-${item.position}`
@@ -1397,7 +1405,7 @@
                 item.matchTypeId = Number(this.$refs[matchTypeRef][0].value)
                 item.value = event.target.value
                 item.dimensionName = `os`
-                item.dimensionId = this.getDimensionId(this.getDimensions, `os`)
+                item.dimensionId = osDimensionId
 
             },
             handleChangeSubCampaign(event, item) {
