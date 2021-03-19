@@ -1,32 +1,53 @@
 <template>
+
     <transition name="fade">
 
         <section :class="getClassSegment(segment.status)" :id="defineId(`segmentSectionId`,segment.id)"
                  @change="updateGroup($event, group)">
 
+
+                <!-- Work in progress -->
+               <!-- <b-button class="mr-2" @click="openAll">Open all</b-button> -->
+               <!-- <b-button @click="closeAll">Close all</b-button> -->
+                <!-- <span v-b-tooltip.hover.top="'Expand'" @click="openAll">
+                    <i class="fas fa-chevron-down primaryblue" data-fa-transform="shrink-2"></i>
+                </span>
+                <span v-b-tooltip.hover.top="'Collapse'" @click="closeAll">
+                    <i class="fas fa-chevron-up" data-fa-transform="shrink-2"></i>
+                </span>
+
+         <div class="row mb-4" v-for="(collapse, index) in collapses" :key="index">
+               <b-button @click="collapse.show = !collapse.show" variant="primary">Toggle Collapse {{ index + 1 }}</b-button>
+               <b-collapse v-model="collapse.show" id="collapse-1" class="mt-2">
+                  <b-card>
+                     <p class="card-text">Collapse {{ index + 1 }} contents Here</p>
+                  </b-card>
+               </b-collapse>
+         </div> -->
+
             <b-row class="text-center" align-v="center">
                 <b-col col lg="8">
-
-                    <!-- TODO: Could use improvement, toggle currently only reveals one segment at a time -->
-                    <h1 class="segment__name" :title="getTitleWithSegmentId(segment)" @click="toggleDetails(segment)">
+                    <h1
+                        class="segment__name"
+                        :title="getTitleWithSegmentId(segment)" 
+                        :class="visible ? null : 'collapsed'"
+                        :aria-expanded="visible ? 'true' : 'false'"
+                        aria-controls="collapse-4"
+                        @click="visible = !visible"
+                    >
                         <span :title="getTitle(segment)" class="segment__active">
 
-                              <!-- {{ detailsAreVisible ? 'Expand' : 'Collapse' }} -->
-
-                            <!-- <span v-if="detailsAreVisible"><i class="far fa-chevron-up" data-fa-transform="shrink-4"></i></span>
-                            <span v-else><i class="far fa-chevron-down" data-fa-transform="shrink-4"></i></span> -->
-
-                            <span v-show="this.detailsAreVisible === false" v-b-tooltip.hover.top="'Expand'">
+                            <span v-show="this.visible === false" v-b-tooltip.hover.top="'Expand'">
                                 <i class="fas fa-chevron-down primaryblue" data-fa-transform="shrink-2"></i>
                             </span>
-                            <span v-show="this.detailsAreVisible === true" v-b-tooltip.hover.top="'Collapse'">
+                            <span v-show="this.visible === true" v-b-tooltip.hover.top="'Collapse'">
                                 <i class="fas fa-chevron-up" data-fa-transform="shrink-2"></i>
                             </span>
 
-                        </span>
-                        {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
-                    </h1>
+                            {{segment.name}} <span class="segment-name-id">(ID: {{segment.id}})</span>
 
+                        </span>
+                    </h1>
                 </b-col>
                 <b-col col lg="4">
                     <b-button variant="light" @click="edit(segment.id)" v-b-tooltip.hover.top="'Edit Segment'"
@@ -56,77 +77,58 @@
                 </b-col>
             </b-row>
 
+            <b-collapse id="collapse-4" v-model="visible" class="mt-2">
+                    <b-row class="text-center lp-container" align-v="center">
+                        <b-col col lg="6">
+                            <span class="lp-label">Landing Pages</span>
+                        </b-col>
+                        <b-col col lg="6">
+                            <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
+                                    @click="showLPModal(segment.id)"
+                            >
+                                <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> New LP
+                            </b-button>
 
-        <span class="detailsBlock" v-if="detailsAreVisible">
-            <b-row class="text-center lp-container" align-v="center">
-                <b-col col lg="6">
-                    <span class="lp-label">Landing Pages</span>
-                    <!-- <label class="segment-position">{{segment.position}}</label> -->
-                </b-col>
-                <b-col col lg="6">
-                    <b-button variant="primary btn-sm" v-b-modal.modal-scrollable
-                              @click="showLPModal(segment.id)"
+                            <LandingPagesComp :id="'modal_' + segment.id" :ref="'modal_' + segment.id"
+                                            :segment="segment">
+                            </LandingPagesComp>
+                        </b-col>
+                    </b-row>
+
+                    <b-badge variant="light"
+                            v-for="lp in segment.lp"
+                            :key = "lp.id"
+                            v-b-modal.modal-edit-lp
                     >
-                        <i class="far fa-layer-plus" data-fa-transform="shrink-1"></i> New LP
-                    </b-button>
 
-                    <LandingPagesComp :id="'modal_' + segment.id" :ref="'modal_' + segment.id"
-                                      :segment="segment">
-                    </LandingPagesComp>
-                </b-col>
-            </b-row>
+                        <span class="landing-page">
+                            <span class="landing-page-name" v-if="lp.name.length<=29"
+                                v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' +lp.id + ' Weight:' + lp.weight">
+                                {{ lp.lpId }} {{ lp.name }}
+                            </span>
+                            <span class="landing-page-name" v-if="lp.name.length>=30"
+                                v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' + lp.id + ' Weight:' + lp.weight">
+                                {{ lp.name.substring(0,30)+"..." }}
+                            </span>
+                            <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
+                                    v-b-tooltip.hover.top="'Edit LP'"
+                                    style="z-index:2">
+                                <i class="far fa-pencil" data-fa-transform="shrink-2"></i>
+                            </b-button>
+                            <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete LP'"
+                                    style="z-index:2">
+                                <i class="far fa-trash" data-fa-transform="shrink-2"></i>
+                            </b-button>
 
-            <!-- <table class="table table-striped child-row tableFixHead lp-table">
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                </tr>
-                </thead>
-                <tr scope="row" v-for="lp in segment.lp">
-                    <td>{{ lp.id }}</td>
-                    <td>{{ lp.name }}</td>
-                </tr>
-            </table> -->
+                        </span>
 
-            <!-- <b-badge variant="light"
-            v-for="lp in segment.lp"
-            v-b-tooltip.hover.bottom.html="lp.name"
-            title="ID: 1 - Weight: 20"> -->
+                        (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> {{lp.weight}})
+                    </b-badge>
 
-            <b-badge variant="light"
-                     v-for="lp in segment.lp"
-                     :key = "lp.id"
-                     v-b-modal.modal-edit-lp
-            >
+                    <br>
+                    <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getSumWeight(segment.lp)}} / 100</span>
 
-                <span class="landing-page">
-                    <span class="landing-page-name" v-if="lp.name.length<=29"
-                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' +lp.id + ' Weight:' + lp.weight">
-                         {{ lp.lpId }} {{ lp.name }}
-                    </span>
-                    <span class="landing-page-name" v-if="lp.name.length>=30"
-                          v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' + lp.id + ' Weight:' + lp.weight">
-                        {{ lp.name.substring(0,30)+"..." }}
-                    </span>
-                    <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
-                              v-b-tooltip.hover.top="'Edit LP'"
-                              style="z-index:2">
-                        <i class="far fa-pencil" data-fa-transform="shrink-2"></i>
-                    </b-button>
-                    <b-button variant="light" @click="delSegmentLp(lp.id)" v-b-tooltip.hover.top="'Delete LP'"
-                              style="z-index:2">
-                        <i class="far fa-trash" data-fa-transform="shrink-2"></i>
-                    </b-button>
-
-                </span>
-
-                (<i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> {{lp.weight}})
-            </b-badge>
-
-            <br>
-            <span class="text-small"><i class="far fa-weight-hanging" data-fa-transform="shrink-4"></i> Weight Total: {{getSumWeight(segment.lp)}} / 100</span>
-        </span>
+            </b-collapse>
 
             <div v-if="errors" class="validate_error">
                 <span v-for="error in errors">{{ error }}</span>
@@ -157,9 +159,34 @@
                 checked: false,
                 detailsAreVisible: false,
                 id: Number(this.$route.params.id),
+                visible: false,
+                collapses: [ 
+                    { show: false },
+                    // { show: false },
+                    // { show: false }
+                ],
             };
         },
         methods: {
+            openAll() {
+                this.collapses.forEach(collapse => {
+                    collapse.show = true
+                })
+                //     if (id) {
+                //         this.collapses.forEach(collapse => {
+                //     collapse.show = true
+                // })
+                //     } else {
+                //         this.collapses.forEach(collapse => {
+                //             collapse.show = false
+                //         })
+                //     }
+            },
+            closeAll() {
+                this.collapses.forEach(collapse => {
+                    collapse.show = false
+                })
+            },
             defineId(name, id) {
                 return `${name}-${id}`
             },
