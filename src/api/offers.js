@@ -15,6 +15,7 @@ const getOffers = async () => {
                                 status
                                 payIn
                                 payOut
+                                currencyId
                                 dateAdded
                                 dateUpdated
                                 verticalId

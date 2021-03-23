@@ -17,6 +17,7 @@ const getOffer = async (id) => {
                                 verticalId
                                 verticalName
                                 conversionType
+                                currencyId
                                 status
                                 payIn
                                 payOut
@@ -120,6 +121,7 @@ const saveOffer = async (data) => {
         verticalId,
         verticalName,
         conversionType,
+        currencyId,
         geoRules,
         payoutPercent,
         isCpmOptionEnabled,
@@ -182,6 +184,7 @@ const saveOffer = async (data) => {
                                 isCpmOptionEnabled:${isCpmOptionEnabled}
                                 descriptions:"${descriptions}"
                                 conversionType:"${conversionType}"
+                                currencyId:${currencyId}
                                 geoRules:"${geoRulesReFormat}"
                                 customLPRules:"${customLPRulesReFormat}"
                                 payIn:${payIn}

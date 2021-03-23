@@ -435,11 +435,21 @@
                                         <i class="fad fa-question-circle"></i>
                                     </span>
                                 </label>
-                                <input type="text"
-                                       value="USD"
-                                       class="condition__matches offerCurrency custom-input"
-                                       disabled
+
+                                <select
+                                        :id="defineId(`currency`,id)"
+                                        class="condition__dimension-name condition__matches custom-select"
+                                        @change="updValue($event, `currencyId`)"
                                 >
+                                    <option
+                                            v-for="{id, name} in getCurrencyList()"
+                                            :selected="id === getOffer.currencyId"
+                                            :key="id"
+                                    >{{name}}
+                                    </option>
+
+                                </select>
+
                             </div>
                         </b-col>
 
@@ -1212,6 +1222,12 @@
                     obj.value = advManagerId[0].id
                 }
 
+                if (name === 'currencyId') {
+                    let currency = event.target.value
+                    let currencyId = this.getCurrencyList().filter(i => (i.name === currency))
+                    obj.value = currencyId[0].id
+                }
+
                 this.fastLpAdd = false
                 this.updOffer(obj)
             },
@@ -1341,20 +1357,20 @@
             defineId(name, id) {
                 return `${name}-${id}`
             },
+            getCurrencyList() {
+                return [
+                    {id: 1, name: 'USD'},
+                    {id: 2, name: 'EUR'},
+                    {id: 3, name: 'BRL'},
+                    {id: 4, name: 'GPB'},
+                ]
+            },
             getStatusList() {
                 return [
                     {id: 0, name: 'Public'},
                     {id: 1, name: 'Private'},
                     {id: 2, name: 'Apply to Run'},
                     {id: 3, name: 'Inactive'},
-                ]
-            },
-            getVerticalsList() {
-                return [
-                    {id: 0, name: 'Multimedia'},
-                    {id: 1, name: 'Mobile'},
-                    {id: 2, name: 'Adult'},
-                    {id: 3, name: 'Software'},
                 ]
             },
             changePayoutType() {
