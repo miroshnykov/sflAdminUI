@@ -22,21 +22,28 @@
 
                 <div slot="name" slot-scope="{row, update, setEditing, isEditing, revertValue}">
                     <span @click="edit(row)">
-                        <span class="segment-name" @click="edit(row)">{{row.name}}</span>
+                        <!-- <span class="segment-name" @click="edit(row)">{{row.name}}</span> -->
+                        <span class="segment-name" v-if="row.name.length<=15" @click="edit(row)">
+                            {{ row.name }}
+                        </span>
+                        <span class="segment-name" v-if="row.name.length>=16" v-b-tooltip.hover.focus.bottom="row.name" @click="edit(row)">
+                            {{ row.name.substring(0,16)+"..." }}
+                        </span>
                     </span>
                     <b-form-text id="spent-values">
                         Updated {{timeSince_(row.dateUpdated)}} ago
                     </b-form-text>
                 </div>
                 
-                <div slot="offerName" slot-scope="props">
+                <!-- <div slot="offerName" slot-scope="props">
                     <span @click="edit(row)">
-                    <span class="segment-name">{{ offer.name }}</span>
+                        <span class="segment-name">{{ offer.name }}</span>
                     </span>
+
                     <b-form-text id="spent-values">
                         Updated {{timeSince_(row.dateUpdated)}} ago
                     </b-form-text>
-                </div>
+                </div> -->
 
                 <!-- <div slot="advertiser" slot-scope="props">
                     <span class="segment-name">{{props.row.advertiser}}</span>
@@ -56,30 +63,21 @@
                     </b-form-text>
                 </div>
 
-                <!-- <div slot="landingPage" slot-scope="props">
-                <span class="landing-page-box" v-b-tooltip.hover.bottom="props.row.urlLandingPage">
-                    <span class="landing-page-name">
+                <div slot="landingPage" slot-scope="props">
+                <span class="landing-page-box" v-b-tooltip.hover.focus.bottom="props.row.urlLandingPage">
+                    <!-- <span class="landing-page-name">
                         {{props.row.nameLandingPage}}
+                    </span> -->
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)">
+                        {{ props.row.nameLandingPage }}
+                    </span>
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length>=20" @click="copyText(props.row.urlLandingPage)">
+                        {{ props.row.nameLandingPage.substring(0,20)+"..." }}
                     </span>
                 </span>
                     <button
                             @click="copyText(props.row.urlLandingPage)"
                             class="btn btn-link"
-                            v-b-tooltip.hover.right="'Copy URL'">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div> -->
-
-                <div slot="landingPage" slot-scope="props">
-                <span class="landing-page-box">
-                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)" v-b-tooltip.hover.html.right="props.row.urlLandingPage">
-                        {{ props.row.nameLandingPage }}
-                    </span>
-                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length>=20" @click="copyText(props.row.urlLandingPage)" v-b-tooltip.hover.html.right="props.row.urlLandingPage">
-                        {{ props.row.nameLandingPage.substring(0,20)+"..." }}
-                    </span>
-                </span>
-                    <button class="btn btn-link" @click="copyText(props.row.urlLandingPage)"
                             v-b-tooltip.hover.right="'Copy URL'">
                         <i class="far fa-copy"></i>
                     </button>
