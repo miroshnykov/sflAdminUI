@@ -72,7 +72,7 @@
 
                 <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box">
-                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)">
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)" v-b-tooltip.hover.html.right="props.row.urlLandingPage">
                         {{ props.row.nameLandingPage }}
                     </span>
                     <span class="landing-page-name" v-if="props.row.nameLandingPage.length>=20" @click="copyText(props.row.urlLandingPage)" v-b-tooltip.hover.html.right="props.row.urlLandingPage">

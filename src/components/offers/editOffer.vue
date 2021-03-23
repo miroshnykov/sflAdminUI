@@ -302,7 +302,7 @@
                             <h2>Default Settings</h2>
                         </b-col> -->
 
-                        <b-col cols="6">
+                        <b-col cols="8">
                             <div class="condition__controls">
                                 <div class="pull-right">
                                     <!--                        <b-button variant="light" class="btn-add-line" v-b-modal.modal-scrollable-->
@@ -344,7 +344,6 @@
                                         :value="getLPValue()"
                                         @input="updValue($event,`defaultLp`)"
                                         v-b-tooltip.hover.focus.bottom.html="getLpURL()"
-                                        style="overflow: scroll"
                                 >
                                 </model-select>
                             </div>
@@ -366,10 +365,10 @@
                                 </button>
                             </div>
                         </b-col>
-                        <b-col cols="4">
+                        <b-col cols="2">
                         </b-col>
 
-                        <b-col cols="6">
+                        <b-col cols="8">
                             <div class="condition__controls">
                                 <label>Exit Traffic
                                     <span class="question"
@@ -387,10 +386,10 @@
                                 </model-select>
                             </div>
                         </b-col>
-                        <b-col cols="6">
+                        <b-col cols="4">
                         </b-col>
 
-                        <b-col cols="6">
+                        <b-col cols="8">
                             <div class="condition__controls">
                                 <label>Postback for the Advertiser</label>
                                 <!-- <model-select
@@ -417,7 +416,7 @@
                                 </button>
                             </div>
                         </b-col>
-                        <b-col cols="5">
+                        <b-col cols="3">
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -1427,7 +1426,7 @@
             display: table-cell
             position: relative
             padding-left: 35px
-            margin-bottom: 12px
+            margin-bottom: 10px
             cursor: pointer
             font-size: 16px
             -webkit-user-select: none
