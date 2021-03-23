@@ -56,7 +56,7 @@
                     </b-form-text>
                 </div>
 
-                <div slot="landingPage" slot-scope="props">
+                <!-- <div slot="landingPage" slot-scope="props">
                 <span class="landing-page-box" v-b-tooltip.hover.bottom="props.row.urlLandingPage">
                     <span class="landing-page-name">
                         {{props.row.nameLandingPage}}
@@ -65,6 +65,21 @@
                     <button
                             @click="copyText(props.row.urlLandingPage)"
                             class="btn btn-link"
+                            v-b-tooltip.hover.right="'Copy URL'">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div> -->
+
+                <div slot="landingPage" slot-scope="props">
+                <span class="landing-page-box">
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)">
+                        {{ props.row.nameLandingPage }}
+                    </span>
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length>=20" @click="copyText(props.row.urlLandingPage)" v-b-tooltip.hover.html.right="props.row.urlLandingPage">
+                        {{ props.row.nameLandingPage.substring(0,20)+"..." }}
+                    </span>
+                </span>
+                    <button class="btn btn-link" @click="copyText(props.row.urlLandingPage)"
                             v-b-tooltip.hover.right="'Copy URL'">
                         <i class="far fa-copy"></i>
                     </button>
@@ -332,8 +347,8 @@
                     headings: {
                         id: 'ID',
                         name: 'Offer Name',
-                        advertiserName: 'advertiserName',
-                        verticalName: 'VerticalName',
+                        advertiserName: 'Advertiser',
+                        verticalName: 'Vertical',
                         payIn: 'PayIn',
                         payOut: 'PayOut',
                         landingPage: 'Default LP',

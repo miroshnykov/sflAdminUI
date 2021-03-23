@@ -32,7 +32,7 @@
                     >
                 </div>
             </b-col>
-            <b-col cols="3">
+            <b-col cols="4">
                 <div class="condition__controls">
                     <label>Offer Manager</label>
                     <select
@@ -40,7 +40,7 @@
                             class="condition__dimension-name condition__matches custom-select"
                             @change="updValue($event, `advertiserManagerId`)"
                     >
-                        <option :value="null">-- Select advertiser managers --</option>
+                        <option :value="null">-- Select advertiser manager --</option>
                         <option
                                 v-for="{id, firstName, lastName} in getSflAdvertisersManagers"
                                 :selected="id === getOffer.advertiserManagerId "
@@ -58,7 +58,7 @@
                     </label>
                 </span>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="3">
                 <b-button v-show="checkEditMode()" class="btn-cancel-edit margin-right-10" @click="this.cancelEdit">
                     <i class="fas fa-ban" data-fa-transform="shrink-2"></i> Cancel
                 </b-button>
@@ -344,6 +344,7 @@
                                         :value="getLPValue()"
                                         @input="updValue($event,`defaultLp`)"
                                         v-b-tooltip.hover.focus.bottom.html="getLpURL()"
+                                        style="overflow: scroll"
                                 >
                                 </model-select>
                             </div>
@@ -1120,7 +1121,12 @@
                 if (this.getOffer.length !== 0) {
 
                     let obj = this.getLpOffers.filter(item => (item.id === this.getOffer.defaultLp))
-                    return obj.length !== 0 && 'Name: ' + obj[0].name + '<br>(ID:' + obj[0].id + ')'
+                    return obj.length !== 0 && 'Name: ' + obj[0].name + '<br>URL: ' + obj[0].url + '<br>(ID: ' + obj[0].id + ')'
+                }
+            },
+            getLPValue() {
+                if (this.getOffer.length !== 0) {
+                    return this.getOffer.defaultLp
                 }
             },
             getLpDefault() {
@@ -1148,11 +1154,6 @@
                     item.text = `${item.name} (Offer ID: ${item.id})`
                     return item
                 })
-            },
-            getLPValue() {
-                if (this.getOffer.length !== 0) {
-                    return this.getOffer.defaultLp
-                }
             },
             getOfferField(name) {
                 if (this.getOffer.length !== 0) {
