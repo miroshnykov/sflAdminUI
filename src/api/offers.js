@@ -15,9 +15,11 @@ const getOffers = async () => {
                                 status
                                 payIn
                                 payOut
+                                currencyId
                                 dateAdded
                                 dateUpdated
-                                verticals
+                                verticalId
+                                verticalName
                                 advertiserName
                                 isCpmOptionEnabled
                                 descriptions

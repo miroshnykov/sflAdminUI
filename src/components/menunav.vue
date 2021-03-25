@@ -8,7 +8,7 @@
                 <b-nav-item active class="nav-standardSegments"><a @click="this.standardSegmentsPage"><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
                 <b-nav-item active class="nav-customOffers"><a @click="this.offersPage"><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
                 <hr class="line">
-                <b-nav-item active class="nav-customOffers"><a @click="this.importPage"><i class="far fa-file-import"></i> Import data</a></b-nav-item>
+<!--                <b-nav-item active class="nav-customOffers"><a @click="this.importPage"><i class="far fa-file-import"></i> Import data</a></b-nav-item>-->
             </span>
 
             <span class="nav-disabled" style="display: none;cursor: not-allowed;">
@@ -16,7 +16,7 @@
                 <b-nav-item disabled><a><i class="far fa-project-diagram"></i> Standard Segments</a></b-nav-item>
                 <b-nav-item disabled><a><i class="far fa-bullhorn"></i> Custom Offers Segments</a></b-nav-item>
                 <hr class="line">
-                <b-nav-item disabled class="nav-customOffers"><a @click="this.importPage"><i class="far fa-file-import"></i> Import data</a></b-nav-item>
+<!--                <b-nav-item disabled class="nav-customOffers"><a @click="this.importPage"><i class="far fa-file-import"></i> Import data</a></b-nav-item>-->
             </span>
             
 

@@ -3,7 +3,6 @@
         <menunav></menunav>
 <!--        <h1>Manage Uploads</h1>-->
         <div id="settings">
-
             <b-row class="settings">
                 <b-col cols="1">
                     <div class="action-buttons">
@@ -85,10 +84,6 @@
             ...mapActions("offers", ["saveOffersStore"]),
             clearFiles() {
                 this.$refs['file-input'].reset()
-            },
-            mainPage() {
-                this.$router.push('/')
-                location.reload()
             },
             async parse(file) {
                 const reader = new FileReader();

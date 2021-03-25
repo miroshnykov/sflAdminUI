@@ -22,44 +22,72 @@
 
                 <div slot="name" slot-scope="{row, update, setEditing, isEditing, revertValue}">
                     <span @click="edit(row)">
-                        <span class="segment-name" @click="edit(row)">{{row.name}}</span>
-                    </span>
-                    <b-form-text id="spent-values">
-                        Updated {{timeSince_(row.dateUpdated)}} ago
-                    </b-form-text>
-                </div>
-                
-                <div slot="offerName" slot-scope="props">
-                    <span @click="edit(row)">
-                    <span class="segment-name">{{ offer.name }}</span>
+                        <!-- <span class="segment-name" @click="edit(row)">{{row.name}}</span> -->
+                        <span class="segment-name" v-if="row.name.length<=15" @click="edit(row)">
+                            {{ row.name }}
+                        </span>
+                        <span class="segment-name" v-if="row.name.length>=16" v-b-tooltip.hover.focus.bottom="row.name" @click="edit(row)">
+                            {{ row.name.substring(0,16)+"..." }}
+                        </span>
                     </span>
                     <b-form-text id="spent-values">
                         Updated {{timeSince_(row.dateUpdated)}} ago
                     </b-form-text>
                 </div>
 
-                <!-- <div slot="advertiser" slot-scope="props">
-                    <span class="segment-name">{{props.row.advertiser}}</span>
-                </div> -->
+                <div slot="advertiserName" slot-scope="props">
+                    <span v-if="props.row.advertiserName.length<=15">
+                        {{props.row.advertiserName}}
+                    </span>
+                    <span v-if="props.row.advertiserName.length>=16" v-b-tooltip.hover.focus.bottom="props.row.advertiserName">
+                        {{ props.row.advertiserName.substring(0,16)+"..." }}
+                    </span>
+                </div>
 
                 <div slot="payIn" slot-scope="props">
-                    <span class="budget-daily">${{props.row.payIn}}</span>
+                    <span class="budget-daily">
+                        <span v-if="props.row.currencyId === 1">$</span>
+                        <span v-else-if="props.row.currencyId === 2">€</span>
+                        <span v-else-if="props.row.currencyId === 3">R$</span>
+                        <span v-else-if="props.row.currencyId === 4">£</span>
+                        {{props.row.payIn}}
+                    </span>
+
                     <b-form-text id="currency">
-                        USD
+                    <span v-if="props.row.currencyId === 1">USD</span>
+                    <span v-else-if="props.row.currencyId === 2">EUR</span>
+                    <span v-else-if="props.row.currencyId === 3">BRL</span>
+                    <span v-else-if="props.row.currencyId === 4">GPB</span>
                     </b-form-text>
                 </div>
 
                 <div slot="payOut" slot-scope="props">
-                    <span class="budget-daily">${{props.row.payOut}}</span>
+                    <span class="budget-daily">
+                        <span v-if="props.row.currencyId === 1">$</span>
+                        <span v-else-if="props.row.currencyId === 2">€</span>
+                        <span v-else-if="props.row.currencyId === 3">R$</span>
+                        <span v-else-if="props.row.currencyId === 4">£</span>
+                        {{props.row.payOut}}
+                    </span>
+
                     <b-form-text id="currency">
-                        USD
+                    <span v-if="props.row.currencyId === 1">USD</span>
+                    <span v-else-if="props.row.currencyId === 2">EUR</span>
+                    <span v-else-if="props.row.currencyId === 3">BRL</span>
+                    <span v-else-if="props.row.currencyId === 4">GPB</span>
                     </b-form-text>
                 </div>
 
                 <div slot="landingPage" slot-scope="props">
-                <span class="landing-page-box" v-b-tooltip.hover.bottom="props.row.urlLandingPage">
-                    <span class="landing-page-name">
+                <span class="landing-page-box" v-b-tooltip.hover.focus.bottom="props.row.urlLandingPage">
+                    <!-- <span class="landing-page-name">
                         {{props.row.nameLandingPage}}
+                    </span> -->
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length<=19" @click="copyText(props.row.urlLandingPage)">
+                        {{ props.row.nameLandingPage }}
+                    </span>
+                    <span class="landing-page-name" v-if="props.row.nameLandingPage.length>=20" @click="copyText(props.row.urlLandingPage)">
+                        {{ props.row.nameLandingPage.substring(0,20)+"..." }}
                     </span>
                 </span>
                     <button
@@ -70,9 +98,14 @@
                     </button>
                 </div>
 
-                <!-- <div slot="verticals" slot-scope="props">
-                    <span class="segment-name">{{props.row.verticals}}</span>
-                </div> -->
+                <div slot="verticalName" slot-scope="props">
+                    <span v-if="props.row.verticalName.length<=15">
+                        {{props.row.verticalName}}
+                    </span>
+                    <span v-if="props.row.verticalName.length>=16" v-b-tooltip.hover.focus.bottom="props.row.verticalName">
+                        {{ props.row.verticalName.substring(0,16)+"..." }}
+                    </span>
+                </div>
 
                 <div slot="status" slot-scope="props">
                     <div v-if="props.row.status === 'inactive'">
@@ -135,7 +168,7 @@
         'payIn',
         'payOut',
         'landingPage',
-        'verticals',
+        'verticalName',
         'countOfCampaigns',
         'status',
         'actions',
@@ -332,8 +365,8 @@
                     headings: {
                         id: 'ID',
                         name: 'Offer Name',
-                        advertiserName: 'advertiserName',
-                        verticals: 'Vertical',
+                        advertiserName: 'Advertiser',
+                        verticalName: 'Vertical',
                         payIn: 'PayIn',
                         payOut: 'PayOut',
                         landingPage: 'Default LP',
@@ -343,7 +376,7 @@
                     editableColumns: ['offerName'],
                     // sortable: tableColumnsLog,
                     // sortable: [''],
-                    sortable: ['id','name','advertiserName','verticals','status'],
+                    sortable: ['id','name','advertiserName','verticalName','status'],
                     sortIcon: {
                         base: 'fa fad',
                         up: 'fa-sort-up',
