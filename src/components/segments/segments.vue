@@ -95,19 +95,7 @@
                     title: 'Add Segment',
                     html:
                         `<label for="swal-input1"></label>
-                        <input id="swal-input1" class="swal2-input" placeholder="Campaign Name" maxlength="25"
-                             onblur="
-                                 if(this.value === ''){
-                                    alert('Enter campaign name ')
-                                    document.querySelector('#swal-input1').style.background = '#f38282'
-                                    document.querySelector('.swal2-confirm').style.display = 'none'
-                                    return false
-                                } else {
-                                    document.querySelector('.swal2-confirm').style.display = 'inline-block'
-                                    document.querySelector('#swal-input1').style.background = 'white'
-                                }
-                            "
-                        >
+                        <input id="swal-input1" class="swal2-input" placeholder="Enter Campaign Name" maxlength="25">
                         <div class="row segment-popup">
                         <div class="col-md-6">
                     `,
