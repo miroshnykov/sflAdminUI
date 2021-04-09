@@ -18,7 +18,7 @@
                     >
                 </div>
             </b-col>
-            <b-col cols="6">
+            <b-col cols="4">
                 <div class="condition__controls">
                     <label>Segment Name</label>
                     <input type="text"
@@ -66,19 +66,20 @@
                     >
                 </div>
             </b-col> -->
+            <b-col cols="2">
+                <div class="condition__controls">
+                    <label>Product override</label>
+                    <b-form-checkbox
+                            class="active"
+                            name="check-button"
+                            :checked="!!getSegmentIsOverrideProduct"
+                            @change="activeInactiveSwitch($event)"
+                            switch size="lg"
+                    >
+                    </b-form-checkbox>
+                </div>
+            </b-col>
         </b-row>
-
-        <b-col cols="2">
-            <label> Product override </label>
-            <b-form-checkbox
-                    class="active"
-                    name="check-button"
-                    :checked="!!getSegmentIsOverrideProduct"
-                    @change="activeInactiveSwitch($event)"
-                    switch
-            >
-            </b-form-checkbox>
-        </b-col>
 
         <hr>
 

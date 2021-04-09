@@ -32,7 +32,6 @@ a
 a, button, span
   transition: all 0.5s ease
 
-
 .pull-right
   float: right !important
 
@@ -71,6 +70,7 @@ hr.small
 
 .primaryblue
   color: #36B8E1
+  font-size: inherit
 
 .flex
   display: flex
@@ -829,10 +829,20 @@ tr
     font-weight: 500
     line-height: 1.4em
 
+// .custom-control-label::before
+//   color: #fff
+//   border-color: #E3EEF4
+//   background-color: #E3EEF4
+
+// .custom-control-input:checked ~
+//   color: #fff
+//   border-color: #36B8E1
+//   background-color: #36B8E1
+
 .custom-control-input:checked ~ .custom-control-label::before
   color: #fff
-  border-color: #E3EEF4
-  background-color: #E3EEF4
+  border-color: #36B8E1
+  background-color: #36B8E1
 
 .custom-control-input[disabled] ~ .custom-control-label::before, .custom-control-input:disabled ~ .custom-control-label::before
   background-color: transparent

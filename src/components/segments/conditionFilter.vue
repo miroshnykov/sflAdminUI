@@ -1,7 +1,7 @@
 <template>
     <transition name="expand-down">
         <section :id="defineId(`filter`,indexFilters)" :ref="defineId(`filter`,indexFilters)" class="filter">
-            <p class="filter__title">Rule: <b>{{indexFilters+1}}</b></p>
+            <p class="filter__title">Rule #<span class="primaryblue">{{indexFilters+1}}</span></p>
             <div class="filter__controls">
                 <div class="error" style="display:none">Error validation message</div>
                 <div v-show="Number(indexFilters) !== 0" class="_and"><span>and</span></div>
@@ -79,6 +79,10 @@
                                 >
                                 </model-select>
                                 <label v-show="checkAff(item)" for="label-affiliate">Affiliate ID &amp; Name
+                                    <span class="question"
+                                            v-b-tooltip.hover.right.html="'Type at least 3 characters for autofill suggestions'">
+                                        <i class="fad fa-question-circle"></i>
+                                    </span>
                                 </label>
 
                             </div>
