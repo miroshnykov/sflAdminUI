@@ -10,8 +10,8 @@
     "buildDev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
     "buildStage": "cross-env NODE_ENV=staging webpack --progress --hide-modules",
     "buildProd": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "prod": "node server.js --conf=/run/secrets/sfl-admin-prod.js",
-    "stage1": "node server.js --conf=/run/secrets/sfl-admin-stage1.js"
+    "prod": "node server.js --conf=/run/secrets/sfl-admin.js",
+    "stage1": "node server.js --conf=/run/secrets/sfl-admin.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
