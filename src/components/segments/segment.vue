@@ -103,11 +103,11 @@
 
                         <span class="landing-page">
                             <span class="landing-page-name" v-if="lp.name.length<=29"
-                                v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' +lp.id + ' Weight:' + lp.weight">
+                                v-b-popover.hover.focus.bottom.html="'Name: ' + lp.name + '\n URL: \n' + '\n http://url.com/ \n'" :title="'ID: ' + lp.id + ' - Weight: ' + lp.weight">
                                 {{ lp.lpId }} {{ lp.name }}
                             </span>
                             <span class="landing-page-name" v-if="lp.name.length>=30"
-                                v-b-popover.hover.focus.bottom.html="lp.name" :title="'ID:' + lp.id + ' Weight:' + lp.weight">
+                                v-b-popover.hover.focus.bottom.html="'ID: ' + lp.id + ' - Weight: ' + lp.weight + ' \n - URL: \n' + '\n http://url.com/ \n'" :title="lp.name">
                                 {{ lp.name.substring(0,30)+"..." }}
                             </span>
                             <b-button variant="light" @click="editSegmentLp(segment.id, lp.id, lp.lpId, lp.weight)"
@@ -504,5 +504,65 @@
     .segment__default {
         font-style: italic;
         height: 80px;
+    }
+
+/* Popover styling */
+    .popover-header {
+        color: #fff;
+        background: #3A3852;
+        font-weight: 600 !important;
+    }
+    .popover-body {
+        color: #3A3852;
+    }
+    .popover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1060;
+        display: none;
+        min-width: 300px !important;
+        max-width: 350px !important;
+        padding: 2px;
+        text-align: left;
+        white-space: normal;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #E3EEF4;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+        box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+    }
+    .popover > .arrow,
+    .popover > .arrow:after {
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        // border-color: transparent;
+        // border-style: solid;
+    }
+    .popover > .arrow {
+        // border-width: 11px;
+    }
+    .popover > .arrow:after {
+        // content: "";
+        // border-width: 10px;
+    }
+    .popover.left > .arrow {
+        // top: 50%;
+        // right: -11px;
+        // margin-top: -11px;
+        // border-right-width: 0;
+        border-left-color: #999;
+        border-left-color: rgba(0, 0, 0, .25);
+    }
+    .popover.left > .arrow:after {
+        // right: 1px;
+        // bottom: -10px;
+        // content: " ";
+        // border-right-width: 0;
+        border-left-color: #fff;
     }
 </style>
